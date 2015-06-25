@@ -393,6 +393,16 @@ gem uninstall charlock_holmes
 bundle install # should reinstall charlock_holmes
 ```
 
+### 'bundle install' fails due to permission problems
+
+This can happen if you are using a system-wide Ruby installation. You can
+override the Ruby gem install path with `BUNDLE_PATH`:
+
+```
+# Install gems in (current directory)/vendor/bundle
+make BUNDLE_PATH=$(pwd)/vendor/bundle
+```
+
 ### Other problems
 
 Please open an issue on the [GDK issue tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues).
