@@ -152,7 +152,7 @@ Finally, start the main GitLab rails application in the gitlab subdirectory of t
     bundle exec foreman start
 
 Now you can go to http://localhost:3000 in your browser.
-The development login credentials are `root` and `5iveL!fe`
+The development login credentials are `root` and `password`
 
 If you want to work on GitLab CI, first seed the GitLab CI database:
 
@@ -247,7 +247,7 @@ bundle exec foreman start
 ```
 
 Now you can go to http://localhost:3000 in your browser.
-The development login credentials are `root` and `5iveL!fe`
+The development login credentials are `root` and `password`
 
 ### Running the tests
 
