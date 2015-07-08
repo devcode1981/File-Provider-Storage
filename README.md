@@ -254,7 +254,7 @@ The development login credentials are `root` and `password`
 In order to run the test you can use the following commands:
 - `rake spinach` to run the spinach suite
 - `rake spec` to run the rspec suite
-- `rake jasmine:ci` to run the jasmine test suite
+- `rake teaspoon` to run the teaspoon test suite
 - `rake gitlab:test` to run all the tests
 
 Note: You can't run `rspec .` since this will try to run all the `_spec.rb`
