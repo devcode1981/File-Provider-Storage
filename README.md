@@ -406,3 +406,8 @@ make BUNDLE_PATH=$(pwd)/vendor/bundle
 ### Other problems
 
 Please open an issue on the [GDK issue tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues).
+
+## License
+
+The GitLab Development Kit is distributed under the MIT license,
+see the LICENSE file.
