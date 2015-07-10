@@ -14,6 +14,23 @@ sockets to avoid port conflicts.
 - GitLab Development Kit itself does not run `sudo` commands
 - It is OK to leave some things to the user (e.g. installing Ruby)
 
+## Differences with production
+
+- No NGINX to serve static files and buffer HTTP responses
+- C compiler needed to run `bundle install` (not needed with Omnibus)
+- GitLab can rewrite its program code and configuration data (read-only with
+  Omnibus)
+- 'Assets' (Javascript/CSS files) are generated on the fly (pre-compiled at
+  build time with Omnibus)
+- Gems (libraries) for development and functional testing get installed and
+  loaded
+- No unified configuration management for GitLab, gitlab-shell and GitLab CI
+  (handled by Omnibus)
+- No privilege separation between Ruby, Postgres and Redis
+- No easy upgrades
+- Need to download and compile new gems ('bundle install') on each upgrade
+- etc.
+
 ## Installation
 
 The preferred way to use GitLab Development Kit is to install Ruby and dependencies on your 'native' OS.
