@@ -54,7 +54,7 @@ sudo -u $DEV_USER -i bash -c "gpg --keyserver hkp://keys.gnupg.net --recv-keys D
 sudo -u $DEV_USER -i bash -c "curl -sSL https://get.rvm.io | bash -s stable --ruby=2.1.6"
 sudo -u $DEV_USER -i bash -c "gem install bundler"
 sudo chown -R $DEV_USER:$DEV_USER /home/vagrant
-sudo -u $DEV_USER -i bash -c "cp -r /vagrant/* /home/vagrant/gitlab-development-kit/"
+sudo -u $DEV_USER -i bash -c "rsync -av --exclude '.vagrant' /vagrant/ /home/vagrant/gitlab-development-kit/"
 
 # automatically move into the gitlab-development-kit folder, but only add the command
 # if it's not already there
