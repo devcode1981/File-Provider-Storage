@@ -91,8 +91,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			# current bug in Facter requires detecting Windows memory seperately - https://tickets.puppetlabs.com/browse/FACT-960
 			mem = `wmic computersystem Get TotalPhysicalMemory`.split[1].to_i / 1024 / 1024
 		else
-			cpus = Facter.value('processors')['count']
-			mem = Facter.value('memory').slice! " GiB".to_i * 1024
+                       cpus = Facter.value('processors')['count']
+                       facter_mem = Facter.value('memory')
+                       if facter_mem
+                               mem = facter_mem.slice! " GiB".to_i * 1024
+                       else
+                               mem = Facter.value('memorysize_mb').to_i
+                       end
 		end
 		
 		# use 1/4 of memory or 2 GB, whichever is greatest
