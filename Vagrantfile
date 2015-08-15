@@ -92,11 +92,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			mem = `wmic computersystem Get TotalPhysicalMemory`.split[1].to_i / 1024 / 1024
 		else
                        cpus = Facter.value('processors')['count']
-                       facter_mem = Facter.value('memory')
-                       if facter_mem
+                       if facter_mem = Facter.value('memory')
                                mem = facter_mem.slice! " GiB".to_i * 1024
+                       elsif facter_mem = Facter.value('memorysize_mb')
+                               mem = facter_mem.to_i
                        else
-                               mem = Facter.value('memorysize_mb').to_i
+                               raise "unable to determine total host RAM size"
                        end
 		end
 		
