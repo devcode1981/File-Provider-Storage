@@ -91,8 +91,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			# current bug in Facter requires detecting Windows memory seperately - https://tickets.puppetlabs.com/browse/FACT-960
 			mem = `wmic computersystem Get TotalPhysicalMemory`.split[1].to_i / 1024 / 1024
 		else
-			cpus = Facter.value('processors')['count']
-			mem = Facter.value('memory').slice! " GiB".to_i * 1024
+                       cpus = Facter.value('processors')['count']
+                       if facter_mem = Facter.value('memory')
+                               mem = facter_mem.slice! " GiB".to_i * 1024
+                       elsif facter_mem = Facter.value('memorysize_mb')
+                               mem = facter_mem.to_i
+                       else
+                               raise "unable to determine total host RAM size"
+                       end
 		end
 		
 		# use 1/4 of memory or 2 GB, whichever is greatest
