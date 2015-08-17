@@ -168,14 +168,16 @@ Vagrant can be very slow since the files are synced between the host OS and GitL
 (testing) accesses a lot of files.
 You can improve the speed by keeping all the files on the guest OS but in that case you 
 should take care to not lose the files if you destroy or update the VM.
+To avoid usage of slow VirtualBox shared folders we use NFS here.
 
 ##### Install
 1. [Disable Hyper-V](http://superuser.com/a/642027/143551) (Windows users) then enable virtualization technology via the BIOS.
 2. Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) & [Vagrant](http://www.vagrantup.com).
-3. Run `vagrant up` in this directory (from an elevated command prompt if on Windows)
+3. [Configure NFS for Vagrant](http://docs.vagrantup.com/v2/synced-folders/nfs.html) if you are on Linux.
+4. Run `vagrant up` in this directory (from an elevated command prompt if on Windows)
   a. Vagrant will download an OS image, bring it up, and install all the prerequisites.
-4. Run `vagrant ssh` to SSH into the box.
-5. Continue setup at *[Install the repositories and gems](#install-the-repositories-and-gems)* above.
+5. Run `vagrant ssh` to SSH into the box.
+6. Continue setup at *[Install the repositories and gems](#install-the-repositories-and-gems)* above.
 
 ##### Development details
 * Open development environment by running `vagrant up` & `vagrant ssh` (from an elevated command prompt if on Windows).
