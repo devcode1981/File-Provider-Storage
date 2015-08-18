@@ -15,6 +15,7 @@ sockets to avoid port conflicts.
   * [Different installation types](#different-installation-types)
     * [Native installation](#native-installation)
     * [Vagrant with Virtualbox](#vagrant-with-virtualbox)
+    * [Vagrant with Docker](#vagrant-with-docker)
   * [Install the repositories and gems](#install-the-repositories-and-gems)
 * [Post-installation](#post-installation)
 * [Development](#development)
@@ -66,6 +67,9 @@ We strongly recommend the native install since it is much faster than a virtuali
 
 If you want to use [Vagrant](https://www.vagrantup.com/) instead (e.g. need to do development from Windows)
 please see [the instructions for our (experimental) Vagrant with Virtualbox setup](#vagrant-with-virtualbox).
+
+If you want to use [Vagrant](https://www.vagrantup.com/) with [Docker](https://www.docker.com/) on Linux
+please see [the instuctions for our (experimental) Vagrant with Docker setup](#vagrant-with-docker).
 
 #### Native installation
 
@@ -174,10 +178,10 @@ To avoid usage of slow VirtualBox shared folders we use NFS here.
 1. [Disable Hyper-V](http://superuser.com/a/642027/143551) (Windows users) then enable virtualization technology via the BIOS.
 2. Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) & [Vagrant](http://www.vagrantup.com).
 3. [Configure NFS for Vagrant](http://docs.vagrantup.com/v2/synced-folders/nfs.html) if you are on Linux.
-4. Run `vagrant up` in this directory (from an elevated command prompt if on Windows)
+4. Run `vagrant up --provider=virtualbox` in this directory (from an elevated command prompt if on Windows)
   a. Vagrant will download an OS image, bring it up, and install all the prerequisites.
 5. Run `vagrant ssh` to SSH into the box.
-6. Continue setup at *[Install the repositories and gems](#install-the-repositories-and-gems)* above.
+6. Continue setup at *[Install the repositories and gems](#install-the-repositories-and-gems)* below.
 
 ##### Development details
 * Open development environment by running `vagrant up` & `vagrant ssh` (from an elevated command prompt if on Windows).
@@ -200,6 +204,24 @@ to view any error messages.
 * If you have problems running `support/edit-gitlab.yml` (bash script despite file extension)
  see http://stackoverflow.com/a/5514351/1233435.
 * If you have errors with symlinks or Ruby during initialization make sure you ran `vagrant up` from an elevated command prompt (Windows users). 
+
+#### Vagrant with Docker
+[Vagrant](http://www.vagrantup.com) is a tool for setting up identical development
+environments including all dependencies regardless of the host platform you are using.
+[Docker](https://www.docker.com/) is one of possible providers of Vagrant.
+Docker provider has a big advantage, as it doesn't have a big virtualisation overhead compared
+to a Virtualbox and provides the native performance via containering technology.
+This docker setup makes sense here only on Linux, as on other OSes like Windows/OSx
+you will have to run the entire docker hypervisor in a VM
+(which will be almost the same like Vagrant Virtualbox provider).
+
+##### Install
+1. Install Docker Engine (e.g. on [Ubuntu](https://docs.docker.com/installation/ubuntulinux/) or [CentOS](https://docs.docker.com/installation/centos/)), don't forget to add your user to the docker group and relogin yourself
+2. Run `vagrant up --provider=docker` in this directory. Vagrant will build a docker image and start the container
+3. Run `vagrant ssh` to SSH into the container.
+5. Continue setup at *[Install the repositories and gems](#install-the-repositories-and-gems)* below.
+
+See [development details](#development-details) and [exit](#exit) of Vagrant-Virtulabox setup, they apply here too.
 
 ### Install the repositories and gems
 

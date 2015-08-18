@@ -4,7 +4,17 @@
 # Please see the Vagrant section in the readme for caveats and tips
 # https://gitlab.com/gitlab-org/gitlab-development-kit/tree/master#vagrant
 
+Vagrant.require_version ">= 1.6.0"
 VAGRANTFILE_API_VERSION = "2"
+
+def enable_shares(config, nfs)
+	# paths must be listed as shortest to longest per bug: https://github.com/GM-Alex/vagrant-winnfsd/issues/12#issuecomment-78195957
+	config.vm.synced_folder ".", "/vagrant"
+	config.vm.synced_folder "gitlab/", "/home/vagrant/gitlab-development-kit/gitlab", :create => true, :nfs => nfs
+	config.vm.synced_folder "gitlab-ci/", "/home/vagrant/gitlab-development-kit/gitlab-ci", :create => true, :nfs => nfs
+	config.vm.synced_folder "gitlab-shell/", "/home/vagrant/gitlab-development-kit/gitlab-shell", :create => true, :nfs => nfs
+	config.vm.synced_folder "gitlab-runner/", "/home/vagrant/gitlab-development-kit/gitlab-runner", :create => true, :nfs => nfs
+end
 
 def running_in_admin_mode?
     return false unless Vagrant::Util::Platform.windows?
@@ -38,7 +48,7 @@ end
 
 $apt_reqs = <<EOT
 apt-get update
-apt-get -y install git postgresql libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev golang nginx
+apt-get -y install git postgresql libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev curl ruby ed golang nginx
 EOT
 
 # CentOS 6 kernel doesn't suppose UID mapping (affects vagrant-lxc mostly).
@@ -62,7 +72,6 @@ sudo -u $DEV_USER -i bash -c "grep -q 'cd /home/vagrant/gitlab-development-kit/'
 EOT
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-	config.vm.box = "ubuntu/trusty64"
 	config.vm.provision "shell", inline: $apt_reqs
 	config.vm.provision "shell", inline: $user_setup
 
@@ -71,34 +80,39 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		config.vm.network "private_network", type: "dhcp"
 	end
 
-	# paths must be listed as shortest to longest per bug: https://github.com/GM-Alex/vagrant-winnfsd/issues/12#issuecomment-78195957
-	config.vm.synced_folder ".", "/vagrant", :nfs => !Vagrant::Util::Platform.windows?
-	config.vm.synced_folder "gitlab/", "/home/vagrant/gitlab-development-kit/gitlab", :create => true, :nfs => !Vagrant::Util::Platform.windows?
-	config.vm.synced_folder "gitlab-ci/", "/home/vagrant/gitlab-development-kit/gitlab-ci", :create => true, :nfs => !Vagrant::Util::Platform.windows?
-	config.vm.synced_folder "gitlab-shell/", "/home/vagrant/gitlab-development-kit/gitlab-shell", :create => true, :nfs => !Vagrant::Util::Platform.windows?
-	config.vm.synced_folder "gitlab-runner/", "/home/vagrant/gitlab-development-kit/gitlab-runner", :create => true, :nfs => !Vagrant::Util::Platform.windows?
-
 	config.vm.network "forwarded_port", guest: 3000, host: 3000
+
+	config.vm.provider "docker" do |d,override|
+		d.build_dir       = "docker"
+		d.has_ssh         = true
+		d.remains_running = true
+		enable_shares(override, false)
+	end
 
 	config.vm.provider "lxc" do |v, override|
 		override.vm.box = "fgrehm/trusty64-lxc"
+		enable_shares(override, true)
 	end
-	config.vm.provider "virtualbox" do |vb|
+
+	config.vm.provider "virtualbox" do |vb,override|
+		override.vm.box = "ubuntu/trusty64"
 		if Vagrant::Util::Platform.windows?
 			# thanks to https://github.com/rdsubhas/vagrant-faster/blob/master/lib/vagrant/faster/action.rb
 			# current bug in Facter requires detecting Windows core count seperately - https://tickets.puppetlabs.com/browse/FACT-959
 			cpus = `wmic cpu Get NumberOfCores`.split[1].to_i
 			# current bug in Facter requires detecting Windows memory seperately - https://tickets.puppetlabs.com/browse/FACT-960
 			mem = `wmic computersystem Get TotalPhysicalMemory`.split[1].to_i / 1024 / 1024
+			enable_shares(override, false)
 		else
-                       cpus = Facter.value('processors')['count']
-                       if facter_mem = Facter.value('memory')
-                               mem = facter_mem.slice! " GiB".to_i * 1024
-                       elsif facter_mem = Facter.value('memorysize_mb')
-                               mem = facter_mem.to_i
-                       else
-                               raise "unable to determine total host RAM size"
-                       end
+			cpus = Facter.value('processors')['count']
+			if facter_mem = Facter.value('memory')
+				mem = facter_mem.slice! " GiB".to_i * 1024
+			elsif facter_mem = Facter.value('memorysize_mb')
+				mem = facter_mem.to_i
+			else
+				raise "unable to determine total host RAM size"
+			end
+			enable_shares(override, true)
 		end
 		
 		# use 1/4 of memory or 2 GB, whichever is greatest
