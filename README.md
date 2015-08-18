@@ -247,9 +247,9 @@ Start Redis and PostgreSQL by running the command below in the root of the proje
 
     bundle exec foreman start
 
-Keep the above command running and seed the main GitLab database from a new terminal session:
+Keep the above command running, install the required gems and seed the main GitLab database from a new terminal session:
 
-    cd gitlab && bundle exec rake db:create dev:setup
+    cd gitlab && bundle install && bundle exec rake db:create dev:setup
 
 Finally, start the main GitLab rails application in the gitlab subdirectory of the project:
 
