@@ -54,7 +54,7 @@ sudo -u $DEV_USER -i bash -c "gpg --keyserver hkp://keys.gnupg.net --recv-keys D
 sudo -u $DEV_USER -i bash -c "curl -sSL https://get.rvm.io | bash -s stable --ruby=2.1.6"
 sudo -u $DEV_USER -i bash -c "gem install bundler"
 sudo chown -R $DEV_USER:$DEV_USER /home/vagrant
-sudo -u $DEV_USER -i bash -c "cp -r /vagrant/* /home/vagrant/gitlab-development-kit/"
+sudo -u $DEV_USER -i bash -c "rsync -av --exclude '.vagrant' /vagrant/ /home/vagrant/gitlab-development-kit/"
 
 # automatically move into the gitlab-development-kit folder, but only add the command
 # if it's not already there
@@ -91,8 +91,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			# current bug in Facter requires detecting Windows memory seperately - https://tickets.puppetlabs.com/browse/FACT-960
 			mem = `wmic computersystem Get TotalPhysicalMemory`.split[1].to_i / 1024 / 1024
 		else
-			cpus = Facter.value('processors')['count']
-			mem = Facter.value('memory').slice! " GiB".to_i * 1024
+                       cpus = Facter.value('processors')['count']
+                       if facter_mem = Facter.value('memory')
+                               mem = facter_mem.slice! " GiB".to_i * 1024
+                       elsif facter_mem = Facter.value('memorysize_mb')
+                               mem = facter_mem.to_i
+                       else
+                               raise "unable to determine total host RAM size"
+                       end
 		end
 		
 		# use 1/4 of memory or 2 GB, whichever is greatest
