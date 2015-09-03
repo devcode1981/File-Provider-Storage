@@ -6,7 +6,7 @@ gitlab_git_http_server_repo = https://gitlab.com/gitlab-org/gitlab-git-http-serv
 gitlab_development_root = $(shell pwd)
 postgres_bin_dir = $(shell pg_config --bindir)
 
-all: gitlab-setup gitlab-shell-setup gitlab-ci-setup gitlab-runner-setup support-setup gitlab-git-http-server-setup
+all: gitlab-setup gitlab-shell-setup gitlab-ci-setup gitlab-runner-setup support-setup gitlab-git-http-server-setup nginx-setup
 
 # Set up the GitLab Rails app
 
@@ -162,3 +162,11 @@ gitlab-git-http-server/gitlab-git-http-server: gitlab-git-http-server/.git
 
 gitlab-git-http-server/.git:
 	git clone ${gitlab_git_http_server_repo}
+
+nginx-setup: nginx/conf/nginx.conf nginx/logs
+
+nginx/conf/nginx.conf:
+	sed -e "s|/home/git|${gitlab_development_root}|" nginx/conf/nginx.conf.example > $@
+
+nginx/logs:
+	mkdir -p $@

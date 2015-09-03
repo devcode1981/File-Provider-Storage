@@ -21,3 +21,5 @@ gitlab-openldap/sbin/
 gitlab-openldap/share/
 .vagrant/
 gitlab-git-http-server/
+nginx/logs
+nginx/conf/nginx.conf

@@ -1,0 +1,39 @@
+worker_processes  1;
+daemon off;
+error_log stderr;
+
+events {
+  worker_connections  1024;
+}
+
+
+http {
+  include       mime.types;
+  default_type  application/octet-stream;
+
+  access_log logs/access.log;
+
+  sendfile        on;
+  #tcp_nopush     on;
+
+  #keepalive_timeout  0;
+  keepalive_timeout  65;
+
+  #gzip  on;
+  upstream gitlab {
+    server unix:/home/git/gitlab/tmp/sockets/gitlab.socket fail_timeout=0;
+  }
+
+  upstream gitlab-git-http-server {
+    server unix:/home/git/gitlab/tmp/sockets/gitlab-git-http-server.socket fail_timeout=0;
+  }
+
+  server {
+    listen       3000;
+    server_name  localhost;
+
+    location / {
+        proxy_pass http://gitlab;
+    }
+  }
+}
