@@ -163,7 +163,7 @@ gitlab-git-http-server/gitlab-git-http-server: gitlab-git-http-server/.git
 	cd gitlab-git-http-server && make
 
 gitlab-git-http-server/.git:
-	git clone ${gitlab_git_http_server_repo}
+	git clone ${gitlab_git_http_server_repo} gitlab-git-http-server
 
 nginx-setup: nginx/conf/nginx.conf nginx/logs
 
