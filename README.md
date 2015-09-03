@@ -16,7 +16,7 @@ sockets to avoid port conflicts.
 
 ## Differences with production
 
-- No NGINX to serve static files and buffer HTTP responses
+- NGINX does not serve static files
 - C compiler needed to run `bundle install` (not needed with Omnibus)
 - GitLab can rewrite its program code and configuration data (read-only with
   Omnibus)
@@ -55,7 +55,7 @@ Please read the prerequisites for all platforms.
 ```
 brew tap homebrew/dupes
 brew tap homebrew/versions
-brew install git redis postgresql phantomjs198 libiconv icu4c pkg-config cmake nodejs
+brew install git redis postgresql phantomjs198 libiconv icu4c pkg-config cmake nodejs go
 brew link phantomjs198
 bundle config build.nokogiri --with-iconv-dir=/usr/local/opt/libiconv
 ```
@@ -164,7 +164,7 @@ Keep the above command running and seed the main GitLab database from a new term
 
 Finally, start the main GitLab rails application in the gitlab subdirectory of the project:
 
-    bundle exec foreman start
+    bundle exec foreman start -p4000
 
 Now you can go to http://localhost:3000 in your browser.
 The development login credentials are `root` and `5iveL!fe`
