@@ -2,10 +2,11 @@ gitlab_repo = https://gitlab.com/gitlab-org/gitlab-ce.git
 gitlab_shell_repo = https://gitlab.com/gitlab-org/gitlab-shell.git
 gitlab_ci_repo = https://gitlab.com/gitlab-org/gitlab-ci.git
 gitlab_runner_repo = https://gitlab.com/gitlab-org/gitlab-ci-runner.git
+gitlab_git_http_server_repo = https://gitlab.com/gitlab-org/gitlab-git-http-server.git
 gitlab_development_root = $(shell pwd)
 postgres_bin_dir = $(shell pg_config --bindir)
 
-all: gitlab-setup gitlab-shell-setup gitlab-ci-setup gitlab-runner-setup support-setup
+all: gitlab-setup gitlab-shell-setup gitlab-ci-setup gitlab-runner-setup support-setup gitlab-git-http-server-setup
 
 # Set up the GitLab Rails app
 
@@ -153,3 +154,11 @@ postgresql/data/PG_VERSION:
 
 .bundle:
 	bundle install --jobs 4
+
+gitlab-git-http-server-setup: gitlab-git-http-server/gitlab-git-http-server
+
+gitlab-git-http-server/gitlab-git-http-server: gitlab-git-http-server/.git
+	cd gitlab-git-http-server && make
+
+gitlab-git-http-server/.git:
+	git clone ${gitlab_git_http_server_repo}
