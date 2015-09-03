@@ -96,12 +96,6 @@ sudo ln -s /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/local/bin
 phantomjs --version
 ```
 
-#### RedHat
-
-Please read the prerequisites for all platforms.
-
-Please contribute this by sending a merge request.
-
 #### CentOS
 
 Please read the prerequisites for all platforms.
@@ -128,6 +122,10 @@ PhantomJS - You will want to download the required version of PhantomJS and plac
 Git 1.7.1-3 is the latest git binary for CentOS 6.5 and gitlab.  Spinach tests will fail due to a higher version requirement by gitlab.
 You can follow the instructions found [here](https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/install/centos#add-puias-computational-repository)
 to install a newer binary version of git.
+
+#### Other platforms
+
+If you got GDK running an another platform please send a merge request to add it here.
 
 ### Clone GitLab Development Kit repository
 
