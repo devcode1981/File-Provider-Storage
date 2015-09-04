@@ -165,10 +165,13 @@ gitlab-git-http-server/gitlab-git-http-server: gitlab-git-http-server/.git
 gitlab-git-http-server/.git:
 	git clone ${gitlab_git_http_server_repo} gitlab-git-http-server
 
-nginx-setup: nginx/conf/nginx.conf nginx/logs
+nginx-setup: nginx/conf/nginx.conf nginx/logs nginx/tmp
 
 nginx/conf/nginx.conf:
 	sed -e "s|/home/git|${gitlab_development_root}|" nginx/conf/nginx.conf.example > $@
 
 nginx/logs:
+	mkdir -p $@
+
+nginx/tmp:
 	mkdir -p $@
