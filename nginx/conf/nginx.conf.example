@@ -34,11 +34,18 @@ http {
     server_name  localhost;
 
     location / {
-        proxy_pass http://gitlab;
+        try_files $uri $uri/index.html @uri.html @gitlab;
     }
 
     location ~ [-\/\w\.]+\.git\/ {
         proxy_pass http://gitlab-git-http-server;
+    }
+
+    location @gitlab {
+      proxy_redirect      off;
+      proxy_set_header    Host                $http_host;
+
+      proxy_pass http://gitlab;
     }
   }
 }
