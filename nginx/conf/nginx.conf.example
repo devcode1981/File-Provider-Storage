@@ -21,6 +21,9 @@ http {
   keepalive_timeout  65;
 
   #gzip  on;
+  proxy_temp_path proxy_temp;
+  client_body_temp_path client_body_temp;
+
   upstream gitlab {
     server unix:/home/git/gitlab/tmp/sockets/gitlab.socket fail_timeout=0;
   }
