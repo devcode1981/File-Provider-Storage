@@ -65,7 +65,7 @@ bundle config build.nokogiri --with-iconv-dir=/usr/local/opt/libiconv
 Please read the prerequisites for all platforms.
 
 ```
-sudo apt-get install git postgresql libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev golang
+sudo apt-get install git postgresql libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev golang nginx
 ```
 
 #### Arch Linux
@@ -73,7 +73,7 @@ sudo apt-get install git postgresql libpq-dev phantomjs redis-server libicu-dev 
 Please read the prerequisites for all platforms.
 
 ```
-sudo pacman -S postgresql phantomjs redis postgresql-libs icu nodejs ed cmake openssh git go
+sudo pacman -S postgresql phantomjs redis postgresql-libs icu nodejs ed cmake openssh git go nginx
 ```
 
 #### Debian
@@ -81,7 +81,7 @@ sudo pacman -S postgresql phantomjs redis postgresql-libs icu nodejs ed cmake op
 Please read the prerequisites for all platforms.
 
 ```
-sudo apt-get install postgresql libpq-dev redis-server libicu-dev cmake g++ nodejs libkrb5-dev ed golang
+sudo apt-get install postgresql libpq-dev redis-server libicu-dev cmake g++ nodejs libkrb5-dev ed golang nginx
 ```
 
 You need to install phantomjs manually
@@ -105,7 +105,7 @@ This is tested on CentOS 6.5
 ```
 sudo yum install http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-redhat93-9.3-1.noarch.rpm
 sudo yum install http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-sudo yum install postgresql93-server libicu-devel cmake gcc-c++ redis
+sudo yum install postgresql93-server libicu-devel cmake gcc-c++ redis nginx
 sudo yum install fontconfig freetype libfreetype.so.6 libfontconfig.so.1 libstdc++.so.6 golang
 
 sudo gpg2 --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3
