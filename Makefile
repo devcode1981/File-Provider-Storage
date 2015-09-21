@@ -136,7 +136,7 @@ support-setup: Procfile redis postgresql .bundle
 	@echo "*********************************************"
 	@echo "************** Setup finished! **************"
 	@echo "*********************************************"
-	sed -n '/^### Post-installation/,/^END Post-installation/p' README.md
+	sed -n '/^## Post-installation/,/^END Post-installation/p' README.md
 	@echo "*********************************************"
 
 Procfile:
