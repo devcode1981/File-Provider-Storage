@@ -1,7 +1,7 @@
 # GitLab Development Kit
 
 The GDK runs a GitLab development environment isolated in a directory.
-This environment contains GitLab CE, CI and Runner.
+This environment contains GitLab CE and Runner.
 This project uses Foreman to run dedicated Postgres and Redis processes for
 GitLab development. All data is stored inside the gitlab-development-kit
 directory. All connections to supporting services go through Unix domain
@@ -44,7 +44,7 @@ sockets to avoid port conflicts.
   build time with Omnibus)
 - Gems (libraries) for development and functional testing get installed and
   loaded
-- No unified configuration management for GitLab, gitlab-shell and GitLab CI
+- No unified configuration management for GitLab and gitlab-shell
   (handled by Omnibus)
 - No privilege separation between Ruby, Postgres and Redis
 - No easy upgrades
@@ -258,18 +258,10 @@ Finally, start the main GitLab rails application in the gitlab subdirectory of t
 Now you can go to http://localhost:3000 in your browser.
 The development login credentials are `root` and `5iveL!fe`
 
-If you want to work on GitLab CI, first seed the GitLab CI database:
-
-    cd gitlab-ci && bundle exec rake db:create db:setup
-
-To start the GitLab CI rails application:
-
-    bundle exec foreman start
-
-Setup the GitLab Runner:
+If you want to work on GitLab CI - setup the GitLab Runner:
 
     cd gitlab-runner
-    CI_SERVER_URL=http://localhost:9000 bundle exec ./bin/setup
+    CI_SERVER_URL=http://localhost:3000 bundle exec ./bin/setup
 
 Start the GitLab Runner:
 

@@ -11,7 +11,6 @@ def enable_shares(config, nfs)
 	# paths must be listed as shortest to longest per bug: https://github.com/GM-Alex/vagrant-winnfsd/issues/12#issuecomment-78195957
 	config.vm.synced_folder ".", "/vagrant"
 	config.vm.synced_folder "gitlab/", "/home/vagrant/gitlab-development-kit/gitlab", :create => true, :nfs => nfs
-	config.vm.synced_folder "gitlab-ci/", "/home/vagrant/gitlab-development-kit/gitlab-ci", :create => true, :nfs => nfs
 	config.vm.synced_folder "gitlab-shell/", "/home/vagrant/gitlab-development-kit/gitlab-shell", :create => true, :nfs => nfs
 	config.vm.synced_folder "gitlab-runner/", "/home/vagrant/gitlab-development-kit/gitlab-runner", :create => true, :nfs => nfs
 end

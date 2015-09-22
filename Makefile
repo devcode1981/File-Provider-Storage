@@ -1,12 +1,11 @@
 gitlab_repo = https://gitlab.com/gitlab-org/gitlab-ce.git
 gitlab_shell_repo = https://gitlab.com/gitlab-org/gitlab-shell.git
-gitlab_ci_repo = https://gitlab.com/gitlab-org/gitlab-ci.git
 gitlab_runner_repo = https://gitlab.com/gitlab-org/gitlab-ci-runner.git
 gitlab_git_http_server_repo = https://gitlab.com/gitlab-org/gitlab-git-http-server.git
 gitlab_development_root = $(shell pwd)
 postgres_bin_dir = $(shell pg_config --bindir)
 
-all: gitlab-setup gitlab-shell-setup gitlab-ci-setup gitlab-runner-setup gitlab-git-http-server-setup nginx-setup support-setup
+all: gitlab-setup gitlab-shell-setup gitlab-runner-setup gitlab-git-http-server-setup nginx-setup support-setup
 
 # Set up the GitLab Rails app
 
@@ -53,34 +52,6 @@ gitlab-shell/config.yml:
 gitlab-shell/.bundle:
 	cd ${gitlab_development_root}/gitlab-shell && bundle install --without production --jobs 4
 
-# Set up gitlab-ci
-gitlab-ci-setup: gitlab-ci/.git gitlab-ci-config gitlab-ci/.bundle
-
-gitlab-ci/.git:
-	git clone ${gitlab_ci_repo} gitlab-ci
-
-gitlab-ci-config: gitlab-ci/config/application.yml gitlab-ci/config/database.yml gitlab-ci/config/resque.yml gitlab-ci/config/unicorn.rb
-
-gitlab-ci/config/application.yml:
-	cp gitlab-ci/config/application.yml.example.development $@
-
-gitlab-ci/config/database.yml:
-	sed -e "s|gitlabhq|gitlabci|"\
-		-e "s|/home/git|${gitlab_development_root}|"\
-		database.yml.example > $@
-
-gitlab-ci/config/resque.yml:
-	sed "s|/home/git|${gitlab_development_root}|" redis/resque.yml.example > $@
-
-gitlab-ci/config/unicorn.rb:
-	cp gitlab-ci/config/unicorn.rb.example.development $@
-
-gitlab-ci/.bundle:
-	cd ${gitlab_development_root}/gitlab-ci && bundle install --without mysql production --jobs 4
-
-gitlab-ci-clean:
-	rm -rf gitlab-ci
-
 # Set up gitlab-runner
 gitlab-runner-setup: gitlab-runner/.git gitlab-runner/.bundle
 
@@ -93,9 +64,9 @@ gitlab-runner/.bundle:
 gitlab-runner-clean:
 	rm -rf gitlab-runner
 
-# Update gitlab, gitlab-shell, gitlab-ci and gitlab-runner
+# Update gitlab, gitlab-shell and gitlab-runner
 
-update: gitlab-update gitlab-shell-update gitlab-ci-update gitlab-runner-update
+update: gitlab-update gitlab-shell-update gitlab-runner-update
 
 gitlab-update: gitlab/.git/pull
 	cd ${gitlab_development_root}/gitlab && \
@@ -105,11 +76,6 @@ gitlab-update: gitlab/.git/pull
 gitlab-shell-update: gitlab-shell/.git/pull
 	cd ${gitlab_development_root}/gitlab-shell && \
 	bundle install --without production --jobs 4
-
-gitlab-ci-update: gitlab-ci/.git/pull
-	cd ${gitlab_development_root}/gitlab-ci && \
-		bundle install --without mysql production --jobs 4 && \
-		bundle exec rake db:migrate
 
 gitlab-runner-update: gitlab-runner/.git/pull
 	cd ${gitlab_development_root}/gitlab-runner && \
@@ -121,10 +87,6 @@ gitlab/.git/pull:
 
 gitlab-shell/.git/pull:
 	cd ${gitlab_development_root}/gitlab-shell && git pull --ff-only
-
-gitlab-ci/.git/pull:
-	cd ${gitlab_development_root}/gitlab-ci &&  git checkout -- Gemfile.lock db/schema.rb && \
-		git pull --ff-only
 
 gitlab-runner/.git/pull:
 	cd ${gitlab_development_root}/gitlab-runner && git pull --ff-only
