@@ -30,11 +30,11 @@ http {
   client_max_body_size 0;
 
   upstream gitlab {
-    server unix:/home/git/gitlab/tmp/sockets/gitlab.socket fail_timeout=0;
+    server unix:/home/git/gitlab.socket fail_timeout=0;
   }
 
   upstream gitlab-git-http-server {
-    server unix:/home/git/gitlab/tmp/sockets/gitlab-git-http-server.socket fail_timeout=0;
+    server unix:/home/git/gitlab-git-http-server.socket fail_timeout=0;
   }
 
   server {

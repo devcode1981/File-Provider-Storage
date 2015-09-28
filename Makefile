@@ -26,7 +26,7 @@ gitlab/config/database.yml:
 
 gitlab/config/unicorn.rb:
 	cp gitlab/config/unicorn.rb.example.development gitlab/config/unicorn.rb
-	echo "listen '${gitlab_development_root}/gitlab/tmp/sockets/gitlab.socket'" >> $@
+	echo "listen '${gitlab_development_root}/gitlab.socket'" >> $@
 	echo "listen '127.0.0.1:8080'" >> $@
 
 gitlab/config/resque.yml:
