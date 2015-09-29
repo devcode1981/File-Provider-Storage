@@ -21,6 +21,7 @@ sockets to avoid port conflicts.
 * [Development](#development)
   * [Example](#example)
   * [Running the tests](#running-the-tests)
+* [Update configuration files created by gitlab-development-kit](#update-configuration-files-created-by-gitlab-development-kit)
 * [Update gitlab and gitlab-shell repositories](#update-gitlab-and-gitlab-shell-repositories)
 * [OpenLDAP](#openldap)
 * [NFS](#nfs)
