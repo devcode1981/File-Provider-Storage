@@ -137,3 +137,14 @@ nginx/logs:
 
 nginx/tmp:
 	mkdir -p $@
+
+clean-config:
+	rm -f \
+	gitlab/config/gitlab.yml \
+	gitlab/config/database.yml \
+	gitlab/config/unicorn.rb \
+	gitlab/config/resque.yml \
+	gitlab-shell/config.yml \
+	redis/redis.conf \
+	Procfile \
+	nginx/conf/nginx.conf

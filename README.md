@@ -333,6 +333,14 @@ This will update both `gitlab`, `gitlab-ci` and `gitlab-shell` and run any possi
 You can also update them separately by running `make gitlab-update` `make gitlab-ci-update` and
 `make gitlab-shell-update` respectively.
 
+## Update configuration files created by gitlab-development-kit
+
+Sometimes there are changes in gitlab-development-kit that require
+you to regenerate configuration files with `make`. You can always
+remove an individual file (e.g. `rm Procfile`) and rebuild it by
+running `make`. If you want to rebuild _all_ configuration files
+created by the Makefile, run `make clean-config all`.
+
 ## OpenLDAP
 
 To run the OpenLDAP installation included in the GitLab development kit do the following:
