@@ -99,7 +99,7 @@ bundle config build.nokogiri --with-iconv-dir=/usr/local/opt/libiconv
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
-sudo apt-get install git postgresql libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev golang nginx ed
+sudo apt-get install git postgresql libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev golang nginx ed pkg-config
 ```
 
 ##### Arch Linux
@@ -115,7 +115,7 @@ sudo pacman -S postgresql phantomjs redis postgresql-libs icu nodejs ed cmake op
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
-sudo apt-get install postgresql libpq-dev redis-server libicu-dev cmake g++ nodejs libkrb5-dev ed golang nginx
+sudo apt-get install postgresql libpq-dev redis-server libicu-dev cmake g++ nodejs libkrb5-dev ed golang nginx pkg-config
 ```
 
 You need to install phantomjs manually
