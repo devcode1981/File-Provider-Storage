@@ -45,7 +45,22 @@ http {
         try_files $uri $uri/index.html @uri.html @gitlab;
     }
 
-    location ~ [-\/\w\.]+\.git\/ {
+    location ~ ^/[\w\.-]+/[\w\.-]+/(info/refs|git-upload-pack|git-receive-pack)$ {
+      error_page 418 = @gitlab-git-http-server;
+      return 418;
+    }
+
+    location ~ ^/[\w\.-]+/[\w\.-]+/repository/archive {
+      error_page 418 = @gitlab-git-http-server;
+      return 418;
+    }
+
+    location ~ ^/api/v3/projects/[^/]+/repository/archive {
+      error_page 418 = @gitlab-git-http-server;
+      return 418;
+    }
+
+    location @gitlab-git-http-server {
         proxy_set_header    Host                $http_host;
         proxy_set_header    X-Real-IP           $remote_addr;
         proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
