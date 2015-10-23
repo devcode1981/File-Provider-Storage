@@ -168,15 +168,15 @@ If you got GDK running an another platform please send a merge request to add it
 
 #### Vagrant with Virtualbox
 [Vagrant](http://www.vagrantup.com) is a tool for setting up identical development
-environments including all dependencies regardless of the host platform you are using. 
-Vagrant will default to using [VirtualBox](http://www.virtualbox.org), but it has 
+environments including all dependencies regardless of the host platform you are using.
+Vagrant will default to using [VirtualBox](http://www.virtualbox.org), but it has
 many plugins for different environments.
 
-Vagrant allows you to develop GitLab without affecting your host machine (but we 
+Vagrant allows you to develop GitLab without affecting your host machine (but we
 recommend developing GitLab on metal if you can).
-Vagrant can be very slow since the files are synced between the host OS and GitLab 
+Vagrant can be very slow since the files are synced between the host OS and GitLab
 (testing) accesses a lot of files.
-You can improve the speed by keeping all the files on the guest OS but in that case you 
+You can improve the speed by keeping all the files on the guest OS but in that case you
 should take care to not lose the files if you destroy or update the VM.
 To avoid usage of slow VirtualBox shared folders we use NFS here.
 
@@ -205,11 +205,11 @@ by the Vagrantfile and you should `sudo su - build` to switch to the correct use
 in that case.
 * If you get a "Timed out while waiting for the machine to boot" message you likely
 forgot to [disable Hyper-V](http://superuser.com/a/642027/143551) or enable virtualization technology via the BIOS.
-* If you have continious problems starting Vagrant you can uncomment `vb.gui = true` 
+* If you have continious problems starting Vagrant you can uncomment `vb.gui = true`
 to view any error messages.
 * If you have problems running `support/edit-gitlab.yml` (bash script despite file extension)
  see http://stackoverflow.com/a/5514351/1233435.
-* If you have errors with symlinks or Ruby during initialization make sure you ran `vagrant up` from an elevated command prompt (Windows users). 
+* If you have errors with symlinks or Ruby during initialization make sure you ran `vagrant up` from an elevated command prompt (Windows users).
 
 #### Vagrant with Docker
 [Vagrant](http://www.vagrantup.com) is a tool for setting up identical development
@@ -469,6 +469,60 @@ override the Ruby gem install path with `BUNDLE_PATH`:
 # Install gems in (current directory)/vendor/bundle
 make BUNDLE_PATH=$(pwd)/vendor/bundle
 ```
+
+### 'bundle install' fails while compiling eventmachine gem
+
+On OS X El Capitan gem eventmachine compilation might fail with:
+
+```
+Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
+
+    /.rubies/2.1.7/bin/ruby extconf.rb
+checking for rb_trap_immediate in ruby.h,rubysig.h... no
+checking for rb_thread_blocking_region()... yes
+checking for ruby/thread.h... yes
+checking for rb_thread_call_without_gvl() in ruby/thread.h... yes
+checking for inotify_init() in sys/inotify.h... no
+checking for __NR_inotify_init in sys/syscall.h... no
+checking for writev() in sys/uio.h... yes
+checking for rb_thread_fd_select()... yes
+checking for rb_fdset_t in ruby/intern.h... yes
+checking for pipe2() in unistd.h... no
+checking for accept4() in sys/socket.h... no
+checking for SOCK_CLOEXEC in sys/socket.h... no
+checking for rb_wait_for_single_fd()... yes
+checking for rb_enable_interrupt()... no
+checking for rb_time_new()... yes
+checking for sys/event.h... yes
+checking for sys/queue.h... yes
+CFLAGS= -O3 -Wno-error=shorten-64-to-32  -pipe  -Wall -Wextra -Wno-deprecated-declarations -Wno-ignored-qualifiers -Wno-unused-result
+CPPFLAGS=-I/.rubies/2.1.7/include  -D_XOPEN_SOURCE -D_DARWIN_C_SOURCE -D_DARWIN_UNLIMITED_SELECT -D_REENTRANT $(DEFS) $(cppflags) -Wall -Wextra -Wno-deprecated-declarations -Wno-ignored-qualifiers -Wno-unused-result
+checking for clock_gettime()... no
+checking for gethrtime()... no
+creating Makefile
+
+make "DESTDIR=" clean
+
+make "DESTDIR="
+compiling binder.cpp
+In file included from binder.cpp:20:
+./project.h:116:10: fatal error: 'openssl/ssl.h' file not found
+#include <openssl/ssl.h>
+         ^
+1 error generated.
+make: *** [binder.o] Error 1
+
+make failed, exit code 2
+
+```
+
+To fix it:
+
+```
+bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
+```
+
+and then do `bundle install` once again.
 
 ### Other problems
 
