@@ -476,31 +476,7 @@ On OS X El Capitan gem eventmachine compilation might fail with:
 
 ```
 Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
-
-    /.rubies/2.1.7/bin/ruby extconf.rb
-checking for rb_trap_immediate in ruby.h,rubysig.h... no
-checking for rb_thread_blocking_region()... yes
-checking for ruby/thread.h... yes
-checking for rb_thread_call_without_gvl() in ruby/thread.h... yes
-checking for inotify_init() in sys/inotify.h... no
-checking for __NR_inotify_init in sys/syscall.h... no
-checking for writev() in sys/uio.h... yes
-checking for rb_thread_fd_select()... yes
-checking for rb_fdset_t in ruby/intern.h... yes
-checking for pipe2() in unistd.h... no
-checking for accept4() in sys/socket.h... no
-checking for SOCK_CLOEXEC in sys/socket.h... no
-checking for rb_wait_for_single_fd()... yes
-checking for rb_enable_interrupt()... no
-checking for rb_time_new()... yes
-checking for sys/event.h... yes
-checking for sys/queue.h... yes
-CFLAGS= -O3 -Wno-error=shorten-64-to-32  -pipe  -Wall -Wextra -Wno-deprecated-declarations -Wno-ignored-qualifiers -Wno-unused-result
-CPPFLAGS=-I/.rubies/2.1.7/include  -D_XOPEN_SOURCE -D_DARWIN_C_SOURCE -D_DARWIN_UNLIMITED_SELECT -D_REENTRANT $(DEFS) $(cppflags) -Wall -Wextra -Wno-deprecated-declarations -Wno-ignored-qualifiers -Wno-unused-result
-checking for clock_gettime()... no
-checking for gethrtime()... no
-creating Makefile
-
+<snip>
 make "DESTDIR=" clean
 
 make "DESTDIR="
