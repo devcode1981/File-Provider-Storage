@@ -33,8 +33,8 @@ http {
     server unix:/home/git/gitlab.socket fail_timeout=0;
   }
 
-  upstream gitlab-git-http-server {
-    server unix:/home/git/gitlab-git-http-server.socket fail_timeout=0;
+  upstream gitlab-workhorse {
+    server unix:/home/git/gitlab-workhorse.socket fail_timeout=0;
   }
 
   server {
@@ -46,27 +46,27 @@ http {
     }
 
     location ~ ^/[\w\.-]+/[\w\.-]+/(info/refs|git-upload-pack|git-receive-pack)$ {
-      error_page 418 = @gitlab-git-http-server;
+      error_page 418 = @gitlab-workhorse;
       return 418;
     }
 
     location ~ ^/[\w\.-]+/[\w\.-]+/repository/archive {
-      error_page 418 = @gitlab-git-http-server;
+      error_page 418 = @gitlab-workhorse;
       return 418;
     }
 
     location ~ ^/api/v3/projects/.*/repository/archive {
-      error_page 418 = @gitlab-git-http-server;
+      error_page 418 = @gitlab-workhorse;
       return 418;
     }
 
-    location @gitlab-git-http-server {
+    location @gitlab-workhorse {
         proxy_set_header    Host                $http_host;
         proxy_set_header    X-Real-IP           $remote_addr;
         proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
         proxy_set_header    X-Forwarded-Proto   $scheme;
 
-        proxy_pass http://gitlab-git-http-server;
+        proxy_pass http://gitlab-workhorse;
     }
 
     location @gitlab {

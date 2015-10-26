@@ -2,4 +2,4 @@ redis: redis-server /home/git/redis/redis.conf
 postgresql: postgres -D /home/git/postgresql/data -k /home/git/postgresql -h ''
 #openldap: cd gitlab-openldap && libexec/slapd -F slapd.d -d2 -h "ldap://127.0.0.1:3890"
 nginx: nginx -p /home/git/nginx -c conf/nginx.conf
-gitlab-git-http-server: /home/git/gitlab-git-http-server/gitlab-git-http-server -listenNetwork unix -listenAddr /home/git/gitlab-git-http-server.socket /home/git/repositories
+gitlab-workhorse: /home/git/gitlab-workhorse/gitlab-workhorse -listenNetwork unix -listenAddr /home/git/gitlab-workhorse.socket /home/git/repositories
