@@ -229,7 +229,7 @@ you will have to run the entire docker hypervisor in a VM
 
 See [development details](#development-details) and [exit](#exit) of Vagrant-Virtulabox setup, they apply here too.
 
-### Install the repositories and gems
+## Install the repositories and gems
 
 The `Makefile` will clone the repositories, install the Gem bundles and set up
 basic configuration files. Pick one:
