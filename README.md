@@ -145,7 +145,7 @@ This is tested on CentOS 6.5
 ```
 sudo yum install http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-redhat93-9.3-1.noarch.rpm
 sudo yum install http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-sudo yum install postgresql93-server libicu-devel cmake gcc-c++ redis nginx ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 libstdc++.so.6 golang
+sudo yum install postgresql93-server libicu-devel cmake gcc-c++ redis nginx ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 libstdc++.so.6 golang nodejs
 
 sudo gpg2 --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3
 sudo curl -sSL https://get.rvm.io | bash -s stable
