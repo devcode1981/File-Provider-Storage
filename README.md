@@ -16,7 +16,6 @@ sockets to avoid port conflicts.
     * [Native installation](#native-installation)
     * [Vagrant with Virtualbox](#vagrant-with-virtualbox)
     * [Vagrant with Docker](#vagrant-with-docker)
-  * [Install the repositories and gems](#install-the-repositories-and-gems)
 * [Installation](#installation)
 * [Post-installation](#post-installation)
 * [Development](#development)
@@ -188,7 +187,7 @@ To avoid usage of slow VirtualBox shared folders we use NFS here.
 4. Run `vagrant up --provider=virtualbox` in this directory (from an elevated command prompt if on Windows)
   a. Vagrant will download an OS image, bring it up, and install all the prerequisites.
 5. Run `vagrant ssh` to SSH into the box.
-6. Continue setup at *[Install the repositories and gems](#install-the-repositories-and-gems)* below.
+6. Continue setup at *[Installation](#installation)* below.
 
 ##### Development details
 * Open development environment by running `vagrant up` & `vagrant ssh` (from an elevated command prompt if on Windows).
@@ -226,7 +225,7 @@ you will have to run the entire docker hypervisor in a VM
 1. Install Docker Engine (e.g. on [Ubuntu](https://docs.docker.com/installation/ubuntulinux/) or [CentOS](https://docs.docker.com/installation/centos/)), don't forget to add your user to the docker group and relogin yourself
 2. Run `vagrant up --provider=docker` in this directory. Vagrant will build a docker image and start the container
 3. Run `vagrant ssh` to SSH into the container.
-5. Continue setup at *[Install the repositories and gems](#install-the-repositories-and-gems)* below.
+5. Continue setup at *[Installation](#installation)* below.
 
 See [development details](#development-details) and [exit](#exit) of Vagrant-Virtulabox setup, they apply here too.
 
