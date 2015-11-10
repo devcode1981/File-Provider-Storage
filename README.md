@@ -249,11 +249,11 @@ make gitlab_repo=git@gitlab.com:example/gitlab-ce.git gitlab_shell_repo=git@gitl
 
 ## Post-installation
 
-Start Redis and PostgreSQL by running the command below in the root of the project:
+First, start Redis, PostgreSQL, NGINX, and GitLab-Workhorse by running the command below in the root of the gitlab-development-kit project:
 
     bundle exec foreman start
 
-Keep the above command running, install the required gems and seed the main GitLab database from a new terminal session:
+Next, keep the above command running and install the required gems, seed the main GitLab database, and setup GitLab from a new terminal session:
 
     cd gitlab && bundle install && bundle exec rake db:create dev:setup
 
@@ -261,8 +261,8 @@ Finally, start the main GitLab rails application in the gitlab subdirectory of t
 
     bundle exec foreman start -p4000
 
-Now you can go to http://localhost:3000 in your browser.
-The development login credentials are `root` and `5iveL!fe`
+This will run Foreman on port 4000. NGINX is already running on port 3000, hence to login to GitLab you may now
+go to http://localhost:3000 in your browser. The development login credentials are `root` and `5iveL!fe`.
 
 If you want to work on GitLab CI - setup the GitLab Runner:
 
