@@ -345,9 +345,14 @@ postgres is runnning (needed for db migration) and then run:
 make update
 ```
 
-This will update both `gitlab`, `gitlab-ci` and `gitlab-shell` and run any possible migrations.
-You can also update them separately by running `make gitlab-update` `make gitlab-ci-update` and
-`make gitlab-shell-update` respectively.
+This will update both `gitlab` and `gitlab-shell` and run any possible
+migrations. You can also update them separately by running `make gitlab-update`
+and `make gitlab-shell-update` respectively.
+
+If there are changes in the aformentioned local repositories or/and a different
+branch than master is checked out, the `make update` commands will stash any
+uncommitted changes and change to master branch prior to updating the remote
+repositories.
 
 ## Update configuration files created by gitlab-development-kit
 

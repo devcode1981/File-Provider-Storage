@@ -82,11 +82,15 @@ gitlab-runner-update: gitlab-runner/.git/pull
 	bundle install
 
 gitlab/.git/pull:
-	cd ${gitlab_development_root}/gitlab && git checkout -- Gemfile.lock db/schema.rb && \
+	cd ${gitlab_development_root}/gitlab && \
+		git checkout -- Gemfile.lock db/schema.rb && \
+		git stash && git checkout master && \
 		git pull --ff-only
 
 gitlab-shell/.git/pull:
-	cd ${gitlab_development_root}/gitlab-shell && git pull --ff-only
+	cd ${gitlab_development_root}/gitlab-shell && \
+		git stash && git checkout master && \
+		git pull --ff-only
 
 gitlab-runner/.git/pull:
 	cd ${gitlab_development_root}/gitlab-runner && git pull --ff-only
