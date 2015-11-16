@@ -149,7 +149,7 @@ sudo apt-get install git postgresql postgresql-contrib libpq-dev phantomjs redis
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
-sudo pacman -S postgresql phantomjs redis postgresql-libs icu nodejs ed cmake openssh git go
+pacman -S postgresql phantomjs redis postgresql-libs icu nodejs ed cmake openssh git go
 ```
 
 #### Debian
