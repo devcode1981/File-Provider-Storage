@@ -78,9 +78,13 @@ phantomjs --version
 
 #### Fedora
 
+[RMV](https://rvm.io) or equivalent assumed installed.
+
 ```
-sudo dnf install postgresql postgresql-libs redis icu nodejs git golang ed cmake 
+sudo dnf install postgresql libpqxx-devel postgresql-libs redis linicu-devel nodejs git ed cmaker rpm-build lib-pq gcc-c++ krb5-devel
 ```
+
+Install `phantomJS` manually, or download it and put in your $PATH.
 
 #### RedHat
 
