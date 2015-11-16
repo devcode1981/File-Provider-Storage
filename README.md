@@ -76,6 +76,12 @@ sudo ln -s /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/local/bin
 phantomjs --version
 ```
 
+#### Fedora
+
+```
+sudo dnf install postgresql postgresql-libs redis icu nodejs git golang ed cmake 
+```
+
 #### RedHat
 
 Please read the prerequisites for all platforms.
