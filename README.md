@@ -249,8 +249,11 @@ make gitlab_repo=git@gitlab.com:example/gitlab-ce.git gitlab_shell_repo=git@gitl
 
 ## Post-installation
 
-First, start Redis, PostgreSQL, NGINX, and GitLab-Workhorse by running the command below in the root of the gitlab-development-kit project:
+First install the requirements for development kit, then start Redis,
+PostgreSQL, NGINX, and GitLab-Workhorse by running the command below in the
+root of the gitlab-development-kit project:
 
+    bundle install
     bundle exec foreman start
 
 Next, keep the above command running and install the required gems, seed the main GitLab database, and setup GitLab from a new terminal session:
