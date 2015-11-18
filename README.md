@@ -373,7 +373,6 @@ END Post-installation
 Please do not delete the 'END Post-installation' line above. It is used to
 print the post-installation message from the `Makefile`.
 
-
 ## Development
 
 When doing development, you will need one shell session (terminal window)
@@ -804,3 +803,4 @@ see the LICENSE file.
 [puias]: https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/install/centos#add-puias-computational-repository
 [vagrant]: http://www.vagrantup.com
 [virtualbox]: https://www.virtualbox.org/wiki/Downloads
+
