@@ -1,5 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+# rubocop:disable all
 
 # Please see the Vagrant section in the readme for caveats and tips
 # https://gitlab.com/gitlab-org/gitlab-development-kit/tree/master#vagrant
@@ -9,10 +10,10 @@ VAGRANTFILE_API_VERSION = "2"
 
 def enable_shares(config, nfs)
 	# paths must be listed as shortest to longest per bug: https://github.com/GM-Alex/vagrant-winnfsd/issues/12#issuecomment-78195957
-	config.vm.synced_folder ".", "/vagrant"
-	config.vm.synced_folder "gitlab/", "/home/vagrant/gitlab-development-kit/gitlab", :create => true, :nfs => nfs
-	config.vm.synced_folder "gitlab-shell/", "/home/vagrant/gitlab-development-kit/gitlab-shell", :create => true, :nfs => nfs
-	config.vm.synced_folder "gitlab-runner/", "/home/vagrant/gitlab-development-kit/gitlab-runner", :create => true, :nfs => nfs
+	config.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ['gitlab/', 'gitlab-shell', 'gitlab-runner'], rsync__auto: false
+	config.vm.synced_folder "gitlab/", "/vagrant/gitlab", :create => true, :nfs => nfs
+	config.vm.synced_folder "gitlab-shell/", "/vagrant/gitlab-shell", :create => true, :nfs => nfs
+	config.vm.synced_folder "gitlab-runner/", "/vagrant/gitlab-runner", :create => true, :nfs => nfs
 end
 
 def running_in_admin_mode?
@@ -63,7 +64,7 @@ sudo -u $DEV_USER -i bash -c "gpg --keyserver hkp://keys.gnupg.net --recv-keys D
 sudo -u $DEV_USER -i bash -c "curl -sSL https://get.rvm.io | bash -s stable --ruby=2.1.6"
 sudo -u $DEV_USER -i bash -c "gem install bundler"
 sudo chown -R $DEV_USER:$DEV_USER /home/vagrant
-sudo -u $DEV_USER -i bash -c "rsync -av --exclude '.vagrant' /vagrant/ /home/vagrant/gitlab-development-kit/"
+sudo ln -s /vagrant /home/vagrant/gitlab-development-kit
 
 # automatically move into the gitlab-development-kit folder, but only add the command
 # if it's not already there
@@ -111,7 +112,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			else
 				raise "unable to determine total host RAM size"
 			end
-			enable_shares(override, true)
+
+			# disables NFS on OS X to prevent UID / GID issues with mounted shares
+			enable_nfs = Vagrant::Util::Platform.platform =~ /darwin/ ? false : true
+			enable_shares(override, enable_nfs)
 		end
 		
 		# use 1/4 of memory or 2 GB, whichever is greatest
