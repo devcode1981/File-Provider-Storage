@@ -99,11 +99,9 @@ bundle config build.nokogiri --with-iconv-dir=/usr/local/opt/libiconv
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
-sudo apt-get install git postgresql libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev nginx ed pkg-config
+sudo apt-add-repository -y ppa:ubuntu-lxc/lxd-stable && sudo apt-get update
+sudo apt-get install git postgresql libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev golang nginx ed pkg-config
 ```
-
-You also need to install [Go](https://golang.org/dl) because the
-Go version included in most Ubuntu versions is too old for GitLab.
 
 ##### Arch Linux
 
