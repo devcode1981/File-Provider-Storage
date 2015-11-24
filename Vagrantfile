@@ -47,6 +47,8 @@ required_plugins.each do |plugin|
 end
 
 $apt_reqs = <<EOT
+apt-add-repository -y ppa:rael-gc/rvm
+apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
 apt-get update
 apt-get -y install git postgresql libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev curl ruby ed golang nginx
 EOT
@@ -60,9 +62,11 @@ if [ $(id -u vagrant) != $(stat -c %u /vagrant) ]; then
 else
 	DEV_USER=vagrant
 fi
-sudo -u $DEV_USER -i bash -c "gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3"
-sudo -u $DEV_USER -i bash -c "curl -sSL https://get.rvm.io | bash -s stable --ruby=2.1.6"
-sudo -u $DEV_USER -i bash -c "gem install bundler"
+sudo apt-get install -y rvm \
+	&& sudo addgroup $DEV_USER rvm \
+	&& sudo -u $DEV_USER -i bash -l -c "rvm install 2.1.6 \
+	&& rvm use 2.1.6 --default \
+	&& gem install bundler"
 sudo chown -R $DEV_USER:$DEV_USER /home/vagrant
 sudo ln -s /vagrant /home/vagrant/gitlab-development-kit
 
