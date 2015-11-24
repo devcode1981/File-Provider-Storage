@@ -20,3 +20,12 @@ gitlab-openldap/openldap-2.4.40/
 gitlab-openldap/sbin/
 gitlab-openldap/share/
 .vagrant/
+gitlab-workhorse/
+nginx/logs
+nginx/conf/nginx.conf
+nginx/tmp
+nginx/client_body_temp
+nginx/fastcgi_temp
+nginx/proxy_temp
+nginx/scgi_temp
+nginx/uwsgi_temp

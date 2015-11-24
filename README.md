@@ -1,11 +1,32 @@
 # GitLab Development Kit
 
 The GDK runs a GitLab development environment isolated in a directory.
-This environment contains GitLab CE, CI and Runner.
+This environment contains GitLab CE and Runner.
 This project uses Foreman to run dedicated Postgres and Redis processes for
 GitLab development. All data is stored inside the gitlab-development-kit
 directory. All connections to supporting services go through Unix domain
 sockets to avoid port conflicts.
+
+
+* [Design goals](#design-goals)
+* [Differences with production](#differences-with-production)
+* [Setup](#setup)
+  * [Clone Gitlab Development Kit repository](#clone-gitlab-development-kit-repository)
+  * [Different installation types](#different-installation-types)
+    * [Native installation](#native-installation)
+    * [Vagrant with Virtualbox](#vagrant-with-virtualbox)
+    * [Vagrant with Docker](#vagrant-with-docker)
+* [Installation](#installation)
+* [Post-installation](#post-installation)
+* [Development](#development)
+  * [Example](#example)
+  * [Running the tests](#running-the-tests)
+* [Update configuration files created by gitlab-development-kit](#update-configuration-files-created-by-gitlab-development-kit)
+* [Update gitlab and gitlab-shell repositories](#update-gitlab-and-gitlab-shell-repositories)
+* [OpenLDAP](#openldap)
+* [NFS](#nfs)
+* [Trobleshooting](#trobleshooting)
+* [License](#license)
 
 ## Design goals
 
@@ -14,15 +35,46 @@ sockets to avoid port conflicts.
 - GitLab Development Kit itself does not run `sudo` commands
 - It is OK to leave some things to the user (e.g. installing Ruby)
 
-## Installation
+## Differences with production
+
+- NGINX does not serve static files
+- C compiler needed to run `bundle install` (not needed with Omnibus)
+- GitLab can rewrite its program code and configuration data (read-only with
+  Omnibus)
+- 'Assets' (Javascript/CSS files) are generated on the fly (pre-compiled at
+  build time with Omnibus)
+- Gems (libraries) for development and functional testing get installed and
+  loaded
+- No unified configuration management for GitLab and gitlab-shell
+  (handled by Omnibus)
+- No privilege separation between Ruby, Postgres and Redis
+- No easy upgrades
+- Need to download and compile new gems ('bundle install') on each upgrade
+- etc.
+
+## Setup
+
+### Clone GitLab Development Kit repository
+
+```
+git clone https://gitlab.com/gitlab-org/gitlab-development-kit.git
+cd gitlab-development-kit
+```
+
+### Different installation types
 
 The preferred way to use GitLab Development Kit is to install Ruby and dependencies on your 'native' OS.
 We strongly recommend the native install since it is much faster than a virtualized one.
-If you want to use [Vagrant](https://www.vagrantup.com/) instead please see [the instructions for our (experimental) Vagrantfile](#vagrant).
 
-### Install dependencies
+If you want to use [Vagrant](https://www.vagrantup.com/) instead (e.g. need to do development from Windows)
+please see [the instructions for our (experimental) Vagrant with Virtualbox setup](#vagrant-with-virtualbox).
 
-#### Prerequisites for all platforms
+If you want to use [Vagrant](https://www.vagrantup.com/) with [Docker](https://www.docker.com/) on Linux
+please see [the instuctions for our (experimental) Vagrant with Docker setup](#vagrant-with-docker).
+
+#### Native installation
+
+##### Prerequisites for all platforms
 
 If you do not have the dependencies below you will experience strange errors during installation.
 
@@ -30,38 +82,43 @@ If you do not have the dependencies below you will experience strange errors dur
 1. Ruby 2.1.6 installed with a ruby version manager (RVM, ruby-build, rbenv, chruby, etc.), **DO NOT** use the system Ruby
 1. bundler, which you can install with `gem install bundler`
 
-#### OS X 10.9
+##### OS X 10.9
 
-Please read the prerequisites for all platforms.
+Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
 brew tap homebrew/dupes
-brew install git redis postgresql phantomjs libiconv icu4c pkg-config cmake nodejs
+brew tap homebrew/versions
+brew install git redis postgresql phantomjs198 libiconv icu4c pkg-config cmake nodejs go nginx openssl
+brew link phantomjs198
 bundle config build.nokogiri --with-iconv-dir=/usr/local/opt/libiconv
 ```
 
-#### Ubuntu
+##### Ubuntu
 
-Please read the prerequisites for all platforms.
-
-```
-sudo apt-get install git postgresql libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev
-```
-
-#### Arch Linux
-
-Please read the prerequisites for all platforms.
+Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
-sudo pacman -S postgresql phantomjs redis postgresql-libs icu nodejs ed cmake openssh
+sudo apt-get install git postgresql libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev nginx ed pkg-config
 ```
 
-#### Debian
+You also need to install [Go](https://golang.org/dl) because the
+Go version included in most Ubuntu versions is too old for GitLab.
 
-Please read the prerequisites for all platforms.
+##### Arch Linux
+
+Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
-sudo apt-get install postgresql libpq-dev redis-server libicu-dev cmake g++ nodejs libkrb5-dev ed
+sudo pacman -S postgresql phantomjs redis postgresql-libs icu nodejs ed cmake openssh git go nginx
+```
+
+##### Debian
+
+Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
+
+```
+sudo apt-get install postgresql libpq-dev redis-server libicu-dev cmake g++ nodejs libkrb5-dev ed nginx pkg-config
 ```
 
 You need to install phantomjs manually
@@ -84,25 +141,22 @@ phantomjs --version
 sudo dnf install postgresql libpqxx-devel postgresql-libs redis linicu-devel nodejs git ed cmaker rpm-build lib-pq gcc-c++ krb5-devel
 ```
 
-Install `phantomJS` manually, or download it and put in your $PATH.
+Install `phantomJS` manually, or download it and put in your $PATH. For instructions, follow the [Debian guide on phantomJS](#Debian).
 
 #### RedHat
+You also need to install [Go](https://golang.org/dl) because the
+Go version included in most Ubuntu versions is too old for GitLab.
 
-Please read the prerequisites for all platforms.
+##### CentOS
 
-Please contribute this by sending a merge request.
-
-#### CentOS
-
-Please read the prerequisites for all platforms.
+Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 This is tested on CentOS 6.5
 
 ```
 sudo yum install http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-redhat93-9.3-1.noarch.rpm
 sudo yum install http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-sudo yum install postgresql93-server libicu-devel cmake gcc-c++ redis
-sudo yum install fontconfig freetype libfreetype.so.6 libfontconfig.so.1 libstdc++.so.6
+sudo yum install postgresql93-server libicu-devel cmake gcc-c++ redis nginx ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 libstdc++.so.6 golang nodejs
 
 sudo gpg2 --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3
 sudo curl -sSL https://get.rvm.io | bash -s stable
@@ -116,20 +170,80 @@ sudo usermod -a -G rvm <username>
 PhantomJS - You will want to download the required version of PhantomJS and place the binary on the path.
 
 Git 1.7.1-3 is the latest git binary for CentOS 6.5 and gitlab.  Spinach tests will fail due to a higher version requirement by gitlab.
-You can follow the instructions found [here] (https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/install/centos#add-puias-computational-repository)
+You can follow the instructions found [here](https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/install/centos#add-puias-computational-repository)
 to install a newer binary version of git.
 
-### Clone GitLab Development Kit repository
+##### Other platforms
 
-```
-git clone https://gitlab.com/gitlab-org/gitlab-development-kit.git
-cd gitlab-development-kit
-```
+If you got GDK running an another platform please send a merge request to add it here.
 
-### Install the repositories and gems
+#### Vagrant with Virtualbox
+[Vagrant](http://www.vagrantup.com) is a tool for setting up identical development
+environments including all dependencies regardless of the host platform you are using.
+Vagrant will default to using [VirtualBox](http://www.virtualbox.org), but it has
+many plugins for different environments.
 
-The Makefile will clone the repositories, install the Gem bundles and set up
-basic configuration files.
+Vagrant allows you to develop GitLab without affecting your host machine (but we
+recommend developing GitLab on metal if you can).
+Vagrant can be very slow since the files are synced between the host OS and GitLab
+(testing) accesses a lot of files.
+You can improve the speed by keeping all the files on the guest OS but in that case you
+should take care to not lose the files if you destroy or update the VM.
+To avoid usage of slow VirtualBox shared folders we use NFS here.
+
+##### Install
+1. [Disable Hyper-V](http://superuser.com/a/642027/143551) (Windows users) then enable virtualization technology via the BIOS.
+2. Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) & [Vagrant](http://www.vagrantup.com).
+3. [Configure NFS for Vagrant](http://docs.vagrantup.com/v2/synced-folders/nfs.html) if you are on Linux.
+4. Run `vagrant up --provider=virtualbox` in this directory (from an elevated command prompt if on Windows)
+  a. Vagrant will download an OS image, bring it up, and install all the prerequisites.
+5. Run `vagrant ssh` to SSH into the box.
+6. Continue setup at *[Installation](#installation)* below.
+
+##### Development details
+* Open development environment by running `vagrant up` & `vagrant ssh` (from an elevated command prompt if on Windows).
+* Follow the general [development guidelines](#development) but running the commands in the `vagrant ssh` session.
+* Files in the `gitlab`, `gitlab-shell`, `gitlab-ci`, and `gitlab-runner` folders will be synced between the host OS & guest OS so can be edited on either the host (under this folder) or guest OS (under `~/gitlab-development-kit/`).
+
+##### Exit
+* When you want to shutdown Vagrant run `exit` from the guest OS and then `vagrant halt`
+from the host OS.
+
+##### Troubleshooting
+
+* On some setups the shared folder will have the wrong user. This is detected
+by the Vagrantfile and you should `sudo su - build` to switch to the correct user
+in that case.
+* If you get a "Timed out while waiting for the machine to boot" message you likely
+forgot to [disable Hyper-V](http://superuser.com/a/642027/143551) or enable virtualization technology via the BIOS.
+* If you have continious problems starting Vagrant you can uncomment `vb.gui = true`
+to view any error messages.
+* If you have problems running `support/edit-gitlab.yml` (bash script despite file extension)
+ see http://stackoverflow.com/a/5514351/1233435.
+* If you have errors with symlinks or Ruby during initialization make sure you ran `vagrant up` from an elevated command prompt (Windows users).
+
+#### Vagrant with Docker
+[Vagrant](http://www.vagrantup.com) is a tool for setting up identical development
+environments including all dependencies regardless of the host platform you are using.
+[Docker](https://www.docker.com/) is one of possible providers of Vagrant.
+Docker provider has a big advantage, as it doesn't have a big virtualisation overhead compared
+to a Virtualbox and provides the native performance via containering technology.
+This docker setup makes sense here only on Linux, as on other OSes like Windows/OSx
+you will have to run the entire docker hypervisor in a VM
+(which will be almost the same like Vagrant Virtualbox provider).
+
+##### Install
+1. Install Docker Engine (e.g. on [Ubuntu](https://docs.docker.com/installation/ubuntulinux/) or [CentOS](https://docs.docker.com/installation/centos/)), don't forget to add your user to the docker group and relogin yourself
+2. Run `vagrant up --provider=docker` in this directory. Vagrant will build a docker image and start the container
+3. Run `vagrant ssh` to SSH into the container.
+5. Continue setup at *[Installation](#installation)* below.
+
+See [development details](#development-details) and [exit](#exit) of Vagrant-Virtulabox setup, they apply here too.
+
+## Installation
+
+The `Makefile` will clone the repositories, install the Gem bundles and set up
+basic configuration files. Pick one:
 
 ```
 # Clone the official repositories of gitlab and gitlab-shell
@@ -140,38 +254,34 @@ Alternatively, you can clone straight from your forked repositories or GitLab EE
 
 ```
 # Clone your own forked repositories
-make gitlab_repo=git@gitlab.com:example/gitlab-ce.git gitlab_shell_repo=git@gitlab.com:example/gitlab-shell.git
+make gitlab_repo=git@gitlab.com:example/gitlab-ce.git gitlab_shell_repo=git@gitlab.com:example/gitlab-shell.git \
+  gitlab_ci_repo=git@gitlab.com:example/gitlab-ci.git gitlab_runner_repo=git@gitlab.com:example/gitlab-ci-runner.git
 ```
 
-### Post-installation
+## Post-installation
 
-Start Redis and PostgreSQL by running the command below in the root of the project:
+First install the requirements for development kit, then start Redis,
+PostgreSQL, NGINX, and GitLab-Workhorse by running the command below in the
+root of the gitlab-development-kit project:
 
+    bundle install
     bundle exec foreman start
 
-Keep the above command running and seed the main GitLab database from a new terminal session:
+Next, keep the above command running and install the required gems, seed the main GitLab database, and setup GitLab from a new terminal session:
 
-    cd gitlab && bundle exec rake db:create dev:setup
+    cd gitlab && bundle install && bundle exec rake db:create dev:setup
 
 Finally, start the main GitLab rails application in the gitlab subdirectory of the project:
 
-    bundle exec foreman start
+    bundle exec foreman start -p4000
 
-Now you can go to http://localhost:3000 in your browser.
-The development login credentials are `root` and `5iveL!fe`
+This will run Foreman on port 4000. NGINX is already running on port 3000, hence to login to GitLab you may now
+go to http://localhost:3000 in your browser. The development login credentials are `root` and `5iveL!fe`.
 
-If you want to work on GitLab CI, first seed the GitLab CI database:
-
-    cd gitlab-ci && bundle exec rake db:create db:setup
-
-To start the GitLab CI rails application:
-
-    bundle exec foreman start
-
-Setup the GitLab Runner:
+If you want to work on GitLab CI - setup the GitLab Runner:
 
     cd gitlab-runner
-    CI_SERVER_URL=http://localhost:9000 bundle exec ./bin/setup
+    CI_SERVER_URL=http://localhost:3000 bundle exec ./bin/setup
 
 Start the GitLab Runner:
 
@@ -182,34 +292,8 @@ To enable the OpenLDAP server, see the OpenLDAP instructions in this readme.
 END Post-installation
 
 Please do not delete the 'END Post-installation' line above. It is used to
-print the post-installation message from the Makefile.
+print the post-installation message from the `Makefile`.
 
-### Vagrant
-
-[Vagrant](http://www.vagrantup.com) is a tool for setting up identical development
-environments including all dependencies. Vagrant will default to using
-[VirtualBox](http://www.virtualbox.org), but it has many plugins for different
-environments.
-
-Vagrant allows you to develop GitLab without affecting your host machine (but we 
-recommend developing GitLab on metal if you can).
-Vagrant can be very slow since the NFS server is on the host OS and GitLab 
-(testing) accesses a lot of files.
-You can improve the speed by running NFS on the guest OS but in that case you 
-should take care to not lose the files when you shut down the VM.
-
-Once you have Vagrant installed, simply type `vagrant up` in this directory. Vagrant
-will download an OS image, bring it up, and install all the prerequisites. You then
-type `vagrant ssh` to ssh into the box. This directory will be available as a shared
-folder in `/vagrant/` and you can continue at 
-*[Install the repositories and gems](#install-the-repositories-and-gems)* above.
-
-Typically you keep editing on the host machine but run `make`, `bundle exec`, etc.
-inside the `vagrant ssh` session.
-
-Note: On some setups the shared folder will have the wrong user. This is detected
-by the Vagrantfile and you should `sudo su - build` to switch to the correct user
-in that case.
 
 ## Development
 
@@ -243,7 +327,7 @@ The development login credentials are `root` and `5iveL!fe`
 In order to run the test you can use the following commands:
 - `rake spinach` to run the spinach suite
 - `rake spec` to run the rspec suite
-- `rake jasmine:ci` to run the jasmine test suite
+- `rake teaspoon` to run the teaspoon test suite
 - `rake gitlab:test` to run all the tests
 
 Note: You can't run `rspec .` since this will try to run all the `_spec.rb`
@@ -269,6 +353,14 @@ make update
 This will update both `gitlab`, `gitlab-ci` and `gitlab-shell` and run any possible migrations.
 You can also update them separately by running `make gitlab-update` `make gitlab-ci-update` and
 `make gitlab-shell-update` respectively.
+
+## Update configuration files created by gitlab-development-kit
+
+Sometimes there are changes in gitlab-development-kit that require
+you to regenerate configuration files with `make`. You can always
+remove an individual file (e.g. `rm Procfile`) and rebuild it by
+running `make`. If you want to rebuild _all_ configuration files
+created by the Makefile, run `make clean-config all`.
 
 ## OpenLDAP
 
@@ -311,6 +403,40 @@ ldap:
 
 The second database is optional, and will only work with Gitlab-EE.
 
+## NFS
+
+If you want to experiment with how GitLab behaves over NFS you can use a setup
+where your development machine is simultaneously an NFS client and server, with
+GitLab reading/writing data as the client.
+
+### Ubuntu / Debian
+
+```
+sudo apt-get install -y nfs-kernel-server
+
+# All our NFS exports (data on the 'server') is under /exports/gitlab-data
+sudo mkdir -p /exports/gitlab-data/{repositories,gitlab-satellites,.ssh}
+# We assume your developer user is git:git
+sudo chown git:git /exports/gitlab-data/{repositories,gitlab-satellites,.ssh}
+
+sudo mkdir /etc/exports.d
+echo '/exports/gitlab-data 127.0.0.1(rw,sync,no_subtree_check)' | sudo tee /etc/exports.d/gitlab-data.exports
+sudo service portmap restart
+sudo service nfs-kernel-server restart
+sudo exportfs -v 127.0.0.1:/exports/gitlab-data # should show /exports/gitlab-data
+
+# We assume the current directory is the root of your gitlab-development-kit
+sudo mkdir -p .ssh repositories gitlab-satellites
+sudo mount 127.0.0.1:/exports/gitlab-data/.ssh .ssh
+sudo mount 127.0.0.1:/exports/gitlab-data/repositories repositories
+sudo mount 127.0.0.1:/exports/gitlab-data/gitlab-satellites gitlab-satellites
+# TODO: put the above mounts in /etc/fstab ?
+```
+
+## OS X, other developer OS's
+
+MR welcome!
+
 ## Troubleshooting
 
 ### Rails cannot connect to Postgres
@@ -348,6 +474,51 @@ gem uninstall charlock_holmes
 bundle install # should reinstall charlock_holmes
 ```
 
+### 'bundle install' fails due to permission problems
+
+This can happen if you are using a system-wide Ruby installation. You can
+override the Ruby gem install path with `BUNDLE_PATH`:
+
+```
+# Install gems in (current directory)/vendor/bundle
+make BUNDLE_PATH=$(pwd)/vendor/bundle
+```
+
+### 'bundle install' fails while compiling eventmachine gem
+
+On OS X El Capitan gem eventmachine compilation might fail with:
+
+```
+Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
+<snip>
+make "DESTDIR=" clean
+
+make "DESTDIR="
+compiling binder.cpp
+In file included from binder.cpp:20:
+./project.h:116:10: fatal error: 'openssl/ssl.h' file not found
+#include <openssl/ssl.h>
+         ^
+1 error generated.
+make: *** [binder.o] Error 1
+
+make failed, exit code 2
+
+```
+
+To fix it:
+
+```
+bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
+```
+
+and then do `bundle install` once again.
+
 ### Other problems
 
 Please open an issue on the [GDK issue tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues).
+
+## License
+
+The GitLab Development Kit is distributed under the MIT license,
+see the LICENSE file.
