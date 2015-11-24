@@ -134,9 +134,6 @@ phantomjs --version
 ```
 
 #### Fedora
-
-[RMV](https://rvm.io) or equivalent assumed installed.
-
 ```
 sudo dnf install postgresql libpqxx-devel postgresql-libs redis linicu-devel nodejs git ed cmaker rpm-build lib-pq gcc-c++ krb5-devel
 ```
