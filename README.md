@@ -131,6 +131,14 @@ sudo ln -s /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/local/bin
 phantomjs --version
 ```
 
+#### Fedora
+```
+sudo dnf install postgresql libpqxx-devel postgresql-libs redis linicu-devel nodejs git ed cmaker rpm-build lib-pq gcc-c++ krb5-devel
+```
+
+Install `phantomJS` manually, or download it and put in your $PATH. For instructions, follow the [Debian guide on phantomJS](#Debian).
+
+#### RedHat
 You also need to install [Go](https://golang.org/dl) because the
 Go version included in most Ubuntu versions is too old for GitLab.
 
