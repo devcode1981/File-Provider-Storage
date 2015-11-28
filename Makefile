@@ -66,7 +66,7 @@ gitlab-runner-clean:
 
 # Update gitlab, gitlab-shell and gitlab-runner
 
-update: gitlab-update gitlab-shell-update gitlab-runner-update
+update: gitlab-update gitlab-shell-update gitlab-runner-update gitlab-workhorse-update
 
 gitlab-update: gitlab/.git/pull
 	cd ${gitlab_development_root}/gitlab && \
@@ -125,11 +125,18 @@ postgresql/data/PG_VERSION:
 
 gitlab-workhorse-setup: gitlab-workhorse/gitlab-workhorse
 
+gitlab-workhorse-update: gitlab-workhorse/.git/pull
+	make
+
 gitlab-workhorse/gitlab-workhorse: gitlab-workhorse/.git
-	cd gitlab-workhorse && make
+	cd ${gitlab_development_root}/gitlab-workhorse && make
 
 gitlab-workhorse/.git:
 	git clone ${gitlab_workhorse_repo} gitlab-workhorse
+
+gitlab-workhorse/.git/pull:
+	cd ${gitlab_development_root}/gitlab-workhorse && \
+	git pull --ff-only
 
 nginx-setup: nginx/conf/nginx.conf nginx/logs nginx/tmp
 
