@@ -37,7 +37,7 @@ sockets to avoid port conflicts.
 
 ## Differences with production
 
-- NGINX does not serve static files
+- gitlab-workhorse does not serve static files
 - C compiler needed to run `bundle install` (not needed with Omnibus)
 - GitLab can rewrite its program code and configuration data (read-only with
   Omnibus)
@@ -89,7 +89,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 ```
 brew tap homebrew/dupes
 brew tap homebrew/versions
-brew install git redis postgresql phantomjs198 libiconv icu4c pkg-config cmake nodejs go nginx openssl
+brew install git redis postgresql phantomjs198 libiconv icu4c pkg-config cmake nodejs go openssl
 brew link phantomjs198
 bundle config build.nokogiri --with-iconv-dir=/usr/local/opt/libiconv
 ```
@@ -100,7 +100,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 
 ```
 sudo apt-add-repository -y ppa:ubuntu-lxc/lxd-stable && sudo apt-get update
-sudo apt-get install git postgresql libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev golang nginx ed pkg-config
+sudo apt-get install git postgresql libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev golang ed pkg-config
 ```
 
 ##### Arch Linux
@@ -108,7 +108,7 @@ sudo apt-get install git postgresql libpq-dev phantomjs redis-server libicu-dev 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
-sudo pacman -S postgresql phantomjs redis postgresql-libs icu nodejs ed cmake openssh git go nginx
+sudo pacman -S postgresql phantomjs redis postgresql-libs icu nodejs ed cmake openssh git go
 ```
 
 ##### Debian
@@ -116,7 +116,7 @@ sudo pacman -S postgresql phantomjs redis postgresql-libs icu nodejs ed cmake op
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
-sudo apt-get install postgresql libpq-dev redis-server libicu-dev cmake g++ nodejs libkrb5-dev ed nginx pkg-config
+sudo apt-get install postgresql libpq-dev redis-server libicu-dev cmake g++ nodejs libkrb5-dev ed pkg-config
 ```
 
 You need to install phantomjs manually
@@ -151,7 +151,7 @@ This is tested on CentOS 6.5
 ```
 sudo yum install http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-redhat93-9.3-1.noarch.rpm
 sudo yum install http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-sudo yum install postgresql93-server libicu-devel cmake gcc-c++ redis nginx ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 libstdc++.so.6 golang nodejs
+sudo yum install postgresql93-server libicu-devel cmake gcc-c++ redis ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 libstdc++.so.6 golang nodejs
 
 sudo gpg2 --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3
 sudo curl -sSL https://get.rvm.io | bash -s stable
@@ -256,7 +256,7 @@ make gitlab_repo=git@gitlab.com:example/gitlab-ce.git gitlab_shell_repo=git@gitl
 ## Post-installation
 
 First install the requirements for development kit, then start Redis,
-PostgreSQL, NGINX, and GitLab-Workhorse by running the command below in the
+PostgreSQL and GitLab-Workhorse by running the command below in the
 root of the gitlab-development-kit project:
 
     bundle install
@@ -270,7 +270,7 @@ Finally, start the main GitLab rails application in the gitlab subdirectory of t
 
     bundle exec foreman start -p4000
 
-This will run Foreman on port 4000. NGINX is already running on port 3000, hence to login to GitLab you may now
+This will run Foreman on port 4000. Gitlab-workhorse is already running on port 3000, hence to login to GitLab you may now
 go to http://localhost:3000 in your browser. The development login credentials are `root` and `5iveL!fe`.
 
 If you want to work on GitLab CI - setup the GitLab Runner:

@@ -5,7 +5,7 @@ gitlab_workhorse_repo = https://gitlab.com/gitlab-org/gitlab-workhorse.git
 gitlab_development_root = $(shell pwd)
 postgres_bin_dir = $(shell pg_config --bindir)
 
-all: gitlab-setup gitlab-shell-setup gitlab-runner-setup gitlab-workhorse-setup nginx-setup support-setup
+all: gitlab-setup gitlab-shell-setup gitlab-runner-setup gitlab-workhorse-setup support-setup
 
 # Set up the GitLab Rails app
 
@@ -138,17 +138,6 @@ gitlab-workhorse/.git/pull:
 	cd ${gitlab_development_root}/gitlab-workhorse && \
 	git pull --ff-only
 
-nginx-setup: nginx/conf/nginx.conf nginx/logs nginx/tmp
-
-nginx/conf/nginx.conf:
-	sed -e "s|/home/git|${gitlab_development_root}|" nginx/conf/nginx.conf.example > $@
-
-nginx/logs:
-	mkdir -p $@
-
-nginx/tmp:
-	mkdir -p $@
-
 clean-config:
 	rm -f \
 	gitlab/config/gitlab.yml \
@@ -157,5 +146,4 @@ clean-config:
 	gitlab/config/resque.yml \
 	gitlab-shell/config.yml \
 	redis/redis.conf \
-	Procfile \
-	nginx/conf/nginx.conf
+	Procfile
