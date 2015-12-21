@@ -79,10 +79,10 @@ please see [the instuctions for our (experimental) Vagrant with Docker setup](#v
 If you do not have the dependencies below you will experience strange errors during installation.
 
 1. A non-root unix user, this can be your normal user but **DO NOT** run the installation as a root user
-1. Ruby 2.1.6 installed with a ruby version manager (RVM, ruby-build, rbenv, chruby, etc.), **DO NOT** use the system Ruby
-1. bundler, which you can install with `gem install bundler`
+1. Ruby 2.1.7 installed with a Ruby version manager (RVM, rbenv, chruby, etc.), **DO NOT** use the system Ruby
+1. Bundler, which you can install with `gem install bundler`
 
-##### OS X 10.9
+##### OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan)
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
