@@ -4,6 +4,7 @@ gitlab_runner_repo = https://gitlab.com/gitlab-org/gitlab-ci-runner.git
 gitlab_workhorse_repo = https://gitlab.com/gitlab-org/gitlab-workhorse.git
 gitlab_development_root = $(shell pwd)
 postgres_bin_dir = $(shell pg_config --bindir)
+postgres_replication_user = gitlab_replication
 
 all: gitlab-setup gitlab-shell-setup gitlab-runner-setup gitlab-workhorse-setup support-setup
 
@@ -119,6 +120,18 @@ postgresql: postgresql/data/PG_VERSION
 
 postgresql/data/PG_VERSION:
 	${postgres_bin_dir}/initdb --locale=C -E utf-8 postgresql/data
+
+postgresql-replication/cluster:
+	${postgres_bin_dir}/initdb --locale=C -E utf-8 postgresql-replica/data
+
+postgresql-replication/role:
+	${postgres_bin_dir}/psql -h localhost -d postgres -c "CREATE ROLE ${postgres_replication_user} WITH REPLICATION LOGIN;"
+
+postgresql-replication/backup:
+	psql -h localhost -d postgres -c "select pg_start_backup('base backup for streaming rep')"
+	rsync -cva --inplace --exclude="*pg_xlog*" postgresql/data postgresql-replica
+	psql -h localhost -d postgres -c "select pg_stop_backup(), current_timestamp"
+	cp support/recovery.conf postgresql-replica/data
 
 .bundle:
 	bundle install --jobs 4
