@@ -241,6 +241,9 @@ The `Makefile` will clone the repositories, install the Gem bundles and set up
 basic configuration files. Pick one:
 
 ```
+# Install dependencies
+bundle install
+
 # Clone the official repositories of gitlab and gitlab-shell
 make
 ```
@@ -248,18 +251,21 @@ make
 Alternatively, you can clone straight from your forked repositories or GitLab EE.
 
 ```
+# Install dependencies
+bundle install
+
 # Clone your own forked repositories
 make gitlab_repo=git@gitlab.com:example/gitlab-ce.git gitlab_shell_repo=git@gitlab.com:example/gitlab-shell.git \
   gitlab_ci_repo=git@gitlab.com:example/gitlab-ci.git gitlab_runner_repo=git@gitlab.com:example/gitlab-ci-runner.git
 ```
 
+If you are going to work on Gitlab Geo, you will need [PostgreSQL replication](#postgresql-replication) setup before the "Post-installation" instructions.
+
 ## Post-installation
 
-First install the requirements for development kit, then start Redis,
-PostgreSQL and GitLab-Workhorse by running the command below in the
-root of the gitlab-development-kit project:
+Start required services: Redis, PostgreSQL and GitLab-Workhorse by running
+the command below in the root of the gitlab-development-kit project:
 
-    bundle install
     bundle exec foreman start
 
 Next, keep the above command running and install the required gems, seed the main GitLab database, and setup GitLab from a new terminal session:
@@ -361,6 +367,35 @@ you to regenerate configuration files with `make`. You can always
 remove an individual file (e.g. `rm Procfile`) and rebuild it by
 running `make`. If you want to rebuild _all_ configuration files
 created by the Makefile, run `make clean-config all`.
+
+## PostgreSQL replication
+
+For Gitlab Geo, you will need a master/slave database replication defined.
+There are a few extra steps to follow:
+
+You must start with a clean postgres setup, (jump to next if you are installing
+everything from scratch):
+
+```
+rm -rf postgresql
+make postgresql
+```
+
+Initialize a slave database and setup replication:
+
+```
+# terminal window 1:
+make postgresql-replication/cluster
+foreman start postgresql
+
+# terminal window 2:
+make postgresql-replication/role
+make postgresql-replication/backup
+
+# go back to terminal window 1 and stop foreman by hitting "CTRL-C"
+```
+
+Follow [Post-installation](#post-installation) instructions.
 
 ## OpenLDAP
 
