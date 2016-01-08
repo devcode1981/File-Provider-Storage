@@ -122,7 +122,8 @@ postgresql/data/PG_VERSION:
 	${postgres_bin_dir}/initdb --locale=C -E utf-8 postgresql/data
 
 postgresql-replication/cluster:
-	${postgres_bin_dir}/initdb --locale=C -E utf-8 postgresql-replica/data
+	${postgres_bin_dir}/initdb --locale=C -E utf-8 postgresql-replica/data && \
+	 cat support/pg_hba.conf.add >> postgresql/data/pg_hba.conf
 
 postgresql-replication/role:
 	${postgres_bin_dir}/psql -h localhost -d postgres -c "CREATE ROLE ${postgres_replication_user} WITH REPLICATION LOGIN;"
