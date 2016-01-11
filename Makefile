@@ -5,6 +5,8 @@ gitlab_workhorse_repo = https://gitlab.com/gitlab-org/gitlab-workhorse.git
 gitlab_development_root = $(shell pwd)
 postgres_bin_dir = $(shell pg_config --bindir)
 postgres_replication_user = gitlab_replication
+postgres_dir = $(realpath ./postgresql)
+postgres_replica_dir = $(realpath ./postgresql-replica)
 
 all: gitlab-setup gitlab-shell-setup gitlab-runner-setup gitlab-workhorse-setup support-setup
 
@@ -122,17 +124,17 @@ postgresql/data/PG_VERSION:
 	${postgres_bin_dir}/initdb --locale=C -E utf-8 postgresql/data
 
 postgresql-replication/cluster:
-	${postgres_bin_dir}/initdb --locale=C -E utf-8 postgresql-replica/data && \
+	${postgres_bin_dir}/initdb --locale=C -E utf-8 postgresql-replica/data
 	 cat support/pg_hba.conf.add >> postgresql/data/pg_hba.conf
 
 postgresql-replication/role:
-	${postgres_bin_dir}/psql -h localhost -d postgres -c "CREATE ROLE ${postgres_replication_user} WITH REPLICATION LOGIN;"
+	${postgres_bin_dir}/psql -h ${postgres_dir} -d postgres -c "CREATE ROLE ${postgres_replication_user} WITH REPLICATION LOGIN;"
 
 postgresql-replication/backup:
-	psql -h localhost -d postgres -c "select pg_start_backup('base backup for streaming rep')"
+	psql -h ${postgres_dir} -d postgres -c "select pg_start_backup('base backup for streaming rep')"
 	rsync -cva --inplace --exclude="*pg_xlog*" postgresql/data postgresql-replica
-	psql -h localhost -d postgres -c "select pg_stop_backup(), current_timestamp"
-	cp support/recovery.conf postgresql-replica/data
+	psql -h ${postgres_dir} -d postgres -c "select pg_stop_backup(), current_timestamp"
+	./support/recovery.conf ${postgres_dir} > postgresql-replica/data/recovery.conf
 
 .bundle:
 	bundle install --jobs 4
