@@ -8,6 +8,8 @@ gitlab-runner/
 Procfile
 postgresql/data
 postgresql/.s.*
+postgresql-replica/data
+postgresql-replica/.s.*
 redis/*.conf
 .bundle/
 gitlab-openldap/bin/
