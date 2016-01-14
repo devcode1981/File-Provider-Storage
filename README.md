@@ -263,21 +263,12 @@ If you are going to work on Gitlab Geo, you will need [PostgreSQL replication](#
 
 ## Post-installation
 
-Start required services: Redis, PostgreSQL and GitLab-Workhorse by running
-the command below in the root of the gitlab-development-kit project:
+Start GitLab and all required services:
 
     bundle exec foreman start
 
-Next, keep the above command running and install the required gems, seed the main GitLab database, and setup GitLab from a new terminal session:
-
-    cd gitlab && bundle install && bundle exec rake db:create dev:setup
-
-Finally, start the main GitLab rails application in the gitlab subdirectory of the project:
-
-    bundle exec foreman start -p4000
-
-This will run Foreman on port 4000. Gitlab-workhorse is already running on port 3000, hence to login to GitLab you may now
-go to http://localhost:3000 in your browser. The development login credentials are `root` and `5iveL!fe`.
+To access GitLab you may now go to http://localhost:3000 in your
+browser. The development login credentials are `root` and `5iveL!fe`.
 
 If you want to work on GitLab CI - setup the GitLab Runner:
 
@@ -488,7 +479,7 @@ is Homebrew on OS X, which encourages frequent updates (`brew update && brew
 upgrade`) which may break binary compatibility.
 
 ```
-bundle exec rake db:create gitlab:setup
+bundle exec rake db:create dev:setup
 rake aborted!
 LoadError: dlopen(/Users/janedoe/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/extensions/x86_64-darwin-13/2.1.0-static/charlock_holmes-0.6.9.4/charlock_holmes/charlock_holmes.bundle, 9): Library not loaded: /usr/local/opt/icu4c/lib/libicui18n.52.1.dylib
   Referenced from: /Users/janedoe/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/extensions/x86_64-darwin-13/2.1.0-static/charlock_holmes-0.6.9.4/charlock_holmes/charlock_holmes.bundle
