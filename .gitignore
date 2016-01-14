@@ -5,6 +5,7 @@ repositories/
 gitlab/
 gitlab-ci/
 gitlab-runner/
+gitlab-ci-multi-runner/
 Procfile
 postgresql/data
 postgresql/.s.*

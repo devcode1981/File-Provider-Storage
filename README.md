@@ -89,8 +89,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 ```
 brew tap homebrew/dupes
 brew tap homebrew/versions
-brew install git redis postgresql phantomjs198 libiconv icu4c pkg-config cmake nodejs go openssl
-brew link phantomjs198
+brew install git redis postgresql phantomjs192 libiconv icu4c pkg-config cmake nodejs go openssl
 bundle config build.nokogiri --with-iconv-dir=/usr/local/opt/libiconv
 ```
 
