@@ -298,16 +298,7 @@ itself.
 First start Postgres and Redis.
 
 ```
-# terminal window 1
 # current directory: gitlab-development-kit
-bundle exec foreman start
-```
-
-Next, start a Rails development server.
-
-```
-# terminal window 2
-# current directory: gitlab-development-kit/gitlab
 bundle exec foreman start
 ```
 
