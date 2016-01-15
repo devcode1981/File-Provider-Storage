@@ -119,9 +119,9 @@ redis: redis/redis.conf
 redis/redis.conf:
 	sed "s|/home/git|${gitlab_development_root}|" $@.example > $@
 
-postgresql: postgresql/data/PG_VERSION
+postgresql: postgresql/data
 
-postgresql/data/PG_VERSION:
+postgresql/data:
 	${postgres_bin_dir}/initdb --locale=C -E utf-8 postgresql/data
 	support/bootstrap-rails
 
