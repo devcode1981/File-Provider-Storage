@@ -122,8 +122,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			enable_shares(override, enable_nfs)
 		end
 		
-		# use 1/4 of memory or 2 GB, whichever is greatest
-		mem = [mem / 4, 2048].max
+		# use 1/4 of memory or 3 GB, whichever is greatest
+		mem = [mem / 4, 3072].max
 
 		# performance tweaks
 		# per https://www.virtualbox.org/manual/ch03.html#settings-processor set cpus to real cores, not hyperthreads
