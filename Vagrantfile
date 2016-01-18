@@ -18,8 +18,8 @@ end
 
 def running_in_admin_mode?
     return false unless Vagrant::Util::Platform.windows?
-    
-    (`reg query HKU\\S-1-5-19 2>&1` =~ /ERROR/).nil? 
+
+    (`reg query HKU\\S-1-5-19 2>&1` =~ /ERROR/).nil?
 end
 
 if Vagrant::Util::Platform.windows? && !running_in_admin_mode?
@@ -55,6 +55,15 @@ EOT
 
 # CentOS 6 kernel doesn't suppose UID mapping (affects vagrant-lxc mostly).
 $user_setup = <<EOT
+# create a swapfile
+sudo fallocate -l 4G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+# enable swap now
+sudo swapon /swapfile
+# and on reboot
+echo '/swapfile   none    swap    sw    0   0' | sudo tee --append /etc/fstab
+
 if [ $(id -u vagrant) != $(stat -c %u /vagrant) ]; then
 	useradd -u $(stat -c %u /vagrant) -m build
 	echo "build ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/build
@@ -72,7 +81,11 @@ sudo ln -s /vagrant /home/vagrant/gitlab-development-kit
 
 # automatically move into the gitlab-development-kit folder, but only add the command
 # if it's not already there
-sudo -u $DEV_USER -i bash -c "grep -q 'cd /home/vagrant/gitlab-development-kit/' /home/vagrant/.bash_profile || echo 'cd /home/vagrant/gitlab-development-kit/' >> /home/vagrant/.bash_profile"
+if [ -f /home/vagrant/.bash_profile ]; then
+	sudo -u $DEV_USER -i bash -c "grep -q 'cd /home/vagrant/gitlab-development-kit/' /home/vagrant/.bash_profile || echo 'cd /home/vagrant/gitlab-development-kit/' >> /home/vagrant/.bash_profile"
+else
+	sudo -u $DEV_USER -i bash -c "touch /home/vagrant/.bash_profile && echo 'cd /home/vagrant/gitlab-development-kit/' >> /home/vagrant/.bash_profile"
+fi
 EOT
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
@@ -121,7 +134,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			enable_nfs = Vagrant::Util::Platform.platform =~ /darwin/ ? false : true
 			enable_shares(override, enable_nfs)
 		end
-		
+
 		# use 1/4 of memory or 3 GB, whichever is greatest
 		mem = [mem / 4, 3072].max
 
