@@ -420,6 +420,15 @@ ldap:
 
 The second database is optional, and will only work with Gitlab-EE.
 
+The following users are added to the LDAP server:
+
+| uid      | Password | DN                                          |
+| -------- | -------- | -------                                     |
+| john     | password | `uid=john,ou=people,dc=example,dc=com`      |
+| mary     | password | `uid=mary,ou=people,dc=example,dc=com`      |
+| bob      | password | `uid=bob,ou=people,dc=example-alt,dc=com`   |
+| alice    | password | `uid=alice,ou=people,dc=example-alt,dc=com` |
+
 ## NFS
 
 If you want to experiment with how GitLab behaves over NFS you can use a setup
