@@ -90,7 +90,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 brew tap homebrew/dupes
 brew tap homebrew/versions
 brew install git redis postgresql libiconv icu4c pkg-config cmake nodejs go openssl node npm
-bundle config build.nokogiri --with-iconv-dir=/usr/local/opt/libiconv
+bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
 npm install phantomjs@1.9.8 -g
 ```
 
