@@ -99,7 +99,11 @@ npm install phantomjs@1.9.8 -g
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
-sudo apt-add-repository -y ppa:ubuntu-lxc/lxd-stable && sudo apt-get update
+# This PPA contains an up-to-date version of Go
+sudo apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
+# This PPA gives us Redis 2.8 or newer
+sudo apt-add-repository -y ppa:chris-lea/redis-server
+sudo apt-get update
 sudo apt-get install git postgresql libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev golang ed pkg-config
 ```
 
@@ -131,6 +135,8 @@ sudo ln -s /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/local/bin
 phantomjs --version
 ```
 
+You may need to install Redis 2.8 or newer manually.
+
 #### Fedora
 ```
 sudo dnf install postgresql libpqxx-devel postgresql-libs redis linicu-devel nodejs git ed cmaker rpm-build lib-pq gcc-c++ krb5-devel
@@ -138,9 +144,9 @@ sudo dnf install postgresql libpqxx-devel postgresql-libs redis linicu-devel nod
 
 Install `phantomJS` manually, or download it and put in your $PATH. For instructions, follow the [Debian guide on phantomJS](#Debian).
 
+You may need to install Redis 2.8 or newer manually.
+
 #### RedHat
-You also need to install [Go](https://golang.org/dl) because the
-Go version included in most Ubuntu versions is too old for GitLab.
 
 ##### CentOS
 
@@ -167,6 +173,8 @@ PhantomJS - You will want to download the required version of PhantomJS and plac
 Git 1.7.1-3 is the latest git binary for CentOS 6.5 and gitlab.  Spinach tests will fail due to a higher version requirement by gitlab.
 You can follow the instructions found [here](https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/install/centos#add-puias-computational-repository)
 to install a newer binary version of git.
+
+You may need to install Redis 2.8 or newer manually.
 
 ##### Other platforms
 
