@@ -1,6 +1,5 @@
 gitlab_repo = https://gitlab.com/gitlab-org/gitlab-ce.git
 gitlab_shell_repo = https://gitlab.com/gitlab-org/gitlab-shell.git
-gitlab_runner_repo = https://gitlab.com/gitlab-org/gitlab-ci-runner.git
 gitlab_workhorse_repo = https://gitlab.com/gitlab-org/gitlab-workhorse.git
 gitlab_development_root = $(shell pwd)
 postgres_bin_dir = $(shell pg_config --bindir)
@@ -8,7 +7,7 @@ postgres_replication_user = gitlab_replication
 postgres_dir = $(realpath ./postgresql)
 postgres_replica_dir = $(realpath ./postgresql-replica)
 
-all: gitlab-setup gitlab-shell-setup gitlab-runner-setup gitlab-workhorse-setup support-setup
+all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup
 
 # Set up the GitLab Rails app
 
@@ -56,21 +55,9 @@ gitlab-shell/config.yml:
 gitlab-shell/.bundle:
 	cd ${gitlab_development_root}/gitlab-shell && bundle install --without production --jobs 4
 
-# Set up gitlab-runner
-gitlab-runner-setup: gitlab-runner/.git gitlab-runner/.bundle
+# Update gitlab, gitlab-shell and gitlab-workhorse
 
-gitlab-runner/.git:
-	git clone ${gitlab_runner_repo} gitlab-runner
-
-gitlab-runner/.bundle:
-	cd ${gitlab_development_root}/gitlab-runner && bundle install --jobs 4
-
-gitlab-runner-clean:
-	rm -rf gitlab-runner
-
-# Update gitlab, gitlab-shell and gitlab-runner
-
-update: gitlab-update gitlab-shell-update gitlab-runner-update gitlab-workhorse-update
+update: gitlab-update gitlab-shell-update gitlab-workhorse-update
 
 gitlab-update: gitlab/.git/pull
 	cd ${gitlab_development_root}/gitlab && \
@@ -80,10 +67,6 @@ gitlab-update: gitlab/.git/pull
 gitlab-shell-update: gitlab-shell/.git/pull
 	cd ${gitlab_development_root}/gitlab-shell && \
 	bundle install --without production --jobs 4
-
-gitlab-runner-update: gitlab-runner/.git/pull
-	cd ${gitlab_development_root}/gitlab-runner && \
-	bundle install
 
 gitlab/.git/pull:
 	cd ${gitlab_development_root}/gitlab && \
@@ -95,9 +78,6 @@ gitlab-shell/.git/pull:
 	cd ${gitlab_development_root}/gitlab-shell && \
 		git stash && git checkout master && \
 		git pull --ff-only
-
-gitlab-runner/.git/pull:
-	cd ${gitlab_development_root}/gitlab-runner && git pull --ff-only
 
 # Set up supporting services
 
