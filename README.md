@@ -194,6 +194,8 @@ To avoid usage of slow VirtualBox shared folders we use NFS here.
   a. Vagrant will download an OS image, bring it up, and install all the prerequisites.
 5. Run `vagrant ssh` to SSH into the box.
 6. Continue setup at *[Installation](#installation)* below.
+7.  After the installation is done, edit the 'gitlab-workhorse' line in
+    your Procfile and change `localhost:3000` to `0.0.0.0:3000`.
 
 ##### Development details
 * Open development environment by running `vagrant up` & `vagrant ssh` (from an elevated command prompt if on Windows).
@@ -232,6 +234,8 @@ you will have to run the entire docker hypervisor in a VM
 2. Run `vagrant up --provider=docker` in this directory. Vagrant will build a docker image and start the container
 3. Run `vagrant ssh` to SSH into the container.
 5. Continue setup at *[Installation](#installation)* below.
+6.  After the installation is done, edit the 'gitlab-workhorse' line in
+    your Procfile and change `localhost:3000` to `0.0.0.0:3000`.
 
 See [development details](#development-details) and [exit](#exit) of Vagrant-Virtulabox setup, they apply here too.
 
@@ -419,6 +423,15 @@ ldap:
 ```
 
 The second database is optional, and will only work with Gitlab-EE.
+
+The following users are added to the LDAP server:
+
+| uid      | Password | DN                                          |
+| -------- | -------- | -------                                     |
+| john     | password | `uid=john,ou=people,dc=example,dc=com`      |
+| mary     | password | `uid=mary,ou=people,dc=example,dc=com`      |
+| bob      | password | `uid=bob,ou=people,dc=example-alt,dc=com`   |
+| alice    | password | `uid=alice,ou=people,dc=example-alt,dc=com` |
 
 ## NFS
 
