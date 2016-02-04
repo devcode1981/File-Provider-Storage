@@ -61,7 +61,13 @@ update: gitlab-update gitlab-shell-update gitlab-workhorse-update
 
 gitlab-update: gitlab/.git/pull
 	cd ${gitlab_development_root}/gitlab && \
-	bundle install --without mysql production --jobs 4 && \
+	bundle install --without mysql production --jobs 4
+	@echo ""
+	@echo "------------------------------------------------------------"
+	@echo "Make sure Postgres is running otherwise db:migrate will fail"
+	@echo "------------------------------------------------------------"
+	@echo ""
+	cd ${gitlab_development_root}/gitlab && \
 	bundle exec rake db:migrate
 
 gitlab-shell-update: gitlab-shell/.git/pull
