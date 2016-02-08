@@ -50,7 +50,7 @@ $apt_reqs = <<EOT
 apt-add-repository -y ppa:rael-gc/rvm
 apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
 apt-get update
-apt-get -y install git postgresql libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev curl ruby ed golang nginx
+apt-get -y install git postgresql libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev curl ruby ed golang nginx libgmp-dev
 EOT
 
 # CentOS 6 kernel doesn't suppose UID mapping (affects vagrant-lxc mostly).
