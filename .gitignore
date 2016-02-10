@@ -24,3 +24,4 @@ gitlab-openldap/sbin/
 gitlab-openldap/share/
 .vagrant/
 gitlab-workhorse/
+.vagrant_enabled
