@@ -10,7 +10,9 @@ VAGRANTFILE_API_VERSION = "2"
 
 def enable_shares(config, nfs)
 	# paths must be listed as shortest to longest per bug: https://github.com/GM-Alex/vagrant-winnfsd/issues/12#issuecomment-78195957
-	config.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ['gitlab/', 'gitlab-shell', 'gitlab-runner'], rsync__auto: false
+	config.vm.synced_folder ".", "/vagrant", type: "rsync",
+		rsync__exclude: ['gitlab', 'postgresql', 'gitlab-shell', 'gitlab-runner'],
+		rsync__auto: false
 	config.vm.synced_folder "gitlab/", "/vagrant/gitlab", :create => true, :nfs => nfs
 	config.vm.synced_folder "gitlab-shell/", "/vagrant/gitlab-shell", :create => true, :nfs => nfs
 	config.vm.synced_folder "gitlab-runner/", "/vagrant/gitlab-runner", :create => true, :nfs => nfs
