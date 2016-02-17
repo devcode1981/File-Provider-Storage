@@ -92,6 +92,10 @@ if [ -f /home/vagrant/.bash_profile ]; then
 else
 	sudo -u $DEV_USER -i bash -c "touch /home/vagrant/.bash_profile && echo 'cd /home/vagrant/gitlab-development-kit/' >> /home/vagrant/.bash_profile"
 fi
+
+# set git defaults
+sudo -u $DEV_USER -i bash -c "git config --global user.name 'GitLab Development'"
+sudo -u $DEV_USER -i bash -c "git config --global user.email gitlab@local.local"
 EOT
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
