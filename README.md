@@ -25,7 +25,7 @@ sockets to avoid port conflicts.
 * [Update gitlab and gitlab-shell repositories](#update-gitlab-and-gitlab-shell-repositories)
 * [OpenLDAP](#openldap)
 * [NFS](#nfs)
-* [Trobleshooting](#trobleshooting)
+* [Troubleshooting](#troubleshooting)
 * [License](#license)
 
 ## Design goals
@@ -551,6 +551,16 @@ bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/includ
 ```
 
 and then do `bundle install` once again.
+
+### 'Invalid reference name' when creating a new tag
+
+Make sure that `git` is configured correctly on your development
+machine (where GDK runs).
+
+```
+git checkout -b can-I-commit
+git commit --allow-empty -m 'I can commit'
+```
 
 ### Other problems
 
