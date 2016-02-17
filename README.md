@@ -123,6 +123,8 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 sudo apt-get install postgresql libpq-dev redis-server libicu-dev cmake g++ nodejs libkrb5-dev ed pkg-config
 ```
 
+If you are running Debian Stretch or newer you will need to install Go compiler as well: `sudo apt-get install golang`
+
 You need to install phantomjs manually
 
 ```
