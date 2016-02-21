@@ -209,6 +209,7 @@ To avoid usage of slow VirtualBox shared folders we use NFS here.
 
 ##### Development details
 * Open development environment by running `vagrant up` & `vagrant ssh` (from an elevated command prompt if on Windows).
+* When using docker, vagrant can ask you about password the default password is 'tcuser'
 * Follow the general [development guidelines](#development) but running the commands in the `vagrant ssh` session.
 * Files in the `gitlab`, `gitlab-shell`, `gitlab-ci`, and `gitlab-runner` folders will be synced between the host OS & guest OS so can be edited on either the host (under this folder) or guest OS (under `~/gitlab-development-kit/`).
 
