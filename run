@@ -1,0 +1,38 @@
+#!/bin/sh
+
+# Try to read the gitlab-workhorse port from the environment
+if [ x$PORT = x ] ; then
+  # Try a PORT file
+  PORT=$(cat PORT 2>/dev/null)
+fi
+
+# Fall back to 3000
+PORT=${PORT:-3000}
+
+foreman_start() {
+ exec bundle exec foreman start -p $PORT "$@"
+}
+
+db() {
+  foreman_start -c all=0,redis=1,postgresql=1,gitlab-openldap=1
+}
+
+app() {
+  foreman_start -c all=0,rails-web=1,rails-background-jobs=1,gitlab-workhorse=1
+}
+
+all() {
+  foreman_start
+}
+
+case x$1 in
+xdb)
+  db
+  ;;
+xapp)
+  app
+  ;;
+x*)
+  all
+  ;;
+esac
