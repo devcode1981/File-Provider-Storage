@@ -17,6 +17,7 @@ sockets to avoid port conflicts.
     * [Vagrant with Virtualbox](#vagrant-with-virtualbox)
     * [Vagrant with Docker](#vagrant-with-docker)
 * [Installation](#installation)
+  * [GitLab Enterprise Edition](#gitlab-enterprise-edition)
 * [Post-installation](#post-installation)
 * [Development](#development)
   * [Example](#example)
@@ -272,6 +273,21 @@ make gitlab_repo=git@gitlab.com:example/gitlab-ce.git gitlab_shell_repo=git@gitl
 ```
 
 If you are going to work on Gitlab Geo, you will need [PostgreSQL replication](#postgresql-replication) setup before the "Post-installation" instructions.
+
+### GitLab Enterprise Edition
+
+The recommended way to do development on GitLab Enterprise Edition is
+to create a separate GDK directory for it. Below we call that
+directory `gdk-ee`. We will configure GDK to start GitLab on port 3001
+instead of 3000 so that you can run GDK EE next to CE without port
+conflicts.
+
+```
+git clone https://gitlab.com/gitlab-org/gitlab-development-kit.git gdk-ee
+cd gdk-ee
+echo 3001 > port
+make gitlab_repo=https://gitlab.com/gitlab-org/gitlab-ee.git
+```
 
 ## Post-installation
 
