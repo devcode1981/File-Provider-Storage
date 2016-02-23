@@ -1,16 +1,22 @@
 #!/bin/sh
 
 # Try to read the gitlab-workhorse port from the environment
-if [ x$PORT = x ] ; then
-  # Try a PORT file
-  PORT=$(cat PORT 2>/dev/null)
+if [ x$port = x ] ; then
+  # Try a port file
+  port=$(cat port 2>/dev/null)
 fi
 
 # Fall back to 3000
-PORT=${PORT:-3000}
+port=${port:-3000}
+
+print_port() {
+  echo "Starting GitLab in $(pwd) on port ${port}"
+  echo
+  echo
+}
 
 foreman_start() {
- exec bundle exec foreman start -p $PORT "$@"
+ exec env port=${port} bundle exec foreman start "$@"
 }
 
 db() {
@@ -18,10 +24,12 @@ db() {
 }
 
 app() {
+  print_port
   foreman_start -c all=0,rails-web=1,rails-background-jobs=1,gitlab-workhorse=1
 }
 
 all() {
+  print_port
   foreman_start
 }
 
