@@ -292,6 +292,10 @@ echo 3001 > port
 make gitlab_repo=https://gitlab.com/gitlab-org/gitlab-ee.git
 ```
 
+Now you can start GitLab EE with `./run` in the `gdk-ee` directory and you
+will not have port conflicts with a separate GDK instance for CE that
+might still be running.
+
 ## Post-installation
 
 Start GitLab and all required services:
