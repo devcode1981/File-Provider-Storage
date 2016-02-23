@@ -293,10 +293,22 @@ make gitlab_repo=https://gitlab.com/gitlab-org/gitlab-ee.git
 
 Start GitLab and all required services:
 
-    bundle exec foreman start
+    ./run
+
+To start only the databases use:
+
+    ./run db
+
+To start only the app (assuming the DBs are already running):
+
+    ./run app
 
 To access GitLab you may now go to http://localhost:3000 in your
 browser. The development login credentials are `root` and `5iveL!fe`.
+
+You can override the port used by this GDK with a 'port' file.
+
+    echo 4000 > port
 
 If you want to work on GitLab CI - setup the GitLab Runner:
 
