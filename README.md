@@ -140,6 +140,10 @@ phantomjs --version
 You may need to install Redis 2.8 or newer manually.
 
 #### Fedora
+
+We assume you are using Fedora >= 22.
+
+
 ```
 sudo dnf install postgresql libpqxx-devel postgresql-libs redis libicu-devel nodejs git ed cmake rpm-build gcc-c++ krb5-devel go postgresql-server postgresql-contrib
 ```
