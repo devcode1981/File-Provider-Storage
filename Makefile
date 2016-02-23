@@ -66,7 +66,7 @@ gitlab-update: gitlab/.git/pull
 	@echo "------------------------------------------------------------"
 	@echo ""
 	cd ${gitlab_development_root}/gitlab && \
-	bundle exec rake db:migrate
+	bundle exec rake db:migrate db:test:prepare
 
 gitlab-shell-update: gitlab-shell/.git/pull
 	cd ${gitlab_development_root}/gitlab-shell && \

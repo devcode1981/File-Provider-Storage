@@ -80,7 +80,7 @@ please see [the instuctions for our (experimental) Vagrant with Docker setup](#v
 If you do not have the dependencies below you will experience strange errors during installation.
 
 1. A non-root unix user, this can be your normal user but **DO NOT** run the installation as a root user
-2. Ruby 2.2.4 or newer installed with a Ruby version manager (RVM, rbenv, chruby, etc.), **DO NOT** use the system Ruby
+2. Ruby 2.1.8 or newer installed with a Ruby version manager (RVM, rbenv, chruby, etc.), **DO NOT** use the system Ruby
 3. Bundler, which you can install with `gem install bundler`
 
 ##### OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan)
@@ -124,6 +124,8 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 sudo apt-get install postgresql libpq-dev redis-server libicu-dev cmake g++ nodejs libkrb5-dev ed pkg-config
 ```
 
+If you are running Debian Stretch or newer you will need to install Go compiler as well: `sudo apt-get install golang`
+
 You need to install phantomjs manually
 
 ```
@@ -163,8 +165,8 @@ sudo yum install postgresql93-server libicu-devel cmake gcc-c++ redis ed fontcon
 sudo gpg2 --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3
 sudo curl -sSL https://get.rvm.io | bash -s stable
 sudo source /etc/profile.d/rvm.sh
-sudo rvm install 2.2
-sudo rvm use 2.2
+sudo rvm install 2.1
+sudo rvm use 2.1
 #Ensure your user is in rvm group
 sudo usermod -a -G rvm <username>
 #add iptables exceptions, or sudo service stop iptables
@@ -208,6 +210,7 @@ To avoid usage of slow VirtualBox shared folders we use NFS here.
 
 ##### Development details
 * Open development environment by running `vagrant up` & `vagrant ssh` (from an elevated command prompt if on Windows).
+* When using docker, vagrant can ask you about password the default password is 'tcuser'
 * Follow the general [development guidelines](#development) but running the commands in the `vagrant ssh` session.
 * Files in the `gitlab`, `gitlab-shell`, `gitlab-ci`, and `gitlab-runner` folders will be synced between the host OS & guest OS so can be edited on either the host (under this folder) or guest OS (under `~/gitlab-development-kit/`).
 
