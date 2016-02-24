@@ -17,6 +17,7 @@ sockets to avoid port conflicts.
     * [Vagrant with Virtualbox](#vagrant-with-virtualbox)
     * [Vagrant with Docker](#vagrant-with-docker)
 * [Installation](#installation)
+  * [GitLab Enterprise Edition](#gitlab-enterprise-edition)
 * [Post-installation](#post-installation)
 * [Development](#development)
   * [Example](#example)
@@ -79,8 +80,8 @@ please see [the instuctions for our (experimental) Vagrant with Docker setup](#v
 If you do not have the dependencies below you will experience strange errors during installation.
 
 1. A non-root unix user, this can be your normal user but **DO NOT** run the installation as a root user
-1. Ruby 2.1.8 or newer installed with a Ruby version manager (RVM, rbenv, chruby, etc.), **DO NOT** use the system Ruby
-1. Bundler, which you can install with `gem install bundler`
+2. Ruby 2.1.8 or newer installed with a Ruby version manager (RVM, rbenv, chruby, etc.), **DO NOT** use the system Ruby
+3. Bundler, which you can install with `gem install bundler`
 
 ##### OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan)
 
@@ -276,14 +277,45 @@ make gitlab_repo=git@gitlab.com:example/gitlab-ce.git gitlab_shell_repo=git@gitl
 
 If you are going to work on Gitlab Geo, you will need [PostgreSQL replication](#postgresql-replication) setup before the "Post-installation" instructions.
 
+### GitLab Enterprise Edition
+
+The recommended way to do development on GitLab Enterprise Edition is
+to create a separate GDK directory for it. Below we call that
+directory `gdk-ee`. We will configure GDK to start GitLab on port 3001
+instead of 3000 so that you can run GDK EE next to CE without port
+conflicts.
+
+```
+git clone https://gitlab.com/gitlab-org/gitlab-development-kit.git gdk-ee
+cd gdk-ee
+echo 3001 > port
+make gitlab_repo=https://gitlab.com/gitlab-org/gitlab-ee.git
+```
+
+Now you can start GitLab EE with `./run` in the `gdk-ee` directory and you
+will not have port conflicts with a separate GDK instance for CE that
+might still be running.
+
 ## Post-installation
 
 Start GitLab and all required services:
 
-    bundle exec foreman start
+    ./run
+
+To start only the databases use:
+
+    ./run db
+
+To start only the app (assuming the DBs are already running):
+
+    ./run app
 
 To access GitLab you may now go to http://localhost:3000 in your
 browser. The development login credentials are `root` and `5iveL!fe`.
+
+You can override the port used by this GDK with a 'port' file.
+
+    echo 4000 > port
 
 If you want to work on GitLab CI - setup the GitLab Runner:
 

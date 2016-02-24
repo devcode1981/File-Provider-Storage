@@ -1,0 +1,46 @@
+#!/bin/sh
+
+# Try to read the gitlab-workhorse port from the environment
+if [ x$port = x ] ; then
+  # Try a port file
+  port=$(cat port 2>/dev/null)
+fi
+
+# Fall back to 3000
+port=${port:-3000}
+
+print_port() {
+  echo "Starting GitLab in $(pwd) on port ${port}"
+  echo
+  echo
+}
+
+foreman_start() {
+ exec env port=${port} bundle exec foreman start "$@"
+}
+
+db() {
+  foreman_start -c all=0,redis=1,postgresql=1,gitlab-openldap=1
+}
+
+app() {
+  print_port
+  foreman_start -c all=0,rails-web=1,rails-background-jobs=1,gitlab-workhorse=1
+}
+
+all() {
+  print_port
+  foreman_start
+}
+
+case x$1 in
+xdb)
+  db
+  ;;
+xapp)
+  app
+  ;;
+x*)
+  all
+  ;;
+esac

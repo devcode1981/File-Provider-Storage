@@ -29,7 +29,6 @@ gitlab/config/database.yml:
 gitlab/config/unicorn.rb:
 	cp gitlab/config/unicorn.rb.example.development gitlab/config/unicorn.rb
 	echo "listen '${gitlab_development_root}/gitlab.socket'" >> $@
-	echo "listen '127.0.0.1:8080'" >> $@
 
 gitlab/config/resque.yml:
 	sed "s|/home/git|${gitlab_development_root}|" redis/resque.yml.example > $@
@@ -47,7 +46,6 @@ gitlab-shell/.git:
 gitlab-shell/config.yml:
 	sed -e "s|/home/git|${gitlab_development_root}|"\
 	  -e "s|^gitlab_url:.*|gitlab_url: http+unix://${shell echo ${gitlab_development_root}/gitlab.socket | sed 's|/|%2F|g'}|"\
-	  -e "s|:8080/|:3000|"\
 	  -e "s|/usr/bin/redis-cli|$(shell which redis-cli)|"\
 	  -e "s|^  socket: .*|  socket: ${gitlab_development_root}/redis/redis.socket|"\
 	  gitlab-shell/config.yml.example > gitlab-shell/config.yml
@@ -102,7 +100,7 @@ Procfile:
 	# Listen on external interface if inside a vagrant vm
 	if [ -f .vagrant_enabled ] ; \
 	then \
-		printf ',s/localhost:3000/0.0.0.0:3000/g\nwq\n' | ed $@ ; \
+		printf ',s/localhost:/0.0.0.0:/g\nwq\n' | ed $@ ; \
 	fi;
 
 redis: redis/redis.conf
