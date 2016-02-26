@@ -79,8 +79,8 @@ else
 fi
 sudo apt-get install -y rvm \
 	&& sudo addgroup $DEV_USER rvm \
-	&& sudo -u $DEV_USER -i bash -l -c "rvm install 2.1.6 \
-	&& rvm use 2.1.6 --default \
+	&& sudo -u $DEV_USER -i bash -l -c "rvm install 2.1.8 \
+	&& rvm use 2.1.8 --default \
 	&& gem install bundler"
 sudo chown -R $DEV_USER:$DEV_USER /home/vagrant
 sudo ln -s /vagrant /home/vagrant/gitlab-development-kit
