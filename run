@@ -20,7 +20,7 @@ foreman_start() {
 }
 
 db() {
-  foreman_start -c all=0,redis=1,postgresql=1,gitlab-openldap=1
+  foreman_start -c all=0,redis=1,postgresql=1,openldap=1
 }
 
 app() {
