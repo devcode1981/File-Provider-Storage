@@ -7,27 +7,51 @@ GitLab development. All data is stored inside the gitlab-development-kit
 directory. All connections to supporting services go through Unix domain
 sockets to avoid port conflicts.
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-* [Design goals](#design-goals)
-* [Differences with production](#differences-with-production)
-* [Setup](#setup)
-  * [Clone Gitlab Development Kit repository](#clone-gitlab-development-kit-repository)
-  * [Different installation types](#different-installation-types)
-    * [Native installation](#native-installation)
-    * [Vagrant with Virtualbox](#vagrant-with-virtualbox)
-    * [Vagrant with Docker](#vagrant-with-docker)
-* [Installation](#installation)
-  * [GitLab Enterprise Edition](#gitlab-enterprise-edition)
-* [Post-installation](#post-installation)
-* [Development](#development)
-  * [Example](#example)
-  * [Running the tests](#running-the-tests)
-* [Update configuration files created by gitlab-development-kit](#update-configuration-files-created-by-gitlab-development-kit)
-* [Update gitlab and gitlab-shell repositories](#update-gitlab-and-gitlab-shell-repositories)
-* [OpenLDAP](#openldap)
-* [NFS](#nfs)
-* [Troubleshooting](#troubleshooting)
-* [License](#license)
+- [Design goals](#design-goals)
+- [Differences with production](#differences-with-production)
+- [GDK Setup](#gdk-setup)
+    - [Clone GitLab Development Kit repository](#clone-gitlab-development-kit-repository)
+    - [Native installation setup](#native-installation-setup)
+        - [Prerequisites for all platforms](#prerequisites-for-all-platforms)
+        - [OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan)](#os-x-10-9-mavericks-10-10-yosemite-10-11-el-capitan)
+        - [Ubuntu](#ubuntu)
+        - [Arch Linux](#arch-linux)
+        - [Debian](#debian)
+        - [Fedora](#fedora)
+        - [CentOS](#centos)
+        - [Other platforms](#other-platforms)
+    - [Vagrant setup](#vagrant-setup)
+        - [Vagrant with Virtualbox](#vagrant-with-virtualbox)
+        - [Vagrant with Docker](#vagrant-with-docker)
+        - [Vagrant development details](#vagrant-development-details)
+        - [Vagrant troubleshooting](#vagrant-troubleshooting)
+- [Installation](#installation)
+    - [GitLab Enterprise Edition](#gitlab-enterprise-edition)
+- [Post-installation](#post-installation)
+- [Development](#development)
+    - [Example](#example)
+    - [Running the tests](#running-the-tests)
+- [Update gitlab and gitlab-shell repositories](#update-gitlab-and-gitlab-shell-repositories)
+- [Update configuration files created by gitlab-development-kit](#update-configuration-files-created-by-gitlab-development-kit)
+- [PostgreSQL replication](#postgresql-replication)
+- [OpenLDAP](#openldap)
+- [NFS](#nfs)
+    - [Ubuntu / Debian](#ubuntu-debian)
+- [OS X, other developer OS's](#os-x-other-developer-os-s)
+- [Troubleshooting](#troubleshooting)
+    - [Rails cannot connect to Postgres](#rails-cannot-connect-to-postgres)
+    - ['LoadError: dlopen' when starting Ruby apps](#loaderror-dlopen-when-starting-ruby-apps)
+    - ['bundle install' fails due to permission problems](#bundle-install-fails-due-to-permission-problems)
+    - ['bundle install' fails while compiling eventmachine gem](#bundle-install-fails-while-compiling-eventmachine-gem)
+    - ['Invalid reference name' when creating a new tag](#invalid-reference-name-when-creating-a-new-tag)
+    - [Other problems](#other-problems)
+- [License](#license)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Design goals
 
@@ -53,7 +77,17 @@ sockets to avoid port conflicts.
 - Need to download and compile new gems ('bundle install') on each upgrade
 - etc.
 
-## Setup
+## GDK Setup
+
+The preferred way to use GitLab Development Kit is to install Ruby and
+dependencies on your 'native' OS. We strongly recommend the native install
+since it is much faster than a virtualized one.
+
+If you want to use [Vagrant] instead (e.g. need to do development from Windows),
+see [the instructions for our (experimental) Vagrant with Virtualbox setup](#vagrant-with-virtualbox).
+
+If you want to use [Vagrant] with [Docker][docker engine] on Linux,
+see [the instructions for our (experimental) Vagrant with Docker setup](#vagrant-with-docker).
 
 ### Clone GitLab Development Kit repository
 
@@ -62,28 +96,20 @@ git clone https://gitlab.com/gitlab-org/gitlab-development-kit.git
 cd gitlab-development-kit
 ```
 
-### Different installation types
+### Native installation setup
 
-The preferred way to use GitLab Development Kit is to install Ruby and dependencies on your 'native' OS.
-We strongly recommend the native install since it is much faster than a virtualized one.
+#### Prerequisites for all platforms
 
-If you want to use [Vagrant](https://www.vagrantup.com/) instead (e.g. need to do development from Windows)
-please see [the instructions for our (experimental) Vagrant with Virtualbox setup](#vagrant-with-virtualbox).
+If you do not have the dependencies below you will experience strange errors
+during installation.
 
-If you want to use [Vagrant](https://www.vagrantup.com/) with [Docker](https://www.docker.com/) on Linux
-please see [the instuctions for our (experimental) Vagrant with Docker setup](#vagrant-with-docker).
-
-#### Native installation
-
-##### Prerequisites for all platforms
-
-If you do not have the dependencies below you will experience strange errors during installation.
-
-1. A non-root unix user, this can be your normal user but **DO NOT** run the installation as a root user
-2. Ruby 2.1.8 or newer installed with a Ruby version manager (RVM, rbenv, chruby, etc.), **DO NOT** use the system Ruby
+1. A non-root Unix user, this can be your normal user but **DO NOT** run the
+   installation as a root user
+2. Ruby 2.1.8 or newer installed with a Ruby version manager (RVM, rbenv,
+   chruby, etc.), **DO NOT** use the system Ruby
 3. Bundler, which you can install with `gem install bundler`
 
-##### OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan)
+#### OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan)
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
@@ -95,7 +121,7 @@ bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/includ
 npm install phantomjs@1.9.8 -g
 ```
 
-##### Ubuntu
+#### Ubuntu
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
@@ -108,7 +134,7 @@ sudo apt-get update
 sudo apt-get install git postgresql libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev golang ed pkg-config
 ```
 
-##### Arch Linux
+#### Arch Linux
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
@@ -116,7 +142,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 sudo pacman -S postgresql phantomjs redis postgresql-libs icu nodejs ed cmake openssh git go
 ```
 
-##### Debian
+#### Debian
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
@@ -124,9 +150,10 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 sudo apt-get install postgresql libpq-dev redis-server libicu-dev cmake g++ nodejs libkrb5-dev ed pkg-config
 ```
 
-If you are running Debian Stretch or newer you will need to install Go compiler as well: `sudo apt-get install golang`
+If you are running Debian Stretch or newer you will need to install Go
+compiler as well: `sudo apt-get install golang`.
 
-You need to install phantomjs manually
+You need to install phantomjs manually:
 
 ```
 PHANTOM_JS="phantomjs-1.9.8-linux-x86_64"
@@ -144,22 +171,20 @@ You may need to install Redis 2.8 or newer manually.
 
 We assume you are using Fedora >= 22.
 
-
 ```
 sudo dnf install postgresql libpqxx-devel postgresql-libs redis libicu-devel nodejs git ed cmake rpm-build gcc-c++ krb5-devel go postgresql-server postgresql-contrib
 ```
 
-Install `phantomJS` manually, or download it and put in your $PATH. For instructions, follow the [Debian guide on phantomJS](#Debian).
+Install `phantomJS` manually, or download it and put in your $PATH. For
+instructions, follow the [Debian guide on phantomJS](#Debian).
 
 You may need to install Redis 2.8 or newer manually.
 
-#### RedHat
-
-##### CentOS
+#### CentOS
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
-This is tested on CentOS 6.5
+This is tested on CentOS 6.5:
 
 ```
 sudo yum install http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-redhat93-9.3-1.noarch.rpm
@@ -175,85 +200,99 @@ sudo rvm use 2.1
 sudo usermod -a -G rvm <username>
 #add iptables exceptions, or sudo service stop iptables
 ```
-PhantomJS - You will want to download the required version of PhantomJS and place the binary on the path.
 
-Git 1.7.1-3 is the latest git binary for CentOS 6.5 and gitlab.  Spinach tests will fail due to a higher version requirement by gitlab.
-You can follow the instructions found [here](https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/install/centos#add-puias-computational-repository)
-to install a newer binary version of git.
+Install `phantomJS` manually, or download it and put in your $PATH. For
+instructions, follow the [Debian guide on phantomJS](#Debian).
+
+Git 1.7.1-3 is the latest git binary for CentOS 6.5 and GitLab. Spinach tests
+will fail due to a higher version requirement by GitLab. You can follow the
+instructions found [in the GitLab recipes repository][puias] to install a newer
+binary version of Git.
 
 You may need to install Redis 2.8 or newer manually.
 
-##### Other platforms
+#### Other platforms
 
-If you got GDK running an another platform please send a merge request to add it here.
+If you got GDK running an another platform please send a merge request to add
+it here.
 
-#### Vagrant with Virtualbox
-[Vagrant](http://www.vagrantup.com) is a tool for setting up identical development
-environments including all dependencies regardless of the host platform you are using.
-Vagrant will default to using [VirtualBox](http://www.virtualbox.org), but it has
-many plugins for different environments.
+### Vagrant setup
+
+[Vagrant] is a tool for setting up identical development environments including
+all dependencies regardless of the host platform you are using. Vagrant will
+default to using [VirtualBox], but it has many plugins for different environments.
 
 Vagrant allows you to develop GitLab without affecting your host machine (but we
 recommend developing GitLab on metal if you can).
+
+#### Vagrant with Virtualbox
+
 Vagrant can be very slow since the files are synced between the host OS and GitLab
 (testing) accesses a lot of files.
-You can improve the speed by keeping all the files on the guest OS but in that case you
-should take care to not lose the files if you destroy or update the VM.
+You can improve the speed by keeping all the files on the guest OS but in that
+case you should take care to not lose the files if you destroy or update the VM.
 To avoid usage of slow VirtualBox shared folders we use NFS here.
 
-##### Install
-1. [Disable Hyper-V](http://superuser.com/a/642027/143551) (Windows users) then enable virtualization technology via the BIOS.
-2. Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) & [Vagrant](http://www.vagrantup.com).
-3. [Configure NFS for Vagrant](http://docs.vagrantup.com/v2/synced-folders/nfs.html) if you are on Linux.
-4. Run `vagrant up --provider=virtualbox` in this directory (from an elevated command prompt if on Windows)
-  a. Vagrant will download an OS image, bring it up, and install all the prerequisites.
-5. Run `vagrant ssh` to SSH into the box.
-6. Continue setup at *[Installation](#installation)* below.
-7.  After the installation is done, edit the 'gitlab-workhorse' line in
-    your Procfile and change `localhost:3000` to `0.0.0.0:3000`.
-
-##### Development details
-* Open development environment by running `vagrant up` & `vagrant ssh` (from an elevated command prompt if on Windows).
-* When using docker, vagrant can ask you about password the default password is 'tcuser'
-* Follow the general [development guidelines](#development) but running the commands in the `vagrant ssh` session.
-* Files in the `gitlab`, `gitlab-shell`, `gitlab-ci`, and `gitlab-runner` folders will be synced between the host OS & guest OS so can be edited on either the host (under this folder) or guest OS (under `~/gitlab-development-kit/`).
-
-##### Exit
-* When you want to shutdown Vagrant run `exit` from the guest OS and then `vagrant halt`
-from the host OS.
-
-##### Troubleshooting
-
-* On some setups the shared folder will have the wrong user. This is detected
-by the Vagrantfile and you should `sudo su - build` to switch to the correct user
-in that case.
-* If you get a "Timed out while waiting for the machine to boot" message you likely
-forgot to [disable Hyper-V](http://superuser.com/a/642027/143551) or enable virtualization technology via the BIOS.
-* If you have continious problems starting Vagrant you can uncomment `vb.gui = true`
-to view any error messages.
-* If you have problems running `support/edit-gitlab.yml` (bash script despite file extension)
- see http://stackoverflow.com/a/5514351/1233435.
-* If you have errors with symlinks or Ruby during initialization make sure you ran `vagrant up` from an elevated command prompt (Windows users).
+1. (optional for Windows users) [Disable Hyper-V](http://superuser.com/a/642027/143551)
+   then enable virtualization technology via the BIOS.
+1. Install [VirtualBox] and [Vagrant].
+1. [Configure NFS for Vagrant](http://docs.vagrantup.com/v2/synced-folders/nfs.html)
+   if you are on Linux.
+1. Run `vagrant up --provider=virtualbox` in this directory (from an elevated
+   command prompt if on Windows). Vagrant will download an OS image, bring it
+   up, and install all the prerequisites.
+1. Run `vagrant ssh` to SSH into the box.
+1. Continue setup at [Installation](#installation) below.
+1. After the installation is done, edit the 'gitlab-workhorse' line in
+   your Procfile and change `localhost:3000` to `0.0.0.0:3000`.
 
 #### Vagrant with Docker
-[Vagrant](http://www.vagrantup.com) is a tool for setting up identical development
-environments including all dependencies regardless of the host platform you are using.
+
 [Docker](https://www.docker.com/) is one of possible providers of Vagrant.
-Docker provider has a big advantage, as it doesn't have a big virtualisation overhead compared
-to a Virtualbox and provides the native performance via containering technology.
-This docker setup makes sense here only on Linux, as on other OSes like Windows/OSx
-you will have to run the entire docker hypervisor in a VM
+Docker provider has a big advantage, as it doesn't have a big virtualisation
+overhead compared to Virtualbox and provides the native performance via
+containers technology. This Docker setup makes sense only on Linux, as on other
+OSes like Windows/OSX you will have to run the entire Docker hypervisor in a VM
 (which will be almost the same like Vagrant Virtualbox provider).
 
-##### Install
-1. Install Docker Engine (e.g. on [Ubuntu](https://docs.docker.com/installation/ubuntulinux/) or [CentOS](https://docs.docker.com/installation/centos/)), don't forget to add your user to the docker group and relogin yourself
-2. Run `vagrant up --provider=docker` in this directory. Vagrant will build a docker image and start the container
-3. Run `vagrant ssh` to SSH into the container.
-5. Continue setup at *[Installation](#installation)* below.
-6.  After the installation is done, edit the 'gitlab-workhorse' line in
-    your Procfile and change `localhost:3000` to `0.0.0.0:3000`.
+1. Install [Vagrant](http://www.vagrantup.com).
+1. Install [Docker Engine]. Don't forget to add your user to the docker group
+   and re-login.
+1. Run `vagrant up --provider=docker` in this directory. Vagrant will build a
+   docker image and start the container.
+1. Run `vagrant ssh` to SSH into the container.
+1. Continue setup at [Installation](#installation) below.
+1. After the installation is done, edit the 'gitlab-workhorse' line in
+   your Procfile and change `localhost:3000` to `0.0.0.0:3000`.
 
-See [development details](#development-details) and [exit](#exit) of Vagrant-Virtulabox setup, they apply here too.
+#### Vagrant development details
+
+- Open the development environment by running `vagrant up` & `vagrant ssh`
+  (from an elevated command prompt if on Windows).
+- When using Docker, vagrant can ask you about password. The default password
+  is `tcuser`.
+- Follow the general [development guidelines](#development) but running the
+  commands in the `vagrant ssh` session.
+- Files in the `gitlab` and `gitlab-shell` folders will be synced between the
+  host OS & guest OS so can be edited on either the host (under this folder) or
+  guest OS (under `~/gitlab-development-kit/`).
+- When you want to shutdown Vagrant run `exit` from the guest OS and then
+  `vagrant halt` from the host OS.
+
+#### Vagrant troubleshooting
+
+- On some setups the shared folder will have the wrong user. This is detected
+  by the Vagrantfile and you should `sudo su - build` to switch to the correct
+  user in that case.
+- If you get a "Timed out while waiting for the machine to boot" message, you
+  likely forgot to [disable Hyper-V](http://superuser.com/a/642027/143551) or
+  enable virtualization technology via the BIOS.
+- If you have continuous problems starting Vagrant, you can uncomment
+  `vb.gui = true` to view any error messages.
+- If you have problems running `support/edit-gitlab.yml` (bash script despite
+  file extension), see http://stackoverflow.com/a/5514351/1233435.
+- If you have errors with symlinks or Ruby during initialization, make sure you
+  ran `vagrant up` from an elevated command prompt (Windows users).
 
 ## Installation
 
@@ -609,3 +648,8 @@ Please open an issue on the [GDK issue tracker](https://gitlab.com/gitlab-org/gi
 
 The GitLab Development Kit is distributed under the MIT license,
 see the LICENSE file.
+
+[vagrant]: http://www.vagrantup.com
+[virtualbox]: https://www.virtualbox.org/wiki/Downloads
+[docker engine]: https://docs.docker.com/engine/installation/
+[puias]: https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/install/centos#add-puias-computational-repository
