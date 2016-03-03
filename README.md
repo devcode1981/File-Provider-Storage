@@ -81,7 +81,8 @@ sockets to avoid port conflicts.
 
 The preferred way to use GitLab Development Kit is to install Ruby and
 dependencies on your 'native' OS. We strongly recommend the native install
-since it is much faster than a virtualized one.
+since it is much faster than a virtualized one. Due to heavy IO operations a
+virtualized installation will be much slower running the app and the tests.
 
 If you want to use [Vagrant] instead (e.g. need to do development from Windows),
 see [the instructions for our (experimental) Vagrant with Virtualbox setup](#vagrant-with-virtualbox).
