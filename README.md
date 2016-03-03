@@ -49,6 +49,7 @@ sockets to avoid port conflicts.
 - [Troubleshooting](#troubleshooting)
     - [Rebuilding gems with native extensions](#rebuilding-gems-with-native-extensions)
     - [Error in database migrations when pg_trgm extension is missing](#error-in-database-migrations-when-pg_trgm-extension-is-missing)
+    - [Upgrading PostgreSQL](#upgrading-postgresql)
     - [Rails cannot connect to Postgres](#rails-cannot-connect-to-postgres)
     - [undefined symbol: SSLv2_method](#undefined-symbol-sslv2_method)
     - [Fix conflicts in database migrations if you use the same db for CE and EE](#fix-conflicts-in-database-migrations-if-you-use-the-same-db-for-ce-and-ee)
@@ -666,16 +667,17 @@ In case you are hit by `FATAL: database files are incompatible with server`,
 you need to upgrade Postgres.
 
 This is what to do when your OS/packaging system decides to install a new minor
-version of Postgres.
+version of Postgres:
 
 1. (optional) Downgrade postgres
-1. (optional) Make a sql-only gitlab backup
-1. Rename/remove the gdk/postgresql/data directory: `mv postgresql{,.old}`
+1. (optional) Make a sql-only GitLab backup
+1. Rename/remove the gdk/postgresql/data directory: `mv postgresql/data{,.old}`
 1. Run `make`
 1. Build pg gem native extensions: `gem pristine pg`
 1. (optional) Restore your gitlab backup
 
-If things are working, you may remove the `postgresql.old` directory completely.
+If things are working, you may remove the `postgresql/data.old` directory
+completely.
 
 ### Rails cannot connect to Postgres
 
