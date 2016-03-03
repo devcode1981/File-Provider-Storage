@@ -660,6 +660,23 @@ error, make sure you pull the latest changes from the GDK repository and run:
 ./support/enable-postgres-extensions
 ```
 
+### Upgrading PostgreSQL
+
+In case you are hit by `FATAL: database files are incompatible with server`,
+you need to upgrade Postgres.
+
+This is what to do when your OS/packaging system decides to install a new minor
+version of Postgres.
+
+1. (optional) Downgrade postgres
+1. (optional) Make a sql-only gitlab backup
+1. Rename/remove the gdk/postgresql/data directory: `mv postgresql{,.old}`
+1. Run `make`
+1. Build pg gem native extensions: `gem pristine pg`
+1. (optional) Restore your gitlab backup
+
+If things are working, you may remove the `postgresql.old` directory completely.
+
 ### Rails cannot connect to Postgres
 
 - Check if foreman is running in the gitlab-development-kit directory.
