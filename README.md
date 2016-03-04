@@ -49,6 +49,8 @@ sockets to avoid port conflicts.
     - ['bundle install' fails while compiling eventmachine gem](#bundle-install-fails-while-compiling-eventmachine-gem)
     - ['Invalid reference name' when creating a new tag](#invalid-reference-name-when-creating-a-new-tag)
     - [Other problems](#other-problems)
+- [Executables](#executables)
+    - [mount-slow-fs](#mount-slow-fs)
 - [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -644,6 +646,39 @@ git commit --allow-empty -m 'I can commit'
 ### Other problems
 
 Please open an issue on the [GDK issue tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues).
+
+## Executables
+
+A collection of executables can be found in the `bin/` directory. You can use
+these executables by adding this directory to your shell's executable path. For
+example, when using Bash:
+
+    export PATH="${PATH}:path/to/gdk/bin"
+
+### mount-slow-fs
+
+This script can be used to mount a source directory at a given mount point via
+SSHFS and slow down network traffic as a way of replicating a slow NFS. Usage of
+this script is as following:
+
+    mount-slow-fs path/to/actual/repositories /path/to/mountpoint
+
+As an example, we'll use the following directories:
+
+* Source directory: ~/Projects/repositories
+* Mountpoint: /mnt/repositories
+
+First create the mountpoint and set the correct permissions:
+
+    sudo mkdir /mnt/repositories
+    sudo chown $USER /mnt/repositories
+
+Now we can run the script:
+
+    mount-slow-fs ~/Projects/repositories /mnt/repositories
+
+Terminating the script (using ^C) will automatically unmount the repositories
+and remove the created traffic shaping rules.
 
 ## License
 
