@@ -561,6 +561,18 @@ MR welcome!
 - Check for custom Postgres connection settings defined via the environment; we
   assume none such variables are set. Look for them with `set | grep '^PG'`.
 
+### undefined symbol: SSLv2_method
+
+This happens if your local OpenSSL library is updated and your Ruby binary is
+built against an older version.
+
+If you are using `rvm`, you should reinstall the Ruby binary. The following
+command will fetch Ruby 2.3 and install it from source:
+
+```
+rvm reinstall --disable-binary 2.3
+```
+
 ### 'LoadError: dlopen' when starting Ruby apps
 
 This can happen when you try to load a Ruby gem with native extensions that
