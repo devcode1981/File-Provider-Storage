@@ -12,8 +12,10 @@ all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup
 
 # Set up the GitLab Rails app
 
-gitlab-setup: gitlab/.git gitlab-config gitlab/.bundle
-	ln -s gitlab/.ruby-version .ruby-version
+gitlab-setup: gitlab/.git gitlab-config gitlab/.bundle .ruby-version
+
+.ruby-version:
+	ln -s ${gitlab_development_root}/gitlab/.ruby-version $@
 
 gitlab/.git:
 	git clone ${gitlab_repo} gitlab
