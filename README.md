@@ -39,6 +39,9 @@ sockets to avoid port conflicts.
 - [Update configuration files created by gitlab-development-kit](#update-configuration-files-created-by-gitlab-development-kit)
 - [PostgreSQL replication](#postgresql-replication)
 - [OpenLDAP](#openldap)
+- [Elasticsearch](#elasticsearch)
+    - [Installation: OS X](#installation-os-x)
+    - [Setup](#setup)
 - [NFS](#nfs)
     - [Ubuntu / Debian](#ubuntu-debian)
 - [OS X, other developer OS's](#os-x-other-developer-os-s)
@@ -522,6 +525,51 @@ The following users are added to the LDAP server:
 | bob      | password | `uid=bob,ou=people,dc=example-alt,dc=com`   |
 | alice    | password | `uid=alice,ou=people,dc=example-alt,dc=com` |
 
+## Elasticsearch
+
+### Installation: OS X
+
+1. Install Elasticsearch with [Homebrew]:
+
+    ```sh
+    brew install elasticsearch
+    ```
+
+1. Install the `delete-by-query` plugin:
+
+    ```sh
+    `brew info elasticsearch | awk '/plugin script:/ { print $NF }'` install delete-by-query
+    ```
+
+### Setup
+
+1. Edit `gitlab-ee/config/gitlab.yml` to enable Elasticsearch:
+
+    ```yaml
+    ## Elasticsearch (EE only)
+    # Enable it if you are going to use elasticsearch instead of
+    # regular database search
+    elasticsearch:
+      enabled: true
+      # host: localhost
+      # port: 9200
+    ```
+
+1. Start Elasticsearch by either running `elasticsearch` in a new terminal, or
+   by adding it to your `Procfile`:
+
+    ```
+    elasticsearch: elasticsearch
+    ```
+
+1. Be sure to restart the GDK's `foreman` instance if it's running.
+
+1. Perform a manual update of the Elasticsearch indexes:
+
+    ```sh
+    cd gitlab-ee && bundle exec rake gitlab:elastic:index
+    ```
+
 ## NFS
 
 If you want to experiment with how GitLab behaves over NFS you can use a setup
@@ -697,7 +745,8 @@ and remove the created traffic shaping rules.
 The GitLab Development Kit is distributed under the MIT license,
 see the LICENSE file.
 
+[docker engine]: https://docs.docker.com/engine/installation/
+[homebrew]: http://brew.sh/
+[puias]: https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/install/centos#add-puias-computational-repository
 [vagrant]: http://www.vagrantup.com
 [virtualbox]: https://www.virtualbox.org/wiki/Downloads
-[docker engine]: https://docs.docker.com/engine/installation/
-[puias]: https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/install/centos#add-puias-computational-repository
