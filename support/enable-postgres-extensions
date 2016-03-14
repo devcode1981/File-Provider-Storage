@@ -1,0 +1,4 @@
+#!/bin/sh
+psql -h $(pwd)/postgresql -d gitlabhq_development <<EOF
+CREATE EXTENSION pg_trgm;
+EOF
