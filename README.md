@@ -606,6 +606,17 @@ MR welcome!
 
 ## Troubleshooting
 
+### Error in database migrations when pg_trgm extension is missing
+
+Since GitLab 8.6+ the PostgreSQL extension `pg_trgm` must be installed. If you
+are installing GDK for the first time this is handled automatically from the
+database schema. In case you are updating your GDK and you experience this
+error, make sure you pull the latest changes from the GDK repository and run:
+
+```bash
+bash support/enable-postgres-extensions
+```
+
 ### Rails cannot connect to Postgres
 
 - Check if foreman is running in the gitlab-development-kit directory.
