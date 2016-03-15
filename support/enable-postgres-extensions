@@ -1,4 +1,7 @@
 #!/bin/sh
-psql -h $(pwd)/postgresql -d gitlabhq_development <<EOF
+for db in gitlabhq_development gitlabhq_test ; do
+  cat <<EOF
+\connect ${db}
 CREATE EXTENSION pg_trgm;
 EOF
+done | psql -h $(pwd)/postgresql -d template1
