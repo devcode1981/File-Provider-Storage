@@ -678,6 +678,61 @@ command will fetch Ruby 2.3 and install it from source:
 rvm reinstall --disable-binary 2.3
 ```
 
+### Run migration manually from the command line without affecting schema_migrations
+
+In case you use the same database for both CE and EE development, sometimes you
+can get stuck in a situation when the migration is up in `rake db:migrate:status`,
+but in reality the database doesn't have it. In that case, you need to run
+migrations manually.
+
+For example, https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/3186
+introduced some changes when a few EE migrations were added to CE. If you were
+using the same db for CE and EE you would get hit by the following error:
+
+```bash
+undefined method `share_with_group_lock' for #<Group
+```
+
+This exception happened because the system thinks that such migration was
+already run, and thus Rails skipped adding the `share_with_group_lock` field to
+the `namespaces` table.
+
+The problem is that you can not run `rake db:migrate:up VERSION=xxx` since the
+system thinks the migration is already run. Also, you can not run
+`rake db:migrate:redo VERSION=xxx` since it tries to do `down` before `up`,
+which fails if column does not exist or can cause data loss if column exists.
+
+To fix that, start the rails console:
+
+```bash
+rails console
+```
+
+And run manually the migrations:
+
+```
+require Rails.root.join("db/migrate/20130711063759_create_project_group_links.rb")
+CreateProjectGroupLinks.new.change
+require Rails.root.join("db/migrate/20130820102832_add_access_to_project_group_link.rb")
+AddAccessToProjectGroupLink.new.change
+require Rails.root.join("db/migrate/20150930110012_add_group_share_lock.rb")
+AddGroupShareLock.new.change
+```
+
+You should now be able to continue your development. You might want to note
+that in this case we had 3 migrations happening:
+
+```
+db/migrate/20130711063759_create_project_group_links.rb
+db/migrate/20130820102832_add_access_to_project_group_link.rb
+db/migrate/20150930110012_add_group_share_lock.rb
+```
+
+In general it doesn't matter in which order you run them, but in this case
+the last two migrations create columns in a table which is created by the first
+migration. So, in this example the order is important. Otherwise you would try
+to create a column in a non-existent table which would of course fail.
+
 ### 'LoadError: dlopen' when starting Ruby apps
 
 This can happen when you try to load a Ruby gem with native extensions that
