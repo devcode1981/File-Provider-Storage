@@ -1,0 +1,12 @@
+#!/bin/sh
+set -e # exit on uncaught failure
+
+cd gitlab
+
+if ! git remote | grep -q '^upstream$' ; then
+  git remote add upstream ${gitlab_upstream:-https://gitlab.com/gitlab-org/gitlab-ce.git}
+  git remote set-url --push upstream none # make 'upstream' fetch-only
+  git fetch upstream master
+fi
+
+git branch --set-upstream-to=upstream/master master
