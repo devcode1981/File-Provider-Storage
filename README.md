@@ -529,6 +529,24 @@ The following users are added to the LDAP server:
 
 The `john0` and `mary0` accounts count up to 9999.
 
+For testing of GitLab Enterprise Edition the following groups are created.
+
+| cn            | DN                                                  |
+| -------       | --------                                            |
+| group1        | 'cn=group1,ou=groups,dc=example,dc=com'             |
+| group2        | 'cn=group2,ou=groups,dc=example,dc=com'             |
+| group-10-0    | 'cn=group-10-0,ou=groups,dc=example,dc=com'         |
+| group-100-0   | 'cn=group-100-0,ou=groups,dc=example,dc=com'        |
+| group-1000-0  | 'cn=group-1000-0,ou=groups,dc=example,dc=com'       |
+| group-10000-0 | 'cn=group-10000-0,ou=groups,dc=example,dc=com'      |
+| group-a       | 'cn=group-a,ou=groups,dc=example-alt,dc=com'        |
+| group-b       | 'cn=group-b,ou=groups,dc=example-alt,dc=com'        |
+
+The group-10-0 groups have 10 members and run up to group-10-1000. The
+group-100-0 groups have 100 members and run up to group-100-100. The
+group-1000-0 groups have 1000 members and run up to group-1000-10.
+Finally, group-10000-0 and group-10000-1 each have 10000 members.
+
 ## Elasticsearch
 
 ### Installation: OS X
