@@ -521,9 +521,13 @@ The following users are added to the LDAP server:
 | uid      | Password | DN                                          |
 | -------- | -------- | -------                                     |
 | john     | password | `uid=john,ou=people,dc=example,dc=com`      |
+| john0    | password | `uid=john0,ou=people,dc=example,dc=com`     |
 | mary     | password | `uid=mary,ou=people,dc=example,dc=com`      |
+| mary0    | password | `uid=mary0,ou=people,dc=example,dc=com`     |
 | bob      | password | `uid=bob,ou=people,dc=example-alt,dc=com`   |
 | alice    | password | `uid=alice,ou=people,dc=example-alt,dc=com` |
+
+The `john0` and `mary0` accounts count up to 9999.
 
 ## Elasticsearch
 
