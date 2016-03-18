@@ -614,7 +614,7 @@ database schema. In case you are updating your GDK and you experience this
 error, make sure you pull the latest changes from the GDK repository and run:
 
 ```bash
-bash support/enable-postgres-extensions
+./support/enable-postgres-extensions
 ```
 
 ### Rails cannot connect to Postgres
