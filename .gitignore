@@ -26,3 +26,4 @@ gitlab-openldap/share/
 gitlab-workhorse/
 .vagrant_enabled
 port
+.ruby-version

@@ -86,7 +86,7 @@ gitlab-shell/.git/pull:
 
 # Set up supporting services
 
-support-setup: Procfile redis postgresql .bundle
+support-setup: .ruby-version .bundle Procfile redis postgresql
 	@echo ""
 	@echo "*********************************************"
 	@echo "************** Setup finished! **************"
@@ -130,6 +130,9 @@ postgresql-replication/backup:
 
 .bundle:
 	bundle install --jobs 4
+
+.ruby-version:
+	ln -s ${gitlab_development_root}/gitlab/.ruby-version $@
 
 gitlab-workhorse-setup: gitlab-workhorse/gitlab-workhorse
 
