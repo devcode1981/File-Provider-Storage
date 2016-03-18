@@ -2,7 +2,7 @@ gitlab_openldap_root = $(shell pwd)
 
 default: slapd.d/bootstrap contents alt_contents
 
-contents: slapd.d/schema slapd.d/example-com
+contents: slapd.d/schema slapd.d/example-com slapd.d/large-db
 alt_contents: slapd.d/schema slapd.d/alt-example-com
 
 slapd.d:
@@ -26,6 +26,10 @@ slapd.d/example-com: sbin/slapadd
 
 slapd.d/alt-example-com: sbin/slapadd
 	sbin/slapadd -b 'dc=example-alt,dc=com' -F slapd.d < frontend.alt.example.com.ldif
+	touch $@
+
+slapd.d/large-db:	sbin/slapadd
+	./large-db-ldif 10000 | sbin/slapadd -b 'dc=example,dc=com' -F slapd.d
 	touch $@
 
 clean:
