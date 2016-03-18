@@ -529,16 +529,16 @@ The following users are added to the LDAP server:
 
 For testing of GitLab Enterprise Edition the following groups are created.
 
-| cn            | DN                                             | Members | Last          |
-| -------       | --------                                       | ------- | ----          |
-| group1        | `cn=group1,ou=groups,dc=example,dc=com         | 2       |               |
-| group2        | `cn=group2,ou=groups,dc=example,dc=com         | 1       |               |
-| group-10-0    | `cn=group-10-0,ou=groups,dc=example,dc=com     | 10      | group-10-1000 |
-| group-100-0   | `cn=group-100-0,ou=groups,dc=example,dc=com    | 100     | group-100-100 |
-| group-1000-0  | `cn=group-1000-0,ou=groups,dc=example,dc=com   | 1,000   | group-1000-10 |
-| group-10000-0 | `cn=group-10000-0,ou=groups,dc=example,dc=com  | 10,000  | group-10000-1 |
-| group-a       | `cn=group-a,ou=groups,dc=example-alt,dc=com    | 2       |               |
-| group-b       | `cn=group-b,ou=groups,dc=example-alt,dc=com    | 1       |               |
+| cn            | DN                                              | Members | Last          |
+| -------       | --------                                        | ------- | ----          |
+| group1        | `cn=group1,ou=groups,dc=example,dc=com`         | 2       |               |
+| group2        | `cn=group2,ou=groups,dc=example,dc=com`         | 1       |               |
+| group-10-0    | `cn=group-10-0,ou=groups,dc=example,dc=com`     | 10      | group-10-1000 |
+| group-100-0   | `cn=group-100-0,ou=groups,dc=example,dc=com`    | 100     | group-100-100 |
+| group-1000-0  | `cn=group-1000-0,ou=groups,dc=example,dc=com`   | 1,000   | group-1000-10 |
+| group-10000-0 | `cn=group-10000-0,ou=groups,dc=example,dc=com`  | 10,000  | group-10000-1 |
+| group-a       | `cn=group-a,ou=groups,dc=example-alt,dc=com`    | 2       |               |
+| group-b       | `cn=group-b,ou=groups,dc=example-alt,dc=com`    | 1       |               |
 
 ## Elasticsearch
 
