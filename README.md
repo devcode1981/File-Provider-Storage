@@ -132,6 +132,8 @@ npm install phantomjs@1.9.8 -g
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
+# Add apt-add-repository helper script
+sudo apt-get install software-properties-common python-software-properties
 # This PPA contains an up-to-date version of Go
 sudo apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
 # This PPA gives us Redis 2.8 or newer
@@ -182,7 +184,7 @@ sudo dnf install postgresql libpqxx-devel postgresql-libs redis libicu-devel nod
 ```
 
 Install `phantomJS` manually, or download it and put in your $PATH. For
-instructions, follow the [Debian guide on phantomJS](#Debian).
+instructions, follow the [Debian guide on phantomJS](#debian).
 
 You may need to install Redis 2.8 or newer manually.
 
@@ -208,7 +210,7 @@ sudo usermod -a -G rvm <username>
 ```
 
 Install `phantomJS` manually, or download it and put in your $PATH. For
-instructions, follow the [Debian guide on phantomJS](#Debian).
+instructions, follow the [Debian guide on phantomJS](#debian).
 
 Git 1.7.1-3 is the latest git binary for CentOS 6.5 and GitLab. Spinach tests
 will fail due to a higher version requirement by GitLab. You can follow the
