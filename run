@@ -16,7 +16,7 @@ print_port() {
 }
 
 foreman_start() {
- exec env port=${port} bundle exec foreman start "$@"
+ exec env port=${port} foreman start "$@"
 }
 
 db() {
