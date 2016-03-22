@@ -308,9 +308,6 @@ The `Makefile` will clone the repositories, install the Gem bundles and set up
 basic configuration files. Pick one:
 
 ```
-# Install dependencies
-bundle install
-
 # Clone the official repositories of gitlab and gitlab-shell
 make
 ```
@@ -318,9 +315,6 @@ make
 Alternatively, you can clone straight from your forked repositories or GitLab EE.
 
 ```
-# Install dependencies
-bundle install
-
 # Clone your own forked repositories
 make gitlab_repo=git@gitlab.com:example/gitlab-ce.git gitlab_shell_repo=git@gitlab.com:example/gitlab-shell.git \
   gitlab_ci_repo=git@gitlab.com:example/gitlab-ci.git gitlab_runner_repo=git@gitlab.com:example/gitlab-ci-runner.git
@@ -397,7 +391,7 @@ First start Postgres and Redis.
 
 ```
 # current directory: gitlab-development-kit
-bundle exec foreman start
+./run
 ```
 
 Now you can go to http://localhost:3000 in your browser.

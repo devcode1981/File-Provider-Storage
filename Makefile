@@ -86,7 +86,7 @@ gitlab-shell/.git/pull:
 
 # Set up supporting services
 
-support-setup: .ruby-version .bundle Procfile redis postgresql
+support-setup: .ruby-version foreman Procfile redis postgresql
 	@echo ""
 	@echo "*********************************************"
 	@echo "************** Setup finished! **************"
@@ -128,8 +128,9 @@ postgresql-replication/backup:
 	psql -h ${postgres_dir} -d postgres -c "select pg_stop_backup(), current_timestamp"
 	./support/recovery.conf ${postgres_dir} > postgresql-replica/data/recovery.conf
 
-.bundle:
-	bundle install --jobs 4
+.PHONY:	foreman
+foreman:
+	command -v $@ > /dev/null || gem install $@
 
 .ruby-version:
 	ln -s ${gitlab_development_root}/gitlab/.ruby-version $@
