@@ -362,14 +362,7 @@ You can override the port used by this GDK with a 'port' file.
 
     echo 4000 > port
 
-If you want to work on GitLab CI - setup the GitLab Runner:
-
-    cd gitlab-runner
-    CI_SERVER_URL=http://localhost:3000 bundle exec ./bin/setup
-
-Start the GitLab Runner:
-
-    bundle exec ./bin/runner
+If you want to work on GitLab CI you will need to install [GitLab Runner](https://gitlab.com/gitlab-org/gitlab-ci-multi-runner).
 
 To enable the OpenLDAP server, see the OpenLDAP instructions in this readme.
 
