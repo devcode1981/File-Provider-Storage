@@ -31,6 +31,9 @@ slapd.d/alt-example-com: sbin/slapadd
 clean:
 	rm -rf slapd.d
 
+disable_bind_anon:
+	bin/ldapmodify -H ldap://127.0.0.1:3890/ -D "cn=admin,cn=config" -w password -f disable_bind_anon.ldif
+
 openldap-2.4.40:
 	curl -O ftp://ftp.openldap.org/pub/OpenLDAP/openldap-release/openldap-2.4.40.tgz
 	tar zxf openldap-2.4.40.tgz
