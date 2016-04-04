@@ -135,6 +135,13 @@ foreman:
 .ruby-version:
 	ln -s ${gitlab_development_root}/gitlab/.ruby-version $@
 
+localhost.pem: localhost.crt localhost.key
+	cat localhost.key localhost.crt > $@
+
+localhost.key:
+	openssl req -new -subj "/CN=localhost/" -x509 -days 365 -newkey rsa:2048 -nodes -keyout "localhost.key" -out "localhost.crt"
+	chmod 600 $@
+
 gitlab-workhorse-setup: gitlab-workhorse/gitlab-workhorse
 
 gitlab-workhorse-update: gitlab-workhorse/.git/pull

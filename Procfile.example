@@ -5,3 +5,4 @@ postgresql: postgres -D /home/git/postgresql/data -k /home/git/postgresql -h ''
 gitlab-workhorse: PATH=/home/git/gitlab-workhorse:$PATH gitlab-workhorse -authSocket /home/git/gitlab.socket -listenAddr localhost:$port -documentRoot /home/git/gitlab/public -developmentMode
 rails-web: cd gitlab && RAILS_ENV=development bin/web start_foreground
 rails-background-jobs: cd gitlab && RAILS_ENV=development bin/background_jobs start_foreground
+#workhorse-stunnel: support/workhorse-stunnel localhost:3443 /home/git/gitlab.socket /home/git/localhost.pem

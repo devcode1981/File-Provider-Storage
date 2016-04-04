@@ -1,0 +1,19 @@
+#!/bin/sh
+
+main() {
+  stunnel -fd 3 3<<EOF
+foreground = yes
+
+[workhorse-https]
+accept = $1
+connect = $2
+cert = $3
+EOF
+}
+
+if [ x$# -ne x3 ] ; then
+  echo "Usage: $0 LISTEN_ADDRESS WORKHORSE_SOCKET CERTIFICATE"
+  exit 1
+fi
+
+main "$@"
