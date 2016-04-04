@@ -27,3 +27,4 @@ gitlab-workhorse/
 .vagrant_enabled
 port
 .ruby-version
+localhost.*
