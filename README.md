@@ -139,7 +139,7 @@ sudo apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
 # This PPA gives us Redis 2.8 or newer
 sudo apt-add-repository -y ppa:chris-lea/redis-server
 sudo apt-get update
-sudo apt-get install git postgresql libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev golang ed pkg-config
+sudo apt-get install git postgresql postgresql-contrib libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev golang ed pkg-config
 ```
 
 #### Arch Linux
