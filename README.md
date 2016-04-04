@@ -614,7 +614,9 @@ sudo mount 127.0.0.1:/exports/gitlab-data/gitlab-satellites gitlab-satellites
 
 ## HTTPS
 
-If you want to access GitLab via HTTPS in development you can use stunnel.
+If you want to access GitLab via HTTPS in development you can use
+stunnel. The `support/workhorse-stunnel` script requires stunnel 4.0
+or newer.
 
 First generate a key and certificate for localhost:
 
