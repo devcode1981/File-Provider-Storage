@@ -52,7 +52,24 @@ ldap:
       admin_group: ''
 ```
 
-*Note:* We don't use a bind user for this setup, keeping it as simple as possible
+*Note:* We don't use a bind user for this setup, keeping it as simple as possible, but if you want to disable anonymous binding and require authentication run:
+
+```bash
+make disable_bind_anon
+```
+
+change your gitlab.yml with the following credentials:
+
+```yaml
+ldap:
+  enabled: true
+  servers:
+    main:
+      # ...
+      bind_dn: 'cn=admin,dc=example,dc=com'
+      password: 'password'
+      #...
+```
 
 # TODO
 
