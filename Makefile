@@ -136,7 +136,11 @@ foreman:
 	ln -s ${gitlab_development_root}/gitlab/.ruby-version $@
 
 localhost.pem: localhost.crt localhost.key
+	touch $@
+	chmod 600 $@
 	cat localhost.key localhost.crt > $@
+
+localhost.crt:	localhost.key
 
 localhost.key:
 	openssl req -new -subj "/CN=localhost/" -x509 -days 365 -newkey rsa:2048 -nodes -keyout "localhost.key" -out "localhost.crt"
