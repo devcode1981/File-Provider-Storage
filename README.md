@@ -44,6 +44,7 @@ sockets to avoid port conflicts.
     - [Setup](#setup)
 - [NFS](#nfs)
     - [Ubuntu / Debian](#ubuntu-debian)
+- [HTTPS](#https)
 - [OS X, other developer OS's](#os-x-other-developer-os-s)
 - [Troubleshooting](#troubleshooting)
     - [Rails cannot connect to Postgres](#rails-cannot-connect-to-postgres)
@@ -601,6 +602,26 @@ sudo mount 127.0.0.1:/exports/gitlab-data/repositories repositories
 sudo mount 127.0.0.1:/exports/gitlab-data/gitlab-satellites gitlab-satellites
 # TODO: put the above mounts in /etc/fstab ?
 ```
+
+## HTTPS
+
+If you want to access GitLab via HTTPS in development you can use
+stunnel. The `support/workhorse-stunnel` script requires stunnel 4.0 or
+newer. On OS X you can install stunnel with `brew install stunnel`.
+
+First generate a key and certificate for localhost:
+
+```
+make localhost.pem
+```
+
+On OS X you can add this certificate to the trust store with:
+`security add-trusted-cert localhost.crt`.
+
+Next make sure that HTTPS is enabled in gitlab/config/gitlab.yml.
+
+Uncomment the `workhorse-stunnel` line in your Procfile. Now `./run app`
+(and `./run`) will start stunnel listening on https://localhost:3443.
 
 ## OS X, other developer OS's
 
