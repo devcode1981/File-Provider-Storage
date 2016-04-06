@@ -632,9 +632,6 @@ Next make sure that HTTPS is enabled in gitlab/config/gitlab.yml.
 Uncomment the `workhorse-stunnel` line in your Procfile. Now `./run app`
 (and `./run`) will start stunnel listening on https://localhost:3443.
 
-TODO: figure out the impact of Strict-Transport-Security (set
-automatically in GitLab (Rails)) in development.
-
 ## OS X, other developer OS's
 
 MR welcome!
