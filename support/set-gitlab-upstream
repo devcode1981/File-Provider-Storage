@@ -12,4 +12,10 @@ fi
 git remote add ${remote_name} ${gitlab_upstream:-https://gitlab.com/gitlab-org/gitlab-ce.git}
 git remote set-url --push ${remote_name} none # make 'upstream' fetch-only
 git fetch ${remote_name} master
-git branch --set-upstream-to=${remote_name}/master master
+
+# check if the 'master' branch already exists
+if git show-ref --verify --quiet refs/heads/master ; then
+  git branch --set-upstream-to=${remote_name}/master master
+else
+  git branch master ${remote_name}/master
+fi
