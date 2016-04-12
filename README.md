@@ -47,7 +47,10 @@ sockets to avoid port conflicts.
 - [HTTPS](#https)
 - [OS X, other developer OS's](#os-x-other-developer-os-s)
 - [Troubleshooting](#troubleshooting)
+    - [Rebuilding gems with native extensions](#rebuilding-gems-with-native-extensions)
+    - [Error in database migrations when pg_trgm extension is missing](#error-in-database-migrations-when-pg_trgm-extension-is-missing)
     - [Rails cannot connect to Postgres](#rails-cannot-connect-to-postgres)
+    - [undefined symbol: SSLv2_method](#undefined-symbol-sslv2_method)
     - ['LoadError: dlopen' when starting Ruby apps](#loaderror-dlopen-when-starting-ruby-apps)
     - ['bundle install' fails due to permission problems](#bundle-install-fails-due-to-permission-problems)
     - ['bundle install' fails while compiling eventmachine gem](#bundle-install-fails-while-compiling-eventmachine-gem)
@@ -628,6 +631,23 @@ Uncomment the `workhorse-stunnel` line in your Procfile. Now `./run app`
 MR welcome!
 
 ## Troubleshooting
+
+### Rebuilding gems with native extensions
+
+There may be times when your local libraries that are used to build some gems'
+native extensions are updated (i.e., `libicu`), thus resulting in errors like:
+
+```
+rails-background-jobs.1 | /home/user/.rvm/gems/ruby-2.3.0/gems/activesupport-4.2.5.2/lib/active_support/dependencies.rb:274:in 'require': libicudata.so
+cannot open shared object file: No such file or directory - /home/user/.rvm/gems/ruby-2.3.0/gems/charlock_holmes-0.7.3/lib/charlock_holmes/charlock_holmes.so (LoadError)
+```
+
+In that case, find the offending gem and use `pristine` to rebuild its native
+extensions:
+
+```bash
+gem pristine charlock_holmes
+```
 
 ### Error in database migrations when pg_trgm extension is missing
 
