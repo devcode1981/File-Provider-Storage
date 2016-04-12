@@ -157,7 +157,7 @@ sudo pacman -S postgresql phantomjs redis postgresql-libs icu nodejs ed cmake op
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
-sudo apt-get install postgresql libpq-dev redis-server libicu-dev cmake g++ nodejs libkrb5-dev ed pkg-config
+sudo apt-get install postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs libkrb5-dev ed pkg-config
 ```
 
 If you are running Debian Stretch or newer you will need to install Go
