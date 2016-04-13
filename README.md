@@ -51,6 +51,7 @@ sockets to avoid port conflicts.
     - [Error in database migrations when pg_trgm extension is missing](#error-in-database-migrations-when-pg_trgm-extension-is-missing)
     - [Rails cannot connect to Postgres](#rails-cannot-connect-to-postgres)
     - [undefined symbol: SSLv2_method](#undefined-symbol-sslv2_method)
+    - [Fix conflicts in database migrations if you use the same db for CE and EE](#fix-conflicts-in-database-migrations-if-you-use-the-same-db-for-ce-and-ee)
     - ['LoadError: dlopen' when starting Ruby apps](#loaderror-dlopen-when-starting-ruby-apps)
     - ['bundle install' fails due to permission problems](#bundle-install-fails-due-to-permission-problems)
     - ['bundle install' fails while compiling eventmachine gem](#bundle-install-fails-while-compiling-eventmachine-gem)
@@ -677,6 +678,73 @@ command will fetch Ruby 2.3 and install it from source:
 ```
 rvm reinstall --disable-binary 2.3
 ```
+
+### Fix conflicts in database migrations if you use the same db for CE and EE
+
+>**Note:**
+The recommended way to fix the problem is to rebuild your database and move
+your EE development into a new directory.
+
+In case you use the same database for both CE and EE development, sometimes you
+can get stuck in a situation when the migration is up in `rake db:migrate:status`,
+but in reality the database doesn't have it.
+
+For example, https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/3186
+introduced some changes when a few EE migrations were added to CE. If you were
+using the same db for CE and EE you would get hit by the following error:
+
+```bash
+undefined method `share_with_group_lock' for #<Group
+```
+
+This exception happened because the system thinks that such migration was
+already run, and thus Rails skipped adding the `share_with_group_lock` field to
+the `namespaces` table.
+
+The problem is that you can not run `rake db:migrate:up VERSION=xxx` since the
+system thinks the migration is already run. Also, you can not run
+`rake db:migrate:redo VERSION=xxx` since it tries to do `down` before `up`,
+which fails if column does not exist or can cause data loss if column exists.
+
+A quick solution is to remove the database data and then recreate it:
+
+```bash
+rm -rf postgresql/data ; make
+```
+
+---
+
+If you don't want to nuke the database, you can perform the migrations manually.
+Open a terminal and start the rails console:
+
+```bash
+rails console
+```
+
+And run manually the migrations:
+
+```
+require Rails.root.join("db/migrate/20130711063759_create_project_group_links.rb")
+CreateProjectGroupLinks.new.change
+require Rails.root.join("db/migrate/20130820102832_add_access_to_project_group_link.rb")
+AddAccessToProjectGroupLink.new.change
+require Rails.root.join("db/migrate/20150930110012_add_group_share_lock.rb")
+AddGroupShareLock.new.change
+```
+
+You should now be able to continue your development. You might want to note
+that in this case we had 3 migrations happening:
+
+```
+db/migrate/20130711063759_create_project_group_links.rb
+db/migrate/20130820102832_add_access_to_project_group_link.rb
+db/migrate/20150930110012_add_group_share_lock.rb
+```
+
+In general it doesn't matter in which order you run them, but in this case
+the last two migrations create columns in a table which is created by the first
+migration. So, in this example the order is important. Otherwise you would try
+to create a column in a non-existent table which would of course fail.
 
 ### 'LoadError: dlopen' when starting Ruby apps
 
