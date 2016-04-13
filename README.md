@@ -150,7 +150,7 @@ sudo apt-get install git postgresql postgresql-contrib libpq-dev phantomjs redis
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
-sudo pacman -S postgresql phantomjs redis postgresql-libs icu nodejs ed cmake openssh git go
+pacman -S postgresql phantomjs redis postgresql-libs icu nodejs ed cmake openssh git go
 ```
 
 #### Debian
@@ -373,7 +373,6 @@ END Post-installation
 
 Please do not delete the 'END Post-installation' line above. It is used to
 print the post-installation message from the `Makefile`.
-
 
 ## Development
 
@@ -872,3 +871,4 @@ see the LICENSE file.
 [puias]: https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/install/centos#add-puias-computational-repository
 [vagrant]: http://www.vagrantup.com
 [virtualbox]: https://www.virtualbox.org/wiki/Downloads
+
