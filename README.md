@@ -51,6 +51,7 @@ sockets to avoid port conflicts.
     - [Error in database migrations when pg_trgm extension is missing](#error-in-database-migrations-when-pg_trgm-extension-is-missing)
     - [Rails cannot connect to Postgres](#rails-cannot-connect-to-postgres)
     - [undefined symbol: SSLv2_method](#undefined-symbol-sslv2_method)
+    - [Fix conflicts in database migrations if you use the same db for CE and EE](#fix-conflicts-in-database-migrations-if-you-use-the-same-db-for-ce-and-ee)
     - ['LoadError: dlopen' when starting Ruby apps](#loaderror-dlopen-when-starting-ruby-apps)
     - ['bundle install' fails due to permission problems](#bundle-install-fails-due-to-permission-problems)
     - ['bundle install' fails while compiling eventmachine gem](#bundle-install-fails-while-compiling-eventmachine-gem)
@@ -678,12 +679,15 @@ command will fetch Ruby 2.3 and install it from source:
 rvm reinstall --disable-binary 2.3
 ```
 
-### Run migration manually from the command line without affecting schema_migrations
+### Fix conflicts in database migrations if you use the same db for CE and EE
+
+>**Note:**
+The recommended way to fix the problem is to rebuild your database and move
+your EE development into a new directory.
 
 In case you use the same database for both CE and EE development, sometimes you
 can get stuck in a situation when the migration is up in `rake db:migrate:status`,
-but in reality the database doesn't have it. In that case, you need to run
-migrations manually.
+but in reality the database doesn't have it.
 
 For example, https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/3186
 introduced some changes when a few EE migrations were added to CE. If you were
@@ -702,7 +706,16 @@ system thinks the migration is already run. Also, you can not run
 `rake db:migrate:redo VERSION=xxx` since it tries to do `down` before `up`,
 which fails if column does not exist or can cause data loss if column exists.
 
-To fix that, start the rails console:
+A quick solution is to remove the database data and then recreate it:
+
+```bash
+rm -rf postgresql/data ; make
+```
+
+---
+
+If you don't want to nuke the database, you can perform the migrations manually.
+Open a terminal and start the rails console:
 
 ```bash
 rails console
