@@ -326,6 +326,12 @@ make gitlab_repo=git@gitlab.com:example/gitlab-ce.git gitlab_shell_repo=git@gitl
   gitlab_ci_repo=git@gitlab.com:example/gitlab-ci.git gitlab_runner_repo=git@gitlab.com:example/gitlab-ci-runner.git
 ```
 
+In order to more easily contribute changes back from a fork of the GitLab repository, you can run `support/set-gitlab-upstream` after `make` has finished. This creates a remote named `upstream` for [the canonical GitLab CE repository](https://gitlab.com/gitlab-org/gitlab-ce).
+
+This also modifies `make update` (See [Update gitlab and gitlab-shell repositories](Update gitlab and gitlab-shell repositories)) to pull down from the upstream repository instead of your fork, making it easier to keep up-to-date with the project.
+
+If you want to push changes from upstream to your fork, run `make update` and then `git push origin` from the `gitlab` directory.
+
 If you are going to work on Gitlab Geo, you will need [PostgreSQL replication](#postgresql-replication) setup before the "Post-installation" instructions.
 
 ### GitLab Enterprise Edition
@@ -822,7 +828,7 @@ make BUNDLE_PATH=$(pwd)/vendor/bundle
 
 ### 'bundle install' fails while compiling eventmachine gem
 
-On OS X El Capitan gem eventmachine compilation might fail with:
+On OS X El Capitan, the eventmachine gem compilation might fail with:
 
 ```
 Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
