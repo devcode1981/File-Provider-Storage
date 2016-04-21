@@ -35,6 +35,8 @@ sockets to avoid port conflicts.
 - [Development](#development)
     - [Example](#example)
     - [Running the tests](#running-the-tests)
+    - [Simulating Broken Storage Devices](#simulating-broken-storage-devices)
+    - [Simulating Slow Filesystems](#simulating-slow-filesystems)
 - [Update gitlab and gitlab-shell repositories](#update-gitlab-and-gitlab-shell-repositories)
 - [Update configuration files created by gitlab-development-kit](#update-configuration-files-created-by-gitlab-development-kit)
 - [PostgreSQL replication](#postgresql-replication)
@@ -408,6 +410,21 @@ To run a single test file you can use:
 
 - `bundle exec rspec spec/controllers/commit_controller_spec.rb` for a rspec test
 - `bundle exec spinach features/project/issues/milestones.feature` for a spinach test
+
+### Simulating Broken Storage Devices
+
+To test how GitLab behaves when the underlying storage system is not working
+you can simply change your local GitLab instance to use an empty directory for
+the repositories. To do so edit your `config/gitlab.yml` configuration file so
+that the `gitlab_shell.repos_path` option for your environment (e.g.
+"development") points to an empty directory.
+
+### Simulating Slow Filesystems
+
+To simulate a slow filesystem you can use the script `bin/mount-flow-fs`. This
+script can be used to mount a local directory via SSHFS and slow down access to
+the files in this directory. For more information see
+[mount-slow-fs](#mount-slow-fs).
 
 ## Update gitlab and gitlab-shell repositories
 
