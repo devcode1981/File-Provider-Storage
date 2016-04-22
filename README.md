@@ -105,6 +105,11 @@ see [the instructions for our (experimental) Vagrant with Docker setup](#vagrant
 
 ### Clone GitLab Development Kit repository
 
+Make sure that none of the directories 'above' GitLab Development Kit
+contain 'problematic' characters such as ` ` and `(`. For example,
+`/home/janedoe/projects` is OK, but `/home/janedoe/my projects` will
+cause problems.
+
 ```
 git clone https://gitlab.com/gitlab-org/gitlab-development-kit.git
 cd gitlab-development-kit
