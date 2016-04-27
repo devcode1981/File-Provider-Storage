@@ -17,7 +17,7 @@ sockets to avoid port conflicts.
     - [Clone GitLab Development Kit repository](#clone-gitlab-development-kit-repository)
     - [Native installation setup](#native-installation-setup)
         - [Prerequisites for all platforms](#prerequisites-for-all-platforms)
-        - [OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan)](#os-x-10-9-mavericks-10-10-yosemite-10-11-el-capitan)
+        - [OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan)](#os-x-109-mavericks-1010-yosemite-1011-el-capitan)
         - [Ubuntu](#ubuntu)
         - [Arch Linux](#arch-linux)
         - [Debian](#debian)
