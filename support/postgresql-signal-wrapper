@@ -1,4 +1,7 @@
 #!/usr/bin/env ruby
+#
+# Translate SIGTERM to SIGINT to request a 'fast shutdown' from Postgres.
+
 Signal.trap('TERM') { puts "Sending INT to #$pid"; Process.kill('INT', $pid) }
 
 $pid = spawn(*ARGV)

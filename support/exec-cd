@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+#
+# This script implements 'cd foo && exec bar' without the need to invoke
+# /bin/sh for the ' && '.
+
+if ARGV.count < 2
+  abort "Usage: #$0 DIRECTORY COMMAND [ARGUMENTS ...]"
+end
+
+Dir.chdir(ARGV.shift)
+exec *ARGV
