@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+Signal.trap('TERM') { puts "Sending INT to #$pid"; Process.kill('INT', $pid) }
+
+$pid = spawn(*ARGV)
+Process.wait($pid)
+exit $?.exitstatus

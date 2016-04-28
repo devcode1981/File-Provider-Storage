@@ -1,6 +1,6 @@
 redis: redis-server /home/git/redis/redis.conf
-postgresql: postgres -D /home/git/postgresql/data -k /home/git/postgresql -h ''
-#postgresql-replica: postgres -D /home/git/postgresql-replica/data -k /home/git/postgresql-replica -h ''
+postgresql: support/postgresql-signal-wrapper postgres -D /home/git/postgresql/data -k /home/git/postgresql -h ''
+#postgresql-replica: support/postgresql-signal-wrapper postgres -D /home/git/postgresql-replica/data -k /home/git/postgresql-replica -h ''
 #openldap: cd gitlab-openldap && libexec/slapd -F slapd.d -d2 -h "ldap://127.0.0.1:3890"
 gitlab-workhorse: PATH=/home/git/gitlab-workhorse:$PATH gitlab-workhorse -authSocket /home/git/gitlab.socket -listenAddr localhost:$port -documentRoot /home/git/gitlab/public -developmentMode
 rails-web: cd gitlab && RAILS_ENV=development bin/web start_foreground
