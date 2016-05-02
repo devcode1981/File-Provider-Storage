@@ -2,8 +2,8 @@
 
 In this file we explain different methods of setting up a Vagrant
 virtual machine to do GitLab development in. Please see the [main
-README](../README.md#installation) how to install GDK after you have
-set up your Vagrant machine.
+README](../README.md#installation) for instructions how to install GDK
+after you have set up your Vagrant machine.
 
 ### Vagrant setup
 
