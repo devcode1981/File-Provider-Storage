@@ -414,6 +414,12 @@ In order to run the test you can use the following commands:
 - `rake teaspoon` to run the teaspoon test suite
 - `rake gitlab:test` to run all the tests
 
+Note: Both `rake spinach` and `rake spec` takes significant time to pass. 
+Instead of running full test suite locally you can save a lot of time by running
+a single test or directory related to your changes. After you submit merge request 
+CI will run full test suite for you. Green CI status in the merge request means 
+full test suite is passed.  
+
 Note: You can't run `rspec .` since this will try to run all the `_spec.rb`
 files it can find, also the ones in `/tmp`
 
@@ -421,6 +427,11 @@ To run a single test file you can use:
 
 - `bundle exec rspec spec/controllers/commit_controller_spec.rb` for a rspec test
 - `bundle exec spinach features/project/issues/milestones.feature` for a spinach test
+
+To run several tests inside one directory:
+
+- `bundle exec rspec spec/requests/api/` for the rspec tests if you want to test API only
+- `bundle exec spinach features/profile/` for the spinach tests if you want to test only profile pages
 
 ### Simulating Broken Storage Devices
 
