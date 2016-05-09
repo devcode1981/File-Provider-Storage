@@ -28,3 +28,7 @@ gitlab-workhorse/
 port
 .ruby-version
 localhost.*
+influxdb/src
+influxdb/bin
+influxdb/pkg
+influxdb/v0.12.2.zip
