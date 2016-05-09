@@ -31,4 +31,8 @@ localhost.*
 influxdb/src
 influxdb/bin
 influxdb/pkg
-influxdb/v0.12.2.zip
+influxdb/*.tar.gz
+grafana/src
+grafana/pkg
+grafana/bin
+grafana/*.tar.gz
