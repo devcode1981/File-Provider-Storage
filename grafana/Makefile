@@ -30,10 +30,6 @@ vendor: public bin/grafana-server
 conf:	vendor
 	cp -r ${GRAFANA_SOURCE}/conf conf
 
-bin/grafana-cli: ${GRAFANA_SOURCE}/bin/grafana-server
-	install ${GRAFANA_SOURCE}/bin/grafana-cli $@
-
-bin/grafana-server:
 .PHONY:	clean
 clean:
 	rm -rf pkg bin src v3.0-beta5.tar.gz public vendor conf
