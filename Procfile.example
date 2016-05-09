@@ -6,3 +6,4 @@ gitlab-workhorse: PATH=/home/git/gitlab-workhorse:$PATH gitlab-workhorse -authSo
 rails-web: RAILS_ENV=development support/exec-cd gitlab bin/web start_foreground
 rails-background-jobs: RAILS_ENV=development support/exec-cd gitlab bin/background_jobs start_foreground
 #workhorse-stunnel: support/workhorse-stunnel localhost:3443 /home/git/gitlab.socket /home/git/localhost.pem
+#influxdb: influxdb/bin/influxd -config influxdb/influxdb.conf

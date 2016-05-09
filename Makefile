@@ -161,6 +161,12 @@ gitlab-workhorse/.git/pull:
 	cd ${gitlab_development_root}/gitlab-workhorse && \
 	git pull --ff-only
 
+influxdb-setup:	influxdb/influxdb.conf
+	cd influxdb && make
+
+influxdb/influxdb.conf:
+	sed -e "s|/home/git|${gitlab_development_root}|g" $@.example > $@
+
 clean-config:
 	rm -f \
 	gitlab/config/gitlab.yml \

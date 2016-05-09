@@ -39,3 +39,6 @@ grafana/public
 grafana/conf
 grafana/vendor
 grafana/*.tar.gz
+influxdb/meta/
+influxdb/wal/
+influxdb/influxdb.conf
