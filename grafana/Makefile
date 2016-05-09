@@ -12,6 +12,7 @@ ${GRAFANA_SOURCE}/build.go:	v3.0-beta5.tar.gz
 	tar zxf $<
 	mkdir -p ${GRAFANA_PARENT}
 	mv grafana-3.0-beta5 ${GRAFANA_SOURCE}
+	touch $@
 
 bin/grafana-server:	${GRAFANA_SOURCE}/build.go
 	cd ${GRAFANA_SOURCE} && go run build.go setup
