@@ -35,4 +35,7 @@ influxdb/*.tar.gz
 grafana/src
 grafana/pkg
 grafana/bin
+grafana/public
+grafana/conf
+grafana/vendor
 grafana/*.tar.gz

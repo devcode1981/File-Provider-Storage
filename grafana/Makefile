@@ -24,10 +24,10 @@ public:	bin/grafana-server
 	cd ${GRAFANA_SOURCE} && node_modules/grunt-cli/bin/grunt build
 	mv ${GRAFANA_SOURCE}/public_gen $@
 
-vendor: public bin/grafana-server
+vendor: public
 	cp -r ${GRAFANA_SOURCE}/vendor vendor
 
-conf:	vendor
+conf:	public
 	cp -r ${GRAFANA_SOURCE}/conf conf
 
 .PHONY:	clean
