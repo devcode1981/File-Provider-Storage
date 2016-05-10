@@ -161,8 +161,13 @@ gitlab-workhorse/.git/pull:
 	cd ${gitlab_development_root}/gitlab-workhorse && \
 	git pull --ff-only
 
-influxdb-setup:	influxdb/influxdb.conf
+influxdb-setup:	influxdb/influxdb.conf influxdb/bin/influxd influxdb/meta/meta.db
+
+influxdb/bin/influxd:
 	cd influxdb && make
+
+influxdb/meta/meta.db:
+	support/bootstrap-influxdb 8086
 
 influxdb/influxdb.conf:
 	sed -e "s|/home/git|${gitlab_development_root}|g" $@.example > $@

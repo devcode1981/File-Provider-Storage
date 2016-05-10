@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+require 'socket'
+
+if ARGV.count != 1
+  abort "Usage: #$0 INFLUXDB_HTTP_PORT"
+end
+
+host = '127.0.0.1'
+port = ARGV.shift
+success = false
+
+begin
+  foreman_pid = spawn('./run', 'db')
+  socket_ready = false
+  30.times do
+    begin
+      TCPSocket.new(host, port)
+      socket_ready = true
+      break
+    rescue Errno::ECONNREFUSED
+      sleep 1
+    end
+  end
+
+  abort "#$0: could not connect to InfluxDB at #{host}:#{port}" unless socket_ready
+
+  success = system(*%W(influxdb/bin/influx -host #{host} -port #{port}), in: 'influxdb/seed-queries.txt')
+ensure
+  Process.kill('TERM', foreman_pid)
+end
+
+exit success
