@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+begin
+  foreman_pid = spawn('./run', 'db')
+sleep 10
+  system *%W(createdb -h #{Dir.pwd}/postgresql grafana)
+  status = $?
+ensure
+  Process.kill('TERM', foreman_pid)
+end
+
+exit status.success?
