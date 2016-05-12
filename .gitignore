@@ -42,3 +42,5 @@ grafana/*.tar.gz
 influxdb/meta/
 influxdb/wal/
 influxdb/influxdb.conf
+grafana/grafana.ini
+grafana/data/
