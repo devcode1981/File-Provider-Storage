@@ -28,6 +28,10 @@ app() {
   foreman_start -c all=0,rails-web=1,rails-background-jobs=1,gitlab-workhorse=1,workhorse-stunnel=1,grafana=1
 }
 
+grafana() {
+  foreman_start -c all=0,grafana=1
+}
+
 all() {
   print_port
   foreman_start
@@ -39,6 +43,9 @@ xdb)
   ;;
 xapp)
   app
+  ;;
+xgrafana)
+  grafana
   ;;
 x*)
   all

@@ -1,0 +1,46 @@
+#!/usr/bin/env ruby
+require 'socket'
+require 'net/http'
+
+if !ARGV.empty?
+  abort "Usage: #$0"
+end
+
+host = '127.0.0.1'
+port = '9999'
+
+begin
+  db_pid = spawn('./run', 'db')
+  grafana_pid = spawn('./run', 'grafana')
+  socket_ready = false
+  30.times do
+    begin
+      TCPSocket.new(host, port)
+      socket_ready = true
+      break
+    rescue Errno::ECONNREFUSED
+      sleep 1
+    end
+  end
+
+  abort "#$0: could not connect to InfluxDB at #{host}:#{port}" unless socket_ready
+
+  http = Net::HTTP.new(host, port)
+  request = Net::HTTP::Post.new('/api/datasources')
+  request.basic_auth('admin', 'admin')
+  request.add_field('Content-Type', 'application/json')
+  request.body = <<EOS
+{
+    "name": "InfluxDB",
+    "type": "influxdb",
+    "url": "http://localhost:8086",
+    "access": "direct",
+    "database": "gitlab",
+    "isDefault": true
+}
+EOS
+  puts http.request(request).body
+ensure
+  Process.kill('TERM', db_pid)
+  Process.kill('TERM', grafana_pid)
+end

@@ -172,7 +172,7 @@ influxdb/meta/meta.db:
 influxdb/influxdb.conf:
 	sed -e "s|/home/git|${gitlab_development_root}|g" $@.example > $@
 
-grafana-setup:	grafana/grafana.ini grafana/bin/grafana-server grafana/gdk-pg-created
+grafana-setup:	grafana/grafana.ini grafana/bin/grafana-server grafana/gdk-pg-created grafana/gdk-data-source-created
 
 grafana/bin/grafana-server:
 	cd grafana && make
@@ -186,6 +186,10 @@ grafana/gdk-pg-created:
 	PATH=${postgres_bin_dir}:${PATH} support/create-grafana-db
 	touch $@
 
+grafana/gdk-data-source-created:
+	support/bootstrap-grafana
+	touch $@
+	
 performance-metrics-setup:	influxdb-setup grafana-setup Procfile
 	printf ',s/^#influxdb/influxdb/\nwq\n' | ed -s Procfile
 	printf ',s/^#grafana/grafana/\nwq\n' | ed -s Procfile
