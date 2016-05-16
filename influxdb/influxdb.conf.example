@@ -55,7 +55,7 @@ reporting-disabled = false
 
   # Whether queries should be logged before execution. Very useful for troubleshooting, but will
   # log any sensitive data contained within a query.
-  # query-log-enabled = true
+  query-log-enabled = false
 
   # Settings for the TSM engine
 
@@ -285,6 +285,6 @@ reporting-disabled = false
 ###
 
 [continuous_queries]
-  log-enabled = true
+  log-enabled = false
   enabled = true
   # run-interval = "1s" # interval for how often continuous queries will be checked if they need to run
