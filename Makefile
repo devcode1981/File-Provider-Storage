@@ -161,6 +161,39 @@ gitlab-workhorse/.git/pull:
 	cd ${gitlab_development_root}/gitlab-workhorse && \
 	git pull --ff-only
 
+influxdb-setup:	influxdb/influxdb.conf influxdb/bin/influxd influxdb/meta/meta.db
+
+influxdb/bin/influxd:
+	cd influxdb && make
+
+influxdb/meta/meta.db:
+	support/bootstrap-influxdb 8086
+
+influxdb/influxdb.conf:
+	sed -e "s|/home/git|${gitlab_development_root}|g" $@.example > $@
+
+grafana-setup:	grafana/grafana.ini grafana/bin/grafana-server grafana/gdk-pg-created grafana/gdk-data-source-created
+
+grafana/bin/grafana-server:
+	cd grafana && make
+
+grafana/grafana.ini:
+	sed -e "s|/home/git|${gitlab_development_root}|g" \
+		-e "s/GDK_USERNAME/${shell whoami}/g" \
+		$@.example > $@
+
+grafana/gdk-pg-created:
+	PATH=${postgres_bin_dir}:${PATH} support/create-grafana-db
+	touch $@
+
+grafana/gdk-data-source-created:
+	support/bootstrap-grafana
+	touch $@
+	
+performance-metrics-setup:	influxdb-setup grafana-setup Procfile
+	printf ',s/^#influxdb/influxdb/\nwq\n' | ed -s Procfile
+	printf ',s/^#grafana/grafana/\nwq\n' | ed -s Procfile
+
 clean-config:
 	rm -f \
 	gitlab/config/gitlab.yml \

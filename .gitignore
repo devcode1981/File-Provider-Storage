@@ -28,3 +28,5 @@ gitlab-workhorse/
 port
 .ruby-version
 localhost.*
+influxdb/
+grafana/
