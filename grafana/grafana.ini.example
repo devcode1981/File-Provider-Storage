@@ -242,8 +242,8 @@ mode = console
 
 ;#################################### Dashboard JSON files ##########################
 [dashboards.json]
-;enabled = false
-;path = /home/git/grafana/dashboards
+enabled = true
+path = /home/git/grafana/grafana-dashboards/dashboards
 
 
 
