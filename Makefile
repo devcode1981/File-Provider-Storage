@@ -186,6 +186,10 @@ grafana/gdk-pg-created:
 	PATH=${postgres_bin_dir}:${PATH} support/create-grafana-db
 	touch $@
 
+performance-metrics-setup:	influxdb-setup grafana-setup Procfile
+	printf ',s/^#influxdb/influxdb/\nwq\n' | ed -s Procfile
+	printf ',s/^#grafana/grafana/\nwq\n' | ed -s Procfile
+
 clean-config:
 	rm -f \
 	gitlab/config/gitlab.yml \

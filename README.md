@@ -655,6 +655,10 @@ Next make sure that HTTPS is enabled in gitlab/config/gitlab.yml.
 Uncomment the `workhorse-stunnel` line in your Procfile. Now `./run app`
 (and `./run`) will start stunnel listening on https://localhost:3443.
 
+## Performance metrics
+
+See [doc/performance_metrics.md](doc/performance_metrics.md).
+
 ## OS X, other developer OS's
 
 MR welcome!
