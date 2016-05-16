@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+PG_HOST = "#{Dir.pwd}/postgresql"
+
+def main
+  if !pg_ready?
+    abort "#$0: could not connect to Postgres at #{PG_HOST}"
+  end
+
+  exec *ARGV
+end
+
+def pg_ready?
+  10.times do
+    if system *%W(psql -h #{PG_HOST} -d template1 -c SELECT\ now()), out: '/dev/null', err: '/dev/null'
+      return true
+    end
+    sleep 1
+  end
+  false
+end
+
+if ARGV.empty?
+  abort "Usage: #$0 COMMAND [ARGUMENT...]"
+end
+
+main
