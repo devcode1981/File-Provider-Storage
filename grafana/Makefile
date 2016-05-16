@@ -2,7 +2,7 @@ export GOPATH := $(shell pwd)
 GRAFANA_PARENT := src/github.com/grafana
 GRAFANA_SOURCE := ${GRAFANA_PARENT}/grafana
 
-all: public vendor conf bin/grafana-server
+all: public vendor conf bin/grafana-server grafana-dashboards
 
 v3.0-beta5.tar.gz:
 	curl -LO https://github.com/grafana/grafana/archive/v3.0-beta5.tar.gz
@@ -31,6 +31,9 @@ vendor: public
 conf:	public
 	cp -r ${GRAFANA_SOURCE}/conf conf
 
+grafana-dashboards:
+	git clone https://gitlab.com/gitlab-org/grafana-dashboards.git
+
 .PHONY:	clean
 clean:
-	rm -rf pkg bin src v3.0-beta5.tar.gz public vendor conf
+	rm -rf pkg bin src v3.0-beta5.tar.gz public vendor conf grafana-dashboards
