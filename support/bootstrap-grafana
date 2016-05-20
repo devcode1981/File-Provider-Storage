@@ -23,7 +23,7 @@ begin
     end
   end
 
-  abort "#$0: could not connect to InfluxDB at #{host}:#{port}" unless socket_ready
+  abort "#$0: could not connect to Grafana at #{host}:#{port}" unless socket_ready
 
   http = Net::HTTP.new(host, port)
   request = Net::HTTP::Post.new('/api/datasources')

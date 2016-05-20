@@ -167,6 +167,7 @@ influxdb/bin/influxd:
 	cd influxdb && make
 
 influxdb/meta/meta.db:
+	printf ',s/^#influxdb/influxdb/\nwq\n' | ed -s Procfile
 	support/bootstrap-influxdb 8086
 
 influxdb/influxdb.conf:
@@ -187,12 +188,11 @@ grafana/gdk-pg-created:
 	touch $@
 
 grafana/gdk-data-source-created:
+	printf ',s/^#grafana/grafana/\nwq\n' | ed -s Procfile
 	support/bootstrap-grafana
 	touch $@
 	
-performance-metrics-setup:	influxdb-setup grafana-setup Procfile
-	printf ',s/^#influxdb/influxdb/\nwq\n' | ed -s Procfile
-	printf ',s/^#grafana/grafana/\nwq\n' | ed -s Procfile
+performance-metrics-setup:	Procfile influxdb-setup grafana-setup
 
 clean-config:
 	rm -f \
