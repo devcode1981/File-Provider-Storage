@@ -98,11 +98,6 @@ Procfile:
 	sed -e "s|/home/git|${gitlab_development_root}|g"\
 	  -e "s|postgres |${postgres_bin_dir}/postgres |"\
 	  $@.example > $@
-	# Listen on external interface if inside a vagrant vm
-	if [ -f .vagrant_enabled ] ; \
-	then \
-		printf ',s/localhost:/0.0.0.0:/g\nwq\n' | ed $@ ; \
-	fi;
 
 redis: redis/redis.conf
 
