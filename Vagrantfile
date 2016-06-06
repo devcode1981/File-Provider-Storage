@@ -96,10 +96,6 @@ fi
 # set git defaults
 sudo -u $DEV_USER -i bash -c "git config --global user.name 'GitLab Development'"
 sudo -u $DEV_USER -i bash -c "git config --global user.email gitlab@local.local"
-
-# set host:port settings for application
-sudo -u $DEV_USER -i bash -c "echo 'export host=0.0.0.0' >> ~/.bash_profile"
-sudo -u $DEV_USER -i bash -c "echo 'export port=3000' >> ~/.bash_profile"
 EOT
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|

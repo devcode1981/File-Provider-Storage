@@ -98,6 +98,10 @@ Procfile:
 	sed -e "s|/home/git|${gitlab_development_root}|g"\
 	  -e "s|postgres |${postgres_bin_dir}/postgres |"\
 	  $@.example > $@
+	if [ -f .vagrant_enabled ]; then \
+		echo "0.0.0.0" > host; \
+		echo "3000" > port; \
+	fi
 
 redis: redis/redis.conf
 
