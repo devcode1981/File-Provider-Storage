@@ -10,7 +10,7 @@ fi
 port=${port:-3000}
 
 print_port() {
-  echo "
+  echo -e "
 
            \033[38;5;88m\`                        \`
           :s:                      :s:
