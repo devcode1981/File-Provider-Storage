@@ -1,0 +1,15 @@
+AllowUsers GDK_USERNAME
+AuthenticationMethods publickey
+HostKey /home/git/openssh/ssh_host_rsa_key
+ListenAddress 127.0.0.1:2222
+LogLevel VERBOSE
+PasswordAuthentication no
+PidFile none
+Protocol 2
+StrictModes no
+UseLogin no
+UsePAM no
+UsePrivilegeSeparation no
+
+Match User GDK_USERNAME
+AuthorizedKeysFile /home/git/.ssh/authorized_keys

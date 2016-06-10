@@ -7,5 +7,10 @@ ed -s "$1" <<EOF
 / user:/c
     user: $(whoami)
 .
+/^  gitlab_shell:/
+a
+    ssh_port: 2222
+    ssh_host: localhost
+.
 wq
 EOF

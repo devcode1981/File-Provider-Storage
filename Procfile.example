@@ -8,3 +8,4 @@ rails-background-jobs: RAILS_ENV=development support/exec-cd gitlab bin/backgrou
 #workhorse-stunnel: support/workhorse-stunnel localhost:3443 /home/git/gitlab.socket /home/git/localhost.pem
 #influxdb: influxdb/bin/influxd -config influxdb/influxdb.conf
 #grafana: support/wait-postgresql-ready support/exec-cd grafana bin/grafana-server -config grafana.ini
+#sshd: /usr/sbin/sshd -e -D -f /home/git/openssh/sshd_config

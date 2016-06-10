@@ -7,6 +7,8 @@ postgres_replication_user = gitlab_replication
 postgres_dir = $(realpath ./postgresql)
 postgres_replica_dir = $(realpath ./postgresql-replica)
 port = $(shell cat port 2>/dev/null)
+username = $(shell whoami)
+sshd_bin = $(shell which sshd)
 
 all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup
 
@@ -86,7 +88,7 @@ gitlab-shell/.git/pull:
 
 # Set up supporting services
 
-support-setup: .ruby-version foreman Procfile redis postgresql
+support-setup: .ruby-version foreman Procfile redis postgresql openssh-setup
 	@echo ""
 	@echo "*********************************************"
 	@echo "************** Setup finished! **************"
@@ -96,6 +98,7 @@ support-setup: .ruby-version foreman Procfile redis postgresql
 
 Procfile:
 	sed -e "s|/home/git|${gitlab_development_root}|g"\
+      -e "s|/usr/sbin/sshd|${sshd_bin}|"\
 	  -e "s|postgres |${postgres_bin_dir}/postgres |"\
 	  $@.example > $@
 	# Listen on external interface if inside a vagrant vm
@@ -180,7 +183,7 @@ grafana/bin/grafana-server:
 
 grafana/grafana.ini:
 	sed -e "s|/home/git|${gitlab_development_root}|g" \
-		-e "s/GDK_USERNAME/${shell whoami}/g" \
+		-e "s/GDK_USERNAME/${username}/g" \
 		$@.example > $@
 
 grafana/gdk-pg-created:
@@ -193,6 +196,16 @@ grafana/gdk-data-source-created:
 	touch $@
 	
 performance-metrics-setup:	Procfile influxdb-setup grafana-setup
+
+openssh-setup:	openssh/sshd_config openssh/ssh_host_rsa_key
+
+openssh/sshd_config:
+	sed -e "s|/home/git|${gitlab_development_root}|g" \
+		-e "s/GDK_USERNAME/${username}/g" \
+		$@.example > $@
+
+openssh/ssh_host_rsa_key:
+	ssh-keygen -f $@ -N '' -t rsa
 
 clean-config:
 	rm -f \

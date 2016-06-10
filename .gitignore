@@ -30,3 +30,6 @@ port
 localhost.*
 influxdb/
 grafana/
+openssh/*_key
+openssh/*.pub
+openssh/sshd_config
