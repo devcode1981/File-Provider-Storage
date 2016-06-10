@@ -816,6 +816,19 @@ git checkout -b can-I-commit
 git commit --allow-empty -m 'I can commit'
 ```
 
+
+### 'gem install nokogiri' fails
+
+Make sure that Xcode Command Line Tools installed on your development machine. For the discussion see this [issue](https://gitlab.com/gitlab-org/gitlab-development-kit/issues/124)
+
+```
+brew unlink gcc-4.2      # you might not need this step
+gem uninstall nokogiri
+xcode-select --install
+gem install nokogiri
+```
+
+
 ### Other problems
 
 Please open an issue on the [GDK issue tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues).
