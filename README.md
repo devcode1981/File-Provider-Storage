@@ -276,6 +276,9 @@ Now you can start GitLab EE with `./run` in the `gdk-ee` directory and you
 will not have port conflicts with a separate GDK instance for CE that
 might still be running.
 
+Instructions to generate a developer license can be found in the
+onboarding document: https://about.gitlab.com/handbook/developer-onboarding/#gitlab-enterprise-edition-ee
+
 ## Post-installation
 
 Start GitLab and all required services:
