@@ -237,16 +237,16 @@ The `Makefile` will clone the repositories, install the Gem bundles and set up
 basic configuration files. Pick one:
 
 ```
-# Clone the official repositories of gitlab and gitlab-shell
-make
+# Set up GDK with 'origin' pointing to your gitlab-ce fork
+make gitlab_repo=https://gitlab.com/my-fork/gitlab-ce.git
+support/set-gitlab-upstream
 ```
 
-Alternatively, you can clone straight from your forked repositories or GitLab EE.
+Alternatively, you can clone all components from their official source.
 
 ```
 # Clone your own forked repositories
-make gitlab_repo=git@gitlab.com:example/gitlab-ce.git gitlab_shell_repo=git@gitlab.com:example/gitlab-shell.git \
-  gitlab_ci_repo=git@gitlab.com:example/gitlab-ci.git gitlab_runner_repo=git@gitlab.com:example/gitlab-ci-runner.git
+make
 ```
 
 In order to more easily contribute changes back from a fork of the GitLab repository, you can run `support/set-gitlab-upstream` after `make` has finished. This creates a remote named `upstream` for [the canonical GitLab CE repository](https://gitlab.com/gitlab-org/gitlab-ce).
