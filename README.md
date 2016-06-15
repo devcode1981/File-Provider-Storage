@@ -237,8 +237,9 @@ The `Makefile` will clone the repositories, install the Gem bundles and set up
 basic configuration files. Pick one:
 
 ```
-# Set up GDK with 'origin' pointing to your gitlab-ce fork
-make gitlab_repo=https://gitlab.com/my-fork/gitlab-ce.git
+# Set up GDK with 'origin' pointing to your gitlab-ce fork.
+# Replace MY-FORK with your namespace
+make gitlab_repo=https://gitlab.com/MY-FORK/gitlab-ce.git
 support/set-gitlab-upstream
 ```
 
