@@ -101,11 +101,10 @@ Procfile:
       -e "s|/usr/sbin/sshd|${sshd_bin}|"\
 	  -e "s|postgres |${postgres_bin_dir}/postgres |"\
 	  $@.example > $@
-	# Listen on external interface if inside a vagrant vm
-	if [ -f .vagrant_enabled ] ; \
-	then \
-		printf ',s/localhost:/0.0.0.0:/g\nwq\n' | ed $@ ; \
-	fi;
+	if [ -f .vagrant_enabled ]; then \
+		echo "0.0.0.0" > host; \
+		echo "3000" > port; \
+	fi
 
 redis: redis/redis.conf
 

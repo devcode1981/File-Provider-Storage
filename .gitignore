@@ -25,6 +25,7 @@ gitlab-openldap/share/
 .vagrant/
 gitlab-workhorse/
 .vagrant_enabled
+host
 port
 .ruby-version
 localhost.*

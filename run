@@ -1,12 +1,17 @@
 #!/bin/sh
 
-# Try to read the gitlab-workhorse port from the environment
+# Try to read the gitlab-workhorse host:port from the environments
+if [ x$host = x ]; then
+  # Try a host file
+  host=$(cat host 2>/dev/null)
+fi
 if [ x$port = x ] ; then
   # Try a port file
   port=$(cat port 2>/dev/null)
 fi
 
-# Fall back to 3000
+# Fall back to localhost:3000
+host=${host:-localhost}
 port=${port:-3000}
 
 print_port() {
@@ -35,13 +40,13 @@ print_port() {
   "
   echo
   echo
-  echo "Starting GitLab in $(pwd) on port ${port}"
+  echo "Starting GitLab in $(pwd) on port ${host}:${port}"
   echo
   echo
 }
 
 foreman_start() {
- exec env port=${port} foreman start "$@"
+ exec env port=${port} host=${host} foreman start "$@"
 }
 
 db() {
