@@ -236,24 +236,35 @@ it here.
 The `Makefile` will clone the repositories, install the Gem bundles and set up
 basic configuration files. Pick one:
 
+### Develop in a fork
+
 ```
-# Clone the official repositories of gitlab and gitlab-shell
-make
+# Set up GDK with 'origin' pointing to your gitlab-ce fork.
+# Replace MY-FORK with your namespace
+make gitlab_repo=https://gitlab.com/MY-FORK/gitlab-ce.git
+support/set-gitlab-upstream
 ```
 
-Alternatively, you can clone straight from your forked repositories or GitLab EE.
+The set-gitlab-upstream script creates a remote named `upstream` for
+[the canonical GitLab CE
+repository](https://gitlab.com/gitlab-org/gitlab-ce). It also modifies
+`make update` (See [Update gitlab and gitlab-shell
+repositories](Update gitlab and gitlab-shell repositories)) to pull
+down from the upstream repository instead of your fork, making it
+easier to keep up-to-date with the project.
+
+If you want to push changes from upstream to your fork, run `make
+update` and then `git push origin` from the `gitlab` directory.
+
+### Develop in the main repo
+
+Alternatively, you can clone all components from their official source.
 
 ```
 # Clone your own forked repositories
-make gitlab_repo=git@gitlab.com:example/gitlab-ce.git gitlab_shell_repo=git@gitlab.com:example/gitlab-shell.git \
-  gitlab_ci_repo=git@gitlab.com:example/gitlab-ci.git gitlab_runner_repo=git@gitlab.com:example/gitlab-ci-runner.git
+make
 ```
 
-In order to more easily contribute changes back from a fork of the GitLab repository, you can run `support/set-gitlab-upstream` after `make` has finished. This creates a remote named `upstream` for [the canonical GitLab CE repository](https://gitlab.com/gitlab-org/gitlab-ce).
-
-This also modifies `make update` (See [Update gitlab and gitlab-shell repositories](Update gitlab and gitlab-shell repositories)) to pull down from the upstream repository instead of your fork, making it easier to keep up-to-date with the project.
-
-If you want to push changes from upstream to your fork, run `make update` and then `git push origin` from the `gitlab` directory.
 
 If you are going to work on Gitlab Geo, you will need [PostgreSQL replication](#postgresql-replication) setup before the "Post-installation" instructions.
 
