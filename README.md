@@ -365,6 +365,9 @@ To run several tests inside one directory:
 - `bundle exec rspec spec/requests/api/` for the rspec tests if you want to test API only
 - `bundle exec spinach features/profile/` for the spinach tests if you want to test only profile pages
 
+If you want to use [Spring](https://github.com/rails/spring) set
+`ENABLE_SPRING=1` in your environment.
+
 ### Simulating Broken Storage Devices
 
 To test how GitLab behaves when the underlying storage system is not working
