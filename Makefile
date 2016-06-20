@@ -88,7 +88,7 @@ gitlab-shell/.git/pull:
 
 # Set up supporting services
 
-support-setup: .ruby-version foreman Procfile redis postgresql openssh-setup
+support-setup: .ruby-version foreman Procfile redis postgresql openssh-setup nginx-setup
 	@echo ""
 	@echo "*********************************************"
 	@echo "************** Setup finished! **************"
@@ -136,11 +136,6 @@ foreman:
 
 .ruby-version:
 	ln -s ${gitlab_development_root}/gitlab/.ruby-version $@
-
-localhost.pem: localhost.crt localhost.key
-	touch $@
-	chmod 600 $@
-	cat localhost.key localhost.crt > $@
 
 localhost.crt:	localhost.key
 
@@ -205,6 +200,17 @@ openssh/sshd_config:
 
 openssh/ssh_host_rsa_key:
 	ssh-keygen -f $@ -N '' -t rsa
+
+nginx-setup: nginx/conf/nginx.conf nginx/logs nginx/tmp
+
+nginx/conf/nginx.conf:
+	sed -e "s|/home/git|${gitlab_development_root}|" nginx/conf/nginx.conf.example > $@
+
+nginx/logs:
+	mkdir -p $@
+
+nginx/tmp:
+	mkdir -p $@
 
 clean-config:
 	rm -f \
