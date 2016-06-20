@@ -5,7 +5,7 @@ postgresql: support/postgresql-signal-wrapper postgres -D /home/git/postgresql/d
 gitlab-workhorse: PATH=/home/git/gitlab-workhorse:$PATH gitlab-workhorse -authSocket /home/git/gitlab.socket -listenAddr $host:$port -documentRoot /home/git/gitlab/public -developmentMode
 rails-web: RAILS_ENV=development support/exec-cd gitlab bin/web start_foreground
 rails-background-jobs: RAILS_ENV=development support/exec-cd gitlab bin/background_jobs start_foreground
-#workhorse-stunnel: support/workhorse-stunnel localhost:3443 /home/git/gitlab.socket /home/git/localhost.pem
 #influxdb: influxdb/bin/influxd -config influxdb/influxdb.conf
 #grafana: support/wait-postgresql-ready support/exec-cd grafana bin/grafana-server -config grafana.ini
 #sshd: /usr/sbin/sshd -e -D -f /home/git/openssh/sshd_config
+#nginx: nginx -p /home/git/nginx -c conf/nginx.conf

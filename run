@@ -55,7 +55,7 @@ db() {
 
 app() {
   print_port
-  foreman_start -c all=0,rails-web=1,rails-background-jobs=1,gitlab-workhorse=1,workhorse-stunnel=1,grafana=1,sshd=1
+  foreman_start -c all=0,rails-web=1,rails-background-jobs=1,gitlab-workhorse=1,nginx=1,grafana=1,sshd=1
 }
 
 grafana() {
