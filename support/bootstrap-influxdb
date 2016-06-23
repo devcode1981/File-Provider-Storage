@@ -24,7 +24,7 @@ begin
 
   abort "#$0: could not connect to InfluxDB at #{host}:#{port}" unless socket_ready
 
-  success = system(*%W(influxdb/bin/influx -host #{host} -port #{port}), in: 'influxdb/seed-queries.txt')
+  success = system(*%W(bundle exec rake INFLUX_HOST=#{host} INFLUX_PORT=#{port}), chdir: 'influxdb/influxdb-management')
 ensure
   Process.kill('TERM', foreman_pid)
 end

@@ -163,7 +163,7 @@ influxdb-setup:	influxdb/influxdb.conf influxdb/bin/influxd influxdb/meta/meta.d
 influxdb/bin/influxd:
 	cd influxdb && make
 
-influxdb/meta/meta.db:
+influxdb/meta/meta.db:	Procfile
 	printf ',s/^#influxdb/influxdb/\nwq\n' | ed -s Procfile
 	support/bootstrap-influxdb 8086
 
