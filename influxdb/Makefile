@@ -1,17 +1,20 @@
 export GOPATH := $(shell pwd)
 INFLUXDB_PARENT := src/github.com/influxdata
 INFLUXDB_SOURCE := ${INFLUXDB_PARENT}/influxdb
+VERSION = 0.12.2
+ARCHIVE = v${VERSION}.tar.gz
+ARCHIVE_SHA256 = fb2f918794db07c2a05388fd583591bb3084b2af37a64e98be4b4c73302a8742
 
 all: bin/influxd
 
-v0.12.2.tar.gz:
-	curl -LO https://github.com/influxdata/influxdb/archive/v0.12.2.tar.gz
-	echo 'fb2f918794db07c2a05388fd583591bb3084b2af37a64e98be4b4c73302a8742  v0.12.2.tar.gz' | shasum -a256
+${ARCHIVE}:
+	curl -LO https://github.com/influxdata/influxdb/archive/$@
+	echo "${ARCHIVE_SHA256}  $@" | shasum -a256 -c
 
-${INFLUXDB_SOURCE}/Godeps:	v0.12.2.tar.gz
+${INFLUXDB_SOURCE}/Godeps:	${ARCHIVE}
 	tar zxf $<
 	mkdir -p ${INFLUXDB_PARENT}
-	mv influxdb-0.12.2 ${INFLUXDB_SOURCE}
+	mv influxdb-${VERSION} ${INFLUXDB_SOURCE}
 	touch $@
 
 bin/gdm:
@@ -23,4 +26,4 @@ bin/influxd: bin/gdm ${INFLUXDB_SOURCE}/Godeps
 
 .PHONY:	clean
 clean:
-	rm -rf bin pkg src v0.12.2.tar.gz
+	rm -rf bin pkg src ${ARCHIVE}
