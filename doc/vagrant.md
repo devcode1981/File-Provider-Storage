@@ -31,7 +31,7 @@ To avoid usage of slow VirtualBox shared folders we use NFS here.
    command prompt if on Windows). Vagrant will download an OS image, bring it
    up, and install all the prerequisites.
 1. Run `vagrant ssh` to SSH into the box.
-1. Continue setup at [Installation](#installation) below.
+1. Continue setup at [Installation](https://gitlab.com/gitlab-org/gitlab-development-kit#installation) below.
 1. After the installation is done, edit the 'gitlab-workhorse' line in
    your Procfile and change `localhost:3000` to `0.0.0.0:3000`.
 
