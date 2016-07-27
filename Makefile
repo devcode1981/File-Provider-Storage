@@ -164,7 +164,7 @@ influxdb/bin/influxd:
 	cd influxdb && make
 
 influxdb/meta/meta.db:	Procfile
-	printf ',s/^#influxdb/influxdb/\nwq\n' | ed -s Procfile
+	grep '^influxdb:' Procfile || (printf ',s/^#influxdb/influxdb/\nwq\n' | ed -s Procfile)
 	support/bootstrap-influxdb 8086
 
 influxdb/influxdb.conf:
