@@ -33,4 +33,4 @@ influxdb-management:
 
 .PHONY:	clean
 clean:
-	rm -rf bin pkg src ${ARCHIVE} influxdb-management
+	rm -rf bin pkg src ${ARCHIVE} influxdb-management wal meta data
