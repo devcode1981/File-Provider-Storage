@@ -64,18 +64,18 @@ update: gitlab-update gitlab-shell-update gitlab-workhorse-update
 
 gitlab-update: gitlab/.git/pull
 	cd ${gitlab_development_root}/gitlab && \
-	bundle install --without mysql production --jobs 4
+		bundle install --without mysql production --jobs 4
 	@echo ""
 	@echo "------------------------------------------------------------"
 	@echo "Make sure Postgres is running otherwise db:migrate will fail"
 	@echo "------------------------------------------------------------"
 	@echo ""
 	cd ${gitlab_development_root}/gitlab && \
-	bundle exec rake db:migrate db:test:prepare
+		bundle exec rake db:migrate db:test:prepare
 
 gitlab-shell-update: gitlab-shell/.git/pull
 	cd ${gitlab_development_root}/gitlab-shell && \
-	bundle install --without production --jobs 4
+		bundle install --without production --jobs 4
 
 gitlab/.git/pull:
 	cd ${gitlab_development_root}/gitlab && \
@@ -158,7 +158,9 @@ gitlab-workhorse/.git:
 
 gitlab-workhorse/.git/pull:
 	cd ${gitlab_development_root}/gitlab-workhorse && \
-	git pull --ff-only
+		git stash &&\
+		git checkout master &&\
+		git pull --ff-only
 
 influxdb-setup:	influxdb/influxdb.conf influxdb/bin/influxd influxdb/meta/meta.db
 
