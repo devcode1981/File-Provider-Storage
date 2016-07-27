@@ -43,7 +43,6 @@ sockets to avoid port conflicts.
   - [Ubuntu / Debian](#ubuntu--debian)
 - [HTTPS](#https)
 - [SSH](#ssh)
-- [OS X, other developer OS's](#os-x-other-developer-oss)
 - [Troubleshooting](#troubleshooting)
   - [Rebuilding gems with native extensions](#rebuilding-gems-with-native-extensions)
   - [Error in database migrations when pg_trgm extension is missing](#error-in-database-migrations-when-pg_trgm-extension-is-missing)
@@ -620,10 +619,6 @@ Procfile commented out.
 ## Performance metrics
 
 See [doc/performance_metrics.md](doc/performance_metrics.md).
-
-## OS X, other developer OS's
-
-MR welcome!
 
 ## Troubleshooting
 

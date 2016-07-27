@@ -14,7 +14,7 @@ all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup
 
 # Set up the GitLab Rails app
 
-gitlab-setup: gitlab/.git gitlab-config gitlab/.bundle
+gitlab-setup: gitlab/.git gitlab-config .gitlab-bundle
 
 gitlab/.git:
 	git clone ${gitlab_repo} gitlab
@@ -36,12 +36,13 @@ gitlab/config/unicorn.rb:
 gitlab/config/resque.yml:
 	sed "s|/home/git|${gitlab_development_root}|" redis/resque.yml.example > $@
 
-gitlab/.bundle:
+.gitlab-bundle:
 	cd ${gitlab_development_root}/gitlab && bundle install --without mysql production --jobs 4
+	touch $@
 
 # Set up gitlab-shell
 
-gitlab-shell-setup: gitlab-shell/.git gitlab-shell/config.yml gitlab-shell/.bundle
+gitlab-shell-setup: gitlab-shell/.git gitlab-shell/config.yml .gitlab-shell-bundle
 
 gitlab-shell/.git:
 	git clone ${gitlab_shell_repo} gitlab-shell
@@ -53,8 +54,9 @@ gitlab-shell/config.yml:
 	  -e "s|^  socket: .*|  socket: ${gitlab_development_root}/redis/redis.socket|"\
 	  gitlab-shell/config.yml.example > gitlab-shell/config.yml
 
-gitlab-shell/.bundle:
+.gitlab-shell-bundle:
 	cd ${gitlab_development_root}/gitlab-shell && bundle install --without production --jobs 4
+	touch $@
 
 # Update gitlab, gitlab-shell and gitlab-workhorse
 

@@ -42,3 +42,5 @@ nginx/fastcgi_temp
 nginx/proxy_temp
 nginx/scgi_temp
 nginx/uwsgi_temp
+.gitlab-shell-bundle
+.gitlab-bundle
