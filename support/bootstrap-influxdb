@@ -40,6 +40,7 @@ def main(host, port)
   end
 ensure
   Process.kill('TERM', foreman_pid)
+  Process.waitpid(foreman_pid)
 end
 
 if ARGV.count != 1
