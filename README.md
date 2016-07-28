@@ -391,9 +391,16 @@ would like to use other devices on your local network to test the rails
 application then run:
 
 ```
-./run db & cd gitlab && rails s -binding=192.XXX.X.ZZ
+echo 0.0.0.0 > host
+./run
 ```
 
+If you would like to revert back to the `localhost` network then run:
+
+```
+rm host
+./run
+```
 
 ## Update gitlab and gitlab-shell repositories
 
