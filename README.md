@@ -1,7 +1,6 @@
 # GitLab Development Kit
 
 The GDK runs a GitLab development environment isolated in a directory.
-This environment contains GitLab CE and Runner.
 This project uses Foreman to run dedicated Postgres and Redis processes for
 GitLab development. All data is stored inside the gitlab-development-kit
 directory. All connections to supporting services go through Unix domain
@@ -85,240 +84,6 @@ sockets to avoid port conflicts.
 - No easy upgrades
 - Need to download and compile new gems ('bundle install') on each upgrade
 - etc.
-
-## GDK Setup
-
-The preferred way to use GitLab Development Kit is to install Ruby and
-dependencies on your 'native' OS. We strongly recommend the native install
-since it is much faster than a virtualized one. Due to heavy IO operations a
-virtualized installation will be much slower running the app and the tests.
-
-If you want to use [Vagrant] instead (e.g. need to do development from Windows),
-see [the instructions for our (experimental) Vagrant with Virtualbox setup](doc/vagrant.md#vagrant-with-virtualbox).
-
-If you want to use [Vagrant] with [Docker][docker engine] on Linux,
-see [the instructions for our (experimental) Vagrant with Docker setup](doc/vagrant.md#vagrant-with-docker).
-
-### Clone GitLab Development Kit repository
-
-Make sure that none of the directories 'above' GitLab Development Kit
-contain 'problematic' characters such as ` ` and `(`. For example,
-`/home/janedoe/projects` is OK, but `/home/janedoe/my projects` will
-cause problems.
-
-```
-git clone https://gitlab.com/gitlab-org/gitlab-development-kit.git
-cd gitlab-development-kit
-```
-
-### Native installation setup
-
-#### Prerequisites for all platforms
-
-If you do not have the dependencies below you will experience strange errors
-during installation.
-
-1. A non-root Unix user, this can be your normal user but **DO NOT** run the
-   installation as a root user
-2. Ruby 2.1 (2.1.8 or newer) installed with a Ruby version manager (RVM, rbenv,
-   chruby, etc.), **DO NOT** use the system Ruby
-3. Bundler, which you can install with `gem install bundler`
-
-#### OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan)
-
-Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
-
-```
-brew tap homebrew/dupes
-brew tap homebrew/versions
-brew install git redis postgresql libiconv icu4c pkg-config cmake nodejs go openssl node npm
-bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
-npm install phantomjs@1.9.8 -g
-```
-
-#### Ubuntu
-
-Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
-
-```
-# Add apt-add-repository helper script
-sudo apt-get install software-properties-common python-software-properties
-# This PPA contains an up-to-date version of Go
-sudo apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
-sudo apt-get update
-sudo apt-get install git postgresql postgresql-contrib libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev golang ed pkg-config
-```
-
-#### Arch Linux
-
-Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
-
-```
-pacman -S postgresql phantomjs redis postgresql-libs icu nodejs ed cmake openssh git go
-```
-
-#### Debian
-
-Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
-
-```
-sudo apt-get install postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs libkrb5-dev ed pkg-config
-```
-
-If you are running Debian Stretch or newer you will need to install Go
-compiler as well: `sudo apt-get install golang`.
-
-You need to install phantomjs manually:
-
-```
-PHANTOM_JS="phantomjs-1.9.8-linux-x86_64"
-cd ~
-wget https://bitbucket.org/ariya/phantomjs/downloads/$PHANTOM_JS.tar.bz2
-tar -xvjf $PHANTOM_JS.tar.bz2
-sudo mv $PHANTOM_JS /usr/local/share
-sudo ln -s /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/local/bin
-phantomjs --version
-```
-
-You may need to install Redis 2.8 or newer manually.
-
-#### Fedora
-
-We assume you are using Fedora >= 22.
-
-```
-sudo dnf install postgresql libpqxx-devel postgresql-libs redis libicu-devel nodejs git ed cmake rpm-build gcc-c++ krb5-devel go postgresql-server postgresql-contrib
-```
-
-Install `phantomJS` manually, or download it and put in your $PATH. For
-instructions, follow the [Debian guide on phantomJS](#debian).
-
-You may need to install Redis 2.8 or newer manually.
-
-#### CentOS
-
-Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
-
-This is tested on CentOS 6.5:
-
-```
-sudo yum install http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-redhat93-9.3-1.noarch.rpm
-sudo yum install http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-sudo yum install postgresql93-server libicu-devel cmake gcc-c++ redis ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 libstdc++.so.6 golang nodejs
-
-sudo gpg2 --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3
-sudo curl -sSL https://get.rvm.io | bash -s stable
-sudo source /etc/profile.d/rvm.sh
-sudo rvm install 2.1
-sudo rvm use 2.1
-#Ensure your user is in rvm group
-sudo usermod -a -G rvm <username>
-#add iptables exceptions, or sudo service stop iptables
-```
-
-Install `phantomJS` manually, or download it and put in your $PATH. For
-instructions, follow the [Debian guide on phantomJS](#debian).
-
-Git 1.7.1-3 is the latest git binary for CentOS 6.5 and GitLab. Spinach tests
-will fail due to a higher version requirement by GitLab. You can follow the
-instructions found [in the GitLab recipes repository][puias] to install a newer
-binary version of Git.
-
-You may need to install Redis 2.8 or newer manually.
-
-#### Other platforms
-
-If you got GDK running an another platform please send a merge request to add
-it here.
-
-## Installation
-
-The `Makefile` will clone the repositories, install the Gem bundles and set up
-basic configuration files. Pick one:
-
-### Develop in a fork
-
-```
-# Set up GDK with 'origin' pointing to your gitlab-ce fork.
-# Replace MY-FORK with your namespace
-make gitlab_repo=https://gitlab.com/MY-FORK/gitlab-ce.git
-support/set-gitlab-upstream
-```
-
-The set-gitlab-upstream script creates a remote named `upstream` for
-[the canonical GitLab CE
-repository](https://gitlab.com/gitlab-org/gitlab-ce). It also modifies
-`make update` (See [Update gitlab and gitlab-shell
-repositories](Update gitlab and gitlab-shell repositories)) to pull
-down from the upstream repository instead of your fork, making it
-easier to keep up-to-date with the project.
-
-If you want to push changes from upstream to your fork, run `make
-update` and then `git push origin` from the `gitlab` directory.
-
-### Develop in the main repo
-
-Alternatively, you can clone all components from their official source.
-
-```
-# Clone your own forked repositories
-make
-```
-
-
-If you are going to work on Gitlab Geo, you will need [PostgreSQL replication](#postgresql-replication) setup before the "Post-installation" instructions.
-
-### GitLab Enterprise Edition
-
-The recommended way to do development on GitLab Enterprise Edition is
-to create a separate GDK directory for it. Below we call that
-directory `gdk-ee`. We will configure GDK to start GitLab on port 3001
-instead of 3000 so that you can run GDK EE next to CE without port
-conflicts.
-
-```
-git clone https://gitlab.com/gitlab-org/gitlab-development-kit.git gdk-ee
-cd gdk-ee
-echo 3001 > port
-make gitlab_repo=https://gitlab.com/gitlab-org/gitlab-ee.git
-```
-
-Now you can start GitLab EE with `./run` in the `gdk-ee` directory and you
-will not have port conflicts with a separate GDK instance for CE that
-might still be running.
-
-Instructions to generate a developer license can be found in the
-onboarding document: https://about.gitlab.com/handbook/developer-onboarding/#gitlab-enterprise-edition-ee
-
-## Post-installation
-
-Start GitLab and all required services:
-
-    ./run
-
-To start only the databases use:
-
-    ./run db
-
-To start only the app (assuming the DBs are already running):
-
-    ./run app
-
-To access GitLab you may now go to http://localhost:3000 in your
-browser. The development login credentials are `root` and `5iveL!fe`.
-
-You can override the port used by this GDK with a 'port' file.
-
-    echo 4000 > port
-
-If you want to work on GitLab CI you will need to install [GitLab Runner](https://gitlab.com/gitlab-org/gitlab-ci-multi-runner).
-
-To enable the OpenLDAP server, see the OpenLDAP instructions in this readme.
-
-END Post-installation
-
-Please do not delete the 'END Post-installation' line above. It is used to
-print the post-installation message from the `Makefile`.
 
 ## Development
 
@@ -891,6 +656,37 @@ and remove the created traffic shaping rules.
 
 The GitLab Development Kit is distributed under the MIT license,
 see the LICENSE file.
+
+## GDK Setup
+### Clone GitLab Development Kit repository
+
+Moved to [doc/set-up-gdk.md](doc/set-up-gdk.md).
+
+### Native installation setup
+
+The sections below were moved to [doc/prepare.md](doc/prepare.md).
+
+#### Prerequisites for all platforms
+#### OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan)
+#### Ubuntu
+#### Arch Linux
+#### Debian
+#### Fedora
+#### CentOS
+#### Other platforms
+
+The sections above were moved to [doc/prepare.md](doc/prepare.md).
+
+## Installation
+
+The sections below were moved to [doc/set-up-gdk.md](doc/prepare.md).
+
+### Develop in a fork
+### Develop in the main repo
+### GitLab Enterprise Edition
+## Post-installation
+
+The sections above were moved to [doc/set-up-gdk.md](doc/prepare.md).
 
 [docker engine]: https://docs.docker.com/engine/installation/
 [homebrew]: http://brew.sh/
