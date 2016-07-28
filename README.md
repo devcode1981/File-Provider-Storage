@@ -679,14 +679,14 @@ The sections above were moved to [doc/prepare.md](doc/prepare.md).
 
 ## Installation
 
-The sections below were moved to [doc/set-up-gdk.md](doc/prepare.md).
+The sections below were moved to [doc/set-up-gdk.md](doc/set-up-gdk.md).
 
 ### Develop in a fork
 ### Develop in the main repo
 ### GitLab Enterprise Edition
 ## Post-installation
 
-The sections above were moved to [doc/set-up-gdk.md](doc/prepare.md).
+The sections above were moved to [doc/set-up-gdk.md](doc/set-up-gdk.md).
 
 [docker engine]: https://docs.docker.com/engine/installation/
 [homebrew]: http://brew.sh/
