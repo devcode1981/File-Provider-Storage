@@ -34,6 +34,7 @@ sockets to avoid port conflicts.
   - [Simulating Slow Filesystems](#simulating-slow-filesystems)
 - [Update gitlab and gitlab-shell repositories](#update-gitlab-and-gitlab-shell-repositories)
 - [Update configuration files created by gitlab-development-kit](#update-configuration-files-created-by-gitlab-development-kit)
+- [MySQL](#mysql)
 - [PostgreSQL replication](#postgresql-replication)
 - [OpenLDAP](#openldap)
 - [Elasticsearch](#elasticsearch)
@@ -410,6 +411,10 @@ you to regenerate configuration files with `make`. You can always
 remove an individual file (e.g. `rm Procfile`) and rebuild it by
 running `make`. If you want to rebuild _all_ configuration files
 created by the Makefile, run `make clean-config all`.
+
+## MySQL
+
+See [doc/mysql.md](doc/mysql.md).
 
 ## PostgreSQL replication
 
