@@ -1,10 +1,6 @@
 # GitLab Development Kit
 
-The GDK runs a GitLab development environment isolated in a directory.
-This project uses Foreman to run dedicated Postgres and Redis processes for
-GitLab development. All data is stored inside the gitlab-development-kit
-directory. All connections to supporting services go through Unix domain
-sockets to avoid port conflicts.
+Configure and manage a [GitLab](https://about.gitlab.com) development environment.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -61,6 +57,16 @@ sockets to avoid port conflicts.
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## Overview
+
+GitLab Development Kit (GDK) provides a collection of scripts and other resources to install and manage a GitLab installation for development purposes. The source code of GitLab is spread over multiple repositories and it requires Ruby, Go, Postgres/MySQL, Redis and more to run. GDK helps you install and configure all these different components, and start/stop them when you work on GitLab.
+
+To start using GDK follow these three steps:
+
+- [Prepare your computer](doc/prepare.md)
+- [Install GDK](doc/set-up-gdk.md)
+- [Learn how to use GDK](doc/howto/README.md)
+
 ## Design goals
 
 - Get the user started, do not try to take care of everything
@@ -86,22 +92,6 @@ sockets to avoid port conflicts.
 - etc.
 
 ## Development
-
-When doing development, you will need one shell session (terminal window)
-running Postgres and Redis, and one or more other sessions to work on GitLab
-itself.
-
-### Example
-
-First start Postgres and Redis.
-
-```
-# current directory: gitlab-development-kit
-./run
-```
-
-Now you can go to http://localhost:3000 in your browser.
-The development login credentials are `root` and `5iveL!fe`
 
 ### Running the tests
 
