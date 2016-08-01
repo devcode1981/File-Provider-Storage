@@ -14,7 +14,7 @@ all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup
 
 # Set up the GitLab Rails app
 
-gitlab-setup: gitlab/.git gitlab-config .gitlab-bundle
+gitlab-setup: gitlab/.git gitlab-config bundler .gitlab-bundle
 
 gitlab/.git:
 	git clone ${gitlab_repo} gitlab
@@ -40,9 +40,13 @@ gitlab/config/resque.yml:
 	cd ${gitlab_development_root}/gitlab && bundle install --without mysql production --jobs 4
 	touch $@
 
+.PHONY:	bundler
+bundler:
+	command -v $@ > /dev/null || gem install $@
+
 # Set up gitlab-shell
 
-gitlab-shell-setup: gitlab-shell/.git gitlab-shell/config.yml .gitlab-shell-bundle
+gitlab-shell-setup: gitlab-shell/.git gitlab-shell/config.yml bundler .gitlab-shell-bundle
 
 gitlab-shell/.git:
 	git clone ${gitlab_shell_repo} gitlab-shell
