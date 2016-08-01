@@ -1,8 +1,8 @@
 redis: redis-server /home/git/redis/redis.conf
 postgresql: support/postgresql-signal-wrapper postgres -D /home/git/postgresql/data -k /home/git/postgresql -h ''
 #postgresql-replica: support/postgresql-signal-wrapper postgres -D /home/git/postgresql-replica/data -k /home/git/postgresql-replica -h ''
-#openldap: cd gitlab-openldap && libexec/slapd -F slapd.d -d2 -h "ldap://127.0.0.1:3890"
-gitlab-workhorse: PATH=/home/git/gitlab-workhorse:$PATH gitlab-workhorse -authSocket /home/git/gitlab.socket -listenAddr $host:$port -documentRoot /home/git/gitlab/public -developmentMode
+#openldap: support/exec-cd gitlab-openldap libexec/slapd -F slapd.d -d2 -h "ldap://127.0.0.1:3890"
+gitlab-workhorse: support/path-unshift /home/git/gitlab-workhorse gitlab-workhorse -authSocket /home/git/gitlab.socket -listenAddr $host:$port -documentRoot /home/git/gitlab/public -developmentMode
 rails-web: RAILS_ENV=development support/exec-cd gitlab bin/web start_foreground
 rails-background-jobs: SIDEKIQ_LOG_ARGUMENTS=1 RAILS_ENV=development support/exec-cd gitlab bin/background_jobs start_foreground
 #influxdb: influxdb/bin/influxd -config influxdb/influxdb.conf

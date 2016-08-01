@@ -1,0 +1,4 @@
+#!/bin/sh
+path=$1
+shift
+exec /usr/bin/env PATH="$path:$PATH" "$@"
