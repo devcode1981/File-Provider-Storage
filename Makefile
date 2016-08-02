@@ -99,7 +99,7 @@ support-setup: .ruby-version foreman Procfile redis postgresql openssh-setup ngi
 	@echo "*********************************************"
 	@echo "************** Setup finished! **************"
 	@echo "*********************************************"
-	@sed -n '/^## Post-installation/,/^END Post-installation/p' README.md
+	cat HELP
 	@echo "*********************************************"
 
 Procfile:

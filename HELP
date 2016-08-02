@@ -1,0 +1,11 @@
+# GitLab Development Kit cheat sheet
+
+./run				# Start everything
+./run db			# Start enough to run tests
+./run app			# Start GitLab, need './run db'
+
+make gitlab_repo=https://my-fork	# Install everything
+make update							# Pull application changes from Git
+make clean-config all				# Delete and regenerate all config files created by GDK
+
+# Development admin account: root / 5iveL!fe
