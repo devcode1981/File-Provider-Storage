@@ -8,7 +8,6 @@ postgresql: exec support/postgresql-signal-wrapper postgres -D /home/git/postgre
 #openldap: exec support/exec-cd gitlab-openldap libexec/slapd -F slapd.d -d2 -h "ldap://127.0.0.1:3890"
 gitlab-workhorse: exec /usr/bin/env PATH=/home/git/gitlab-workhorse:$PATH gitlab-workhorse -authSocket /home/git/gitlab.socket -listenAddr $host:$port -documentRoot /home/git/gitlab/public -developmentMode
 rails-web: exec /usr/bin/env RAILS_ENV=development support/exec-cd gitlab bin/web start_foreground
-#rails-web: exec /usr/bin/env RAILS_ENV=development support/exec-cd gitlab bundle exec thin --socket=/home/git/gitlab.socket start
 rails-background-jobs: exec /usr/bin/env SIDEKIQ_LOG_ARGUMENTS=1 RAILS_ENV=development support/exec-cd gitlab bin/background_jobs start_foreground
 #influxdb: exec influxdb/bin/influxd -config influxdb/influxdb.conf
 #grafana: exec support/wait-postgresql-ready support/exec-cd grafana bin/grafana-server -config grafana.ini

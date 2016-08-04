@@ -62,12 +62,16 @@ grafana() {
   foreman_start -c all=0,grafana=1
 }
 
+thin() {
+  exec /usr/bin/env RAILS_ENV=development support/exec-cd gitlab bundle exec thin --socket=$(pwd)/gitlab.socket start
+}
+
 all() {
   print_port
   foreman_start
 }
 
-case x$1 in
+case "x$1" in
 xdb)
   db
   ;;
@@ -76,6 +80,9 @@ xapp)
   ;;
 xgrafana)
   grafana
+  ;;
+xthin)
+  thin
   ;;
 x*)
   all

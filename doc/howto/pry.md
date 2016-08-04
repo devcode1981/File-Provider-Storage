@@ -8,12 +8,10 @@ terminal window where you start your test command (`rake`, `rspec`
 etc.).
 
 If you want to get a debugging prompt while browsing on your local
-development server (localhost:3000) you need to make a change to the
-Procfile in your GDK root directory because Unicorn is not compatible
-with Pry.
+development server (localhost:3000) you need to comment out the
+`rails-web:` line in the Procfile in your GDK root directory because
+Unicorn is not compatible with Pry.
 
-There are two `rails-web` lines in the Procfile, one containing
-`bin/web` and one containing `thin`. Comment out the line containing
-`bin/web` and uncomment the line containing `thin`. Now when you start
-GDK with `./run` or `./run app` the Rails web application runs in Thin
-instead of Unicorn.
+Then launch GDK as usual (e.g. with `./run`) and in a separate
+terminal run: `./run thin`. Your Pry prompts will appear in the window
+that runs Thin.
