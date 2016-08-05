@@ -93,8 +93,3 @@ You can override the port used by this GDK with a 'port' file.
 If you want to work on GitLab CI you will need to install [GitLab Runner](https://gitlab.com/gitlab-org/gitlab-ci-multi-runner).
 
 To enable the OpenLDAP server, see the OpenLDAP instructions in this readme.
-
-END Post-installation
-
-Please do not delete the 'END Post-installation' line above. It is used to
-print the post-installation message from the `Makefile`.
