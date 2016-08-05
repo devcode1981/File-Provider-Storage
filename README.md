@@ -27,6 +27,7 @@ Configure and manage a [GitLab](https://about.gitlab.com) development environmen
   - [Running the tests](#running-the-tests)
   - [Simulating Broken Storage Devices](#simulating-broken-storage-devices)
   - [Simulating Slow Filesystems](#simulating-slow-filesystems)
+  - [Local Network Binding](#local-network-binding)
 - [Update gitlab and gitlab-shell repositories](#update-gitlab-and-gitlab-shell-repositories)
 - [Update configuration files created by gitlab-development-kit](#update-configuration-files-created-by-gitlab-development-kit)
 - [MySQL](#mysql)
@@ -137,6 +138,24 @@ To simulate a slow filesystem you can use the script `bin/mount-flow-fs`. This
 script can be used to mount a local directory via SSHFS and slow down access to
 the files in this directory. For more information see
 [mount-slow-fs](#mount-slow-fs).
+
+### Local Network Binding
+
+The default host binding for the rails application is `localhost`, if you
+would like to use other devices on your local network to test the rails
+application then run:
+
+```
+echo 0.0.0.0 > host
+./run
+```
+
+If you would like to revert back to the `localhost` network then run:
+
+```
+rm host
+./run
+```
 
 ## Update gitlab and gitlab-shell repositories
 

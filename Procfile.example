@@ -1,11 +1,15 @@
-redis: redis-server /home/git/redis/redis.conf
-postgresql: support/postgresql-signal-wrapper postgres -D /home/git/postgresql/data -k /home/git/postgresql -h ''
-#postgresql-replica: support/postgresql-signal-wrapper postgres -D /home/git/postgresql-replica/data -k /home/git/postgresql-replica -h ''
-#openldap: cd gitlab-openldap && libexec/slapd -F slapd.d -d2 -h "ldap://127.0.0.1:3890"
-gitlab-workhorse: PATH=/home/git/gitlab-workhorse:$PATH gitlab-workhorse -authSocket /home/git/gitlab.socket -listenAddr $host:$port -documentRoot /home/git/gitlab/public -developmentMode
-rails-web: RAILS_ENV=development support/exec-cd gitlab bin/web start_foreground
-rails-background-jobs: SIDEKIQ_LOG_ARGUMENTS=1 RAILS_ENV=development support/exec-cd gitlab bin/background_jobs start_foreground
-#influxdb: influxdb/bin/influxd -config influxdb/influxdb.conf
-#grafana: support/wait-postgresql-ready support/exec-cd grafana bin/grafana-server -config grafana.ini
-#sshd: /usr/sbin/sshd -e -D -f /home/git/openssh/sshd_config
-#nginx: nginx -p /home/git/nginx -c conf/nginx.conf
+# GDK Procfile rules to help foreman shut down services:
+# - all commands must start with 'exec'
+# - no inline shell scripts ('&&' or ';')
+#
+redis: exec redis-server /home/git/redis/redis.conf
+postgresql: exec support/postgresql-signal-wrapper postgres -D /home/git/postgresql/data -k /home/git/postgresql -h ''
+#postgresql-replica: exec support/postgresql-signal-wrapper postgres -D /home/git/postgresql-replica/data -k /home/git/postgresql-replica -h ''
+#openldap: exec support/exec-cd gitlab-openldap libexec/slapd -F slapd.d -d2 -h "ldap://127.0.0.1:3890"
+gitlab-workhorse: exec /usr/bin/env PATH=/home/git/gitlab-workhorse:$PATH gitlab-workhorse -authSocket /home/git/gitlab.socket -listenAddr $host:$port -documentRoot /home/git/gitlab/public -developmentMode
+rails-web: exec /usr/bin/env RAILS_ENV=development support/exec-cd gitlab bin/web start_foreground
+rails-background-jobs: exec /usr/bin/env SIDEKIQ_LOG_ARGUMENTS=1 RAILS_ENV=development support/exec-cd gitlab bin/background_jobs start_foreground
+#influxdb: exec influxdb/bin/influxd -config influxdb/influxdb.conf
+#grafana: exec support/wait-postgresql-ready support/exec-cd grafana bin/grafana-server -config grafana.ini
+#sshd: exec /usr/sbin/sshd -e -D -f /home/git/openssh/sshd_config
+#nginx: exec nginx -p /home/git/nginx -c conf/nginx.conf
