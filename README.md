@@ -38,7 +38,6 @@ To start using GDK follow these three steps:
 
 ## Development
 
-
 ### Local Network Binding
 
 The default host binding for the rails application is `localhost`, if you
@@ -85,10 +84,6 @@ you to regenerate configuration files with `make`. You can always
 remove an individual file (e.g. `rm Procfile`) and rebuild it by
 running `make`. If you want to rebuild _all_ configuration files
 created by the Makefile, run `make clean-config all`.
-
-## MySQL
-
-See [doc/mysql.md](doc/mysql.md).
 
 ## PostgreSQL replication
 

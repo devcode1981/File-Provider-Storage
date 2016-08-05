@@ -1,6 +1,6 @@
-# GitLab with MySQL
+# GitLab development with MySQL
 
-Eventhough our prefered database is PostgeSQL, there are time you'd want to test your code on MySQL. This is meant as a general guideline in setting things up.
+Even though our prefered database is PostgeSQL, there are time you'd want to test your code on MySQL. This is meant as a general guideline in setting things up.
 
 ## Installing MySQL
 
