@@ -2,62 +2,6 @@
 
 Configure and manage a [GitLab](https://about.gitlab.com) development environment.
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
-
-- [Design goals](#design-goals)
-- [Differences with production](#differences-with-production)
-- [GDK Setup](#gdk-setup)
-  - [Clone GitLab Development Kit repository](#clone-gitlab-development-kit-repository)
-  - [Native installation setup](#native-installation-setup)
-    - [Prerequisites for all platforms](#prerequisites-for-all-platforms)
-    - [OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan)](#os-x-109-mavericks-1010-yosemite-1011-el-capitan)
-    - [Ubuntu](#ubuntu)
-    - [Arch Linux](#arch-linux)
-    - [Debian](#debian)
-    - [Fedora](#fedora)
-    - [CentOS](#centos)
-    - [Other platforms](#other-platforms)
-- [Installation](#installation)
-  - [GitLab Enterprise Edition](#gitlab-enterprise-edition)
-- [Post-installation](#post-installation)
-- [Development](#development)
-  - [Example](#example)
-  - [Running the tests](#running-the-tests)
-  - [Simulating Broken Storage Devices](#simulating-broken-storage-devices)
-  - [Simulating Slow Filesystems](#simulating-slow-filesystems)
-  - [Local Network Binding](#local-network-binding)
-- [Update gitlab and gitlab-shell repositories](#update-gitlab-and-gitlab-shell-repositories)
-- [Update configuration files created by gitlab-development-kit](#update-configuration-files-created-by-gitlab-development-kit)
-- [MySQL](#mysql)
-- [PostgreSQL replication](#postgresql-replication)
-- [OpenLDAP](#openldap)
-- [Elasticsearch](#elasticsearch)
-  - [Installation: OS X](#installation-os-x)
-  - [Setup](#setup)
-- [NFS](#nfs)
-  - [Ubuntu / Debian](#ubuntu--debian)
-- [HTTPS](#https)
-- [SSH](#ssh)
-- [Troubleshooting](#troubleshooting)
-  - [Rebuilding gems with native extensions](#rebuilding-gems-with-native-extensions)
-  - [Error in database migrations when pg_trgm extension is missing](#error-in-database-migrations-when-pg_trgm-extension-is-missing)
-  - [Upgrading PostgreSQL](#upgrading-postgresql)
-  - [Rails cannot connect to Postgres](#rails-cannot-connect-to-postgres)
-  - [undefined symbol: SSLv2_method](#undefined-symbol-sslv2_method)
-  - [Fix conflicts in database migrations if you use the same db for CE and EE](#fix-conflicts-in-database-migrations-if-you-use-the-same-db-for-ce-and-ee)
-  - ['LoadError: dlopen' when starting Ruby apps](#loaderror-dlopen-when-starting-ruby-apps)
-  - ['bundle install' fails due to permission problems](#bundle-install-fails-due-to-permission-problems)
-  - ['bundle install' fails while compiling eventmachine gem](#bundle-install-fails-while-compiling-eventmachine-gem)
-  - ['Invalid reference name' when creating a new tag](#invalid-reference-name-when-creating-a-new-tag)
-  - [Other problems](#other-problems)
-- [Executables](#executables)
-  - [mount-slow-fs](#mount-slow-fs)
-- [License](#license)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 ## Overview
 
 GitLab Development Kit (GDK) provides a collection of scripts and other resources to install and manage a GitLab installation for development purposes. The source code of GitLab is spread over multiple repositories and it requires Ruby, Go, Postgres/MySQL, Redis and more to run. GDK helps you install and configure all these different components, and start/stop them when you work on GitLab.
@@ -94,50 +38,6 @@ To start using GDK follow these three steps:
 
 ## Development
 
-### Running the tests
-
-In order to run the test you can use the following commands:
-- `rake spinach` to run the spinach suite
-- `rake spec` to run the rspec suite
-- `rake teaspoon` to run the teaspoon test suite
-- `rake gitlab:test` to run all the tests
-
-Note: Both `rake spinach` and `rake spec` takes significant time to pass. 
-Instead of running full test suite locally you can save a lot of time by running
-a single test or directory related to your changes. After you submit merge request 
-CI will run full test suite for you. Green CI status in the merge request means 
-full test suite is passed.  
-
-Note: You can't run `rspec .` since this will try to run all the `_spec.rb`
-files it can find, also the ones in `/tmp`
-
-To run a single test file you can use:
-
-- `bundle exec rspec spec/controllers/commit_controller_spec.rb` for a rspec test
-- `bundle exec spinach features/project/issues/milestones.feature` for a spinach test
-
-To run several tests inside one directory:
-
-- `bundle exec rspec spec/requests/api/` for the rspec tests if you want to test API only
-- `bundle exec spinach features/profile/` for the spinach tests if you want to test only profile pages
-
-If you want to use [Spring](https://github.com/rails/spring) set
-`ENABLE_SPRING=1` in your environment.
-
-### Simulating Broken Storage Devices
-
-To test how GitLab behaves when the underlying storage system is not working
-you can simply change your local GitLab instance to use an empty directory for
-the repositories. To do so edit your `config/gitlab.yml` configuration file so
-that the `gitlab_shell.repos_path` option for your environment (e.g.
-"development") points to an empty directory.
-
-### Simulating Slow Filesystems
-
-To simulate a slow filesystem you can use the script `bin/mount-flow-fs`. This
-script can be used to mount a local directory via SSHFS and slow down access to
-the files in this directory. For more information see
-[mount-slow-fs](#mount-slow-fs).
 
 ### Local Network Binding
 
@@ -628,78 +528,7 @@ gem install nokogiri
 
 Please open an issue on the [GDK issue tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues).
 
-## Executables
-
-A collection of executables can be found in the `bin/` directory. You can use
-these executables by adding this directory to your shell's executable path. For
-example, when using Bash:
-
-    export PATH="${PATH}:path/to/gdk/bin"
-
-### mount-slow-fs
-
-This script can be used to mount a source directory at a given mount point via
-SSHFS and slow down network traffic as a way of replicating a slow NFS. Usage of
-this script is as following:
-
-    mount-slow-fs path/to/actual/repositories /path/to/mountpoint
-
-As an example, we'll use the following directories:
-
-* Source directory: ~/Projects/repositories
-* Mountpoint: /mnt/repositories
-
-First create the mountpoint and set the correct permissions:
-
-    sudo mkdir /mnt/repositories
-    sudo chown $USER /mnt/repositories
-
-Now we can run the script:
-
-    mount-slow-fs ~/Projects/repositories /mnt/repositories
-
-Terminating the script (using ^C) will automatically unmount the repositories
-and remove the created traffic shaping rules.
-
 ## License
 
 The GitLab Development Kit is distributed under the MIT license,
 see the LICENSE file.
-
-## GDK Setup
-### Clone GitLab Development Kit repository
-
-Moved to [doc/set-up-gdk.md](doc/set-up-gdk.md).
-
-### Native installation setup
-
-The sections below were moved to [doc/prepare.md](doc/prepare.md).
-
-#### Prerequisites for all platforms
-#### OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan)
-#### Ubuntu
-#### Arch Linux
-#### Debian
-#### Fedora
-#### CentOS
-#### Other platforms
-
-The sections above were moved to [doc/prepare.md](doc/prepare.md).
-
-## Installation
-
-The sections below were moved to [doc/set-up-gdk.md](doc/set-up-gdk.md).
-
-### Develop in a fork
-### Develop in the main repo
-### GitLab Enterprise Edition
-## Post-installation
-
-The sections above were moved to [doc/set-up-gdk.md](doc/set-up-gdk.md).
-
-[docker engine]: https://docs.docker.com/engine/installation/
-[homebrew]: http://brew.sh/
-[puias]: https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/install/centos#add-puias-computational-repository
-[vagrant]: http://www.vagrantup.com
-[virtualbox]: https://www.virtualbox.org/wiki/Downloads
-
