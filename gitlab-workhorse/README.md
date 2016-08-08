@@ -11,7 +11,7 @@ To set GOPATH in your current shell for working on gitlab-workhorse run the foll
 The gitlab-workhorse repository is cloned into:
 
 ```
-gitlab-workhorse/src/gitlab.com/gitlab-org/gitlab-workhorse
+src/gitlab.com/gitlab-org/gitlab-workhorse
 ```
 
 You can use the following shortcut to `cd` into that directory:
