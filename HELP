@@ -5,7 +5,7 @@
 ./gdk run app        # Start GitLab, need './run db'
 
 ./gdk install gitlab_repo=https://my-fork   # Install everything
-./gdk update                        # Pull application changes from Git
-./gdk reconfigure              # Delete and regenerate all config files created by GDK
+./gdk update                                # Pull application changes from Git
+./gdk reconfigure                           # Delete and regenerate all config files created by GDK
 
 # Development admin account: root / 5iveL!fe
