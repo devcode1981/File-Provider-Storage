@@ -149,16 +149,16 @@ localhost.key:
 	openssl req -new -subj "/CN=localhost/" -x509 -days 365 -newkey rsa:2048 -nodes -keyout "localhost.key" -out "localhost.crt"
 	chmod 600 $@
 
-gitlab-workhorse-setup: gitlab-workhorse/gitlab-workhorse
+gitlab-workhorse-setup: gitlab-workhorse/bin/gitlab-workhorse
 
 gitlab-workhorse-update: gitlab-workhorse/.git/pull
 	make
 
-gitlab-workhorse/gitlab-workhorse: gitlab-workhorse/.git
-	cd ${gitlab_development_root}/gitlab-workhorse && make
+gitlab-workhorse/bin/gitlab-workhorse: gitlab-workhorse/src/gitlab.com/gitlab-org/gitlab-workhorse/.git
+	GOPATH=${gitlab_development_root}/gitlab-workhorse go install gitlab.com/gitlab-org/gitlab-workhorse/...
 
-gitlab-workhorse/.git:
-	git clone ${gitlab_workhorse_repo} gitlab-workhorse
+gitlab-workhorse/src/gitlab.com/gitlab-org/gitlab-workhorse/.git:
+	git clone ${gitlab_workhorse_repo} gitlab-workhorse/src/gitlab.com/gitlab-org/gitlab-workhorse
 
 gitlab-workhorse/.git/pull:
 	cd ${gitlab_development_root}/gitlab-workhorse && \
