@@ -15,7 +15,7 @@ def main
       return false
     end
 
-    cmd = %W(git clone -b gdk-cli https://gitlab.com/gitlab-org/gitlab-development-kit.git)
+    cmd = %W(git clone https://gitlab.com/gitlab-org/gitlab-development-kit.git)
     cmd << ARGV[1] if ARGV.count == 2
     system(*cmd)
   else
