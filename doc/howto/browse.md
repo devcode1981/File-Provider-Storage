@@ -5,7 +5,7 @@ quickest way to do it.
 
 ```
 cd gitlab-development-kit
-./run
+gdk run
 ```
 
 Open [localhost:3000](http://localhost:3000) in your web browser. It

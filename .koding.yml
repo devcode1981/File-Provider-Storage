@@ -51,14 +51,15 @@ resource:
 
         echo _KD_NOTIFY_@Cloning GitLab repository...@
         # clone and run gitlab
-        git clone https://gitlab.com/gitlab-org/gitlab-development-kit.git
+        gem install gitlab-development-kit
+        gdk init
 
         # force to use 0.0.0.0 for localhost
         echo "0.0.0.0" > gitlab-development-kit/host
 
         echo _KD_NOTIFY_@Compiling GitLab...@
         cd gitlab-development-kit
-        make
+        gdk install
 
         EOF
 
@@ -70,7 +71,7 @@ resource:
         echo ""
         echo "Now launch a new terminal and do;"
         echo "  $ cd gitlab-development-kit"
-        echo "  $ ./run"
+        echo "  $ gdk run"
         echo ""
 
         echo _KD_DONE_
