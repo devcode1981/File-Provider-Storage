@@ -28,5 +28,6 @@ If you installed GDK before we started using a GOPATH for gitlab-workhorse you n
 # in GDK root!!
 mv gitlab-workhorse gitlab-workhorse.old.$(date +%s)
 git checkout -- gitlab-workhorse
+rm Procfile
 make
 ```
