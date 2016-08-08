@@ -8,11 +8,12 @@ contain 'problematic' characters such as ` ` and `(`. For example,
 cause problems.
 
 ```
-git clone https://gitlab.com/gitlab-org/gitlab-development-kit.git
+gem install gitlab-development-kit
+gdk init
 cd gitlab-development-kit
 ```
 
-The `Makefile` will clone the repositories, install the Gem bundles and set up
+The `gdk install` command will clone the repositories, install the Gem bundles and set up
 basic configuration files. Pick one:
 
 ## Develop in a fork
@@ -20,19 +21,19 @@ basic configuration files. Pick one:
 ```
 # Set up GDK with 'origin' pointing to your gitlab-ce fork.
 # Replace MY-FORK with your namespace
-make gitlab_repo=https://gitlab.com/MY-FORK/gitlab-ce.git
+gdk install gitlab_repo=https://gitlab.com/MY-FORK/gitlab-ce.git
 support/set-gitlab-upstream
 ```
 
 The set-gitlab-upstream script creates a remote named `upstream` for
 [the canonical GitLab CE
 repository](https://gitlab.com/gitlab-org/gitlab-ce). It also modifies
-`make update` (See [Update gitlab and gitlab-shell
+`gdk update` (See [Update gitlab and gitlab-shell
 repositories](Update gitlab and gitlab-shell repositories)) to pull
 down from the upstream repository instead of your fork, making it
 easier to keep up-to-date with the project.
 
-If you want to push changes from upstream to your fork, run `make
+If you want to push changes from upstream to your fork, run `gdk
 update` and then `git push origin` from the `gitlab` directory.
 
 ## Develop in the main repo
@@ -41,7 +42,7 @@ Alternatively, you can clone all components from their official source.
 
 ```
 # Clone your own forked repositories
-make
+gdk install
 ```
 
 
@@ -56,13 +57,14 @@ instead of 3000 so that you can run GDK EE next to CE without port
 conflicts.
 
 ```
-git clone https://gitlab.com/gitlab-org/gitlab-development-kit.git gdk-ee
+gem install gdk
+gdk init gdk-ee
 cd gdk-ee
 echo 3001 > port
-make gitlab_repo=https://gitlab.com/gitlab-org/gitlab-ee.git
+gdk install gitlab_repo=https://gitlab.com/gitlab-org/gitlab-ee.git
 ```
 
-Now you can start GitLab EE with `./run` in the `gdk-ee` directory and you
+Now you can start GitLab EE with `gdk run` in the `gdk-ee` directory and you
 will not have port conflicts with a separate GDK instance for CE that
 might still be running.
 
@@ -73,15 +75,15 @@ onboarding document: https://about.gitlab.com/handbook/developer-onboarding/#git
 
 Start GitLab and all required services:
 
-    ./run
+    gdk run
 
 To start only the databases use:
 
-    ./run db
+    gdk run db
 
 To start only the app (assuming the DBs are already running):
 
-    ./run app
+    gdk run app
 
 To access GitLab you may now go to http://localhost:3000 in your
 browser. The development login credentials are `root` and `5iveL!fe`.

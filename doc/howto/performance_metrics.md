@@ -10,7 +10,7 @@ Golang compiler and NPM installed. InfluxDB and Grafana consume about
 You need to have a working GDK installation before you install InfluxDB
 and Grafana.
 
-First make sure you do not have `./run` active anywhere. Then run:
+First make sure you do not have `gdk run` active anywhere. Then run:
 
     rm Procfile
     make performance-metrics-setup
