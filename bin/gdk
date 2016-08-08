@@ -5,7 +5,7 @@ require 'fileutils'
 #
 # Note to contributors: this script must not change (much) because it is
 # installed outside the gitlab-development-kit repository with 'gem
-# install'.
+# install'. Edit lib/gdk.rb to define new commands.
 
 def main
   case ARGV.first
