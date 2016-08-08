@@ -138,3 +138,4 @@ basic configuration files. Pick one:
 
 [puias]: https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/install/centos#add-puias-computational-repository
 [docker engine]: https://docs.docker.com/engine/installation/
+[vagrant]: http://www.vagrantup.com
