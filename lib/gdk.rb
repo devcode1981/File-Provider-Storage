@@ -1,6 +1,10 @@
+# GitLab Development Kit CLI parser / executor
+
 module GDK
   PROGNAME = 'gdk'
 
+  # This function is called from bin/gdk. It must return true/false or
+  # an exit code.
   def self.main
     case ARGV.shift
     when 'run'

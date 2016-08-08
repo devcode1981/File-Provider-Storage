@@ -1,6 +1,12 @@
 #!/usr/bin/env ruby
 require 'fileutils'
 
+# Gitlab Development Kit CLI launcher
+#
+# Note to contributors: this script must not change (much) because it is
+# installed outside the gitlab-development-kit repository with 'gem
+# install'.
+
 def main
   case ARGV.first
   when 'init'
