@@ -44,3 +44,4 @@
 /.gitlab-shell-bundle
 /.gitlab-bundle
 /gdk
+/*.gem

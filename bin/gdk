@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+require 'fileutils'
+
+def main
+  case ARGV.first
+  when 'init'
+    system(*%W(git clone -b gdk-cli https://gitlab.com/gitlab-org/gitlab-development-kit.git))
+  else
+    $gdk_root = find_root(Dir.pwd)
+    if $gdk_root.nil?
+      puts "Could not find GDK_ROOT in the current directory or any of its parents."
+      return false
+    end
+    puts "(in #{$gdk_root})"
+    load(File.join($gdk_root, 'lib/gdk.rb'))
+    GDK::main
+  end
+end
+
+def find_root(current)
+  if File.exist?(File.join(current, 'GDK_ROOT'))
+    File.realpath(current)
+  elsif File.realpath(current) == '/'
+    nil
+  else
+    find_root(File.join(current, '..'))
+  end
+end
+
+exit(main)
