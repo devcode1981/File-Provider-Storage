@@ -1,0 +1,12 @@
+#!/bin/sh
+
+cat > gdk <<EOF
+#!/bin/sh
+export GDK_ROOT=$(pwd)
+export GDK_INVOKED=\$0
+exec /usr/bin/env ruby \$GDK_ROOT/gdk.rb "\$@"
+EOF
+
+chmod +x gdk
+
+exec ./gdk install

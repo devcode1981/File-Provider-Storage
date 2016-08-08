@@ -43,3 +43,4 @@
 /nginx/uwsgi_temp
 /.gitlab-shell-bundle
 /.gitlab-bundle
+/gdk
