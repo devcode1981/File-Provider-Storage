@@ -3,6 +3,9 @@
 Configure and manage a [GitLab](https://about.gitlab.com) development
 environment.
 
+Read on for installation instructions or skip to
+[doc/howto](doc/howto/README.md) for usage documentation.
+
 ## Overview
 
 GitLab Development Kit (GDK) provides a collection of scripts and
@@ -11,6 +14,8 @@ development purposes. The source code of GitLab is spread over
 multiple repositories and it requires Ruby, Go, Postgres/MySQL, Redis
 and more to run. GDK helps you install and configure all these
 different components, and start/stop them when you work on GitLab.
+
+## Getting started
 
 To start using GDK follow these three steps:
 
