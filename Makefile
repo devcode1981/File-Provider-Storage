@@ -1,6 +1,7 @@
 gitlab_repo = https://gitlab.com/gitlab-org/gitlab-ce.git
 gitlab_shell_repo = https://gitlab.com/gitlab-org/gitlab-shell.git
 gitlab_workhorse_repo = https://gitlab.com/gitlab-org/gitlab-workhorse.git
+gitlab_workhorse_clone_dir = gitlab-workhorse/src/gitlab.com/gitlab-org/gitlab-workhorse
 gitlab_development_root = $(shell pwd)
 postgres_bin_dir = $(shell pg_config --bindir)
 postgres_replication_user = gitlab_replication
@@ -149,19 +150,21 @@ localhost.key:
 	openssl req -new -subj "/CN=localhost/" -x509 -days 365 -newkey rsa:2048 -nodes -keyout "localhost.key" -out "localhost.crt"
 	chmod 600 $@
 
-gitlab-workhorse-setup: gitlab-workhorse/gitlab-workhorse
+gitlab-workhorse-setup: gitlab-workhorse/bin/gitlab-workhorse
 
-gitlab-workhorse-update: gitlab-workhorse/.git/pull
-	make
+gitlab-workhorse-update: gitlab-workhorse/.git/pull gitlab-workhorse-clean-bin gitlab-workhorse/bin/gitlab-workhorse
 
-gitlab-workhorse/gitlab-workhorse: gitlab-workhorse/.git
-	cd ${gitlab_development_root}/gitlab-workhorse && make
+gitlab-workhorse-clean-bin:
+	rm -rf gitlab-workhorse/bin
 
-gitlab-workhorse/.git:
-	git clone ${gitlab_workhorse_repo} gitlab-workhorse
+gitlab-workhorse/bin/gitlab-workhorse: ${gitlab_workhorse_clone_dir}/.git
+	GOPATH=${gitlab_development_root}/gitlab-workhorse go install gitlab.com/gitlab-org/gitlab-workhorse/...
+
+${gitlab_workhorse_clone_dir}/.git:
+	git clone ${gitlab_workhorse_repo} ${gitlab_workhorse_clone_dir}
 
 gitlab-workhorse/.git/pull:
-	cd ${gitlab_development_root}/gitlab-workhorse && \
+	cd ${gitlab_workhorse_clone_dir} && \
 		git stash &&\
 		git checkout master &&\
 		git pull --ff-only
