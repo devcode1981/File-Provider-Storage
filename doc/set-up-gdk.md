@@ -57,7 +57,7 @@ instead of 3000 so that you can run GDK EE next to CE without port
 conflicts.
 
 ```
-gem install gdk
+gem install gitlab-development-kit
 gdk init gdk-ee
 cd gdk-ee
 echo 3001 > port
