@@ -18,10 +18,9 @@ module GDK
         puts "Usage: gdk init [DIR]"
         return false
       end
-  
-      cmd = %W(git clone https://gitlab.com/gitlab-org/gitlab-development-kit.git)
-      cmd << ARGV[1] if ARGV.count == 2
-      system(*cmd)
+      directory = ARGV.count == 2 ? ARGV[1] : 'gitlab-development-kit' 
+      cmd = %W(git clone https://gitlab.com/gitlab-org/gitlab-development-kit.git #{directory})
+      system(*cmd) && trust!(directory)
     when 'trust'
       if ARGV.count != 2
         puts "Usage: gdk trust DIR"
