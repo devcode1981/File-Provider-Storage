@@ -9,7 +9,7 @@ In order to fetch the latest code, first make sure that `foreman` for
 postgres is runnning (needed for db migration) and then run:
 
 ```
-make update
+gdk update
 ```
 
 This will update both `gitlab` and `gitlab-shell` and run any possible
@@ -30,5 +30,5 @@ running `make`. If you want to rebuild _all_ configuration files
 created by the Makefile, run:
 
 ```
-make clean-config all
+gdk reconfigure
 ```
