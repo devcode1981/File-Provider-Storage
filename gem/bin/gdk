@@ -1,6 +1,9 @@
 #!/usr/bin/env ruby
 require 'yaml'
 
+$:.unshift(File.expand_path('../../lib', __FILE__))
+require 'gitlab-development-kit'
+
 # Gitlab Development Kit CLI launcher
 #
 # Note to contributors: this script must not change (much) because it is
@@ -13,6 +16,9 @@ module GDK
 
   def self.launcher_main
     case ARGV.first
+    when 'version'
+      puts "GitLab Development Kit gem version #{GDK::GEM_VERSION}"
+      true
     when 'init'
       if ARGV.count > 2
         puts "Usage: gdk init [DIR]"

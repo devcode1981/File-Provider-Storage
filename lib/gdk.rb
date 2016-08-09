@@ -1,4 +1,7 @@
 # GitLab Development Kit CLI parser / executor
+#
+# This file is loaded by the 'gdk' command in the gem. This file is NOT
+# part of the gitlab-development-kit gem so that we can iterate faster.
 
 module GDK
   PROGNAME = 'gdk'
@@ -19,7 +22,7 @@ module GDK
       puts File.read(File.join($gdk_root, 'HELP'))
       true
     else
-      puts "Usage: #{PROGNAME} run|init|install|update|reconfigure|help [ARGS...]"
+      puts "Usage: #{PROGNAME} run|init|install|update|reconfigure|version|help [ARGS...]"
       false
     end
   end
