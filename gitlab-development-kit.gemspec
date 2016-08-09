@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name          = "gitlab-development-kit"
-  spec.version       = '0.1.1'
+  spec.version       = '0.2.0'
   spec.authors       = ["Jacob Vosmaer"]
   spec.email         = ["jacob@gitlab.com"]
 
