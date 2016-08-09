@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'fileutils'
+require 'yaml'
 
 # Gitlab Development Kit CLI launcher
 #
@@ -7,37 +7,82 @@ require 'fileutils'
 # installed outside the gitlab-development-kit repository with 'gem
 # install'. Edit lib/gdk.rb to define new commands.
 
-def main
-  case ARGV.first
-  when 'init'
-    if ARGV.count > 2
-      puts "Usage: gdk init [DIR]"
-      return false
-    end
+module GDK
+  DOTFILE = File.expand_path('~/.gdk.yml')
+  TRUSTED_KEY = 'trusted_directories'
 
-    cmd = %W(git clone https://gitlab.com/gitlab-org/gitlab-development-kit.git)
-    cmd << ARGV[1] if ARGV.count == 2
-    system(*cmd)
-  else
-    $gdk_root = find_root(Dir.pwd)
-    if $gdk_root.nil?
-      puts "Could not find GDK_ROOT in the current directory or any of its parents."
-      return false
+  def self.launcher_main
+    case ARGV.first
+    when 'init'
+      if ARGV.count > 2
+        puts "Usage: gdk init [DIR]"
+        return false
+      end
+  
+      cmd = %W(git clone https://gitlab.com/gitlab-org/gitlab-development-kit.git)
+      cmd << ARGV[1] if ARGV.count == 2
+      system(*cmd)
+    when 'trust'
+      if ARGV.count != 2
+        puts "Usage: gdk trust DIR"
+        return false
+      end
+      trust!(ARGV[1])
+    else
+      $gdk_root = find_root(Dir.pwd)
+      if $gdk_root.nil?
+        puts "Could not find GDK_ROOT in the current directory or any of its parents."
+        return false
+      end
+      puts "(in #{$gdk_root})"
+
+      if !trusted?($gdk_root)
+        puts <<-EOS.gsub(/^\s+\|/, '')
+          |
+          |This GitLab Development Kit root directory is not known to the "gdk"
+          |command. To mark it as trusted run:
+          |
+          |gdk trust #{$gdk_root}
+          |
+        EOS
+        return false
+      end
+
+      load(File.join($gdk_root, 'lib/gdk.rb'))
+      GDK::main
     end
-    puts "(in #{$gdk_root})"
-    load(File.join($gdk_root, 'lib/gdk.rb'))
-    GDK::main
+  end
+
+  private
+
+  def self.find_root(current)
+    if File.exist?(File.join(current, 'GDK_ROOT'))
+      File.realpath(current)
+    elsif File.realpath(current) == '/'
+      nil
+    else
+      find_root(File.join(current, '..'))
+    end
+  end
+
+  def self.trusted?(directory)
+    trusted_directories = load_dotfile[TRUSTED_KEY] || []
+    !!trusted_directories.include?(File.realpath(directory))
+  end
+  
+  def self.trust!(directory)
+    directory = File.realpath(directory)
+    config = load_dotfile
+    config[TRUSTED_KEY] ||= []
+    config[TRUSTED_KEY] << directory
+    puts "Adding #{directory} to #{TRUSTED_KEY} in #{DOTFILE}"
+    File.open(DOTFILE, 'w') { |f| YAML.dump(config, f) }
+    true
+  end
+
+  def self.load_dotfile
+    File.open(DOTFILE, File::RDONLY | File::CREAT) { |f| YAML.load(f) } || {}
   end
 end
 
-def find_root(current)
-  if File.exist?(File.join(current, 'GDK_ROOT'))
-    File.realpath(current)
-  elsif File.realpath(current) == '/'
-    nil
-  else
-    find_root(File.join(current, '..'))
-  end
-end
-
-exit(main)
+exit(GDK::launcher_main)
