@@ -157,6 +157,7 @@ gitlab-workhorse-update: gitlab-workhorse/.git/pull gitlab-workhorse-clean-bin g
 gitlab-workhorse-clean-bin:
 	rm -rf gitlab-workhorse/bin
 
+.PHONY:	gitlab-workhorse/bin/gitlab-workhorse
 gitlab-workhorse/bin/gitlab-workhorse: ${gitlab_workhorse_clone_dir}/.git
 	GOPATH=${gitlab_development_root}/gitlab-workhorse go install gitlab.com/gitlab-org/gitlab-workhorse/...
 
