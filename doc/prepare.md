@@ -20,7 +20,7 @@ during installation.
 
 1. A non-root Unix user, this can be your normal user but **DO NOT** run the
    installation as a root user
-2. Ruby 2.1 (2.1.8 or newer) installed with a Ruby version manager (RVM, rbenv,
+2. Ruby 2.3 (2.3.1 or newer) installed with a Ruby version manager (RVM, rbenv,
    chruby, etc.), **DO NOT** use the system Ruby
 3. Bundler, which you can install with `gem install bundler`
 
@@ -109,8 +109,8 @@ sudo yum install postgresql93-server libicu-devel cmake gcc-c++ redis ed fontcon
 sudo gpg2 --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3
 sudo curl -sSL https://get.rvm.io | bash -s stable
 sudo source /etc/profile.d/rvm.sh
-sudo rvm install 2.1
-sudo rvm use 2.1
+sudo rvm install 2.3
+sudo rvm use 2.3
 #Ensure your user is in rvm group
 sudo usermod -a -G rvm <username>
 #add iptables exceptions, or sudo service stop iptables
