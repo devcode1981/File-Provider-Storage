@@ -45,3 +45,4 @@
 /.gitlab-shell-bundle
 /.gitlab-bundle
 /gem/*.gem
+/gitlab-runner-config.toml

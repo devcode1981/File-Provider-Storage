@@ -26,3 +26,4 @@ installation instructions.
 - [NFS](nfs.md)
 - [HTTPS](https.md)
 - [SSH](ssh.md)
+- [Using GitLab Runner with GDK](runner.md)
