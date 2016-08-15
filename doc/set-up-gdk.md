@@ -5,7 +5,7 @@
 Make sure that none of the directories 'above' GitLab Development Kit
 contain 'problematic' characters such as ` ` and `(`. For example,
 `/home/janedoe/projects` is OK, but `/home/janedoe/my projects` will
-cause problems.
+cause problems:
 
 ```
 gem install gitlab-development-kit
@@ -13,10 +13,14 @@ gdk init
 cd gitlab-development-kit
 ```
 
-The `gdk install` command will clone the repositories, install the Gem bundles and set up
-basic configuration files. Pick one:
+## Install GDK
 
-## Develop in a fork
+The `gdk install` command will clone the repositories, install the Gem bundles and set up
+basic configuration files. Pick one of the methods below. If you don't have
+write access to the upstream repositories, you should use the 'Develop in a fork'
+method.
+
+### Develop in a fork
 
 ```
 # Set up GDK with 'origin' pointing to your gitlab-ce fork.
@@ -25,26 +29,24 @@ gdk install gitlab_repo=https://gitlab.com/MY-FORK/gitlab-ce.git
 support/set-gitlab-upstream
 ```
 
-The set-gitlab-upstream script creates a remote named `upstream` for
+The `set-gitlab-upstream` script creates a remote named `upstream` for
 [the canonical GitLab CE
 repository](https://gitlab.com/gitlab-org/gitlab-ce). It also modifies
 `gdk update` (See [Update gitlab and gitlab-shell
-repositories](Update gitlab and gitlab-shell repositories)) to pull
-down from the upstream repository instead of your fork, making it
+repositories](./howto/gdk_commands.md#update-gitlab-and-gitlab-shell-repositories))
+to pull down from the upstream repository instead of your fork, making it
 easier to keep up-to-date with the project.
 
 If you want to push changes from upstream to your fork, run `gdk
 update` and then `git push origin` from the `gitlab` directory.
 
-## Develop in the main repo
+### Develop in the main repo
 
 Alternatively, you can clone all components from their official source.
 
 ```
-# Clone your own forked repositories
 gdk install
 ```
-
 
 If you are going to work on Gitlab Geo, you will need [PostgreSQL replication](#postgresql-replication) setup before the "Post-installation" instructions.
 
