@@ -33,7 +33,7 @@ brew tap homebrew/dupes
 brew tap homebrew/versions
 brew install git redis postgresql libiconv icu4c pkg-config cmake nodejs go openssl node npm
 bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
-npm install phantomjs@1.9.8 -g
+npm install phantomjs@2.1.1 -g
 ```
 
 ### Ubuntu
@@ -71,7 +71,7 @@ compiler as well: `sudo apt-get install golang`.
 You need to install phantomjs manually:
 
 ```
-PHANTOM_JS="phantomjs-1.9.8-linux-x86_64"
+PHANTOM_JS="phantomjs-2.1.1-linux-x86_64"
 cd ~
 wget https://bitbucket.org/ariya/phantomjs/downloads/$PHANTOM_JS.tar.bz2
 tar -xvjf $PHANTOM_JS.tar.bz2
