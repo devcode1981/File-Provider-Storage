@@ -33,7 +33,7 @@ brew tap homebrew/dupes
 brew tap homebrew/versions
 brew install git redis postgresql libiconv icu4c pkg-config cmake nodejs go openssl node npm
 bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
-npm install phantomjs@2.1.1 -g
+npm install phantomjs-prebuilt -g
 ```
 
 ### Ubuntu
@@ -46,7 +46,8 @@ sudo apt-get install software-properties-common python-software-properties
 # This PPA contains an up-to-date version of Go
 sudo apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
 sudo apt-get update
-sudo apt-get install git postgresql postgresql-contrib libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev golang ed pkg-config
+sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs libkrb5-dev golang ed pkg-config
+npm install phantomjs-prebuilt -g
 ```
 
 ### Arch Linux
@@ -54,7 +55,8 @@ sudo apt-get install git postgresql postgresql-contrib libpq-dev phantomjs redis
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
-pacman -S postgresql phantomjs redis postgresql-libs icu nodejs ed cmake openssh git go
+pacman -S postgresql redis postgresql-libs icu nodejs ed cmake openssh git go
+npm install phantomjs-prebuilt -g
 ```
 
 ### Debian
