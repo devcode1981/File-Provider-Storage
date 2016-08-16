@@ -15,10 +15,13 @@ multiple repositories and it requires Ruby, Go, Postgres/MySQL, Redis
 and more to run. GDK helps you install and configure all these
 different components, and start/stop them when you work on GitLab.
 
-## Contributing to the GDK
+## Contributing to GitLab Development Kit
 
-The source of GitLab Development Kit is [hosted on GitLab.com](https://gitlab.com/gitlab-org/gitlab-development-kit/) and contributions are welcome, per the [contribution guidelines](https://gitlab.com/gitlab-org/gitlab-ce/CONTRIBUTING.md) and the contributor license agreements linked to from there.
-
+The source of GitLab Development Kit is [hosted on
+GitLab.com](https://gitlab.com/gitlab-org/gitlab-development-kit/) and
+contributions are welcome, per the [contribution
+guidelines](https://gitlab.com/gitlab-org/gitlab-ce/CONTRIBUTING.md) and
+the contributor license agreements linked to from there.
 
 ## Getting started
 
