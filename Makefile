@@ -20,7 +20,7 @@ gitlab-setup: gitlab/.git gitlab-config bundler .gitlab-bundle
 gitlab/.git:
 	git clone ${gitlab_repo} gitlab
 
-gitlab-config: gitlab/config/gitlab.yml gitlab/config/database.yml gitlab/config/unicorn.rb gitlab/config/resque.yml
+gitlab-config: gitlab/config/gitlab.yml gitlab/config/database.yml gitlab/config/unicorn.rb gitlab/config/resque.yml gitlab/public/uploads
 
 gitlab/config/gitlab.yml:
 	sed -e "s|/home/git|${gitlab_development_root}|"\
@@ -36,6 +36,9 @@ gitlab/config/unicorn.rb:
 
 gitlab/config/resque.yml:
 	sed "s|/home/git|${gitlab_development_root}|" redis/resque.yml.example > $@
+
+gitlab/public/uploads:
+	mkdir $@
 
 .gitlab-bundle:
 	cd ${gitlab_development_root}/gitlab && bundle install --without mysql production --jobs 4
