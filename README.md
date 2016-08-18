@@ -20,7 +20,7 @@ different components, and start/stop them when you work on GitLab.
 The source of GitLab Development Kit is [hosted on
 GitLab.com](https://gitlab.com/gitlab-org/gitlab-development-kit/) and
 contributions are welcome, per the [contribution
-guidelines](https://gitlab.com/gitlab-org/gitlab-ce/CONTRIBUTING.md) and
+guidelines](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/CONTRIBUTING.md) and
 the contributor license agreements linked to from there.
 
 ## Getting started
