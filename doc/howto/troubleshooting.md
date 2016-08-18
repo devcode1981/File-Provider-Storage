@@ -222,6 +222,29 @@ xcode-select --install
 gem install nokogiri
 ```
 
+## Delete non-existent migrations form the database
+
+If for some reason you end up having database migrations that no longer exist
+but are present in your database, you might want to remove them.
+
+1. Find the non-existent migrations with `rake db:migrate:status`. You should
+   see some entries like:
+
+    ```
+    up     20160727191041  ********** NO FILE **********
+    up     20160727193336  ********** NO FILE **********
+    ```
+
+1. Open a rails database console with `rails dbconsole`.
+1. Delete the migrations you want with:
+
+    ```sql
+    DELETE FROM schema_migrations WHERE version='20160727191041';
+    ```
+
+You can now run `rake db:migrate:status` again to verify that the entries are
+deleted from the database.
+
 ## Other problems
 
 Please open an issue on the [GDK issue tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues).
