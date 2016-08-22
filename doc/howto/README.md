@@ -1,7 +1,7 @@
 # How to use GitLab Development Kit
 
 See the [top level README](../../README.md#getting-started) for GDK
-installation instructinos.
+installation instructions.
 
 ## Basic
 
