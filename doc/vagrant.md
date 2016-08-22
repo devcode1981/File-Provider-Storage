@@ -44,7 +44,7 @@ containers technology. This Docker setup makes sense only on Linux, as on other
 OSes like Windows/OSX you will have to run the entire Docker hypervisor in a VM
 (which will be almost the same like Vagrant Virtualbox provider).
 
-1. Install [Vagrant](http://www.vagrantup.com).
+1. Install [Vagrant].
 1. Install [Docker Engine]. Don't forget to add your user to the docker group
    and re-login.
 1. Run `vagrant up --provider=docker` in this directory. Vagrant will build a
@@ -82,3 +82,7 @@ OSes like Windows/OSX you will have to run the entire Docker hypervisor in a VM
   file extension), see http://stackoverflow.com/a/5514351/1233435.
 - If you have errors with symlinks or Ruby during initialization, make sure you
   ran `vagrant up` from an elevated command prompt (Windows users).
+
+[Vagrant]: https://www.vagrantup.com
+[VirtualBox]: https://www.virtualbox.org
+[Docker Engine]: https://www.docker.com/products/docker-engine
