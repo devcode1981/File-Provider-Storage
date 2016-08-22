@@ -145,7 +145,7 @@ foreman:
 	command -v $@ > /dev/null || gem install $@
 
 .ruby-version:
-	ln -s ${gitlab_development_root}/gitlab/.ruby-version $@
+	ln -nfs ${gitlab_development_root}/gitlab/.ruby-version $@
 
 localhost.crt:	localhost.key
 
