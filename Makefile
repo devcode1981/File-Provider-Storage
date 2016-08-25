@@ -145,7 +145,7 @@ foreman:
 	command -v $@ > /dev/null || gem install $@
 
 .ruby-version:
-	ln -nfs ${gitlab_development_root}/gitlab/.ruby-version $@
+	ln -s ${gitlab_development_root}/gitlab/.ruby-version $@
 
 localhost.crt:	localhost.key
 
@@ -235,4 +235,5 @@ clean-config:
 	gitlab/config/resque.yml \
 	gitlab-shell/config.yml \
 	redis/redis.conf \
+	.ruby-version \
 	Procfile
