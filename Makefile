@@ -235,4 +235,5 @@ clean-config:
 	gitlab/config/resque.yml \
 	gitlab-shell/config.yml \
 	redis/redis.conf \
+	.ruby-version \
 	Procfile
