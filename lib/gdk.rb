@@ -11,13 +11,13 @@ module GDK
   def self.main
     case ARGV.shift
     when 'run'
-      system('./run', *ARGV, chdir: $gdk_root)
+      exec('./run', *ARGV, chdir: $gdk_root)
     when 'install'
-      system('make', *ARGV, chdir: $gdk_root)
+      exec('make', *ARGV, chdir: $gdk_root)
     when 'update'
-      system('make', 'update', chdir: $gdk_root)
+      exec('make', 'update', chdir: $gdk_root)
     when 'reconfigure'
-      system('make', 'clean-config', 'all', chdir: $gdk_root)
+      exec('make', 'clean-config', 'all', chdir: $gdk_root)
     when 'help'
       puts File.read(File.join($gdk_root, 'HELP'))
       true
