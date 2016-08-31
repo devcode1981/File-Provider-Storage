@@ -42,7 +42,7 @@ else
 	required_plugins.concat required_plugins_non_windows
 end
 
-# thanks to http://stackoverflow.com/a/28801317/1233435
+# thanks to https://stackoverflow.com/a/28801317/1233435
 required_plugins.each do |plugin|
 	need_restart = false
 	unless Vagrant.has_plugin? plugin
