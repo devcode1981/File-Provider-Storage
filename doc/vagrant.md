@@ -22,10 +22,10 @@ You can improve the speed by keeping all the files on the guest OS but in that
 case you should take care to not lose the files if you destroy or update the VM.
 To avoid usage of slow VirtualBox shared folders we use NFS here.
 
-1. (optional for Windows users) [Disable Hyper-V](http://superuser.com/a/642027/143551)
+1. (optional for Windows users) [Disable Hyper-V](https://superuser.com/a/642027/143551)
    then enable virtualization technology via the BIOS.
 1. Install [VirtualBox] and [Vagrant].
-1. [Configure NFS for Vagrant](http://docs.vagrantup.com/v2/synced-folders/nfs.html)
+1. [Configure NFS for Vagrant](https://docs.vagrantup.com/v2/synced-folders/nfs.html)
    if you are on Linux.
 1. Run `vagrant up --provider=virtualbox` in this directory (from an elevated
    command prompt if on Windows). Vagrant will download an OS image, bring it
@@ -74,12 +74,12 @@ OSes like Windows/OSX you will have to run the entire Docker hypervisor in a VM
   by the Vagrantfile and you should `sudo su - build` to switch to the correct
   user in that case.
 - If you get a "Timed out while waiting for the machine to boot" message, you
-  likely forgot to [disable Hyper-V](http://superuser.com/a/642027/143551) or
+  likely forgot to [disable Hyper-V](https://superuser.com/a/642027/143551) or
   enable virtualization technology via the BIOS.
 - If you have continuous problems starting Vagrant, you can uncomment
   `vb.gui = true` to view any error messages.
 - If you have problems running `support/edit-gitlab.yml` (bash script despite
-  file extension), see http://stackoverflow.com/a/5514351/1233435.
+  file extension), see https://stackoverflow.com/a/5514351/1233435.
 - If you have errors with symlinks or Ruby during initialization, make sure you
   ran `vagrant up` from an elevated command prompt (Windows users).
 

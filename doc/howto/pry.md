@@ -1,6 +1,6 @@
 # Debugging with Pry
 
-[Pry](http://pryrepl.org/) allows you to set breakpoints in Ruby code
+[Pry](https://pryrepl.org/) allows you to set breakpoints in Ruby code
 for interactive debugging. Just drop in the magic word `binding.pry`.
 
 When running tests Pry's interactive debugging prompt appears in the
