@@ -2,16 +2,19 @@
 
 This Changelog tracks major changes to the GitLab Development Kit, such as dependency updates (those not handled by Bundler) and new features.
 
-## September 5, 2016
+## 2016-09-09
+- Update Procfile for gitlab_workhorse_secret
+
+## 2016-09-05
 - Added a Changelog.
 
-## August 16, 2016
+## 2016-08-16
 - Updated PhantomJS to 2.1.1. !182
 
-## August 11, 2016
+## 2016-08-11
 - Updated Ruby to 2.3.1. !178
 
-## August 8, 2016
+## 2016-08-08
 - Added the [gitlab-development-kit gem][gdk-gem], commands can now be run using the `gdk` CLI. !174
 - Began using a GOPATH for GitLab Workhorse, this change requires manual intervention. [See the update instructions here][workhorse-changes]. !173
 
