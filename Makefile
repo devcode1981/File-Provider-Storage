@@ -50,7 +50,7 @@ bundler:
 
 # Set up gitlab-shell
 
-gitlab-shell-setup: gitlab-shell/.git gitlab-shell/config.yml bundler .gitlab-shell-bundle
+gitlab-shell-setup: gitlab-shell/.git gitlab-shell/config.yml bundler .gitlab-shell-bundle gitlab-shell/.gitlab_shell_secret
 
 gitlab-shell/.git:
 	git clone ${gitlab_shell_repo} gitlab-shell
@@ -65,6 +65,9 @@ gitlab-shell/config.yml:
 .gitlab-shell-bundle:
 	cd ${gitlab_development_root}/gitlab-shell && bundle install --without production --jobs 4
 	touch $@
+
+gitlab-shell/.gitlab_shell_secret:
+	ln -s ${gitlab_development_root}/gitlab/.gitlab_shell_secret $@
 
 # Update gitlab, gitlab-shell and gitlab-workhorse
 
@@ -234,6 +237,7 @@ clean-config:
 	gitlab/config/unicorn.rb \
 	gitlab/config/resque.yml \
 	gitlab-shell/config.yml \
+	gitlab-shell/.gitlab_shell_secret \
 	redis/redis.conf \
 	.ruby-version \
 	Procfile
