@@ -132,8 +132,12 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 
 ```
 sudo pkg install postgresql93-server postgresql93-contrib postgresql-libpqxx
-sudo pkg install redis go node icu krb5
+sudo pkg install redis go node icu krb5 phantomjs gmake
+# Create a symlink for Git in /usr/bin -- ugly, I know
+sudo ln -s /usr/local/bin/git /usr/bin/git
 ```
+
+To avoid changes in GDK's Makefile, use `gmake` instead of `make`.
 
 ### Other platforms
 
