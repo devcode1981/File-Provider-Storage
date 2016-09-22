@@ -140,7 +140,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 				raise "unable to determine total host RAM size"
 			end
 
-			# disables NFS on OS X to prevent UID / GID issues with mounted shares
+			# disables NFS on macOS to prevent UID / GID issues with mounted shares
 			enable_nfs = Vagrant::Util::Platform.platform =~ /darwin/ ? false : true
 			enable_shares(override, enable_nfs)
 		end

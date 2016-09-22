@@ -74,4 +74,4 @@ ldap:
 # TODO
 
 - integrate into the development kit
-- figure out how to detect the location of `slapd`; on OS X there is `/usr/libexec/slapd`.
+- figure out how to detect the location of `slapd`; on macOS there is `/usr/libexec/slapd`.

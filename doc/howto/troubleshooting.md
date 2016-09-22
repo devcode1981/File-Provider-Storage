@@ -135,7 +135,7 @@ to create a column in a non-existent table which would of course fail.
 
 This can happen when you try to load a Ruby gem with native extensions that
 were linked against a system library that is no longer there. A typical culprit
-is Homebrew on OS X, which encourages frequent updates (`brew update && brew
+is Homebrew on macOS, which encourages frequent updates (`brew update && brew
 upgrade`) which may break binary compatibility.
 
 ```
