@@ -22,10 +22,12 @@ Both command will print the post install messages on how to start the server. If
 
 If you ran `bundle install` before, or you've fully installed the GitLab Development Kit, the mysql gem was. To make sure the gem will be installed, remove `mysql` in `gitlab/.bundle/config` from the `BUNDLE_WITHOUT` key. Run `bundle` in the `gitlab` folder to install mysql.
 
-Configuration of the database is stored in `gitlab/config/database.yml`. Run the following command to update it:
+Configuration of the database is stored in `gitlab/config/database.yml`.
+
+You can first remove your `gitlab/config/database.yml` file if it already exists by using the command `rm gitlab/config/database.yml` and then run the following to update it:
 
 ```
-sed -e 's/^  (username|password)/  # \1/' config/database.yml.mysql > config/database.yml
+sed -e '/username:/d' -e '/password:/d' gitlab/config/database.yml.mysql > gitlab/config/database.yml
 ```
 
 Now you can run `rake dev:setup` and test your code using MySQL for data persistance.
