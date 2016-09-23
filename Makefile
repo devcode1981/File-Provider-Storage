@@ -10,6 +10,7 @@ postgres_replica_dir = $(realpath ./postgresql-replica)
 port = $(shell cat port 2>/dev/null)
 username = $(shell whoami)
 sshd_bin = $(shell which sshd)
+git_bin = $(shell which git)
 
 all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup
 
@@ -24,7 +25,8 @@ gitlab-config: gitlab/config/gitlab.yml gitlab/config/database.yml gitlab/config
 
 gitlab/config/gitlab.yml:
 	sed -e "s|/home/git|${gitlab_development_root}|"\
-	 gitlab/config/gitlab.yml.example > gitlab/config/gitlab.yml
+	  -e "s|/usr/bin/git|${git_bin}|"\
+	  gitlab/config/gitlab.yml.example > gitlab/config/gitlab.yml
 	port=${port} support/edit-gitlab.yml gitlab/config/gitlab.yml
 
 gitlab/config/database.yml:
