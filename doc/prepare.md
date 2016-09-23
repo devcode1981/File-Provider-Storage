@@ -20,8 +20,9 @@ during installation.
 
 1. A non-root Unix user, this can be your normal user but **DO NOT** run the
    installation as a root user
-2. Ruby 2.3 (2.3.1 or newer) installed with a Ruby version manager (RVM, rbenv,
-   chruby, etc.), **DO NOT** use the system Ruby
+2. Ruby 2.3 (2.3.1 or newer) installed with a Ruby version manager
+   ([RVM](https://rvm.io/), rbenv, chruby, etc.), **DO NOT** use the
+   system Ruby
 3. Bundler, which you can install with `gem install bundler`
 
 ### OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan)
@@ -108,9 +109,6 @@ sudo yum install http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-redhat9
 sudo yum install https://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 sudo yum install postgresql93-server libicu-devel cmake gcc-c++ redis ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 libstdc++.so.6 golang nodejs
 
-sudo gpg2 --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3
-sudo curl -sSL https://get.rvm.io | bash -s stable
-sudo source /etc/profile.d/rvm.sh
 sudo rvm install 2.3
 sudo rvm use 2.3
 #Ensure your user is in rvm group
