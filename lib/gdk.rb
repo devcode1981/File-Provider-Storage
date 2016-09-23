@@ -6,6 +6,8 @@
 module GDK
   PROGNAME = 'gdk'
 
+  MAKE = (RUBY_PLATFORM =~ /bsd/) != nil ? 'gmake' : 'make'
+
   # This function is called from bin/gdk. It must return true/false or
   # an exit code.
   def self.main
@@ -13,11 +15,11 @@ module GDK
     when 'run'
       exec('./run', *ARGV, chdir: $gdk_root)
     when 'install'
-      exec('make', *ARGV, chdir: $gdk_root)
+      exec(MAKE, *ARGV, chdir: $gdk_root)
     when 'update'
-      exec('make', 'update', chdir: $gdk_root)
+      exec(MAKE, 'update', chdir: $gdk_root)
     when 'reconfigure'
-      exec('make', 'clean-config', 'all', chdir: $gdk_root)
+      exec(MAKE, 'clean-config', 'all', chdir: $gdk_root)
     when 'help'
       puts File.read(File.join($gdk_root, 'HELP'))
       true
