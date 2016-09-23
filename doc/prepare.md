@@ -25,7 +25,7 @@ during installation.
    system Ruby
 3. Bundler, which you can install with `gem install bundler`
 
-### OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan)
+### OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan), macOS 10.12 (Sierra)
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 

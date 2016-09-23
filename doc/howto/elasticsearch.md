@@ -4,7 +4,7 @@ GitLab Enterprise Edition has Elasticsearch integration. In this
 document we explain how to set this up in your development
 environment.
 
-## Installation: OS X
+## Installation: macOS
 
 1. Install Elasticsearch with [Homebrew]:
 
