@@ -5,8 +5,7 @@
 
 module GDK
   PROGNAME = 'gdk'
-
-  MAKE = (RUBY_PLATFORM =~ /bsd/) != nil ? 'gmake' : 'make'
+  MAKE = RUBY_PLATFORM =~ /bsd/ ? 'gmake' : 'make'
 
   # This function is called from bin/gdk. It must return true/false or
   # an exit code.
