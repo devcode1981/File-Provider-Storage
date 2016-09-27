@@ -1,8 +1,8 @@
 export GOPATH := $(shell pwd)
 GRAFANA_PARENT := src/github.com/grafana
 GRAFANA_SOURCE := ${GRAFANA_PARENT}/grafana
-GRAFANA_VERSION := 3.0.2
-GRAFANA_TAR_SHA256 = 754da4834460e5320155729dff8fe07f7a8a400ab1648b95ca49d3c9ebf14f29
+GRAFANA_VERSION := 3.1.1
+GRAFANA_TAR_SHA256 = 77bff57f02e507fb998d6d2492798801db4cb10c82c1378e32bd1dde963dba3d
 
 all: public vendor conf bin/grafana-server grafana-dashboards
 
