@@ -13,7 +13,7 @@ ensure
   Process.kill('TERM', foreman_pid)
 end
 
-sleep 1 # allow foreman to terminate
+Process.wait(foreman_pid)
 
 exit true if success
 

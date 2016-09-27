@@ -2,28 +2,14 @@
 require 'socket'
 require 'net/http'
 
-if !ARGV.empty?
-  abort "Usage: #$0"
-end
+def main
+  host = '127.0.0.1'
+  port = '9999'
 
-host = '127.0.0.1'
-port = '9999'
-
-begin
   db_pid = spawn('./run', 'db')
   grafana_pid = spawn('./run', 'grafana')
-  socket_ready = false
-  30.times do
-    begin
-      TCPSocket.new(host, port)
-      socket_ready = true
-      break
-    rescue Errno::ECONNREFUSED
-      sleep 1
-    end
-  end
 
-  abort "#$0: could not connect to Grafana at #{host}:#{port}" unless socket_ready
+  abort "#$0: could not connect to Grafana at #{host}:#{port}" unless wait_socket(host, port)
 
   http = Net::HTTP.new(host, port)
   request = Net::HTTP::Post.new('/api/datasources')
@@ -41,6 +27,26 @@ begin
 EOS
   puts http.request(request).body
 ensure
-  Process.kill('TERM', db_pid)
-  Process.kill('TERM', grafana_pid)
+  [grafana_pid, db_pid].each do |pid|
+    Process.kill('TERM', pid)
+    Process.wait(pid)
+  end
 end
+
+def wait_socket(host, port)
+  30.times do
+    begin
+      TCPSocket.new(host, port)
+      return true
+    rescue Errno::ECONNREFUSED
+      sleep 1
+    end
+  end
+  false
+end
+
+if !ARGV.empty?
+  abort "Usage: #$0"
+end
+
+main
