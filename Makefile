@@ -181,7 +181,7 @@ gitlab-workhorse/.git/pull:
 influxdb-setup:	influxdb/influxdb.conf influxdb/bin/influxd influxdb/meta/meta.db
 
 influxdb/bin/influxd:
-	cd influxdb && make
+	cd influxdb && ${MAKE}
 
 influxdb/meta/meta.db:	Procfile
 	grep '^influxdb:' Procfile || (printf ',s/^#influxdb/influxdb/\nwq\n' | ed -s Procfile)
@@ -193,7 +193,7 @@ influxdb/influxdb.conf:
 grafana-setup:	grafana/grafana.ini grafana/bin/grafana-server grafana/gdk-pg-created grafana/gdk-data-source-created
 
 grafana/bin/grafana-server:
-	cd grafana && make
+	cd grafana && ${MAKE}
 
 grafana/grafana.ini:
 	sed -e "s|/home/git|${gitlab_development_root}|g" \
