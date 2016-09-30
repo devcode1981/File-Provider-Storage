@@ -222,7 +222,7 @@ xcode-select --install
 gem install nokogiri
 ```
 
-## Delete non-existent migrations form the database
+## Delete non-existent migrations from the database
 
 If for some reason you end up having database migrations that no longer exist
 but are present in your database, you might want to remove them.
