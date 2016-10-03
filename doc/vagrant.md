@@ -59,7 +59,7 @@ OSes like Windows/OSX you will have to run the entire Docker hypervisor in a VM
 - Open the development environment by running `vagrant up` & `vagrant ssh`
   (from an elevated command prompt if on Windows).
 - When using Docker, vagrant can ask you about password. The default password
-  is `tcuser`(You may be asked to type-in the password several times, but for different operations thus you need to key in the same password: `tc user`).
+  is `tcuser`(You may be asked to type-in the password several times, but for different operations thus you need to key in the same password: `tcuser`).
 - Follow the general [development guidelines](#development) but running the
   commands in the `vagrant ssh` session.
 - Files in the `gitlab` and `gitlab-shell` folders will be synced between the
