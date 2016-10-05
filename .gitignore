@@ -27,6 +27,7 @@
 /host
 /port
 /.ruby-version
+/.ruby-gemset
 /localhost.*
 /influxdb/
 /grafana/
