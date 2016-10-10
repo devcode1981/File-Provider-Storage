@@ -129,6 +129,15 @@ binary version of Git.
 
 You may need to install Redis 2.8 or newer manually.
 
+### FreeBSD
+
+Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
+
+```
+sudo pkg install postgresql93-server postgresql93-contrib postgresql-libpqxx \
+redis go node icu krb5 phantomjs gmake
+```
+
 ### Other platforms
 
 If you got GDK running an another platform please send a merge request to add
