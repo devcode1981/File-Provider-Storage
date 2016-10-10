@@ -24,9 +24,9 @@ for more details.
 
 To start using GDK follow these three steps:
 
-- [Prepare your computer](doc/prepare.md)
-- [Install GDK](doc/set-up-gdk.md)
-- [Learn how to use GDK](doc/howto/README.md)
+1. [Prepare your computer](doc/prepare.md)
+2. [Install GDK](doc/set-up-gdk.md)
+3. [Learn how to use GDK](doc/howto/README.md)
 
 ## Design goals
 
