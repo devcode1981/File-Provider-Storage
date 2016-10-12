@@ -32,6 +32,8 @@ during installation.
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
+#### Install OS X prerequisites using homebrew
+
 ```
 brew tap homebrew/dupes
 brew tap homebrew/versions
@@ -39,6 +41,18 @@ brew install git redis postgresql libiconv icu4c pkg-config cmake nodejs go open
 bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
 npm install phantomjs-prebuilt@2.1.12 -g
 ```
+
+#### Install OS X prerequisites using macports
+
+We are using PostgreSQL-9.5 in the following example. If you want to use another version, please adjust paths accordingly.
+
+```
+sudo port install git redis libiconv postgresql95-server icu pkgconfig cmake nodejs4 go openssl npm2
+bundle config build.eventmachine --with-cppflags=-I/opt/local/include/openssl
+sudo npm install phantomjs-prebuilt@2.1.12 -g
+echo 'export PATH=/opt/local/lib/postgresql95/bin/:$PATH' >> ~/.profile
+```
+
 
 ### Ubuntu
 
