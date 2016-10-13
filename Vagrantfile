@@ -107,7 +107,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		config.vm.network "private_network", type: "dhcp"
 	end
 
-	config.vm.network "forwarded_port", guest: 3000, host: 3000
+	config.vm.network "forwarded_port", guest: 3000, host: 3000, auto_correct: true
 
 	config.vm.provider "docker" do |d,override|
 		d.build_dir       = "docker"
