@@ -143,6 +143,35 @@ binary version of Git.
 
 You may need to install Redis 2.8 or newer manually.
 
+### OpenSUSE
+
+Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
+
+This was tested on OpenSUSE LEAP 42.1, and works, and is not yet working on Tumbleweed (2016-November).
+
+```
+sudo zypper dup
+
+sudo zypper install libxslt-devel  postgresql postgresql-devel libpqxx-devel redis libicu-devel nodejs npm4 git ed cmake \
+         rpm-build gcc-c++ krb5-devel go postgresql-server postgresql-contrib \
+         libxml2-devel libxml2-devel-32bit findutils-locate
+
+sudo npm install -g phantomjs
+```
+
+Manual fixes required on OpenSUSE LEAP to work around a gem install failure that aborts the gdk install. Apply bundle config option, and if you already ran gdk install and you need to resume it, gdk reconfigure can be helpful. If you haven't run gdk install yet you don't need gdk reconfigure:
+
+```
+bundle config build.nokogiri "--use-system-libraries"
+gdk reconfigure
+```
+
+Manual fix required on OpenSUSE LEAP to place redis-server in the path for non-root users:
+```
+sudo ln -s /usr/sbin/redis-server /usr/bin/redis-server 
+```
+
+
 ### FreeBSD
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
@@ -159,9 +188,10 @@ it here.
 
 ## Installation
 
-The `Makefile` will clone the repositories, install the Gem bundles and set up
-basic configuration files. Pick one:
+After you have completed everything here, please procede to [install GDK](doc/set-up-gdk.md)
 
 [puias]: https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/install/centos#add-puias-computational-repository
 [docker engine]: https://docs.docker.com/engine/installation/
 [vagrant]: https://www.vagrantup.com
+
+
