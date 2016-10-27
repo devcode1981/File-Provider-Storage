@@ -186,9 +186,9 @@ redis go node icu krb5 phantomjs gmake
 If you got GDK running an another platform please send a merge request to add
 it here.
 
-## Installation
+### Next Steps
 
-After you have completed everything here, please procede to [install GDK](doc/set-up-gdk.md)
+After you have completed everything here, please procede to [Set-up GDK](doc/set-up-gdk.md)
 
 [puias]: https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/install/centos#add-puias-computational-repository
 [docker engine]: https://docs.docker.com/engine/installation/
