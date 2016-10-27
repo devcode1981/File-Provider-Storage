@@ -157,11 +157,6 @@ redis go node icu krb5 phantomjs gmake
 If you got GDK running an another platform please send a merge request to add
 it here.
 
-## Installation
-
-The `Makefile` will clone the repositories, install the Gem bundles and set up
-basic configuration files. Pick one:
-
 [puias]: https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/install/centos#add-puias-computational-repository
 [docker engine]: https://docs.docker.com/engine/installation/
 [vagrant]: https://www.vagrantup.com
