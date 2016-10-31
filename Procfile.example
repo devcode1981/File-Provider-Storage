@@ -5,7 +5,7 @@
 redis: exec redis-server /home/git/redis/redis.conf
 postgresql: exec support/postgresql-signal-wrapper postgres -D /home/git/postgresql/data -k /home/git/postgresql -h ''
 #postgresql-replica: exec support/postgresql-signal-wrapper postgres -D /home/git/postgresql-replica/data -k /home/git/postgresql-replica -h ''
-#openldap: exec support/exec-cd gitlab-openldap libexec/slapd -F slapd.d -d2 -h "ldap://127.0.0.1:3890"
+#openldap: exec support/exec-cd gitlab-openldap libexec/slapd -F slapd.d -d2 -h "ldap://$host:3890"
 gitlab-workhorse: exec /usr/bin/env PATH="/home/git/gitlab-workhorse/bin:$PATH" gitlab-workhorse -authSocket /home/git/gitlab.socket -listenAddr $host:$port -documentRoot /home/git/gitlab/public -developmentMode -secretPath /home/git/gitlab/.gitlab_workhorse_secret
 rails-web: exec /usr/bin/env RAILS_ENV=development support/exec-cd gitlab bin/web start_foreground
 rails-background-jobs: exec /usr/bin/env SIDEKIQ_LOG_ARGUMENTS=1 RAILS_ENV=development support/exec-cd gitlab bin/background_jobs start_foreground
