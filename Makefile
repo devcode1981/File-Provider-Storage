@@ -16,7 +16,7 @@ all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup
 
 # Set up the GitLab Rails app
 
-gitlab-setup: gitlab/.git gitlab-config bundler .gitlab-bundle
+gitlab-setup: gitlab/.git gitlab-config bundler .gitlab-bundle .gitlab-npm
 
 gitlab/.git:
 	git clone ${gitlab_repo} gitlab
@@ -44,6 +44,10 @@ gitlab/public/uploads:
 
 .gitlab-bundle:
 	cd ${gitlab_development_root}/gitlab && bundle install --without mysql production --jobs 4
+	touch $@
+
+.gitlab-npm:
+	cd ${gitlab_development_root}/gitlab && npm install
 	touch $@
 
 .PHONY:	bundler
@@ -84,7 +88,8 @@ gitlab-update: gitlab/.git/pull
 	@echo "------------------------------------------------------------"
 	@echo ""
 	cd ${gitlab_development_root}/gitlab && \
-		bundle exec rake db:migrate db:test:prepare
+		bundle exec rake db:migrate db:test:prepare && \
+		npm install
 
 gitlab-shell-update: gitlab-shell/.git/pull
 	cd ${gitlab_development_root}/gitlab-shell && \
@@ -208,7 +213,7 @@ grafana/gdk-data-source-created:
 	printf ',s/^#grafana/grafana/\nwq\n' | ed -s Procfile
 	support/bootstrap-grafana
 	touch $@
-	
+
 performance-metrics-setup:	Procfile influxdb-setup grafana-setup
 
 openssh-setup:	openssh/sshd_config openssh/ssh_host_rsa_key
