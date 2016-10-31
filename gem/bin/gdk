@@ -13,6 +13,7 @@ require 'gitlab-development-kit'
 module GDK
   DOTFILE = File.expand_path('~/.gdk.yml')
   TRUSTED_KEY = 'trusted_directories'
+  ROOT_CHECK_FILE = '.gdk-install-root'
 
   def self.launcher_main
     case ARGV.first
@@ -26,7 +27,7 @@ module GDK
       end
       directory = ARGV.count == 2 ? ARGV[1] : 'gitlab-development-kit' 
       cmd = %W(git clone https://gitlab.com/gitlab-org/gitlab-development-kit.git #{directory})
-      system(*cmd) && trust!(directory)
+      system(*cmd) && trust!(directory) && remember!(directory)
     when 'trust'
       if ARGV.count != 2
         puts "Usage: gdk trust DIR"
@@ -87,6 +88,16 @@ module GDK
 
   def self.load_dotfile
     File.open(DOTFILE, File::RDONLY | File::CREAT) { |f| YAML.load(f) } || {}
+  end
+
+  def self.remember!(directory)
+    open("#{directory}/#{ROOT_CHECK_FILE}", 'w') do |f|
+      f.puts File.realpath(directory)
+    end
+    true
+  rescue => ex
+    warn ex
+    false
   end
 end
 

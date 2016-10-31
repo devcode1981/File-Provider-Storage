@@ -1,3 +1,6 @@
+v0.2.3
+- Remember installation directory during 'gdk init'
+
 v0.2.2
 - Add 'gdk version' command
 
