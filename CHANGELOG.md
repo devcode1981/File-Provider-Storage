@@ -6,7 +6,8 @@ features.
 
 ## 2016-10-31
 
-- Add root check to catch root move problems: bump gem to 0.2.3
+- Add root check to catch root move problems. Requires gem 0.2.3 or
+  newer; run `gem install gitlab-development-kit` to upgrade the gem.
 
 ## 2016-09-09
 - Update Procfile for gitlab_workhorse_secret
