@@ -242,4 +242,4 @@ clean-config:
 	gitlab-shell/.gitlab_shell_secret \
 	redis/redis.conf \
 	.ruby-version \
-	Procfile
+	Procfile \
