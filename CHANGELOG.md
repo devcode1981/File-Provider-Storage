@@ -1,6 +1,12 @@
 # CHANGELOG
 
-This Changelog tracks major changes to the GitLab Development Kit, such as dependency updates (those not handled by Bundler) and new features.
+This Changelog tracks major changes to the GitLab Development Kit,
+such as dependency updates (those not handled by Bundler) and new
+features.
+
+## 2016-10-31
+
+- Add root check to catch root move problems: bump gem to 0.2.3
 
 ## 2016-09-09
 - Update Procfile for gitlab_workhorse_secret
