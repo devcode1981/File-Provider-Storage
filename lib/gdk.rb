@@ -29,11 +29,15 @@ module GDK
     when 'reconfigure'
       remember!($gdk_root)
       exec(MAKE, 'clean-config', 'all', chdir: $gdk_root)
+    when 'psql'
+      exec('psql', '-h', File.join($gdk_root, 'postgresql'), *ARGV, chdir: $gdk_root)
+    when 'redis-cli'
+      exec('redis-cli', '-s', File.join($gdk_root, 'redis/redis.socket'), *ARGV, chdir: $gdk_root)
     when 'help'
       puts File.read(File.join($gdk_root, 'HELP'))
       true
     else
-      puts "Usage: #{PROGNAME} run|init|install|update|reconfigure|version|help [ARGS...]"
+      puts "Usage: #{PROGNAME} run|init|install|update|reconfigure|psql|redis-cli|version|help [ARGS...]"
       false
     end
   end
