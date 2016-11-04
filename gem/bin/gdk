@@ -14,6 +14,7 @@ module GDK
   DOTFILE = File.expand_path('~/.gdk.yml')
   TRUSTED_KEY = 'trusted_directories'
   ROOT_CHECK_FILE = '.gdk-install-root'
+  DEFAULT_INIT_DIRECTORY = File.join(Dir.pwd, 'gitlab-development-kit')
 
   def self.launcher_main
     case ARGV.first
@@ -25,7 +26,7 @@ module GDK
         puts "Usage: gdk init [DIR]"
         return false
       end
-      directory = ARGV.count == 2 ? ARGV[1] : 'gitlab-development-kit' 
+      directory = ARGV.count == 2 ? ARGV[1] : DEFAULT_INIT_DIRECTORY
       cmd = %W(git clone https://gitlab.com/gitlab-org/gitlab-development-kit.git #{directory})
       system(*cmd) && trust!(directory) && remember!(directory)
     when 'trust'
@@ -42,6 +43,8 @@ module GDK
           |The current working directory is not inside a gitlab-development-kit
           |installation. Use 'cd' to go to your gitlab-development-kit or create
           |a new one with 'gdk init'.
+          |
+          |gdk init [DIRECTORY] # Default: #{DEFAULT_INIT_DIRECTORY}
           |
         EOS
         return false
