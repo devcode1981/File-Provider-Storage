@@ -159,11 +159,15 @@ sudo zypper install libxslt-devel  postgresql postgresql-devel libpqxx-devel red
 sudo npm install -g phantomjs
 ```
 
-Manual fixes required on OpenSUSE LEAP to work around a gem install failure that aborts the gdk install. Apply bundle config option, and if you already ran gdk install and you need to resume it, gdk reconfigure can be helpful. If you haven't run gdk install yet you don't need gdk reconfigure:
+NOTE: 
+
+The `gdk install` command you will run later may fail while running `bundle install` in the `gitlab` directory. If this happens, run the following commands to work around it, and then retry `gdk install`:
 
 ```
+cd gitlab
 bundle config build.nokogiri "--use-system-libraries"
-gdk reconfigure
+cd ..
+gdk install
 ```
 
 Manual fix required on OpenSUSE LEAP to place redis-server in the path for non-root users:
