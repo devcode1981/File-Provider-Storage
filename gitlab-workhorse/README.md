@@ -1,8 +1,12 @@
 # GitLab-Workhorse in GitLab Development Kit
 
-In GDK, gitlab-workhorse is installed inside its own GOPATH rooted here.
+Use `gdk install` if you want to recompile gitlab-workhorse for `gdk run`.
 
-To set GOPATH in your current shell for working on gitlab-workhorse run the following command:
+In GDK, gitlab-workhorse is installed inside its own GOPATH rooted
+here.
+
+To set GOPATH in your current shell for working on gitlab-workhorse
+run the following command:
 
 ```
 . env.sh
@@ -22,7 +26,9 @@ You can use the following shortcut to `cd` into that directory:
 
 ## Cleaning up an old gitlab-workhorse checkout
 
-If you installed GDK before we started using a GOPATH for gitlab-workhorse you now have a bit of a mess in this directory. You can clean up as follows. Start in the GitLab Development Kit root.
+If you installed GDK before we started using a GOPATH for
+gitlab-workhorse you now have a bit of a mess in this directory. You
+can clean up as follows. Start in the GitLab Development Kit root.
 
 ```
 # in GDK root!!

@@ -13,6 +13,8 @@ require 'gitlab-development-kit'
 module GDK
   DOTFILE = File.expand_path('~/.gdk.yml')
   TRUSTED_KEY = 'trusted_directories'
+  ROOT_CHECK_FILE = '.gdk-install-root'
+  DEFAULT_INIT_DIRECTORY = File.join(Dir.pwd, 'gitlab-development-kit')
 
   def self.launcher_main
     case ARGV.first
@@ -24,9 +26,9 @@ module GDK
         puts "Usage: gdk init [DIR]"
         return false
       end
-      directory = ARGV.count == 2 ? ARGV[1] : 'gitlab-development-kit' 
+      directory = ARGV.count == 2 ? ARGV[1] : DEFAULT_INIT_DIRECTORY
       cmd = %W(git clone https://gitlab.com/gitlab-org/gitlab-development-kit.git #{directory})
-      system(*cmd) && trust!(directory)
+      system(*cmd) && trust!(directory) && remember!(directory)
     when 'trust'
       if ARGV.count != 2
         puts "Usage: gdk trust DIR"
@@ -36,7 +38,15 @@ module GDK
     else
       $gdk_root = find_root(Dir.pwd)
       if $gdk_root.nil?
-        puts "Could not find GDK_ROOT in the current directory or any of its parents."
+        puts <<-EOS.gsub(/^\s+\|/, '')
+          |
+          |The current working directory is not inside a gitlab-development-kit
+          |installation. Use 'cd' to go to your gitlab-development-kit or create
+          |a new one with 'gdk init'.
+          |
+          |gdk init [DIRECTORY] # Default: #{DEFAULT_INIT_DIRECTORY}
+          |
+        EOS
         return false
       end
       puts "(in #{$gdk_root})"
@@ -87,6 +97,16 @@ module GDK
 
   def self.load_dotfile
     File.open(DOTFILE, File::RDONLY | File::CREAT) { |f| YAML.load(f) } || {}
+  end
+
+  def self.remember!(directory)
+    open("#{directory}/#{ROOT_CHECK_FILE}", 'w') do |f|
+      f.puts File.realpath(directory)
+    end
+    true
+  rescue => ex
+    warn ex
+    false
   end
 end
 
