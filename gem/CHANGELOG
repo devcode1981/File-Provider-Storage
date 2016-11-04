@@ -1,3 +1,6 @@
+v0.2.4
+- Better hints when run outside of GDK root.
+
 v0.2.3
 - Remember installation directory during 'gdk init'
 
