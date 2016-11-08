@@ -1,0 +1,11 @@
+stages:
+- build
+- test
+
+variables:
+  CONTAINER_TEST_IMAGE: gitlab-gtk:$CI_BUILD_REF_NAME
+
+build:
+  stage: build
+  script:
+    - docker build -t $CONTAINER_TEST_IMAGE .
