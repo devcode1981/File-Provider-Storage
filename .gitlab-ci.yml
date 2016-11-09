@@ -12,7 +12,7 @@ build_prerequisites:
   image: docker:git
   stage: build
   script:
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.example.com
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
     - docker build -t $CONTAINER_TEST_IMAGE .
     - docker push $CONTAINER_TEST_IMAGE
 
