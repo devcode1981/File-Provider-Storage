@@ -1,4 +1,3 @@
-image: docker:git
 services:
 - docker:dind
 
@@ -9,7 +8,14 @@ stages:
 variables:
   CONTAINER_TEST_IMAGE: gitlab-gtk:$CI_BUILD_REF_NAME
 
-build:
+build_prerequisites:
+  image: docker:git
   stage: build
   script:
     - docker build -t $CONTAINER_TEST_IMAGE .
+
+build_env:
+  image: $CONTAINER_TEST_IMAGE
+  stage: build
+  script:
+    - bash test_ubuntu.sh
