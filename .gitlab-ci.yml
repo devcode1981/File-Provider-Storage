@@ -6,16 +6,18 @@ stages:
 - test
 
 variables:
-  CONTAINER_TEST_IMAGE: gitlab-gtk:$CI_BUILD_REF_NAME
+  CONTAINER_TEST_IMAGE: registry.gitlab.com/rubycut/gitlab-development-kit:$CI_BUILD_REF_NAME
 
 build_prerequisites:
   image: docker:git
   stage: build
   script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.example.com
     - docker build -t $CONTAINER_TEST_IMAGE .
+    - docker push $CONTAINER_TEST_IMAGE
 
 build_env:
   image: $CONTAINER_TEST_IMAGE
-  stage: build
+  stage: test
   script:
     - bash test_ubuntu.sh
