@@ -1,13 +1,23 @@
 FROM ubuntu:16.04
 MAINTAINER hrvoje.marjanovic@gmail.com
 
-RUN apt-get -y update
-RUN apt-get -y install curl git-core python-software-properties
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update
+RUN apt-get -y install curl git-core software-properties-common python-software-properties
+# This PPA contains an up-to-date version of Go
+RUN apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
+RUN apt-get update
+
 
 # install essentials
 RUN apt-get -y install build-essential
 RUN apt-get install -y -q git
 RUN apt-get install -y libssl-dev
+
+# rest of gitlab requirements
+RUN apt-get -y install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs libkrb5-dev golang ed pkg-config
+
 
 # Install rbenv
 RUN git clone https://github.com/sstephenson/rbenv.git /usr/local/rbenv
@@ -24,3 +34,17 @@ RUN git clone https://github.com/sstephenson/ruby-build.git /usr/local/rbenv/plu
 ENV RBENV_ROOT /usr/local/rbenv
 
 ENV PATH $RBENV_ROOT/bin:$RBENV_ROOT/shims:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+RUN apt-get install -y libreadline-dev
+
+RUN rbenv install 2.3.1
+RUN rbenv global 2.3.1
+
+# install gitlab-development-kit
+
+# RUN gem install gitlab-development-kit
+#RUN gdk init
+#RUN cd gitlab-development-kit
+#RUN gdk install
+#RUN support/set-gitlab-upstream
+
