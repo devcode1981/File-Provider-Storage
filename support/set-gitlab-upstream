@@ -2,7 +2,7 @@
 set -e # exit on uncaught failure
 remote_name=upstream
 
-cd gitlab
+cd ./gitlab
 
 if git remote | grep -q '^upstream$' ; then
   echo "Remote '${remote_name}' already exists in $(pwd). Exiting."
