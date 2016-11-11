@@ -15,7 +15,8 @@ build_prerequisites:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
     - docker build -t $CONTAINER_TEST_IMAGE .
     - docker push $CONTAINER_TEST_IMAGE
-
+  only:
+    - tags
 build_env:
   image: $CONTAINER_TEST_IMAGE
   stage: test
