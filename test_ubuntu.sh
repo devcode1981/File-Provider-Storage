@@ -2,6 +2,8 @@
 
 set -e
 
+apt-get -y install npm
+
 gem install gitlab-development-kit
 
 gdk init
