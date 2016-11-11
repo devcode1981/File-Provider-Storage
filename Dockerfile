@@ -40,11 +40,3 @@ RUN apt-get install -y libreadline-dev
 RUN rbenv install 2.3.1
 RUN rbenv global 2.3.1
 
-# install gitlab-development-kit
-
-# RUN gem install gitlab-development-kit
-#RUN gdk init
-#RUN cd gitlab-development-kit
-#RUN gdk install
-#RUN support/set-gitlab-upstream
-
