@@ -147,7 +147,8 @@ You may need to install Redis 2.8 or newer manually.
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
-This was tested on OpenSUSE LEAP 42.1, and works, and is not yet working on Tumbleweed (2016-November).
+This was tested on OpenSUSE LEAP 42.1, and Tumbleweed (20161109)
+ 
 
 ```
 sudo zypper dup
@@ -162,10 +163,7 @@ sudo npm install -g phantomjs
 The following `bundle config` options are recommended befre you run `gdk install` in order to avoid problems with the embedded libraries inside nokogiri:
 
 ```
-cd gitlab
 bundle config build.nokogiri "--use-system-libraries" --global
-cd ..
-gdk install
 ```
 
 Manual fix required on OpenSUSE LEAP to place redis-server in the path for non-root users:
@@ -190,7 +188,7 @@ it here.
 
 ### Next Steps
 
-After you have completed everything here, please procede to [Set-up GDK](doc/set-up-gdk.md)
+After you have completed everything here, please proceed to [Set-up GDK](doc/set-up-gdk.md)
 
 [puias]: https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/install/centos#add-puias-computational-repository
 [docker engine]: https://docs.docker.com/engine/installation/
