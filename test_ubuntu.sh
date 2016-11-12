@@ -2,13 +2,6 @@
 
 set -e
 
-apt-get -y install npm sudo
-
-useradd gdk
-
-mkdir /home/gdk;  chown gdk /home/gdk
-chown -R gdk:gdk /usr/local/rbenv/
-
 sudo -H -u gdk bash -l gem install gitlab-development-kit
 
 cd /home/gdk

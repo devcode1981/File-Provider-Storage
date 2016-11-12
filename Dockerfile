@@ -40,3 +40,9 @@ RUN apt-get install -y libreadline-dev
 RUN rbenv install 2.3.1
 RUN rbenv global 2.3.1
 
+RUN apt-get -y install npm sudo
+
+RUN useradd gdk
+
+RUN mkdir /home/gdk;  chown gdk /home/gdk
+RUN chown -R gdk:gdk /usr/local/rbenv/
