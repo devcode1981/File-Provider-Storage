@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+set -x
 
 sudo -H -u gdk bash -l gem install gitlab-development-kit
 
@@ -12,7 +13,7 @@ sudo -H -u gdk bash -l support/set-gitlab-upstream
 
 sudo -H -u gdk bash -l gdk run &
 
-sleep 30
+sleep 10
 
-wget http://localhost:3000/
+curl http://127.0.0.1:3000/
 
