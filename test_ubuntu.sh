@@ -3,7 +3,7 @@
 set -e
 set -x
 
-sudo -H -u gdk bash -l gem install gitlab-development-kit
+sudo -i -H -u gdk bash -c 'gem install gitlab-development-kit'
 
 cd /home/gdk
 sudo -H -u gdk bash -l gdk init
