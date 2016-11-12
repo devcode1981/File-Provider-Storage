@@ -2,16 +2,22 @@
 
 set -e
 
-apt-get -y install npm
+apt-get -y install npm sudo
 
-gem install gitlab-development-kit
+useradd gdk
 
-gdk init
+mkdir /home/gdk;  chown gdk /home/gdk
+chown -R gdk:gdk /usr/local/rbenv/
+
+sudo -H -u gdk bash -l gem install gitlab-development-kit
+
+cd /home/gdk
+sudo -H -u gdk bash -l gdk init
 cd gitlab-development-kit
-gdk install
-support/set-gitlab-upstream
+sudo -H -u gdk bash -l gdk install
+sudo -H -u gdk bash -l support/set-gitlab-upstream
 
-gdk run &
+sudo -H -u gdk bash -l gdk run &
 
 sleep 30
 
