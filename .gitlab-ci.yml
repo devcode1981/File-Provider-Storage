@@ -21,4 +21,4 @@ test:install:
   image: $TEST_IMAGE
   stage: test
   script:
-    - bash test_ubuntu.sh
+    - sudo -i -H -u gdk bash test_ubuntu.sh
