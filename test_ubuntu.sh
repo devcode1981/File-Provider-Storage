@@ -1,16 +1,17 @@
 #!/bin/bash
 
-set -ex
+set -e
+set -x
 
-gem install gitlab-development-kit
+sudo -i -H -u gdk bash -c 'gem install gitlab-development-kit'
 
 cd /home/gdk
-gdk init
+sudo -H -u gdk bash -l gdk init
 cd gitlab-development-kit
-gdk install
-support/set-gitlab-upstream
+sudo -H -u gdk bash -l gdk install
+sudo -H -u gdk bash -l support/set-gitlab-upstream
 
-gdk run &
+sudo -H -u gdk bash -l gdk run &
 
 sleep 10
 
