@@ -1,9 +1,10 @@
 #!/bin/bash
 
-set -e
-set -x
+set -ex
 
-sudo -i -H -u gdk bash -c 'gem install gitlab-development-kit'
+ls -l
+pwd
+# sudo -i -H -u gdk bash -c 'gem install gitlab-development-kit'
 
 cd /home/gdk
 sudo -H -u gdk bash -l gdk init
