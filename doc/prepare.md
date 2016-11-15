@@ -20,10 +20,11 @@ during installation.
 
 1. A non-root Unix user, this can be your normal user but **DO NOT** run the
    installation as a root user
-2. Ruby 2.3 (2.3.1 or newer) installed with a Ruby version manager
+1. Ruby 2.3 (2.3.1 or newer) installed with a Ruby version manager
    ([RVM](https://rvm.io/), [rbenv], [chruby], etc.), **DO NOT** use the
    system Ruby
-3. Bundler, which you can install with `gem install bundler`
+1. Bundler, which you can install with `gem install bundler`
+1. Git version of 2.7.X or higher
 
 [rbenv]: https://github.com/rbenv/rbenv
 [chruby]: https://github.com/postmodern/chruby
