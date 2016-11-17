@@ -160,7 +160,7 @@ sudo zypper install libxslt-devel  postgresql postgresql-devel libpqxx-devel red
 sudo npm install -g phantomjs
 ```
 
-The following `bundle config` options are recommended befre you run `gdk install` in order to avoid problems with the embedded libraries inside nokogiri:
+The following `bundle config` options are recommended before you run `gdk install` in order to avoid problems with the embedded libraries inside nokogiri:
 
 ```
 bundle config build.nokogiri "--use-system-libraries" --global
