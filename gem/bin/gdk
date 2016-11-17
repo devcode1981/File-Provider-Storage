@@ -89,9 +89,16 @@ module GDK
     directory = File.realpath(directory)
     config = load_dotfile
     config[TRUSTED_KEY] ||= []
-    config[TRUSTED_KEY] << directory
-    puts "Adding #{directory} to #{TRUSTED_KEY} in #{DOTFILE}"
-    File.open(DOTFILE, 'w') { |f| YAML.dump(config, f) }
+
+    if config[TRUSTED_KEY].include?(directory)
+      puts "#{directory} is already in #{TRUSTED_KEY} in #{DOTFILE}"
+    else
+      config[TRUSTED_KEY] << directory
+      config[TRUSTED_KEY].uniq!
+      puts "Adding #{directory} to #{TRUSTED_KEY} in #{DOTFILE}"
+      File.open(DOTFILE, 'w') { |f| YAML.dump(config, f) }
+    end
+
     true
   end
 
