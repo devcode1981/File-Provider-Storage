@@ -153,17 +153,27 @@ This was tested on OpenSUSE LEAP 42.1, and Tumbleweed (20161109)
 ```
 sudo zypper dup
 
-sudo zypper install libxslt-devel  postgresql postgresql-devel libpqxx-devel redis libicu-devel nodejs npm4 git ed cmake \
+sudo zypper install libxslt-devel  postgresql postgresql-devel libpqxx-devel redis libicu-devel nodejs git ed cmake \
          rpm-build gcc-c++ krb5-devel go postgresql-server postgresql-contrib \
          libxml2-devel libxml2-devel-32bit findutils-locate
 
 sudo npm install -g phantomjs
 ```
 
+On leap 42.1 you also need:
+```
+sudo zypper install ld.charlock_holmes "--with-icu-dir=/usr/local" --globalnpm4
+```
+
+
 The following `bundle config` options are recommended before you run `gdk install` in order to avoid problems with the embedded libraries inside nokogiri:
 
 ```
 bundle config build.nokogiri "--use-system-libraries" --global
+```
+for tumbleweed only:
+```
+bundle config build.charlock_holmes "--with-icu-dir=/usr/local" --global
 ```
 
 Manual fix required on OpenSUSE LEAP to place redis-server in the path for non-root users:
