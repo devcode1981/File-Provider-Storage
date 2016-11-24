@@ -21,7 +21,6 @@ test:install:
   image: $TEST_IMAGE
   stage: test
   script:
-    #- bash test_ubuntu.sh
     - cd gem && gem build gitlab-development-kit.gemspec && gem install gitlab-development-kit-*.gem
     - cd /home/gdk && sudo -H -u gdk bash -l gdk init
     - cd gitlab-development-kit
