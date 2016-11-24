@@ -20,29 +20,19 @@ RUN apt-get -y install git postgresql postgresql-contrib libpq-dev redis-server 
 
 
 # Install rbenv
-RUN git clone https://github.com/sstephenson/rbenv.git /usr/local/rbenv
-RUN echo '# rbenv setup' > /etc/profile.d/rbenv.sh
-RUN echo 'export RBENV_ROOT=/usr/local/rbenv' >> /etc/profile.d/rbenv.sh
-RUN echo 'export PATH="$RBENV_ROOT/bin:$PATH"' >> /etc/profile.d/rbenv.sh
-RUN echo 'eval "$(rbenv init -)"' >> /etc/profile.d/rbenv.sh
-RUN chmod +x /etc/profile.d/rbenv.sh
+
+RUN useradd gdk && mkdir /home/gdk
+
+RUN git clone https://github.com/sstephenson/rbenv.git /home/gdk/.rbenv
+RUN echo 'export PATH="/home/gdk/.rbenv/bin:$PATH"' >> /home/gdk/.bash_profile
+RUN echo 'eval "$(rbenv init -)"' >> /home/gdk/.bash_profile
 
 # install ruby-build
-RUN mkdir /usr/local/rbenv/plugins
-RUN git clone https://github.com/sstephenson/ruby-build.git /usr/local/rbenv/plugins/ruby-build
+RUN mkdir /home/gdk/.rbenv/plugins
+RUN git clone https://github.com/sstephenson/ruby-build.git /home/gdk/.rbenv/plugins/ruby-build
 
-ENV RBENV_ROOT /usr/local/rbenv
+RUN apt-get install -y libreadline-dev npm sudo
 
-ENV PATH $RBENV_ROOT/bin:$RBENV_ROOT/shims:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-
-RUN apt-get install -y libreadline-dev
-
-RUN rbenv install 2.3.1
-RUN rbenv global 2.3.1
-
-RUN apt-get -y install npm sudo
-
-RUN useradd gdk
-
-RUN mkdir /home/gdk;  chown gdk /home/gdk
-RUN chown -R gdk:gdk /usr/local/rbenv/
+RUN chown -R gdk:gdk /home/gdk
+RUN sudo -H -u gdk bash -l -c "rbenv install 2.3.1"
+RUN sudo -H -u gdk bash -l -c "rbenv global 2.3.1"
