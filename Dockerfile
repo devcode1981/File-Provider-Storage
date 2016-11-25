@@ -31,4 +31,4 @@ RUN echo 'eval "$(rbenv init -)"' >> /home/gdk/.bash_profile
 # install ruby-build
 RUN mkdir /home/gdk/.rbenv/plugins
 RUN git clone https://github.com/sstephenson/ruby-build.git /home/gdk/.rbenv/plugins/ruby-build
-RUN rbenv install 2.3.1 && rbenv global 2.3.1
+RUN bash -l -c "rbenv install 2.3.1 && rbenv global 2.3.1"
