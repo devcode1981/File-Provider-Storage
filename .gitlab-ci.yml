@@ -22,14 +22,14 @@ test:install:
   stage: test
   script:
     - cd gem
-    - gem build gitlab-development-kit.gemspec
-    - gem install gitlab-development-kit-*.gem
+    - bash -l -c "gem build gitlab-development-kit.gemspec"
+    - bash -l -c "gem install gitlab-development-kit-*.gem"
     - cd /home/gdk
-    - gdk init
+    - bash -l -c "gdk init"
     - cd gitlab-development-kit
-    - gdk install
+    - bash -l -c "gdk install"
     - support/set-gitlab-upstream
-    - gdk run &
+    - bash -l -c "gdk run" &
     - sleep 10
     - curl -f http://127.0.0.1:3000/
 
