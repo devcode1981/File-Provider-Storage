@@ -21,8 +21,11 @@ test:install:
   image: $TEST_IMAGE
   stage: test
   script:
-    - cd gem && gem build gitlab-development-kit.gemspec && gem install gitlab-development-kit-*.gem
-    - cd /home/gdk && gdk init
+    - cd gem
+    - gem build gitlab-development-kit.gemspec
+    - gem install gitlab-development-kit-*.gem
+    - cd /home/gdk
+    - gdk init
     - cd gitlab-development-kit
     - gdk install
     - support/set-gitlab-upstream
