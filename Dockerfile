@@ -17,12 +17,13 @@ RUN apt-get install -y libssl-dev
 
 # rest of gitlab requirements
 RUN apt-get -y install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs libkrb5-dev golang ed pkg-config
-
+RUN apt-get install -y libreadline-dev npm sudo
 
 # Install rbenv
 
-RUN useradd gdk && mkdir /home/gdk
+RUN useradd gdk && mkdir /home/gdk && chown -R gdk:gdk /home/gdk
 
+USER gdk
 RUN git clone https://github.com/sstephenson/rbenv.git /home/gdk/.rbenv
 RUN echo 'export PATH="/home/gdk/.rbenv/bin:$PATH"' >> /home/gdk/.bash_profile
 RUN echo 'eval "$(rbenv init -)"' >> /home/gdk/.bash_profile
@@ -30,9 +31,4 @@ RUN echo 'eval "$(rbenv init -)"' >> /home/gdk/.bash_profile
 # install ruby-build
 RUN mkdir /home/gdk/.rbenv/plugins
 RUN git clone https://github.com/sstephenson/ruby-build.git /home/gdk/.rbenv/plugins/ruby-build
-
-RUN apt-get install -y libreadline-dev npm sudo
-
-RUN chown -R gdk:gdk /home/gdk
-RUN sudo -H -u gdk bash -l -c "rbenv install 2.3.1"
-RUN sudo -H -u gdk bash -l -c "rbenv global 2.3.1"
+RUN rbenv install 2.3.1 && rbenv global 2.3.1
