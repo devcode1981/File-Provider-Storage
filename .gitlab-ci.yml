@@ -13,9 +13,10 @@ build:image:
   stage: build
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker pull $TEST_IMAGE
     - docker build -t $TEST_IMAGE .
     - docker push $TEST_IMAGE
-  when: manual
+  # when: manual
 
 test:install:
   image: $TEST_IMAGE
