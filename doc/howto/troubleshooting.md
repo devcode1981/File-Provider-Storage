@@ -245,6 +245,30 @@ but are present in your database, you might want to remove them.
 You can now run `rake db:migrate:status` again to verify that the entries are
 deleted from the database.
 
+## Foreman fails to start
+
+Foreman will fail to start if the `Thor` gem version installed is `0.19.3` 
+(a foreman dependency), the stacktrace will be: 
+
+```
+gems/2.3.0/gems/thor-0.19.2/lib/thor/base.rb:534:in `thor_reserved_word?': "run" is a Thor reserved word and cannot be defined as command (RuntimeError)
+    from gems/2.3.0/gems/thor-0.19.2/lib/thor/base.rb:597:in `method_added'
+    from gems/2.3.0/gems/foreman-0.82.0/lib/foreman/cli.rb:80:in `<class:CLI>'
+    from gems/2.3.0/gems/foreman-0.82.0/lib/foreman/cli.rb:11:in `<top (required)>'
+    from 2.3.0/rubygems/core_ext/kernel_require.rb:68:in `require'
+    from 2.3.0/rubygems/core_ext/kernel_require.rb:68:in `require'
+    from gems/2.3.0/gems/foreman-0.82.0/bin/foreman:5:in `<top (required)>'
+    from /.../bin/foreman:23:in `load'
+    from /.../bin/foreman:23:in `<main>'
+```
+
+You can fix this by updating the `Thor` gem. 
+
+```
+gem update thor
+```
+
+
 ## Other problems
 
 Please open an issue on the [GDK issue tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues).
