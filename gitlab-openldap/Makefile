@@ -38,10 +38,10 @@ clean:
 disable_bind_anon:
 	bin/ldapmodify -H ldap://127.0.0.1:3890/ -D "cn=admin,cn=config" -w password -f disable_bind_anon.ldif
 
-openldap-2.4.40:
-	curl -O ftp://ftp.openldap.org/pub/OpenLDAP/openldap-release/openldap-2.4.40.tgz
-	tar zxf openldap-2.4.40.tgz
+openldap-2.4.44:
+	curl -O http://openldap.org/software/download/OpenLDAP/openldap-release/openldap-2.4.44.tgz
+	tar zxf openldap-2.4.44.tgz
 
-sbin/slapadd: openldap-2.4.40
-	cd openldap-2.4.40 && ./configure --prefix=${gitlab_openldap_root} --enable-bdb=no --enable-hdb=no
-	cd openldap-2.4.40 && make -j 2 install
+sbin/slapadd: openldap-2.4.44
+	cd openldap-2.4.44 && ./configure --prefix=${gitlab_openldap_root} --enable-bdb=no --enable-hdb=no
+	cd openldap-2.4.44 && make -j 2 install
