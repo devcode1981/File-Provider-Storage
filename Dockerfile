@@ -21,7 +21,7 @@ RUN apt-get install -y libreadline-dev npm sudo
 
 # Install rbenv
 
-RUN useradd gdk && mkdir /home/gdk && chown -R gdk:gdk /home/gdk
+RUN adduser --disabled-password --gecos "" gdk
 
 USER gdk
 RUN git clone https://github.com/sstephenson/rbenv.git /home/gdk/.rbenv

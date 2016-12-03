@@ -12,6 +12,7 @@ build:image:
   image: docker:git
   stage: build
   script:
+    #- ./bin/docker load
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
     - docker pull $TEST_IMAGE
     - docker build -t $TEST_IMAGE .
