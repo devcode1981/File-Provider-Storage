@@ -6,6 +6,7 @@ stages:
 - test
 
 variables:
+  DOCKER_DRIVER: overlay
   TEST_IMAGE: registry.gitlab.com/$CI_PROJECT_NAMESPACE/gitlab-development-kit:$CI_BUILD_REF_NAME
 
 build:image:
