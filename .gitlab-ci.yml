@@ -13,17 +13,13 @@ build:image:
   image: docker:git
   stage: build
   script:
-    #- docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
-    #- docker pull $TEST_IMAGE
-    #- docker build -t $TEST_IMAGE .
-    #- docker push $TEST_IMAGE
     # taken from https://gitlab.com/gitlab-org/gitlab-qa/blob/master/.gitlab-ci.yml
     - ./bin/docker load
     - ./bin/docker build
     - ./bin/docker store
     - test -n "$CI_BUILD_TOKEN" || exit 0
     - ./bin/docker publish
-  # when: manual
+  when: manual
   cache:
       key: "docker-build-cache"
       paths:
