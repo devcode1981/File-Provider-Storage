@@ -1,9 +1,12 @@
 #!/bin/sh
+
 if [ "${TEST_IMAGE}" = "" ]; then
     echo "TEST_IMAGE variable must not be empty and must contain an image name"
     exit 1
 fi
+
 build_cache_archive=./latest_image.tar
+
 case "$1" in
     load)
         if [[ -f $build_cache_archive ]]; then
