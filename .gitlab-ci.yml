@@ -29,15 +29,16 @@ test:install:
   image: $TEST_IMAGE
   stage: test
   script:
+    - source /home/gdk/.bash_profile
     - cd gem
-    - bash -l -c "gem build gitlab-development-kit.gemspec"
-    - bash -l -c "gem install gitlab-development-kit-*.gem"
+    - gem build gitlab-development-kit.gemspec
+    - gem install gitlab-development-kit-*.gem
     - cd /home/gdk
-    - bash -l -c "gdk init"
+    - gdk init
     - cd gitlab-development-kit
-    - bash -l -c "gdk install"
+    - gdk install
     - support/set-gitlab-upstream
-    - bash -l -c "gdk run" &
+    - gdk run &
     - sleep 10
     - curl -f http://127.0.0.1:3000/
 
