@@ -24,6 +24,7 @@ build:image:
       key: "docker-build-cache"
       paths:
         - ./latest_image.tar
+
 test:install:
   image: $TEST_IMAGE
   stage: test
