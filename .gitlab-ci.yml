@@ -1,0 +1,44 @@
+services:
+- docker:dind
+
+stages:
+- build
+- test
+
+variables:
+  DOCKER_DRIVER: overlay
+  TEST_IMAGE: registry.gitlab.com/$CI_PROJECT_NAMESPACE/gitlab-development-kit:latest
+
+build:image:
+  image: docker:git
+  stage: build
+  script:
+    # taken from https://gitlab.com/gitlab-org/gitlab-qa/blob/master/.gitlab-ci.yml
+    - ./bin/docker load
+    - ./bin/docker build
+    - ./bin/docker store
+    - test -n "$CI_BUILD_TOKEN" || exit 0
+    - ./bin/docker publish
+  when: manual
+  cache:
+      key: "docker-build-cache"
+      paths:
+        - ./latest_image.tar
+
+test:install:
+  image: $TEST_IMAGE
+  stage: test
+  script:
+    - source /home/gdk/.bash_profile
+    - cd gem
+    - gem build gitlab-development-kit.gemspec
+    - gem install gitlab-development-kit-*.gem
+    - cd /home/gdk
+    - gdk init
+    - cd gitlab-development-kit
+    - gdk install
+    - support/set-gitlab-upstream
+    - gdk run &
+    - sleep 10
+    - curl -f http://127.0.0.1:3000/
+

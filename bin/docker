@@ -1,0 +1,36 @@
+#!/bin/sh
+
+if [ "${TEST_IMAGE}" = "" ]; then
+    echo "TEST_IMAGE variable must not be empty and must contain an image name"
+    exit 1
+fi
+
+build_cache_archive=./latest_image.tar
+
+case "$1" in
+    load)
+        if [[ -f $build_cache_archive ]]; then
+            echo "Loading cached layers"
+            docker load < $build_cache_archive
+            # Removing the archive (> 1GB!) so it will not be sent
+            # to the docker build context
+            rm $build_cache_archive
+        fi
+        ;;
+    store)
+        echo "Caching layers"
+        docker save $TEST_IMAGE $(docker history -q $TEST_IMAGE | grep -v "<missing>") > $build_cache_archive
+        ;;
+    build)
+        docker build -t $TEST_IMAGE .
+        ;;
+    publish)
+        docker login --username gitlab-ci-token --password $CI_BUILD_TOKEN registry.gitlab.com
+        docker push $TEST_IMAGE
+        docker logout registry.gitlab.com
+        ;;
+    *)
+        echo "Usage: $0 [load|store|build|publish]"
+        exit 1
+        ;;
+esac
