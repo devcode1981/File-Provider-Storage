@@ -2,6 +2,7 @@ gitlab_repo = https://gitlab.com/gitlab-org/gitlab-ce.git
 gitlab_shell_repo = https://gitlab.com/gitlab-org/gitlab-shell.git
 gitlab_workhorse_repo = https://gitlab.com/gitlab-org/gitlab-workhorse.git
 gitlab_workhorse_clone_dir = gitlab-workhorse/src/gitlab.com/gitlab-org/gitlab-workhorse
+gitaly_repo = https://gitlab.com/gitlab-org/gitaly.git
 gitlab_development_root = $(shell pwd)
 postgres_bin_dir = $(shell pg_config --bindir)
 postgres_replication_user = gitlab_replication
@@ -12,7 +13,7 @@ username = $(shell whoami)
 sshd_bin = $(shell which sshd)
 git_bin = $(shell which git)
 
-all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup
+all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup gitaly-setup
 
 # Set up the GitLab Rails app
 
@@ -75,9 +76,16 @@ gitlab-shell/config.yml:
 gitlab-shell/.gitlab_shell_secret:
 	ln -s ${gitlab_development_root}/gitlab/.gitlab_shell_secret $@
 
-# Update gitlab, gitlab-shell and gitlab-workhorse
+# Set up gitaly
 
-update: gitlab-update gitlab-shell-update gitlab-workhorse-update
+gitaly-setup: gitaly/.git
+
+gitaly/.git:
+	git clone ${gitaly_repo} gitaly
+
+# Update gitlab, gitlab-shell, gitlab-workhorse and gitaly
+
+update: gitlab-update gitlab-shell-update gitlab-workhorse-update gitaly-update
 
 gitlab-update: gitlab/.git/pull
 	cd ${gitlab_development_root}/gitlab && \
@@ -105,6 +113,21 @@ gitlab-shell/.git/pull:
 	cd ${gitlab_development_root}/gitlab-shell && \
 		git stash && git checkout master && \
 		git pull --ff-only
+
+gitaly-update: gitaly/.git/pull gitaly-clean gitaly/bin/gitaly
+
+gitaly/.git/pull:
+	cd ${gitlab_development_root}/gitaly && \
+		git stash && git checkout master && \
+		git pull --ff-only
+
+gitaly-clean:
+	cd ${gitlab_development_root}/gitaly && \
+		make clean
+
+gitaly/bin/gitaly:
+	cd ${gitlab_development_root}/gitaly && \
+		make
 
 # Set up supporting services
 

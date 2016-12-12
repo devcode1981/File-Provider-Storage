@@ -48,3 +48,4 @@
 /gitlab-runner-config.toml
 /.gdk-install-root
 /builds
+/gitaly/
