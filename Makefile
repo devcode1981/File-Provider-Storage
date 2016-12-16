@@ -89,6 +89,7 @@ gitlab-update: gitlab/.git/pull
 	@echo ""
 	cd ${gitlab_development_root}/gitlab && \
 		bundle exec rake db:migrate db:test:prepare && \
+		npm prune && \
 		npm install
 
 gitlab-shell-update: gitlab-shell/.git/pull
