@@ -65,7 +65,7 @@ sudo apt-get install software-properties-common python-software-properties
 # This PPA contains an up-to-date version of Go
 sudo apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
 sudo apt-get update
-sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs libkrb5-dev golang ed pkg-config
+sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs nodejs-legacy npm libkrb5-dev golang ed pkg-config
 npm install phantomjs-prebuilt@2.1.12 -g
 ```
 
