@@ -11,3 +11,6 @@ gdk psql -d gitlabhq_development          # Postgres console
 gdk redis-cli                             # Redis console
 
 # Development admin account: root / 5iveL!fe
+
+Please refer to [GitLab CE Development Guidelines](https://docs.gitlab.com/ce/development/README.html)
+to learn more about commands available in main GitLab application.
