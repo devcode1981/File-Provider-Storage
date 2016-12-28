@@ -3,6 +3,10 @@
 See the [top level README](../../README.md#getting-started) for GDK
 installation instructions.
 
+Main purpose of GitLab Development Kit is to make GitLab development easier.
+Please see [https://docs.gitlab.com/ce/development/README.html](https://docs.gitlab.com/ce/development/README.html)
+to learn how to develop GitLab CE.
+
 ## Basic
 
 - [Browse your development GitLab server](browse.md)
