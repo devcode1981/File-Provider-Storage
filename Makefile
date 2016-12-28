@@ -3,6 +3,7 @@ gitlab_shell_repo = https://gitlab.com/gitlab-org/gitlab-shell.git
 gitlab_workhorse_repo = https://gitlab.com/gitlab-org/gitlab-workhorse.git
 gitlab_workhorse_clone_dir = gitlab-workhorse/src/gitlab.com/gitlab-org/gitlab-workhorse
 gitaly_repo = https://gitlab.com/gitlab-org/gitaly.git
+gitaly_clone_dir = gitaly/src/gitlab.com/gitlab-org/gitaly
 gitlab_development_root = $(shell pwd)
 postgres_bin_dir = $(shell pg_config --bindir)
 postgres_replication_user = gitlab_replication
@@ -78,10 +79,10 @@ gitlab-shell/.gitlab_shell_secret:
 
 # Set up gitaly
 
-gitaly-setup: gitaly/.git
+gitaly-setup: gitaly/bin/gitaly
 
-gitaly/.git:
-	git clone ${gitaly_repo} gitaly
+${gitaly_clone_dir}/.git:
+	git clone ${gitaly_repo} ${gitaly_clone_dir}
 
 # Update gitlab, gitlab-shell, gitlab-workhorse and gitaly
 
@@ -118,17 +119,16 @@ gitlab-shell/.git/pull:
 gitaly-update: gitaly/.git/pull gitaly-clean gitaly/bin/gitaly
 
 gitaly/.git/pull:
-	cd ${gitlab_development_root}/gitaly && \
+	cd ${gitaly_clone_dir} && \
 		git stash && git checkout master && \
 		git pull --ff-only
 
 gitaly-clean:
-	cd ${gitlab_development_root}/gitaly && \
-		make clean
+	rm -rf gitaly/bin
 
-gitaly/bin/gitaly:
-	cd ${gitlab_development_root}/gitaly && \
-		make
+.PHONY:	gitaly/bin/gitaly
+gitaly/bin/gitaly:	${gitaly_clone_dir}/.git
+	GO15VENDOREXPERIMENT=1 GOPATH=${gitlab_development_root}/gitaly go install gitlab.com/gitlab-org/gitaly/cmd/...
 
 # Set up supporting services
 
