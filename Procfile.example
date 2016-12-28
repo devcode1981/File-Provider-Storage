@@ -13,4 +13,4 @@ rails-background-jobs: exec /usr/bin/env SIDEKIQ_LOG_ARGUMENTS=1 RAILS_ENV=devel
 #grafana: exec support/wait-postgresql-ready support/exec-cd grafana bin/grafana-server -config grafana.ini
 #sshd: exec /usr/sbin/sshd -e -D -f /home/git/openssh/sshd_config
 #nginx: exec nginx -p /home/git/nginx -c conf/nginx.conf
-#gitaly: exec /usr/bin/env PATH="/home/git/gitaly:$PATH" gitaly
+#gitaly: exec /usr/bin/env GITALY_SOCKET_PATH=/home/git/gitlay.socket GITALY_PROMETHEUS_LISTEN_ADDR=:9101 gitaly/bin/gitaly
