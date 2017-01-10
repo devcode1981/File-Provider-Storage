@@ -83,7 +83,7 @@ npm install phantomjs-prebuilt@2.1.12 -g
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
-sudo apt-get install postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs libkrb5-dev ed pkg-config
+sudo apt-get install postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs npm libkrb5-dev ed pkg-config
 ```
 
 If you are running Debian Stretch or newer you will need to install Go
