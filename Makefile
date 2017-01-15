@@ -116,7 +116,7 @@ gitlab-shell/.git/pull:
 		git stash && git checkout master && \
 		git pull --ff-only
 
-gitaly-update: gitaly/.git/pull gitaly-clean gitaly/bin/gitaly
+gitaly-update: ${gitaly_clone_dir}/.git gitaly/.git/pull gitaly-clean gitaly/bin/gitaly
 
 gitaly/.git/pull:
 	cd ${gitaly_clone_dir} && \
@@ -189,7 +189,7 @@ localhost.key:
 
 gitlab-workhorse-setup: gitlab-workhorse/bin/gitlab-workhorse
 
-gitlab-workhorse-update: gitlab-workhorse/.git/pull gitlab-workhorse-clean-bin gitlab-workhorse/bin/gitlab-workhorse
+gitlab-workhorse-update:	${gitlab_workhorse_clone_dir}/.git gitlab-workhorse/.git/pull gitlab-workhorse-clean-bin gitlab-workhorse/bin/gitlab-workhorse
 
 gitlab-workhorse-clean-bin:
 	rm -rf gitlab-workhorse/bin
