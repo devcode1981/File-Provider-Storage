@@ -36,6 +36,7 @@ production: &base
     ## Web server settings (note: host is the FQDN, do not include http://)
     host: localhost
 ```
+
 The `host` parameter needs to be changed from `localhost` to an IP address that
 *actually exists on the computer*. `0.0.0.0` is not valid - run `ipconfig`
 (Windows), `ifconfig` (Mac, BSD) or `ip addr show` (Linux) to get a list of IPs.
@@ -56,16 +57,16 @@ a note of the `Registration token`.
 
 Unless you want to make changes to the Runner, it's easiest to install a binary
 package. Follow the
-[installation instructions](https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/tree/master#install-gitlab-runner)
+[installation instructions](https://docs.gitlab.com/runner/install/)
 for your operating system
-([Linux](https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/blob/master/docs/install/linux-repository.md),
-[OSX](https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/blob/master/docs/install/osx.md),
-[Windows](https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/blob/master/docs/install/windows.md)).
+([Linux](https://docs.gitlab.com/runner/install/linux-repository.html),
+[OSX](https://docs.gitlab.com/runner/install/osx.html),
+[Windows](https://docs.gitlab.com/runner/install/windows.html)).
 
 To build from source, you'll need to set up a development environment manually -
 GDK doesn't manage it for you. The official GitLab Runner repository is
 [here](https://gitlab.org/gitlab-org/gitlab-ci-multi-runner); just follow
-[these instructions](https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/blob/master/docs/development/README.md).
+[the development instructions](https://docs.gitlab.com/runner/development/).
 
 All the methods should (eventually) create a `gitlab-ci-multi-runner` binary.
 
@@ -85,7 +86,7 @@ could be a security risk.
 
 You can run the `register` command multiple times to set up additional Runners -
 fuller documentation on the different types of executor and their requirements
-can be found [here](https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/blob/master/docs/executors/README.md).
+can be found [here](https://docs.gitlab.com/runner/executors/).
 Each `register` invocation adds a section to the configuration file, so make
 sure you're referencing the same one each time.
 
@@ -96,6 +97,6 @@ builds, so run it in its own terminal session.
 
 The Runners pane in the administration panel will now list the Runners. Create a
 project in the GitLab web interface and add a
-[.gitlab-ci.yml](http://docs.gitlab.com/ce/ci/examples/README.html) file,
+[.gitlab-ci.yml](https://docs.gitlab.com/ce/ci/examples/) file,
 or clone an [example project](https://gitlab.com/groups/gitlab-examples), and
 watch as the Runner processes the builds just as it would on a "real" install!
