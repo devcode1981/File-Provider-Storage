@@ -234,7 +234,7 @@ grafana/gdk-pg-created:
 	touch $@
 
 grafana/gdk-data-source-created:
-	printf ',s/^#grafana/grafana/\nwq\n' | ed -s Procfile
+	grep '^grafana:' Procfile || (printf ',s/^#grafana/grafana/\nwq\n' | ed -s Procfile)
 	support/bootstrap-grafana
 	touch $@
 
