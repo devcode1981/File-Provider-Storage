@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 require 'socket'
 require 'net/http'
+require 'json'
 
 def main
   host = '127.0.0.1'
@@ -11,26 +12,28 @@ def main
 
   abort "#$0: could not connect to Grafana at #{host}:#{port}" unless wait_socket(host, port)
 
-  http = Net::HTTP.new(host, port)
-  request = Net::HTTP::Post.new('/api/datasources')
-  request.basic_auth('admin', 'admin')
-  request.add_field('Content-Type', 'application/json')
-  request.body = <<EOS
-{
-    "name": "InfluxDB",
-    "type": "influxdb",
-    "url": "http://localhost:8086",
-    "access": "direct",
-    "database": "gitlab",
-    "isDefault": true
-}
-EOS
-  puts http.request(request).body
+  create_data_source(host, port, name: 'InfluxDB', database: 'gitlab', isDefault: true)
+  create_data_source(host, port, name: 'InfluxDB Internal', database: '_internal')
 ensure
   [grafana_pid, db_pid].each do |pid|
     Process.kill('TERM', pid)
     Process.wait(pid)
   end
+end
+
+def create_data_source(host, port, options)
+  options = {
+    type: 'influxdb',
+    url: 'http://localhost:8086',
+    access: 'direct'
+  }.merge(options)
+
+  http = Net::HTTP.new(host, port)
+  request = Net::HTTP::Post.new('/api/datasources')
+  request.basic_auth('admin', 'admin')
+  request.add_field('Content-Type', 'application/json')
+  request.body = JSON.dump(options)
+  puts http.request(request).body
 end
 
 def wait_socket(host, port)
