@@ -13,6 +13,7 @@ port = $(shell cat port 2>/dev/null)
 username = $(shell whoami)
 sshd_bin = $(shell which sshd)
 git_bin = $(shell which git)
+webpack_port = $(shell cat webpack_port 2>/dev/null || echo '3808')
 
 all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup gitaly-setup
 
@@ -29,7 +30,7 @@ gitlab/config/gitlab.yml:
 	sed -e "s|/home/git|${gitlab_development_root}|"\
 	  -e "s|/usr/bin/git|${git_bin}|"\
 	  gitlab/config/gitlab.yml.example > gitlab/config/gitlab.yml
-	port=${port} support/edit-gitlab.yml gitlab/config/gitlab.yml
+	port=${port} webpack_port=${webpack_port} support/edit-gitlab.yml gitlab/config/gitlab.yml
 
 gitlab/config/database.yml:
 	sed "s|/home/git|${gitlab_development_root}|" database.yml.example > gitlab/config/database.yml
@@ -142,9 +143,10 @@ support-setup: .ruby-version foreman Procfile redis postgresql openssh-setup ngi
 
 Procfile:
 	sed -e "s|/home/git|${gitlab_development_root}|g"\
-      -e "s|/usr/sbin/sshd|${sshd_bin}|"\
-	  -e "s|postgres |${postgres_bin_dir}/postgres |"\
-	  $@.example > $@
+		-e "s|/usr/sbin/sshd|${sshd_bin}|"\
+		-e "s|postgres |${postgres_bin_dir}/postgres |"\
+		-e "s|DEV_SERVER_PORT=3808 |DEV_SERVER_PORT=${webpack_port} |"\
+		$@.example > $@
 	if [ -f .vagrant_enabled ]; then \
 		echo "0.0.0.0" > host; \
 		echo "3000" > port; \
