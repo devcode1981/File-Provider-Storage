@@ -45,6 +45,7 @@
 /nginx/uwsgi_temp
 /.gitlab-shell-bundle
 /.gitlab-bundle
+/.gitlab-npm
 /gem/*.gem
 /gitlab-runner-config.toml
 /.gdk-install-root
