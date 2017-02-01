@@ -50,12 +50,12 @@ foreman_start() {
 }
 
 db() {
-  foreman_start -c all=0,redis=1,postgresql=1,openldap=1,influxdb=1
+  foreman_start -c all=0,redis=1,postgresql=1,openldap=1,influxdb=1,webpack=1
 }
 
 app() {
   print_port
-  foreman_start -c all=0,rails-web=1,rails-background-jobs=1,gitlab-workhorse=1,nginx=1,grafana=1,sshd=1,gitaly=1,webpack=1
+  foreman_start -c all=0,rails-web=1,rails-background-jobs=1,gitlab-workhorse=1,nginx=1,grafana=1,sshd=1,gitaly=1
 }
 
 grafana() {
