@@ -4,6 +4,10 @@ This Changelog tracks major changes to the GitLab Development Kit,
 such as dependency updates (those not handled by Bundler) and new
 features.
 
+## 2017-02-01
+
+- Add webpack process to Procfile configure it within gitlab.yml !237
+
 ## 2016-10-31
 
 - Add root check to catch root move problems. Requires gem 0.2.3 or

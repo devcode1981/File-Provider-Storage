@@ -63,6 +63,7 @@ gem install gitlab-development-kit
 gdk init gdk-ee
 cd gdk-ee
 echo 3001 > port
+echo 3809 > webpack_port
 gdk install gitlab_repo=https://gitlab.com/gitlab-org/gitlab-ee.git
 ```
 

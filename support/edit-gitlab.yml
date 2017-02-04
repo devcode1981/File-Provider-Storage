@@ -12,5 +12,12 @@ a
     ssh_port: 2222
     ssh_host: localhost
 .
+/  webpack:/
+a
+    dev_server:
+      enabled: true
+      host: localhost
+      port: ${webpack_port:-3808}
+.
 wq
 EOF
