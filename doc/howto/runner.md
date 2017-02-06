@@ -53,7 +53,7 @@ If it points to `localhost` instead, `gitlab/config/gitlab.yml` is incorrect.
 Finally, navigate to `http://<ip>:3000/admin/runners` (log in as root) and make
 a note of the `Registration token`.
 
-## Download GitLab Runner
+## Download GitLab Runner
 
 Unless you want to make changes to the Runner, it's easiest to install a binary
 package. Follow the
