@@ -8,6 +8,41 @@ features.
 
 - Add webpack process to Procfile configure it within gitlab.yml !237
 
+    For existing GDK installations, manual action is required to update GDK.
+    Assuming `origin` is the upstream repo, do the following:
+
+    1. First, update the CE/EE repo:
+
+        ```
+        cd <gitlab-ce-dir>
+        git pull origin master
+        bundle install && npm purge && npm install
+        bundle exec rake webpack:compile
+        ```
+
+    1. Pull the new GDK changes:
+
+        ```
+        cd <gdk-dir>
+        git pull origin master
+        ```
+
+    1. Make sure postgres is running:
+
+        ```
+        cd <gdk-dir>
+        gdk run db
+        ```
+
+    1. Then, **open a separate terminal window** and update GDK along with all its
+       components:
+
+        ```
+        cd <gdk-dir>
+        gdk reconfigure
+        gdk update
+        ```
+
 ## 2016-10-31
 
 - Add root check to catch root move problems. Requires gem 0.2.3 or
