@@ -20,17 +20,7 @@ environment.
 
 ## Setup
 
-1. Edit `gitlab-ee/config/gitlab.yml` to enable Elasticsearch:
-
-    ```yaml
-    ## Elasticsearch (EE only)
-    # Enable it if you are going to use elasticsearch instead of
-    # regular database search
-    elasticsearch:
-      enabled: true
-      # host: localhost
-      # port: 9200
-    ```
+1. Go to **Admin > Application Settings** to enable Elasticsearch.
 
 1. Start Elasticsearch by either running `elasticsearch` in a new terminal, or
    by adding it to your `Procfile`:
