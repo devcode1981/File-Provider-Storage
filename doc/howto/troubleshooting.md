@@ -247,8 +247,8 @@ deleted from the database.
 
 ## Foreman fails to start
 
-Foreman will fail to start if the `Thor` gem version installed is `0.19.3` 
-(a foreman dependency), the stacktrace will be: 
+Foreman will fail to start if the `Thor` gem version installed is `0.19.3`
+(a foreman dependency), the stacktrace will be:
 
 ```
 gems/2.3.0/gems/thor-0.19.2/lib/thor/base.rb:534:in `thor_reserved_word?': "run" is a Thor reserved word and cannot be defined as command (RuntimeError)
@@ -262,12 +262,88 @@ gems/2.3.0/gems/thor-0.19.2/lib/thor/base.rb:534:in `thor_reserved_word?': "run"
     from /.../bin/foreman:23:in `<main>'
 ```
 
-You can fix this by updating the `Thor` gem. 
+You can fix this by updating the `Thor` gem.
 
 ```
 gem update thor
 ```
 
+## Webpack
+
+Since webpack has been added as a new background process which gitlab depends on
+in development, the [GDK must be updated and reconfigured](../update-gdk.md) in
+order to work properly again.
+
+If you still encounter some errors, see the troubleshooting FAQ below:
+
+* I'm getting an error when I run `gdk reconfigure`:
+
+    ```
+    Makefile:30: recipe for target 'gitlab/config/gitlab.yml' failed
+    make: *** [gitlab/config/gitlab.yml] Error 1
+    ```
+
+    This is likely because you have not updated your gitlab CE/EE repository to
+    the latest master yet.  It has a template for gitlab.yml in it which the GDK
+    needs to update.  The `gdk update` step should have taken care of this for
+    you, but you can also manually go to your gitlab ce/ee directory and run
+    `git checkout master && git pull origin master`
+
+    ---
+
+* I'm getting an error when I attempt to access my local GitLab in a browser:
+
+    ```
+    Webpack::Rails::Manifest::ManifestLoadError at /
+    Could not load manifest from webpack-dev-server at http://localhost:3808/assets/webpack/manifest.json - is it running, and is stats-webpack-plugin loaded?
+    ```
+
+    or
+
+    ```
+    Webpack::Rails::Manifest::ManifestLoadError at /
+    Could not load compiled manifest from /path/to/gitlab-development-kit/gitlab/public/assets/webpack/manifest.json - have you run `rake webpack:compile`?
+    ```
+
+    This probably means that the webpack dev server isn't running or that your
+    gitlab.yml isn't properly configured. Ensure that you have run
+    `gdk reconfigure` **AND** that you have stopped and restarted any instance
+    of `gdk run` or `gdk run xxx` that was running prior to the reconfigure step
+
+    ---
+
+* I'm getting the following error when I try to run `gdk run` or `gdk run db`:
+
+    ```
+    09:46:05 webpack.1               | npm ERR! argv "/usr/local/bin/node" "/usr/local/bin/npm" "run" "dev-server"
+    09:46:05 webpack.1               | npm ERR! node v5.8.0
+    09:46:05 webpack.1               | npm ERR! npm  v3.10.7
+    09:46:05 webpack.1               |
+    09:46:05 webpack.1               | npm ERR! missing script: dev-server
+    ...
+    ```
+
+    This means your gitlab CE or EE instance is not running the current master
+    branch.  If you are running a branch which hasn't been rebased on master
+    since Saturday, Feb 4th then you should rebase it on master.  If you are
+    running the master branch, ensure it is up to date (`git pull`).
+
+    ---
+
+* I'm getting the following error when I try to run `gdk run` or `gdk run db`:
+
+    ```
+    09:54:15 webpack.1               | > @ dev-server /Users/mike/Projects/gitlab-development-kit/gitlab
+    09:54:15 webpack.1               | > webpack-dev-server --config config/webpack.config.js
+    09:54:15 webpack.1               |
+    09:54:15 webpack.1               | sh: webpack-dev-server: command not found
+    09:54:15 webpack.1               |
+    ...
+    ```
+
+    This means you have not run `npm install` since updating your gitlab CE/EE
+    repository.  The `gdk update` command should have done this for you, but you
+    can do so manually as well.
 
 ## Other problems
 
