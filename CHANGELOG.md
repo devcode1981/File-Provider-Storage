@@ -7,6 +7,8 @@ features.
 ## 2017-02-01
 
 - Add webpack process to Procfile configure it within gitlab.yml !237
+  Make sure to [update GDK](doc/update-gdk.md) and read the
+  [troubleshooting section](doc/howto/troubleshooting.md#webpack).
 
 ## 2016-10-31
 
