@@ -19,7 +19,7 @@ RUN apt-get install -y libssl-dev
 # rest of gitlab requirements
 RUN apt-get install -y git postgresql postgresql-contrib libpq-dev redis-server \
   libicu-dev cmake g++ nodejs libkrb5-dev golang ed pkg-config libsqlite3-dev \
-  libreadline-dev npm sudo
+  libreadline-dev npm sudo nodejs-legacy
 
 # Install rbenv
 
