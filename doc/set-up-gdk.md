@@ -102,3 +102,6 @@ Similarly, you can override the host (for example if you plan to use GDK inside 
 If you want to work on GitLab CI you will need to install [GitLab Runner](https://gitlab.com/gitlab-org/gitlab-ci-multi-runner).
 
 To enable the OpenLDAP server, see the OpenLDAP instructions in this readme.
+
+After installation [learn how to use GDK](doc/howto/README.md).
+
