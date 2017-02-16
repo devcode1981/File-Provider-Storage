@@ -36,8 +36,10 @@ test:install:
     - cd /home/gdk
     - gdk init
     - cd gitlab-development-kit
+    - netstat -lpt
     - gdk install
     - support/set-gitlab-upstream
+    - killall node
     - gdk run &
     - sleep 10
     - curl -f http://127.0.0.1:3000/
