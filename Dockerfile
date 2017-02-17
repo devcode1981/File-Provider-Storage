@@ -21,11 +21,15 @@ RUN apt-get install -y git postgresql postgresql-contrib libpq-dev redis-server 
   libicu-dev cmake g++ nodejs libkrb5-dev golang ed pkg-config libsqlite3-dev \
   libreadline-dev npm sudo nodejs-legacy
 
-# Install rbenv
+# GDK tools
+RUN apt-get install -y net-tools psmisc
 
-RUN adduser --disabled-password --gecos "" gdk
+# Add GDK user
+RUN useradd --user-group --create-home gdk
 
 USER gdk
+
+# Install rbenv
 RUN git clone https://github.com/sstephenson/rbenv.git /home/gdk/.rbenv
 RUN echo 'export PATH="/home/gdk/.rbenv/bin:$PATH"' >> /home/gdk/.bash_profile
 RUN echo 'eval "$(rbenv init -)"' >> /home/gdk/.bash_profile
