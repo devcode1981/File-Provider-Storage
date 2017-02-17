@@ -1,16 +1,5 @@
 # Preparing your computing environment for GDK
 
-The preferred way to use GitLab Development Kit is to install Ruby and
-dependencies on your 'native' OS. We strongly recommend the native install
-since it is much faster than a virtualized one. Due to heavy IO operations a
-virtualized installation will be much slower running the app and the tests.
-
-If you want to use [Vagrant] instead (e.g. need to do development from Windows),
-see [the instructions for our (experimental) Vagrant with Virtualbox setup](vagrant.md#vagrant-with-virtualbox).
-
-If you want to use [Vagrant] with [Docker][docker engine] on Linux,
-see [the instructions for our (experimental) Vagrant with Docker setup](vagrant.md#vagrant-with-docker).
-
 ## Native installation setup
 
 ### Prerequisites for all platforms
@@ -149,7 +138,7 @@ You may need to install Redis 2.8 or newer manually.
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 This was tested on OpenSUSE LEAP 42.1, and Tumbleweed (20161109)
- 
+
 
 ```
 sudo zypper dup
@@ -179,7 +168,7 @@ bundle config build.charlock_holmes "--with-icu-dir=/usr/local" --global
 
 Manual fix required on OpenSUSE LEAP to place redis-server in the path for non-root users:
 ```
-sudo ln -s /usr/sbin/redis-server /usr/bin/redis-server 
+sudo ln -s /usr/sbin/redis-server /usr/bin/redis-server
 ```
 
 

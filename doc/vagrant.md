@@ -5,7 +5,7 @@ virtual machine to do GitLab development in. Please see the [main
 README](../README.md#installation) for instructions how to install GDK
 after you have set up your Vagrant machine.
 
-### Vagrant setup
+## Vagrant setup
 
 [Vagrant] is a tool for setting up identical development environments including
 all dependencies regardless of the host platform you are using. Vagrant will
@@ -14,7 +14,7 @@ default to using [VirtualBox], but it has many plugins for different environment
 Vagrant allows you to develop GitLab without affecting your host machine (but we
 recommend developing GitLab on metal if you can).
 
-#### Vagrant with Virtualbox
+### Vagrant with Virtualbox
 
 Vagrant can be very slow since the files are synced between the host OS and GitLab
 (testing) accesses a lot of files.
@@ -35,7 +35,7 @@ To avoid usage of slow VirtualBox shared folders we use NFS here.
 1. After the installation is done, edit the 'gitlab-workhorse' line in
    your Procfile and change `localhost:3000` to `0.0.0.0:3000`.
 
-#### Vagrant with Docker
+### Vagrant with Docker
 
 [Docker](https://www.docker.com/) is one of possible providers of Vagrant.
 Docker provider has a big advantage, as it doesn't have a big virtualisation
@@ -54,7 +54,7 @@ OSes like Windows/OSX you will have to run the entire Docker hypervisor in a VM
 1. After the installation is done, edit the 'gitlab-workhorse' line in
    your Procfile and change `localhost:3000` to `0.0.0.0:3000`.
 
-#### Vagrant development details
+### Vagrant development details
 
 - Open the development environment by running `vagrant up` & `vagrant ssh`
   (from an elevated command prompt if on Windows).
@@ -68,7 +68,7 @@ OSes like Windows/OSX you will have to run the entire Docker hypervisor in a VM
 - When you want to shutdown Vagrant run `exit` from the guest OS and then
   `vagrant halt` from the host OS.
 
-#### Vagrant troubleshooting
+### Vagrant troubleshooting
 
 - On some setups the shared folder will have the wrong user. This is detected
   by the Vagrantfile and you should `sudo su - build` to switch to the correct
@@ -86,3 +86,7 @@ OSes like Windows/OSX you will have to run the entire Docker hypervisor in a VM
 [Vagrant]: https://www.vagrantup.com
 [VirtualBox]: https://www.virtualbox.org
 [Docker Engine]: https://www.docker.com/products/docker-engine
+
+## Next step
+
+After installation [learn how to use GDK](doc/howto/README.md).
