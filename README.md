@@ -33,7 +33,7 @@ To do a native install:
 2. [Set-up GDK](doc/set-up-gdk.md)
 
 Or if you want to use a slower virtualized installation with [Vagrant](https://www.vagrantup.com/) (for example if you're using Windows)
-please see the [instructions for our Vagrant with Virtualbox setup](vagrant.md#vagrant-with-virtualbox) or the [instructions for our Vagrant with Docker setup](vagrant.md#vagrant-with-docker).
+please see the [instructions for our Vagrant with Virtualbox setup](doc/vagrant.md#vagrant-with-virtualbox) or the [instructions for our Vagrant with Docker setup](doc/vagrant.md#vagrant-with-docker).
 
 After installation [learn how to use GDK](doc/howto/README.md)
 
