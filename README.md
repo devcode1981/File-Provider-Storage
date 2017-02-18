@@ -32,8 +32,8 @@ To do a native install:
 1. [Prepare your computer](doc/prepare.md)
 2. [Set-up GDK](doc/set-up-gdk.md)
 
-Or if you want to use [Vagrant] instead (e.g. need to do development from Windows),
-see [the instructions for our Vagrant with Virtualbox setup](vagrant.md#vagrant-with-virtualbox). If you want to use [Vagrant] with [Docker][docker engine] on Linux, see [the instructions for our Vagrant with Docker setup](vagrant.md#vagrant-with-docker).
+Or if you want to use [Vagrant](https://www.vagrantup.com/) instead (e.g. need to do development from Windows),
+see [the instructions for our Vagrant with Virtualbox setup](vagrant.md#vagrant-with-virtualbox). If you want to use Vagrant with [Docker][https://www.docker.com/products/docker-engine] on Linux, see [the instructions for our Vagrant with Docker setup](vagrant.md#vagrant-with-docker).
 
 After installation [learn how to use GDK](doc/howto/README.md)
 
