@@ -9,13 +9,14 @@ postgres_bin_dir = $(shell pg_config --bindir)
 postgres_replication_user = gitlab_replication
 postgres_dir = $(realpath ./postgresql)
 postgres_replica_dir = $(realpath ./postgresql-replica)
+postgres_geo_dir = $(realpath ./postgresql-geo)
 port = $(shell cat port 2>/dev/null)
 username = $(shell whoami)
 sshd_bin = $(shell which sshd)
 git_bin = $(shell which git)
 webpack_port = $(shell cat webpack_port 2>/dev/null || echo '3808')
 
-all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup gitaly-setup
+all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup gitaly-setup geo-setup
 
 # Set up the GitLab Rails app
 
@@ -186,6 +187,19 @@ postgresql-replication/backup:
 
 postgresql-replication/config:
 	./support/postgres-replication ${postgres_dir}
+
+# Setup GitLab Geo databases
+
+.PHONY: geo-setup
+geo-setup: gitlab/config/database_geo.yml postgresql/geo postgresql-replication/cluster postgresql-replication/role postgresql-replication/backup
+
+gitlab/config/database_geo.yml:
+	sed "s|/home/git|${gitlab_development_root}|" database_geo.yml.example > gitlab/config/database_geo.yml
+
+postgresql/geo:
+	${postgres_bin_dir}/initdb --locale=C -E utf-8 postgresql-geo/data
+	grep '^postgresql-geo:' Procfile || (printf ',s/^#postgresql-geo/postgresql/\nwq\n' | ed -s Procfile)
+	support/bootstrap-geo
 
 .PHONY:	foreman
 foreman:
