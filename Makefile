@@ -191,7 +191,7 @@ postgresql-replication/config:
 # Setup GitLab Geo databases
 
 .PHONY: geo-setup
-geo-setup: gitlab/config/database_geo.yml postgresql/geo postgresql-replication/cluster postgresql-replication/role postgresql-replication/backup
+geo-setup: gitlab/config/database_geo.yml postgresql/geo
 
 gitlab/config/database_geo.yml:
 	sed "s|/home/git|${gitlab_development_root}|" database_geo.yml.example > gitlab/config/database_geo.yml
