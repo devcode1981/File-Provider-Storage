@@ -198,7 +198,7 @@ gitlab/config/database_geo.yml:
 
 postgresql/geo:
 	${postgres_bin_dir}/initdb --locale=C -E utf-8 postgresql-geo/data
-	grep '^postgresql-geo:' Procfile || (printf ',s/^#postgresql-geo/postgresql/\nwq\n' | ed -s Procfile)
+	grep '^postgresql-geo:' Procfile || (printf ',s/^#postgresql-geo/postgresql-geo/\nwq\n' | ed -s Procfile)
 	support/bootstrap-geo
 
 .PHONY:	foreman
