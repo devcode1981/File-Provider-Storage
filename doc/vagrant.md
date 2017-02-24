@@ -89,4 +89,4 @@ OSes like Windows/OSX you will have to run the entire Docker hypervisor in a VM
 
 ## Next step
 
-After installation [learn how to use GDK](doc/howto/README.md).
+After installation [learn how to use GDK](./howto/README.md).

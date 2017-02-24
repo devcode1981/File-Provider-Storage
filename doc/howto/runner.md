@@ -65,7 +65,7 @@ for your operating system
 
 To build from source, you'll need to set up a development environment manually -
 GDK doesn't manage it for you. The official GitLab Runner repository is
-[here](https://gitlab.org/gitlab-org/gitlab-ci-multi-runner); just follow
+[here](https://gitlab.com/gitlab-org/gitlab-ci-multi-runner); just follow
 [the development instructions](https://docs.gitlab.com/runner/development/).
 
 All the methods should (eventually) create a `gitlab-ci-multi-runner` binary.
