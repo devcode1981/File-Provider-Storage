@@ -188,7 +188,7 @@ it here.
 
 ### Next Steps
 
-After you have completed everything here, please proceed to [Set-up GDK](doc/set-up-gdk.md)
+After you have completed everything here, please proceed to [Set-up GDK](./set-up-gdk.md)
 
 [puias]: https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/install/centos#add-puias-computational-repository
 [docker engine]: https://docs.docker.com/engine/installation/
