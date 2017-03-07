@@ -28,7 +28,7 @@ module GDK
       exec(MAKE, 'update', chdir: $gdk_root)
     when 'reconfigure'
       remember!($gdk_root)
-      exec(MAKE, 'clean-config', 'all', chdir: $gdk_root)
+      exec(MAKE, 'clean-config', 'unlock-dependency-installers', 'all', chdir: $gdk_root)
     when 'psql'
       exec('psql', '-h', File.join($gdk_root, 'postgresql'), *ARGV, chdir: $gdk_root)
     when 'redis-cli'
