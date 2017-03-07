@@ -63,7 +63,7 @@ npm install phantomjs-prebuilt@2.1.12 -g
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
-pacman -S postgresql redis postgresql-libs icu nodejs ed cmake openssh git go
+pacman -S postgresql redis postgresql-libs icu npm ed cmake openssh git go
 npm install phantomjs-prebuilt@2.1.12 -g
 ```
 
