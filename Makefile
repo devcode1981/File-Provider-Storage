@@ -87,24 +87,19 @@ ${gitaly_clone_dir}/.git:
 
 # Update gitlab, gitlab-shell, gitlab-workhorse and gitaly
 
-update: gitlab-update gitlab-shell-update gitlab-workhorse-update gitaly-update
+update: unlock-dependency-installers gitlab-update gitlab-shell-update gitlab-workhorse-update gitaly-update
 
-gitlab-update: gitlab/.git/pull
-	cd ${gitlab_development_root}/gitlab && \
-		bundle install --without mysql production --jobs 4
+gitlab-update: gitlab/.git/pull gitlab-setup
 	@echo ""
 	@echo "------------------------------------------------------------"
 	@echo "Make sure Postgres is running otherwise db:migrate will fail"
 	@echo "------------------------------------------------------------"
 	@echo ""
 	cd ${gitlab_development_root}/gitlab && \
-		bundle exec rake db:migrate db:test:prepare && \
-		npm prune && \
-		npm install
+		bundle exec rake db:migrate db:test:prepare
+	cd ${gitlab_development_root}/gitlab && npm prune
 
-gitlab-shell-update: gitlab-shell/.git/pull
-	cd ${gitlab_development_root}/gitlab-shell && \
-		bundle install --without production --jobs 4
+gitlab-shell-update: gitlab-shell/.git/pull gitlab-shell-setup
 
 gitlab/.git/pull:
 	cd ${gitlab_development_root}/gitlab && \
@@ -274,3 +269,8 @@ clean-config:
 	redis/redis.conf \
 	.ruby-version \
 	Procfile \
+
+unlock-dependency-installers:
+	rm -f .gitlab-npm \
+	.gitlab-bundle \
+	.gitlab-shell-bundle \
