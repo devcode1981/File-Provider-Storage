@@ -16,7 +16,12 @@ If you've already done this before, run
 brew info mysql
 ```
 
-Both command will print the post install messages on how to start the server. If you're not exposing your development machine to the internet and _only_ use it for development there is no need to to secure your installation.
+Both commands will print the post install messages on how to start the server. If you're not exposing your development machine to the internet and _only_ use it for development there is no need to to secure your installation.
+
+## Starting MySQL server
+
+You can start a MySQL server by running `mysqld` in your command line.
+Gitlab Development Kit does not manage the MySQL server for you.
 
 ## Setting up Rails to connect to MySQL
 
