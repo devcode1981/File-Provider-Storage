@@ -6,7 +6,7 @@ Because of this, you will need to either run a local Kubernetes cluster or use a
 
 Setting it up locally with [Minikube](https://github.com/kubernetes/minikube) is often easier, as you do not have to worry about Runners in GKE requiring network access to your local GDK instance.
 
-## Instructions for Minikube on (OS X)
+## Instructions for Minikube on OS X
 
 ### Install kubectl if you do not have it
 
