@@ -31,3 +31,4 @@ to learn how to develop GitLab CE.
 - [HTTPS](https.md)
 - [SSH](ssh.md)
 - [Using GitLab Runner with GDK](runner.md)
+- [Using Prometheus with GDK](prometheus.md)
