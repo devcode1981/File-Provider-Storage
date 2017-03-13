@@ -4,8 +4,8 @@ GitLab comes with a built-in performance metrics system. Metrics are
 collected by InfluxDB and visualized using Grafana.
 
 To use performance metrics in GitLab Development Kit you need a working
-Golang compiler and NPM installed. InfluxDB and Grafana consume about
-700MB of additional disk space (excluding metrics data).
+Golang compiler (at least v1.7) and NPM installed. InfluxDB and Grafana consume
+about 700MB of additional disk space (excluding metrics data).
 
 You need to have a working GDK installation before you install InfluxDB
 and Grafana.
