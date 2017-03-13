@@ -184,7 +184,10 @@ localhost.key:
 	openssl req -new -subj "/CN=localhost/" -x509 -days 365 -newkey rsa:2048 -nodes -keyout "localhost.key" -out "localhost.crt"
 	chmod 600 $@
 
-gitlab-workhorse-setup: gitlab-workhorse/bin/gitlab-workhorse
+gitlab-workhorse-setup: gitlab-workhorse/bin/gitlab-workhorse gitlab-workhorse/config.toml
+
+gitlab-workhorse/config.toml:
+	sed "s|/home/git|${gitlab_development_root}|" $@.example > $@
 
 gitlab-workhorse-update:	${gitlab_workhorse_clone_dir}/.git gitlab-workhorse/.git/pull gitlab-workhorse-clean-bin gitlab-workhorse/bin/gitlab-workhorse
 
