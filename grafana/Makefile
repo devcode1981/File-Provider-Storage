@@ -24,7 +24,7 @@ bin/grafana-server:	${GRAFANA_SOURCE}/build.go
 public:	bin/grafana-server
 	cd ${GRAFANA_SOURCE} && npm install
 	cd ${GRAFANA_SOURCE} && npm install grunt-cli
-	cd ${GRAFANA_SOURCE} && node_modules/grunt-cli/bin/grunt build
+	cd ${GRAFANA_SOURCE} && node_modules/grunt-cli/bin/grunt build --force
 	mv ${GRAFANA_SOURCE}/public_gen $@
 
 vendor: public
