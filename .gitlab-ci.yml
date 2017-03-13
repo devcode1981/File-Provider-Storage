@@ -41,6 +41,6 @@ test:install:
     - support/set-gitlab-upstream
     - killall node
     - gdk run &
-    - sleep 30
+    - sleep 120
     - curl -f http://127.0.0.1:3000/
 
