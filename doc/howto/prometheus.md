@@ -1,65 +1,99 @@
 # Using Prometheus with GDK
 
-Testing the Prometheus integration with the GitLab Development Kit requires some additional components. This is because the Prometheus integration requires a CI/CD deploy on Kubernetes.
+Testing the Prometheus integration with the GitLab Development Kit requires some
+additional components. This is because the Prometheus integration requires a
+CI/CD deploy on Kubernetes.
 
-Because of this, you will need to either run a local Kubernetes cluster or use a service like the Google Container Engine (GKE).
+Because of this, you will need to either run a local Kubernetes cluster or use
+a service like the Google Container Engine (GKE).
 
-Setting it up locally with [Minikube](https://github.com/kubernetes/minikube) is often easier, as you do not have to worry about Runners in GKE requiring network access to your local GDK instance.
+Setting it up locally with [Minikube](https://github.com/kubernetes/minikube)
+is often easier, as you do not have to worry about Runners in GKE requiring
+network access to your local GDK instance.
 
-## Instructions for Minikube on OS X
+## Instructions for Minikube
+
+The following steps will help you set up Mnikube locally.
 
 ### Install kubectl if you do not have it
 
-Kubectl is required for Minikube to function. You will need to download it, and add it to your path.
+Kubectl is required for Minikube to function.
 
-```
-curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/darwin/amd64/kubectl
-chmod +x ./kubectl
-sudo mv ./kubectl /usr/local/bin/kubectl
-```
+1. First, download it:
+
+    ```
+    ## For macOS
+    curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/darwin/amd64/kubectl
+
+    ## For Linux
+    curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+    ```
+
+1. Then, add it to your path:
+
+    ```
+    chmod +x ./kubectl
+    sudo mv ./kubectl /usr/local/bin/
+    ```
 
 ### Install Minikube
-```
-curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.17.1/minikube-darwin-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
-```
 
-## Install Xhyve
+1. First, download it:
 
-We need to install a VM in order to be able to use Minikube. Xhyve is one method, unless you have VMware Fusion or Virtual box installed.
+    ```
+    ## For macOS
+    curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.17.1/minikube-darwin-amd64
 
-```
-brew install docker-machine-driver-xhyve
-```
+    ## For Linux
+    curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.17.1/minikube-linux-amd64
+    ```
 
-Follow any completion steps.
+1. Then, add it to your path:
 
-## Set Minikube to use Xhyve
+    ```
+    chmod +x ./minikube
+    sudo mv ./minikube /usr/local/bin/
+    ```
 
-Configure Minikube to use Xhyve as the VM driver.
+## Set the Minikube default VM driver
+
+We need to install a VM in order to be able to use Minikube. Xhyve is one method,
+unless you have VMware Fusion or Virtual box installed.
+
+See the [Minikube drivers documentation](https://github.com/kubernetes/minikube/blob/master/DRIVERS.md)
+
+Once you have the VM provider of your choice installed, set it as the default
+VM driver:
 
 ```
 minikube config set vm-driver xhyve
 ```
 
-## Start Minikube
+Replace `xhyve` with `virtuabox`, `vmware` or `kvm` depending on what VM provider
+you chose to use.
 
-Starts minikube, running the first few containers with Kubernetes components.
+### Start Minikube
+
+The following command will start minikube, running the first few containers
+with Kubernetes components:
 
 ```
 minikube start
 ```
 
-### Open Kubernetes Dashboard
+### Open the Kubernetes Dashboard
 
-Open the Kubernetes dashboard to ensure things are working, and you can use this for future troubleshooting.
+Once Minikube starts, open the Kubernetes dashboard to ensure things are working
+You can use this for future troubleshooting.
 
 ```
 minikube dashboard
 ```
 
-### Launch Prometheus
+## Launch Prometheus
 
-Next we tell Kubernetes to launch an instance of Prometheus, and we provide configuration in the ConfigMap.
+Next, we tell Kubernetes to launch an instance of Prometheus, and we provide
+the configuration in the `ConfigMap`.
 
 ```
 kubectl apply -f support/prometheus/prometheus-configmap.yml
@@ -67,74 +101,112 @@ kubectl apply -f support/prometheus/prometheus-svc.yml
 kubectl apply -f support/prometheus/prometheus-deployment.yml
 ```
 
-### Get Prometheus Service URL
+## Get Prometheus Service URL
 
-Displays the URL to access the newly started Prometheus server. Browse to it to ensure it is operational.
+The following command will display the URL to access the newly started Prometheus
+server. Browse to it to ensure it is operational:
 
 ```
 minikube service --url prometheus
 ```
 
-### Configure GDK to listen to more than localhost.
+## Configure GDK to listen to more than localhost.
 
-From the GDK root directory, create a host file to configure GDK to listen for more than just localhost. This will allow the Runner to connect to your GDK instance.
+From the GDK root directory, create a host file to configure GDK to listen for
+more than just localhost. This will allow the Runner to connect to your GDK instance:
 
 ```
 echo 0.0.0.0 > host
 ```
 
-### Edit `gitlab.yml` to configure GDK to use your real IP not localhost.
+## Edit GitLab's `gitlab.yml`
 
-We need to configure GDK to inform it of the real IP address of your computer. This is because GDK returns this information to the Runner, and if it is wrong, Pipelines will fail. You can get your IP address by running `ifconfig` or opening up Network Settings.
+We need to configure GDK to inform it of the real IP address of your computer.
+This is because GDK returns this information to the Runner, and if it is wrong,
+pipelines will fail.
 
-Open `gitlab/config/gitlab.yml` and change the `host: localhost` line to reflect your IP.
+1. Get your local IP address by running `ifconfig` or opening up Network Settings
+   if on macOS. On Linux you can also use `ip addr show`.
+1. Open `gitlab/config/gitlab.yml` and change the `host: localhost` line to
+   reflect the IP of the previous step.
+1. Save the file and restart GDK to apply this change.
 
-Once saved, restart GDK to apply this change.
+You should now be able to access GitLab by the external URL
+(e.g., `http://192.168.1.1` not `localhost`), otherwise it may not work correctly.
 
-> Note: you should now access GitLab by the external URL (e.g. http://192.168.1.1 not localhost), otherwise it may not work correctly.
+## Create a Project
 
-### Create a Project
+Now that we have GDK running, we need to go and create a project with CI/CD
+set up. The easiest way to do this, is to simply import from an existing project
+with a simplified `gitlab-ci.yml`.
 
-Now that we have GDK running, we need to go and create a project with CI/CD set up. The easiest way to do this, is to simply import from an existing project with a simplified `gitlab-ci.yml`.
+Import https://gitlab.com/joshlambert/hello-world.git, to use a very simple
+CI/CD pipeline with no requirements (it just spins up a hello-world container).
 
-Import `https://gitlab.com/joshlambert/hello-world.git`, to use a very simple CI/CD pipeline with no requirements. (It just spins up a hello-world container.)
+## Edit the Runner's configMap yaml file
 
-### Edit `support/prometheus/gitlab-runner-docker-configmap.yml`
-This file configures the Runner to talk to GDK, and we need to edit two sections of this file.
+This file configures the Runner to talk to GDK, and we need to edit two sections
+of this file.
 
-First, we need to replace the existing IP with your computer’s real IP address.
+1. Open it with your editor:
 
-Next, replace the registration token with the token for your project.
+    ```
+    support/prometheus/gitlab-runner-docker-configmap.yml
+    ```
 
-> Note: if your project's token contains uppercase characters, it will fail due to a bug in the Runner. You can manually set the token further down the CI/CD settings screen. Set it to all lowercase letters and numbers.
+1. Replace the existing IP with your local IP address that you found when you
+   configured `gitlab.yml`.
+1. Replace the registration token with the Runner's token of your project. Find
+   it under **Project ➔ Settings ➔ CI/CD Pipelines ➔ Runner token**.
 
-Save your changes.
+    >**Note:**
+    If your project's token contains uppercase characters, it will fail
+    due to a bug in the Runner. You can manually set the token further down
+    the CI/CD settings screen. Set it to all lowercase letters and numbers.
 
-### Deploy GitLab Runner - can view Pod logs to confirm it registered
+1. Save your changes.
+
+## Deploy GitLab Runner
+
+Use the following yaml files to deploy GitLab Runner:
+
 ```
 kubectl apply -f support/prometheus/gitlab-runner-docker-configmap.yml
 kubectl apply -f support/prometheus/gitlab-runner-docker-deployment.yml
 ```
 
-### Run a Pipeline to deploy to an Environment
-Now that we have a Runner configured, we need to kick off a Pipeline. This is because the Prometheus integration only looks for environments which GitLab knows about and have a successful deploy. To do this, go into Pipelines and run a new Pipeline off `master`.
+You can view the Pod logs to confirm it registered successfully.
 
-You can validate the deploy worked by looking at the Kubernetes dashboard, or accessing the URL.
+## Run a Pipeline to deploy to an Environment
+
+Now that we have a Runner configured, we need to kick off a Pipeline. This is
+because the Prometheus integration only looks for environments which GitLab
+knows about and have a successful deploy. To do this, go into Pipelines and run
+a new Pipeline off `master`.
+
+You can validate the deploy worked by looking at the Kubernetes dashboard, or
+accessing the URL.
 
 To retrieve the URL:
+
 ```
 minikube service production
 ```
 
-If the deploy failed, you may need to edit the project's runner token to not include capital letters. (See Note in the step above.)
+If the deploy failed, you may need to edit the project's runner token to not
+include capital letters. (See Note in the step above.)
 
+## Configure Prometheus Service Integration
 
-### Configure Prometheus Service Integration
-Finally we are ready to configure the Prometheus integration.. Go into Project Settings, Integrations, and select Prometheus.
+Finally, we are ready to configure the Prometheus integration.
 
-Enter the Prometheus URL from the step above, and click Active. Save and test.
+1. Go to **Project ➔ Settings ➔ Integrations ➔ Prometheus**.
+1. Enter the [Prometheus URL](#get-prometheus-service-url) and click Active.
+1. Save and test.
 
-### View Performance metrics
-Go to Pipelines, Environments, then click on an Environment. You should see a new button appearing that looks like a chart. Click on it to view the metrics.
+## View Performance metrics
 
->Note: It may take 30-60 seconds for the Prometheus server to get a few sets of data points.
+Go to **Pipelines ➔ Environments** then click on an Environment. You should see
+a new button appearing that looks like a chart. Click on it to view the metrics.
+
+It may take 30-60 seconds for the Prometheus server to get a few sets of data points.
