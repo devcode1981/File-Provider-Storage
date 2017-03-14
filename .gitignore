@@ -51,3 +51,5 @@
 /.gdk-install-root
 /builds
 /gitaly/
+/gitlab-workhorse/config.toml
+/gitlab-workhorse/.cache
