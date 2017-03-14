@@ -53,3 +53,4 @@
 /gitaly/
 /gitlab-workhorse/config.toml
 /gitlab-workhorse/.cache
+postgresql-primary

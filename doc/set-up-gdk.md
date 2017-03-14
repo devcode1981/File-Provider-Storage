@@ -48,8 +48,6 @@ Alternatively, you can clone all components from their official source.
 gdk install
 ```
 
-If you are going to work on Gitlab Geo, you will need [PostgreSQL replication](./howto/postgresql_replication.md) setup before the "Post-installation" instructions.
-
 ## GitLab Enterprise Edition
 
 The recommended way to do development on GitLab Enterprise Edition is
@@ -73,6 +71,24 @@ might still be running.
 
 Instructions to generate a developer license can be found in the
 onboarding document: https://about.gitlab.com/handbook/developer-onboarding/#gitlab-enterprise-edition-ee
+
+## GitLab Geo
+
+GitLab Geo requires two Enterprise Edition instances running most of the time.
+You can re-use your previously boostraped `gdk-ee` as your primary node and
+we suggest to bootstrap a `gdk-geo` that will act as your secondary node.
+We need to configure different ports for the new instances so they can talk to
+each other.
+
+```
+gdk init gdk-geo
+cd gdk-geo
+echo 3002 > port
+echo 3807 > webpack_port
+gdk install gitlab_repo=https://gitlab.com/gitlab-org/gitlab-ee.git
+```
+
+You will need [PostgreSQL replication](./howto/postgresql_replication.md) setup before the "Post-installation" instructions.
 
 ## Post-installation
 
