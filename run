@@ -15,7 +15,7 @@ host=${host:-localhost}
 port=${port:-3000}
 
 print_port() {
-  echo -e "
+  printf "
 
            \033[38;5;88m\`                        \`
           :s:                      :s:
