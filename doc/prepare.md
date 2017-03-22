@@ -29,7 +29,7 @@ brew tap homebrew/dupes
 brew tap homebrew/versions
 brew install git redis postgresql libiconv icu4c pkg-config cmake nodejs go openssl node npm
 bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
-npm install phantomjs-prebuilt@2.1.12 -g
+sudo npm install phantomjs-prebuilt@2.1.12 -g
 ```
 
 #### Install OS X prerequisites using macports
