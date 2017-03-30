@@ -20,11 +20,15 @@ a
       port: ${webpack_port:-3808}
 .
 1
-/^  extra:/
-i
-  gitaly:
-    socket_path: $(pwd)/gitaly.socket
-
+/^  gitaly:/
+/^    enabled:/
+c
+    enabled: true
+.
+1
+/^        gitaly_address:/
+c
+        gitaly_address: unix:$(pwd)/gitaly.socket
 .
 wq
 EOF
