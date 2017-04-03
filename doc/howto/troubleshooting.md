@@ -345,6 +345,17 @@ If you still encounter some errors, see the troubleshooting FAQ below:
     repository.  The `gdk update` command should have done this for you, but you
     can do so manually as well.
 
+## Testing environment database problems
+
+There may be times when running spinach feature tests or rspec tests
+steps such as `sign-up` or `log-out` will fail for no apparent reason.
+
+In that case what you need to do is run the following command inside the gitlab directory:
+
+```
+RAILS_ENV=test bundle exec rake db:reset
+```
+
 ## Other problems
 
 Please open an issue on the [GDK issue tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues).
