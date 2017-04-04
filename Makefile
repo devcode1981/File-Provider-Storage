@@ -80,10 +80,13 @@ gitlab-shell/.gitlab_shell_secret:
 
 # Set up gitaly
 
-gitaly-setup: gitaly/bin/gitaly
+gitaly-setup: gitaly/bin/gitaly gitaly/config.toml
 
 ${gitaly_clone_dir}/.git:
 	git clone ${gitaly_repo} ${gitaly_clone_dir}
+
+gitaly/config.toml:
+	sed -e "s|/home/git|${gitlab_development_root}|" $@.example > $@
 
 # Update gitlab, gitlab-shell, gitlab-workhorse and gitaly
 
