@@ -86,7 +86,10 @@ ${gitaly_clone_dir}/.git:
 	git clone ${gitaly_repo} ${gitaly_clone_dir}
 
 gitaly/config.toml:
-	sed -e "s|/home/git|${gitlab_development_root}|" $@.example > $@
+	sed \
+	  -e "s|^socket_path.*|socket_path = \"${gitlab_development_root}/gitaly.socket\"|" \
+	  -e "s|# prometheus_listen_addr|prometheus_listen_addr|" \
+	  -e "s|/home/git|${gitlab_development_root}|" ${gitaly_clone_dir}/config.toml.example > $@
 
 # Update gitlab, gitlab-shell, gitlab-workhorse and gitaly
 
