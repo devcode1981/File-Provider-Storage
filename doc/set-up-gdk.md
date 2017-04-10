@@ -72,13 +72,13 @@ might still be running.
 Instructions to generate a developer license can be found in the
 onboarding document: https://about.gitlab.com/handbook/developer-onboarding/#gitlab-enterprise-edition-ee
 
-## GitLab Geo
+### GitLab Geo
 
-GitLab Geo requires two Enterprise Edition instances running most of the time.
-You can re-use your previously boostraped `gdk-ee` as your primary node and
-we suggest to bootstrap a `gdk-geo` that will act as your secondary node.
-We need to configure different ports for the new instances so they can talk to
-each other.
+Development on GitLab Geo requires two Enterprise Edition GDK instances running
+side-by-side. You can reuse the `gdk-ee` instance you set up in the previous
+section as your primary node, and now we'll create a secondary instance in a
+`gdk-geo` folder to act as a secondary node. We'll configure unique ports for
+the new instance so that it can run alongside the primary.
 
 ```
 gdk init gdk-geo
@@ -88,7 +88,9 @@ echo 3807 > webpack_port
 gdk install gitlab_repo=https://gitlab.com/gitlab-org/gitlab-ee.git
 ```
 
-You will need [PostgreSQL replication](./howto/postgresql_replication.md) setup before the "Post-installation" instructions.
+Now that you've installed a primary and a secondary GDK instance, follow the
+[PostgreSQL replication guide](./howto/postgresql_replication.md) before
+continuing to "Post-installation" below.
 
 ## Post-installation
 
