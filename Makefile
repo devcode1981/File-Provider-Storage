@@ -164,18 +164,28 @@ postgresql/data:
 	${postgres_bin_dir}/initdb --locale=C -E utf-8 postgresql/data
 	support/bootstrap-rails
 
-postgresql-replication/cluster:
-	${postgres_bin_dir}/initdb --locale=C -E utf-8 postgresql-replica/data
+postgresql-replication-primary: postgresql-replication/access postgresql-replication/role postgresql-replication/config
+
+postgresql-replication-secondary: postgresql-replication/data postgresql-replication/access postgresql-replication/backup postgresql-replication/config
+
+postgresql-replication/data:
+	${postgres_bin_dir}/initdb --locale=C -E utf-8 postgresql/data
+
+postgresql-replication/access:
 	cat support/pg_hba.conf.add >> postgresql/data/pg_hba.conf
 
 postgresql-replication/role:
 	${postgres_bin_dir}/psql -h ${postgres_dir} -d postgres -c "CREATE ROLE ${postgres_replication_user} WITH REPLICATION LOGIN;"
 
 postgresql-replication/backup:
-	psql -h ${postgres_dir} -d postgres -c "select pg_start_backup('base backup for streaming rep')"
-	rsync -cva --inplace --exclude="*pg_xlog*" postgresql/data postgresql-replica
-	psql -h ${postgres_dir} -d postgres -c "select pg_stop_backup(), current_timestamp"
-	./support/recovery.conf ${postgres_dir} > postgresql-replica/data/recovery.conf
+	$(eval postgres_primary_dir := $(realpath postgresql-primary))
+	psql -h ${postgres_primary_dir} -d postgres -c "select pg_start_backup('base backup for streaming rep')"
+	rsync -cva --inplace --exclude="*pg_xlog*" --exclude="*.pid" ${postgres_primary_dir}/data postgresql
+	psql -h ${postgres_primary_dir} -d postgres -c "select pg_stop_backup(), current_timestamp"
+	./support/recovery.conf ${postgres_primary_dir} > postgresql/data/recovery.conf
+
+postgresql-replication/config:
+	./support/postgres-replication ${postgres_dir}
 
 .PHONY:	foreman
 foreman:

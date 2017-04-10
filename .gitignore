@@ -6,6 +6,7 @@
 /Procfile
 /postgresql/data
 /postgresql/.s.*
+/postgresql-primary/
 /postgresql-replica/data
 /postgresql-replica/.s.*
 /redis/*.conf
