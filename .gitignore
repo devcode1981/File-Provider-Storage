@@ -6,6 +6,7 @@
 /Procfile
 /postgresql/data
 /postgresql/.s.*
+/postgresql-primary/
 /postgresql-replica/data
 /postgresql-replica/.s.*
 /redis/*.conf
@@ -53,4 +54,3 @@
 /gitaly/
 /gitlab-workhorse/config.toml
 /gitlab-workhorse/.cache
-postgresql-primary
