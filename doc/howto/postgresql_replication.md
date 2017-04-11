@@ -3,7 +3,8 @@
 ## Prerequisites
 
 This guide assumes you've already set up one GDK instance with GitLab EE to act
-as the **primary** Geo node in a `gdk-ee` folder. If not, follow the [Set up GDK
+as the **primary** Geo node in a `gdk-ee` folder, and another instance to act as
+the **secondary** Geo node in a `gdk-geo` folder. If not, follow the [Set up GDK
 guide](../set-up-gdk.md#gitlab-enterprise-edition) before continuing!
 
 ## Configuring replication
