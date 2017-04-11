@@ -16,7 +16,7 @@ sshd_bin = $(shell which sshd)
 git_bin = $(shell which git)
 webpack_port = $(shell cat webpack_port 2>/dev/null || echo '3808')
 
-all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup gitaly-setup geo-setup
+all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup gitaly-setup
 
 # Set up the GitLab Rails app
 

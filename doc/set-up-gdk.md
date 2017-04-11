@@ -86,6 +86,7 @@ cd gdk-geo
 echo 3002 > port
 echo 3807 > webpack_port
 gdk install gitlab_repo=https://gitlab.com/gitlab-org/gitlab-ee.git
+make geo-setup
 ```
 
 Now that you've installed a primary and a secondary GDK instance, follow the
