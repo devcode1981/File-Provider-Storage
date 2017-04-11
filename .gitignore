@@ -1,4 +1,5 @@
 /gitlab-shell/
+/gitlab-shell
 /.ssh/
 /gitlab-satellites/
 /repositories/
@@ -53,3 +54,4 @@
 /gitaly/
 /gitlab-workhorse/config.toml
 /gitlab-workhorse/.cache
+/go-gitlab-shell
