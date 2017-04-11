@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+
+success = true
+begin
+  foreman_pid = spawn('./run', 'geo_db')
+  [
+    %W(bundle exec rake geo:db:setup)
+  ].each do |cmd|
+    success &&= system({'force' => 'yes', 'BOOTSTRAP' => '1'}, *cmd, chdir: 'gitlab')
+  end
+ensure
+  Process.kill('TERM', foreman_pid)
+end
+
+Process.wait(foreman_pid)
+
+exit true if success
+
+abort "#$0 failed"

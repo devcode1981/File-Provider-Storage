@@ -1,0 +1,13 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: gitlabhq_geo_development
+  pool: 5
+  host: /home/git/postgresql-geo
+
+test: &test
+  adapter: postgresql
+  encoding: unicode
+  database: gitlabhq_geo_test
+  pool: 5
+  host: /home/git/postgresql-geo
