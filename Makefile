@@ -307,6 +307,8 @@ clean-config:
 	redis/redis.conf \
 	.ruby-version \
 	Procfile \
+	gitlab-workhorse/config.toml \
+	gitaly/config.toml \
 
 unlock-dependency-installers:
 	rm -f .gitlab-npm \
