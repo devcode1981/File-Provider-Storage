@@ -1,5 +1,6 @@
 gitlab_repo = https://gitlab.com/gitlab-org/gitlab-ce.git
 gitlab_shell_repo = https://gitlab.com/gitlab-org/gitlab-shell.git
+gitlab_shell_clone_dir = go-gitlab-shell/src/gitlab.com/gitlab-org/gitlab-shell
 gitlab_workhorse_repo = https://gitlab.com/gitlab-org/gitlab-workhorse.git
 gitlab_workhorse_clone_dir = gitlab-workhorse/src/gitlab.com/gitlab-org/gitlab-workhorse
 gitaly_repo = https://gitlab.com/gitlab-org/gitaly.git
@@ -60,10 +61,14 @@ bundler:
 
 # Set up gitlab-shell
 
-gitlab-shell-setup: gitlab-shell/.git gitlab-shell/config.yml bundler .gitlab-shell-bundle gitlab-shell/.gitlab_shell_secret
+gitlab-shell-setup: symlink-gitlab-shell ${gitlab_shell_clone_dir}/.git gitlab-shell/config.yml bundler .gitlab-shell-bundle gitlab-shell/.gitlab_shell_secret
+	if [ -x gitlab-shell/bin/compile ] ; then gitlab-shell/bin/compile; fi
 
-gitlab-shell/.git:
-	git clone ${gitlab_shell_repo} gitlab-shell
+symlink-gitlab-shell:
+	support/symlink-gitlab-shell gitlab-shell ${gitlab_shell_clone_dir}
+
+${gitlab_shell_clone_dir}/.git:
+	git clone ${gitlab_shell_repo} ${gitlab_shell_clone_dir}
 
 gitlab-shell/config.yml:
 	sed -e "s|/home/git|${gitlab_development_root}|"\
