@@ -356,6 +356,14 @@ In that case what you need to do is run the following command inside the gitlab 
 RAILS_ENV=test bundle exec rake db:reset
 ```
 
+## Windows 10 WSL common issues
+
+* `gdk run db` fails with exit code X
+
+    If you have restarted your computer recently, don't forget to start PostgreSQL server manually; init.d scripts don't work currently as of build 15063.138:
+
+    `sudo service postgresql start`
+
 ## Other problems
 
 Please open an issue on the [GDK issue tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues).

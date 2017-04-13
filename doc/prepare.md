@@ -184,6 +184,58 @@ sudo pkg install postgresql93-server postgresql93-contrib postgresql-libpqxx \
 redis go node icu krb5 phantomjs gmake
 ```
 
+### **Experimental** Windows 10 using the WSL (Windows Subsystem for Linux)
+
+Install NodeJS from source
+
+```
+curl -O https://nodejs.org/dist/v6.10.2/node-v6.10.2.tar.gz
+tar -zxf node-v6.10.2.tar.gz
+cd node-v6.10.2
+```
+Build the NodeJS library. The following instructions are copied from the NodeJS BUILDING.md document:
+
+```
+sudo apt-get install build-essential
+./configure
+make -j4 # adjust according to your available CPU capacity
+sudo make install
+```
+
+Install Ruby 2.3.3 using [RVM](https://rvm.io/)
+
+```
+rvm install 2.3.3
+rvm use 2.3.3
+```
+
+Install yarn
+
+```
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt-get update && sudo apt-get install yarn
+```
+
+Install the remainder of the prerequisites
+```
+# Add apt-add-repository helper script
+sudo apt-get install software-properties-common python-software-properties
+# This PPA contains an up-to-date version of Go
+sudo apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
+sudo apt-get update
+sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ libkrb5-dev golang ed pkg-config
+sudo npm install phantomjs-prebuilt@2.1.12 -g
+```
+
+Start the PostgreSQL database
+
+```
+sudo service postgresql start
+```
+
+For some common troubleshooting steps for Windows 10 GDK installs please refer to [Troubleshooting](./howto/troubleshooting.md)
+
 ### Other platforms
 
 If you got GDK running an another platform please send a merge request to add
