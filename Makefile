@@ -21,7 +21,7 @@ all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup gitaly
 
 # Set up the GitLab Rails app
 
-gitlab-setup: gitlab/.git gitlab-config bundler .gitlab-bundle .gitlab-yarn
+gitlab-setup: gitlab/.git gitlab-config bundler .gitlab-bundle yarn .gitlab-yarn
 
 gitlab/.git:
 	git clone ${gitlab_repo} gitlab
@@ -58,6 +58,14 @@ gitlab/public/uploads:
 .PHONY:	bundler
 bundler:
 	command -v $@ > /dev/null || gem install $@
+
+.PHONY:	yarn
+yarn:
+	@command -v $@ > /dev/null || {\
+		echo "Error: Yarn executable was not detected in the system.";\
+		echo "Download Yarn at https://yarnpkg.com/en/docs/install";\
+		exit 1;\
+	}
 
 # Set up gitlab-shell
 
