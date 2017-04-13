@@ -356,6 +356,24 @@ In that case what you need to do is run the following command inside the gitlab 
 RAILS_ENV=test bundle exec rake db:reset
 ```
 
+## Windows 10 WSL common issues
+
+* `gdk run db` fails with exit code X
+
+    If you have restarted your computer recently don't forget to start the postgresql service manually, init.d scripts don't currently as of build 15063.138
+
+    TL;DR
+
+    `sudo service postgresql start`
+
+* `gdk run app` fails with gitaly error code XXX
+
+    Please run `gdk reconfigure`, note, this *might* happen during the initial run after the database has seeded
+
+* I get an EOF when accessing http://127.0.0.1:3000 instead of the sign up page
+
+    There's two possible solutions for this problem, make sure you have sufficient free RAM, otherwise just refresh the page.
+
 ## Other problems
 
 Please open an issue on the [GDK issue tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues).
