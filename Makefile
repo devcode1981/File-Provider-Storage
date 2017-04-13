@@ -309,6 +309,7 @@ clean-config:
 	Procfile \
 	gitlab-workhorse/config.toml \
 	gitaly/config.toml \
+	nginx/conf/nginx.conf \
 
 unlock-dependency-installers:
 	rm -f .gitlab-npm \
