@@ -186,16 +186,14 @@ redis go node icu krb5 phantomjs gmake
 
 ### **Experimental** Windows 10 using the WSL (Windows Subsystem for Linux)
 
-Install node from source
+Install NodeJS from source
 
 ```
 curl -O https://nodejs.org/dist/v6.10.2/node-v6.10.2.tar.gz
 tar -zxf node-v6.10.2.tar.gz
 cd node-v6.10.2
 ```
-follow the instructions inside the BUILDING.md document
-
-TL;DR BUILDING.md
+Build the NodeJS library. The following instructions are copied from the NodeJS BUILDING.md document:
 
 ```
 sudo apt-get install build-essential
@@ -211,7 +209,7 @@ rvm install 2.3.3
 rvm use 2.3.3
 ```
 
-Install yarn *Recommended but it can be skipped*
+Install yarn
 
 ```
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
@@ -230,7 +228,7 @@ sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server li
 sudo npm install phantomjs-prebuilt@2.1.12 -g
 ```
 
-Once the prerequisites have been installed don't forget to start the postgresql manually otherwise the gdk installation will fail
+Start the PostgreSQL database
 
 ```
 sudo service postgresql start

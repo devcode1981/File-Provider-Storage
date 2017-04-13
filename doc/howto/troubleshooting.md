@@ -360,19 +360,9 @@ RAILS_ENV=test bundle exec rake db:reset
 
 * `gdk run db` fails with exit code X
 
-    If you have restarted your computer recently don't forget to start the postgresql service manually, init.d scripts don't currently as of build 15063.138
-
-    TL;DR
+    If you have restarted your computer recently, don't forget to start PostgreSQL server manually; init.d scripts don't work currently as of build 15063.138:
 
     `sudo service postgresql start`
-
-* `gdk run app` fails with gitaly error code XXX
-
-    Please run `gdk reconfigure`, note, this *might* happen during the initial run after the database has seeded
-
-* I get an EOF when accessing http://127.0.0.1:3000 instead of the sign up page
-
-    There's two possible solutions for this problem, make sure you have sufficient free RAM, otherwise just refresh the page.
 
 ## Other problems
 
