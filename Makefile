@@ -52,7 +52,7 @@ gitlab/public/uploads:
 	touch $@
 
 .gitlab-yarn:
-	cd ${gitlab_development_root}/gitlab && yarn install
+	cd ${gitlab_development_root}/gitlab && yarn install --pure-lockfile
 	touch $@
 
 .PHONY:	bundler
