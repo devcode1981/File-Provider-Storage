@@ -49,6 +49,7 @@
 /.gitlab-shell-bundle
 /.gitlab-bundle
 /.gitlab-npm
+/.gitlab-yarn
 /gem/*.gem
 /gitlab-runner-config.toml
 /.gdk-install-root

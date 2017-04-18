@@ -21,7 +21,7 @@ all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup gitaly
 
 # Set up the GitLab Rails app
 
-gitlab-setup: gitlab/.git gitlab-config bundler .gitlab-bundle .gitlab-npm
+gitlab-setup: gitlab/.git gitlab-config bundler .gitlab-bundle yarn .gitlab-yarn
 
 gitlab/.git:
 	git clone ${gitlab_repo} gitlab
@@ -51,13 +51,21 @@ gitlab/public/uploads:
 	cd ${gitlab_development_root}/gitlab && bundle install --without mysql production --jobs 4
 	touch $@
 
-.gitlab-npm:
-	cd ${gitlab_development_root}/gitlab && npm install
+.gitlab-yarn:
+	cd ${gitlab_development_root}/gitlab && yarn install --pure-lockfile
 	touch $@
 
 .PHONY:	bundler
 bundler:
 	command -v $@ > /dev/null || gem install $@
+
+.PHONY:	yarn
+yarn:
+	@command -v $@ > /dev/null || {\
+		echo "Error: Yarn executable was not detected in the system.";\
+		echo "Download Yarn at https://yarnpkg.com/en/docs/install";\
+		exit 1;\
+	}
 
 # Set up gitlab-shell
 
@@ -109,7 +117,6 @@ gitlab-update: gitlab/.git/pull gitlab-setup
 	@echo ""
 	cd ${gitlab_development_root}/gitlab && \
 		bundle exec rake db:migrate db:test:prepare
-	cd ${gitlab_development_root}/gitlab && npm prune
 
 gitlab-shell-update: gitlab-shell/.git/pull gitlab-shell-setup
 
@@ -312,6 +319,7 @@ clean-config:
 	nginx/conf/nginx.conf \
 
 unlock-dependency-installers:
-	rm -f .gitlab-npm \
+	rm -f \
 	.gitlab-bundle \
 	.gitlab-shell-bundle \
+	.gitlab-yarn

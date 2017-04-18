@@ -14,9 +14,14 @@ during installation.
    system Ruby
 1. Bundler, which you can install with `gem install bundler`
 1. Git version of 2.7.X or higher
+1. Node 4.3 or newer and Yarn 0.17 or newer.  If your package manage does not
+   have up-to-date versions of node or yarn available, visit the official
+   websites for [node] and [yarn] for installation instructions.
 
 [rbenv]: https://github.com/rbenv/rbenv
 [chruby]: https://github.com/postmodern/chruby
+[node]: https://nodejs.org/en/download/package-manager/
+[yarn]: https://yarnpkg.com/en/docs/install/
 
 ### OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan), macOS 10.12 (Sierra)
 
@@ -27,7 +32,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 ```
 brew tap homebrew/dupes
 brew tap homebrew/versions
-brew install git redis postgresql libiconv icu4c pkg-config cmake nodejs go openssl node npm coreutils
+brew install git redis postgresql libiconv icu4c pkg-config cmake nodejs go openssl node npm yarn coreutils
 bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
 sudo npm install phantomjs-prebuilt@2.1.12 -g
 ```
@@ -37,7 +42,7 @@ sudo npm install phantomjs-prebuilt@2.1.12 -g
 We are using PostgreSQL-9.5 in the following example. If you want to use another version, please adjust paths accordingly.
 
 ```
-sudo port install git redis libiconv postgresql95-server icu pkgconfig cmake nodejs4 go openssl npm2 coreutils
+sudo port install git redis libiconv postgresql95-server icu pkgconfig cmake nodejs4 go openssl npm2 yarn coreutils
 bundle config build.eventmachine --with-cppflags=-I/opt/local/include/openssl
 sudo npm install phantomjs-prebuilt@2.1.12 -g
 echo 'export PATH=/opt/local/lib/postgresql95/bin/:$PATH' >> ~/.profile
