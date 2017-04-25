@@ -70,7 +70,9 @@ will not have port conflicts with a separate GDK instance for CE that
 might still be running.
 
 Instructions to generate a developer license can be found in the
-onboarding document: https://about.gitlab.com/handbook/developer-onboarding/#gitlab-enterprise-edition-ee
+onboarding document: https://about.gitlab.com/handbook/developer-onboarding/#working-on-gitlab-ee
+
+License key generator is only available for GitLab employees.
 
 ### GitLab Geo
 
