@@ -21,6 +21,11 @@ RUN apt-get install -y git postgresql postgresql-contrib libpq-dev redis-server 
   libicu-dev cmake g++ nodejs libkrb5-dev golang ed pkg-config libsqlite3-dev \
   libreadline-dev npm sudo nodejs-legacy
 
+# install yarn
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update && sudo apt-get install yarn
+
 # GDK tools
 RUN apt-get install -y net-tools psmisc
 
