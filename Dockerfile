@@ -18,8 +18,12 @@ RUN apt-get install -y libssl-dev
 
 # rest of gitlab requirements
 RUN apt-get install -y git postgresql postgresql-contrib libpq-dev redis-server \
-  libicu-dev cmake g++ nodejs libkrb5-dev golang ed pkg-config libsqlite3-dev \
-  libreadline-dev npm sudo nodejs-legacy
+  libicu-dev cmake g++ libkrb5-dev golang ed pkg-config libsqlite3-dev \
+  libreadline-dev sudo
+
+# install nodejs
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
+RUN apt-get install -y nodejs
 
 # GDK tools
 RUN apt-get install -y net-tools psmisc apt-transport-https
