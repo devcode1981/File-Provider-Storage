@@ -1,7 +1,7 @@
 /gitlab-shell/
 /.ssh/
 /gitlab-satellites/
-/repositories/
+/repositories*
 /gitlab/
 /Procfile
 /postgresql/data
