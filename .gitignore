@@ -50,6 +50,7 @@
 /.gitlab-bundle
 /.gitlab-npm
 /.gitlab-yarn
+/.gettext
 /gem/*.gem
 /gitlab-runner-config.toml
 /.gdk-install-root
