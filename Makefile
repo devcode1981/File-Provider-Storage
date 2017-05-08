@@ -326,5 +326,5 @@ unlock-dependency-installers:
 	rm -f \
 	.gitlab-bundle \
 	.gitlab-shell-bundle \
-	.gitlab-yarn
+	.gitlab-yarn \
 	.gettext
