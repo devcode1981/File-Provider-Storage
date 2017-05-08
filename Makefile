@@ -21,7 +21,7 @@ all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup gitaly
 
 # Set up the GitLab Rails app
 
-gitlab-setup: gitlab/.git gitlab-config bundler .gitlab-bundle yarn .gitlab-yarn
+gitlab-setup: gitlab/.git gitlab-config bundler .gitlab-bundle yarn .gitlab-yarn .gettext
 
 gitlab/.git:
 	git clone ${gitlab_repo} gitlab
@@ -53,6 +53,10 @@ gitlab/public/uploads:
 
 .gitlab-yarn:
 	cd ${gitlab_development_root}/gitlab && yarn install --pure-lockfile
+	touch $@
+
+.gettext:
+	cd ${gitlab_development_root}/gitlab && bundle exec rake gettext:pack
 	touch $@
 
 .PHONY:	bundler
@@ -323,3 +327,4 @@ unlock-dependency-installers:
 	.gitlab-bundle \
 	.gitlab-shell-bundle \
 	.gitlab-yarn
+	.gettext
