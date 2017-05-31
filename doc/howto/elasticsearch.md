@@ -6,6 +6,12 @@ environment.
 
 ## Installation: macOS
 
+1. Install Java 1.8 + (Elasticsearch dependency)
+
+    ```sh
+    brew cask install java
+    ```
+
 1. Install Elasticsearch with [Homebrew]:
 
     ```sh
