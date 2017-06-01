@@ -10,7 +10,7 @@ to learn how to develop GitLab CE.
 ## Basic
 
 - [Browse your development GitLab server](browse.md)
-- [GitLab developer documentation](http://docs.gitlab.com/ce/development/README.html)
+- [GitLab developer documentation](https://docs.gitlab.com/ce/development/README.html)
 - [GDK commands](gdk_commands.md)
 - [Development troubleshooting](troubleshooting.md)
 - [Cheat sheet](../../HELP): `cat HELP`
