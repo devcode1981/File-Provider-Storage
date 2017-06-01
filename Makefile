@@ -58,7 +58,7 @@ gitlab/public/uploads:
 	touch $@
 
 .gettext:
-	cd ${gitlab_development_root}/gitlab && bundle exec rake gettext:pack
+	cd ${gitlab_development_root}/gitlab && bundle exec rake gettext:compile
 	touch $@
 
 .PHONY:	bundler
