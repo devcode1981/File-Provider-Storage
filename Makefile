@@ -220,7 +220,7 @@ postgresql/geo:
 	support/bootstrap-geo
 
 gitlab/config/gitlab.yml/geo:
-	sed -i '' -e '/geo_secondary_role\:/ {'\ -e 'n; s/enabled: false/enabled\: true/' -e '}' gitlab/config/gitlab.yml
+	sed -i '' -e '/geo_secondary_role\:/ {' -e 'n; s/enabled\: false/enabled\: true/' -e '}' gitlab/config/gitlab.yml
 
 .PHONY:	foreman
 foreman:
