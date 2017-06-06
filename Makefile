@@ -20,6 +20,9 @@ username = $(shell whoami)
 sshd_bin = $(shell which sshd)
 git_bin = $(shell which git)
 webpack_port = $(shell cat webpack_port 2>/dev/null || echo '3808')
+registry_enabled = $(shell cat registry_enabled 2>/dev/null || echo 'false')
+registry_port = $(shell cat registry_port 2>/dev/null || echo '5000')
+gitlab_from_container = $(shell [[ "$OSTYPE" == "linux-gnu" ]] && echo 'localhost' || echo 'docker.for.mac.localhost')
 
 all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup gitaly-setup
 
@@ -36,7 +39,7 @@ gitlab/config/gitlab.yml:
 	sed -e "s|/home/git|${gitlab_development_root}|"\
 	  -e "s|/usr/bin/git|${git_bin}|"\
 	  gitlab/config/gitlab.yml.example > gitlab/config/gitlab.yml
-	port=${port} webpack_port=${webpack_port} support/edit-gitlab.yml gitlab/config/gitlab.yml
+	port=${port} webpack_port=${webpack_port} registry_enabled=${registry_enabled} registry_port=${registry_port} support/edit-gitlab.yml gitlab/config/gitlab.yml
 
 gitlab/config/database.yml:
 	sed "s|/home/git|${gitlab_development_root}|" database.yml.example > gitlab/config/database.yml
@@ -202,7 +205,7 @@ gitaly/bin/gitaly:	${gitaly_clone_dir}/.git
 
 # Set up supporting services
 
-support-setup: .ruby-version foreman Procfile redis gitaly-setup postgresql openssh-setup nginx-setup
+support-setup: .ruby-version foreman Procfile redis gitaly-setup postgresql openssh-setup nginx-setup registry-setup
 	@echo ""
 	@echo "*********************************************"
 	@echo "************** Setup finished! **************"
@@ -361,6 +364,15 @@ nginx/logs:
 nginx/tmp:
 	mkdir -p $@
 
+registry-setup: registry/storage registry/config.yml localhost.crt
+
+registry/storage:
+	mkdir -p $@
+
+registry/config.yml:
+	cp registry/config.yml.example $@
+	gitlab_host=${gitlab_from_container} gitlab_port=${port} registry_port=${registry_port} support/edit-registry-config.yml $@
+
 clean-config:
 	rm -f \
 	gitlab/config/gitlab.yml \
@@ -375,6 +387,7 @@ clean-config:
 	gitlab-workhorse/config.toml \
 	gitaly/config.toml \
 	nginx/conf/nginx.conf \
+	registry/config.yml \
 
 unlock-dependency-installers:
 	rm -f \

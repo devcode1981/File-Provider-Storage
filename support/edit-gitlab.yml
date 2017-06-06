@@ -30,5 +30,15 @@ c
 c
         gitaly_address: unix:$(pwd)/gitaly.socket
 .
+/^  registry:/
+a
+    enabled: ${registry_enabled:-false}
+    host: 127.0.0.1
+    port: ${registry_port:-5000}
+    api_url: http://127.0.0.1:${registry_port:-5000}/
+    key: ../localhost.key
+    path: ../registry/storage/
+    issuer: gitlab-issuer
+.
 wq
 EOF
