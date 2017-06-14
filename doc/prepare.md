@@ -12,6 +12,7 @@ during installation.
 1. Ruby 2.3 (2.3.3 or newer) installed with a Ruby version manager
    ([RVM](https://rvm.io/), [rbenv], [chruby], etc.), **DO NOT** use the
    system Ruby
+1. Go 1.8 or newer
 1. Bundler, which you can install with `gem install bundler`
 1. Git version of 2.7.X or higher
 1. Node 4.3 or newer and Yarn 0.17 or newer.  If your package manage does not
@@ -55,10 +56,10 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 # Add apt-add-repository helper script
 sudo apt-get install software-properties-common python-software-properties
 # This PPA contains an up-to-date version of Go
-sudo apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
+sudo add-apt-repository ppa:longsleep/golang-backports
 sudo apt-get update
-sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs nodejs-legacy npm libkrb5-dev golang ed pkg-config
-npm install phantomjs-prebuilt@2.1.12 -g
+sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs nodejs-legacy npm libkrb5-dev golang-1.8-go ed pkg-config
+sudo npm install phantomjs-prebuilt@2.1.12 yarn -g
 ```
 
 ### Arch Linux
@@ -67,7 +68,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 
 ```
 pacman -S postgresql redis postgresql-libs icu npm ed cmake openssh git go
-npm install phantomjs-prebuilt@2.1.12 -g
+npm install phantomjs-prebuilt@2.1.12 yarn -g
 ```
 
 ### Debian
@@ -153,7 +154,7 @@ sudo zypper install libxslt-devel  postgresql postgresql-devel libpqxx-devel red
          rpm-build gcc-c++ krb5-devel go postgresql-server postgresql-contrib \
          libxml2-devel libxml2-devel-32bit findutils-locate
 
-sudo npm install -g phantomjs
+sudo npm install -g phantomjs yarn
 ```
 
 On leap 42.1 you also need:
