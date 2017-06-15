@@ -4,22 +4,17 @@ LABEL authors.contributor "Hrvoje Marjanovic <hrvoje.marjanovic@gmail.com>"
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update
-RUN apt-get -y install curl git-core software-properties-common python-software-properties
-
-# This PPA contains an up-to-date version of Go
-RUN apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
-RUN apt-get update
-
 # install essentials
-RUN apt-get -y install build-essential
-RUN apt-get install -y -q git
-RUN apt-get install -y libssl-dev
+
+RUN apt-get update
+RUN apt-get -y install curl wget git sudo build-essential \
+                       software-properties-common \
+                       python-software-properties
 
 # rest of gitlab requirements
-RUN apt-get install -y git postgresql postgresql-contrib libpq-dev redis-server \
-  libicu-dev cmake g++ libkrb5-dev golang ed pkg-config libsqlite3-dev \
-  libreadline-dev sudo
+RUN apt-get install -y git postgresql postgresql-contrib libpq-dev \
+                       redis-server libicu-dev cmake g++ libkrb5-dev \
+                       ed pkg-config libsqlite3-dev libreadline-dev libssl-dev
 
 # install nodejs
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
@@ -32,6 +27,11 @@ RUN apt-get install -y net-tools psmisc apt-transport-https
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 RUN apt-get update && apt-get install -y yarn
+
+# install Go
+RUN wget -q https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz
+RUN tar -C /usr/local -xzf go1.8.3.linux-amd64.tar.gz
+ENV PATH $PATH:/usr/local/go/bin
 
 # Add GDK user
 RUN useradd --user-group --create-home gdk
