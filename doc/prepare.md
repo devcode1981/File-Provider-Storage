@@ -18,11 +18,14 @@ during installation.
 1. Node 4.3 or newer and Yarn 0.17 or newer.  If your package manage does not
    have up-to-date versions of node or yarn available, visit the official
    websites for [node] and [yarn] for installation instructions.
+1. Go 1.8.3 or newer. If your package manager does not have up-to-date versions
+   of Go available, visit the official website for [go] for installation instructions.
 
 [rbenv]: https://github.com/rbenv/rbenv
 [chruby]: https://github.com/postmodern/chruby
 [node]: https://nodejs.org/en/download/package-manager/
 [yarn]: https://yarnpkg.com/en/docs/install/
+[go]: https://golang.org/doc/install
 
 ### OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan), macOS 10.12 (Sierra)
 
@@ -79,8 +82,10 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 sudo apt-get install postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs npm libkrb5-dev ed pkg-config
 ```
 
-If you are running Debian Stretch or newer you will need to install Go
-compiler as well: `sudo apt-get install golang`.
+If you are running Debian Experimenal or newer you can install a Go
+compiler via your package manager: `sudo apt-get install golang`.
+Otherwise you need to install it manually. See [go] official installation
+instructions.
 
 You need to install phantomjs manually:
 
@@ -100,6 +105,8 @@ You may need to install Redis 2.8 or newer manually.
 
 We assume you are using Fedora >= 22.
 
+If you are running Fedora < 26 you'll need to install `go` manually using [go] official installation instructions.
+
 ```
 sudo dnf install postgresql libpqxx-devel postgresql-libs redis libicu-devel nodejs git ed cmake rpm-build gcc-c++ krb5-devel go postgresql-server postgresql-contrib
 ```
@@ -118,7 +125,7 @@ This is tested on CentOS 6.5:
 ```
 sudo yum install http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-2.noarch.rpm
 sudo yum install https://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-sudo yum install postgresql95-server postgresql95-devel libicu-devel cmake gcc-c++ redis ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 libstdc++.so.6 golang nodejs npm
+sudo yum install postgresql95-server postgresql95-devel libicu-devel cmake gcc-c++ redis ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 libstdc++.so.6 nodejs npm
 
 sudo npm install phantomjs-prebuilt@2.1.12 -g
 
@@ -129,6 +136,8 @@ sudo rvm use 2.3
 sudo usermod -a -G rvm <username>
 #add iptables exceptions, or sudo service stop iptables
 ```
+
+Install `go` manually using [go] official installation instructions.
 
 Install `phantomJS` manually, or download it and put in your $PATH. For
 instructions, follow the [Debian guide on phantomJS](#debian).
@@ -151,7 +160,7 @@ This was tested on OpenSUSE LEAP 42.1, and Tumbleweed (20161109)
 sudo zypper dup
 
 sudo zypper install libxslt-devel  postgresql postgresql-devel libpqxx-devel redis libicu-devel nodejs git ed cmake \
-         rpm-build gcc-c++ krb5-devel go postgresql-server postgresql-contrib \
+         rpm-build gcc-c++ krb5-devel postgresql-server postgresql-contrib \
          libxml2-devel libxml2-devel-32bit findutils-locate
 
 sudo npm install -g phantomjs yarn
@@ -161,6 +170,8 @@ On leap 42.1 you also need:
 ```
 sudo zypper install ld.charlock_holmes "--with-icu-dir=/usr/local" --globalnpm4
 ```
+
+Install `go` manually using [go] official installation instructions.
 
 
 The following `bundle config` options are recommended before you run `gdk install` in order to avoid problems with the embedded libraries inside nokogiri:
