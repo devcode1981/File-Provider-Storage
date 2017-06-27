@@ -37,6 +37,9 @@ If you want to use Windows, you can try [our instructions for Windows Subsystem 
 Or if you want to use a slower virtualized installation with [Vagrant](https://www.vagrantup.com/),
 please see the [instructions for using Vagrant with VirtualBox or Docker](doc/vagrant.md).
 
+You can also install GDK on [Minikube](https://github.com/kubernetes/minikube),
+see [kubernetes docs](doc/kubernetes.md).
+
 After installation [learn how to use GDK](doc/howto/README.md)
 
 If you have an old installation [update your existing GDK installation](doc/update-gdk.md)

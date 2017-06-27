@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gdk
+  labels:
+    app: gdk
+spec:
+  ports:
+    - port: 3000
+  selector:
+    app: gdk
+  type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: gdk
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: gdk
+    spec:
+      containers:
+        - name: gdk
+          image: registry.gitlab.com/gitlab-org/gitlab-development-kit
+          imagePullPolicy: Always
+          ports:
+          - name: gdk
+            containerPort: 3000
+          command:
+            - /bin/bash
+            - -c
+            - >
+              source /home/gdk/.bash_profile;
+              gem install gitlab-development-kit;
+              cd /home/gdk;
+              gdk init;
+              cd gitlab-development-kit;
+              gdk install;
+              echo 0.0.0.0 > host;
+              gdk run
