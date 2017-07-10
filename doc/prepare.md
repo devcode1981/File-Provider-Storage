@@ -12,7 +12,6 @@ during installation.
 1. Ruby 2.3 (2.3.3 or newer) installed with a Ruby version manager
    ([RVM](https://rvm.io/), [rbenv], [chruby], etc.), **DO NOT** use the
    system Ruby
-1. Go 1.8 or newer
 1. Bundler, which you can install with `gem install bundler`
 1. Git version of 2.7.X or higher
 1. Node 4.3 or newer and Yarn 0.17 or newer.  If your package manage does not
