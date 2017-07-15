@@ -31,7 +31,7 @@ To avoid usage of slow VirtualBox shared folders we use NFS here.
    command prompt if on Windows). Vagrant will download an OS image, bring it
    up, and install all the prerequisites.
 1. Run `vagrant ssh` to SSH into the box.
-1. Continue setup at [Installation](https://gitlab.com/gitlab-org/gitlab-development-kit#installation) below.
+1. Continue setup at [Installation](https://gitlab.com/gitlab-org/gitlab-development-kit/blob/master/doc/set-up-gdk.md#install-gdk) below.
 1. After the installation is done, edit the 'gitlab-workhorse' line in
    your Procfile and change `localhost:3000` to `0.0.0.0:3000`.
 
@@ -50,7 +50,7 @@ OSes like Windows/OSX you will have to run the entire Docker hypervisor in a VM
 1. Run `vagrant up --provider=docker` in this directory. Vagrant will build a
    docker image and start the container.
 1. Run `vagrant ssh` to SSH into the container.
-1. Continue setup at [Installation](https://gitlab.com/gitlab-org/gitlab-development-kit#installation) below.
+1. Continue setup at [Installation](https://gitlab.com/gitlab-org/gitlab-development-kit/blob/master/doc/set-up-gdk.md#install-gdk) below.
 1. After the installation is done, edit the 'gitlab-workhorse' line in
    your Procfile and change `localhost:3000` to `0.0.0.0:3000`.
 
