@@ -100,6 +100,11 @@ else
 	sudo -u $DEV_USER -i bash -c "touch /home/vagrant/.bash_profile && echo 'cd /home/vagrant/gitlab-development-kit/' >> /home/vagrant/.bash_profile"
 fi
 
+# set up gdk
+echo '/vagrant' > /vagrant/.gdk-install-root
+sudo -u $DEV_USER -i bash -c "gem install gitlab-development-kit"
+sudo -u $DEV_USER -i bash -c "gdk trust /vagrant"
+
 # set git defaults
 sudo -u $DEV_USER -i bash -c "git config --global user.name 'GitLab Development'"
 sudo -u $DEV_USER -i bash -c "git config --global user.email gitlab@local.local"
