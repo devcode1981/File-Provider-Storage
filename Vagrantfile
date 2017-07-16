@@ -135,7 +135,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	end
 
 	config.vm.provider "virtualbox" do |vb,override|
-		override.vm.box = "ubuntu/trusty64"
+		override.vm.box = "ubuntu/xenial64"
 		if Vagrant::Util::Platform.windows?
 			# thanks to https://github.com/rdsubhas/vagrant-faster/blob/master/lib/vagrant/faster/action.rb
 			# current bug in Facter requires detecting Windows core count seperately - https://tickets.puppetlabs.com/browse/FACT-959
