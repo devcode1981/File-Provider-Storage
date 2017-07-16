@@ -61,8 +61,8 @@ apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get -y install git postgresql postgresql-contrib libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev curl ruby ed golang nginx libgmp-dev yarn
 EOT
 
-# CentOS 6 kernel doesn't suppose UID mapping (affects vagrant-lxc mostly).
-$user_setup = <<EOT
+# Set up swap when using a full VM
+$swap_setup = <<EOT
 # create a swapfile
 sudo fallocate -l 4G /swapfile
 sudo chmod 600 /swapfile
@@ -71,7 +71,10 @@ sudo mkswap /swapfile
 sudo swapon /swapfile
 # and on reboot
 echo '/swapfile   none    swap    sw    0   0' | sudo tee --append /etc/fstab
+EOT
 
+# CentOS 6 kernel doesn't suppose UID mapping (affects vagrant-lxc mostly).
+$user_setup = <<EOT
 if [ $(id -u vagrant) != $(stat -c %u /vagrant) ]; then
 	useradd -u $(stat -c %u /vagrant) -m build
 	echo "build ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/build
@@ -150,6 +153,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 		# use 1/4 of memory or 3 GB, whichever is greatest
 		mem = [mem / 4, 3072].max
+
+		# Set up swap
+		override.vm.provision "shell", inline: $swap_setup
 
 		# performance tweaks
 		# per https://www.virtualbox.org/manual/ch03.html#settings-processor set cpus to real cores, not hyperthreads
