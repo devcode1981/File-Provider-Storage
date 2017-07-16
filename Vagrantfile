@@ -56,7 +56,7 @@ $apt_reqs = <<EOT
 apt-add-repository -y ppa:rael-gc/rvm
 apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
 apt-get update
-apt-get -y install git postgresql postgresql-contrib libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev curl ruby ed golang nginx libgmp-dev
+DEBIAN_FRONTEND=noninteractive apt-get -y install git postgresql postgresql-contrib libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev curl ruby ed golang nginx libgmp-dev
 EOT
 
 # CentOS 6 kernel doesn't suppose UID mapping (affects vagrant-lxc mostly).
@@ -77,7 +77,8 @@ if [ $(id -u vagrant) != $(stat -c %u /vagrant) ]; then
 else
 	DEV_USER=vagrant
 fi
-sudo apt-get install -y rvm \
+DEBIAN_FRONTEND=noninteractive
+sudo apt-get -y install rvm \
 	&& sudo addgroup $DEV_USER rvm \
 	&& sudo -u $DEV_USER -i bash -l -c "rvm install 2.3.1 \
 	&& rvm use 2.3.1 --default \

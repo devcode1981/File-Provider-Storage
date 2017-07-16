@@ -1,6 +1,7 @@
 FROM ubuntu:xenial
 MAINTAINER GitLab.com
 
+ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update ;\
     apt-get -y install openssh-server supervisor software-properties-common rsync sudo;\
     rm -rf /var/lib/apt/lists/* ;\
