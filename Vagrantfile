@@ -58,7 +58,9 @@ apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
 wget -qO- https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 apt-get update
-DEBIAN_FRONTEND=noninteractive apt-get -y install git postgresql postgresql-contrib libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev curl ruby ed golang nginx libgmp-dev yarn
+export DEBIAN_FRONTEND=noninteractive
+export RUNLEVEL=1
+apt-get -y install git postgresql postgresql-contrib libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev curl ruby ed golang nginx libgmp-dev yarn
 EOT
 
 # Set up swap when using a full VM
@@ -82,7 +84,6 @@ if [ $(id -u vagrant) != $(stat -c %u /vagrant) ]; then
 else
 	DEV_USER=vagrant
 fi
-DEBIAN_FRONTEND=noninteractive
 sudo apt-get -y install rvm \
 	&& sudo addgroup $DEV_USER rvm \
 	&& sudo -u $DEV_USER -i bash -l -c "rvm install 2.3.1 \
