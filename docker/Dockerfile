@@ -1,8 +1,8 @@
-FROM ubuntu:trusty
-MAINTAINER Gitlab.com
+FROM ubuntu:xenial
+MAINTAINER GitLab.com
 
 RUN apt-get update ;\
-    apt-get -y install openssh-server supervisor software-properties-common rsync ;\
+    apt-get -y install openssh-server supervisor software-properties-common rsync sudo;\
     rm -rf /var/lib/apt/lists/* ;\
     mkdir /var/run/sshd
 
