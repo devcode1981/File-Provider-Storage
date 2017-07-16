@@ -2,8 +2,8 @@
 # vi: set ft=ruby :
 # rubocop:disable all
 
-# Please see the Vagrant section in the readme for caveats and tips
-# https://gitlab.com/gitlab-org/gitlab-development-kit/tree/master#vagrant
+# Please see the Vagrant section in the docs for caveats and tips
+# https://gitlab.com/gitlab-org/gitlab-development-kit/blob/master/doc/vagrant.md
 
 # Write a file so the rest of the code knows we're inside a vm
 require 'fileutils'
