@@ -55,6 +55,7 @@ end
 $apt_reqs = <<EOT
 apt-add-repository -y ppa:rael-gc/rvm
 apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
+wget -qO- https://deb.nodesource.com/setup_6.x | bash -
 wget -qO- https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 apt-get update
