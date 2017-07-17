@@ -58,10 +58,10 @@ apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
 wget -qO- https://deb.nodesource.com/setup_6.x | bash -
 wget -qO- https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-apt-get update
 export DEBIAN_FRONTEND=noninteractive
 export RUNLEVEL=1
-apt-get -y install git postgresql postgresql-contrib libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev curl ruby ed golang nginx libgmp-dev yarn
+apt-get update && apt-get -y install git postgresql postgresql-contrib libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev curl ruby ed golang nginx libgmp-dev yarn
+apt-get update && apt-get -y upgrade
 EOT
 
 # Set up swap when using a full VM
