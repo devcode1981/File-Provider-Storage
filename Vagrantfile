@@ -60,7 +60,7 @@ wget -qO- https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 export DEBIAN_FRONTEND=noninteractive
 export RUNLEVEL=1
-apt-get update && apt-get -y install git postgresql postgresql-contrib libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev curl ruby ed golang nginx libgmp-dev yarn
+apt-get update && apt-get -y install git postgresql postgresql-contrib libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev curl ruby ed golang nginx libgmp-dev rvm yarn
 apt-get update && apt-get -y upgrade
 EOT
 
@@ -79,11 +79,8 @@ EOT
 $user_setup = <<EOT
 DEV_USER=$(stat -c %U /vagrant)
 echo "$DEV_USER ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/$DEV_USER
-sudo apt-get -y install rvm \
-	&& sudo addgroup $DEV_USER rvm \
-	&& sudo -u $DEV_USER -i bash -l -c "rvm install 2.3.3 \
-	&& rvm use 2.3.3 --default \
-	&& gem install bundler"
+sudo addgroup $DEV_USER rvm
+sudo -u $DEV_USER -i bash -l -c "rvm install 2.3.3 && rvm use 2.3.3 --default && gem install bundler"
 sudo chown -R $DEV_USER:$DEV_USER /home/$DEV_USER
 sudo ln -s /vagrant /home/$DEV_USER/gitlab-development-kit
 
