@@ -2,8 +2,8 @@
 # vi: set ft=ruby :
 # rubocop:disable all
 
-# Please see the Vagrant section in the readme for caveats and tips
-# https://gitlab.com/gitlab-org/gitlab-development-kit/tree/master#vagrant
+# Please see the Vagrant section in the docs for caveats and tips
+# https://gitlab.com/gitlab-org/gitlab-development-kit/blob/master/doc/vagrant.md
 
 # Write a file so the rest of the code knows we're inside a vm
 require 'fileutils'
@@ -18,7 +18,7 @@ def enable_shares(config, nfs)
 		rsync__exclude: ['gitlab', 'postgresql', 'gitlab-shell', 'gitlab-runner'],
 		rsync__auto: false
 	config.vm.synced_folder "gitlab/", "/vagrant/gitlab", :create => true, :nfs => nfs
-	config.vm.synced_folder "gitlab-shell/", "/vagrant/gitlab-shell", :create => true, :nfs => nfs
+	config.vm.synced_folder "go-gitlab-shell/", "/vagrant/go-gitlab-shell", :create => true, :nfs => nfs
 	config.vm.synced_folder "gitlab-runner/", "/vagrant/gitlab-runner", :create => true, :nfs => nfs
 end
 
@@ -55,12 +55,18 @@ end
 $apt_reqs = <<EOT
 apt-add-repository -y ppa:rael-gc/rvm
 apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
-apt-get update
-apt-get -y install git postgresql postgresql-contrib libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev curl ruby ed golang nginx libgmp-dev
+add-apt-repository -y ppa:longsleep/golang-backports
+wget -qO- https://deb.nodesource.com/setup_6.x | bash -
+wget -qO- https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+export DEBIAN_FRONTEND=noninteractive
+export RUNLEVEL=1
+apt-get update && apt-get -y install git postgresql postgresql-contrib libpq-dev phantomjs redis-server libicu-dev cmake g++ nodejs libkrb5-dev curl ruby ed golang-go nginx libgmp-dev rvm yarn
+apt-get update && apt-get -y upgrade
 EOT
 
-# CentOS 6 kernel doesn't suppose UID mapping (affects vagrant-lxc mostly).
-$user_setup = <<EOT
+# Set up swap when using a full VM
+$swap_setup = <<EOT
 # create a swapfile
 sudo fallocate -l 4G /swapfile
 sudo chmod 600 /swapfile
@@ -69,29 +75,28 @@ sudo mkswap /swapfile
 sudo swapon /swapfile
 # and on reboot
 echo '/swapfile   none    swap    sw    0   0' | sudo tee --append /etc/fstab
+EOT
 
-if [ $(id -u vagrant) != $(stat -c %u /vagrant) ]; then
-	useradd -u $(stat -c %u /vagrant) -m build
-	echo "build ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/build
-	DEV_USER=build
-else
-	DEV_USER=vagrant
-fi
-sudo apt-get install -y rvm \
-	&& sudo addgroup $DEV_USER rvm \
-	&& sudo -u $DEV_USER -i bash -l -c "rvm install 2.3.1 \
-	&& rvm use 2.3.1 --default \
-	&& gem install bundler"
-sudo chown -R $DEV_USER:$DEV_USER /home/vagrant
-sudo ln -s /vagrant /home/vagrant/gitlab-development-kit
+$user_setup = <<EOT
+DEV_USER=$(stat -c %U /vagrant)
+echo "$DEV_USER ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/$DEV_USER
+sudo addgroup $DEV_USER rvm
+sudo -u $DEV_USER -i bash -l -c "rvm install 2.3.3 && rvm use 2.3.3 --default && gem install bundler"
+sudo chown -R $DEV_USER:$DEV_USER /home/$DEV_USER
+sudo ln -s /vagrant /home/$DEV_USER/gitlab-development-kit
 
 # automatically move into the gitlab-development-kit folder, but only add the command
 # if it's not already there
-if [ -f /home/vagrant/.bash_profile ]; then
-	sudo -u $DEV_USER -i bash -c "grep -q 'cd /home/vagrant/gitlab-development-kit/' /home/vagrant/.bash_profile || echo 'cd /home/vagrant/gitlab-development-kit/' >> /home/vagrant/.bash_profile"
+if [ -f /home/$DEV_USER/.bash_profile ]; then
+	sudo -u $DEV_USER -i bash -c "grep -q \"cd /home/$DEV_USER/gitlab-development-kit/\" /home/$DEV_USER/.bash_profile || echo \"cd /home/$DEV_USER/gitlab-development-kit/\" >> /home/$DEV_USER/.bash_profile"
 else
-	sudo -u $DEV_USER -i bash -c "touch /home/vagrant/.bash_profile && echo 'cd /home/vagrant/gitlab-development-kit/' >> /home/vagrant/.bash_profile"
+	sudo -u $DEV_USER -i bash -c "touch /home/$DEV_USER/.bash_profile && echo \"cd /home/$DEV_USER/gitlab-development-kit/\" >> /home/$DEV_USER/.bash_profile"
 fi
+
+# set up gdk
+echo '/vagrant' > /vagrant/.gdk-install-root
+sudo -u $DEV_USER -i bash -c "gem install gitlab-development-kit"
+sudo -u $DEV_USER -i bash -c "gdk trust /vagrant"
 
 # set git defaults
 sudo -u $DEV_USER -i bash -c "git config --global user.name 'GitLab Development'"
@@ -101,7 +106,6 @@ EOT
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	config.vm.provision "shell", inline: $apt_reqs
 	config.vm.provision "shell", inline: $user_setup
-
 	if !Vagrant::Util::Platform.windows?
 		# NFS setup
 		config.vm.network "private_network", type: "dhcp"
@@ -122,7 +126,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	end
 
 	config.vm.provider "virtualbox" do |vb,override|
-		override.vm.box = "ubuntu/trusty64"
+		override.vm.box = "ubuntu/xenial64"
 		if Vagrant::Util::Platform.windows?
 			# thanks to https://github.com/rdsubhas/vagrant-faster/blob/master/lib/vagrant/faster/action.rb
 			# current bug in Facter requires detecting Windows core count seperately - https://tickets.puppetlabs.com/browse/FACT-959
@@ -147,6 +151,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 		# use 1/4 of memory or 3 GB, whichever is greatest
 		mem = [mem / 4, 3072].max
+
+		# Set up swap
+		override.vm.provision "shell", inline: $swap_setup
 
 		# performance tweaks
 		# per https://www.virtualbox.org/manual/ch03.html#settings-processor set cpus to real cores, not hyperthreads
