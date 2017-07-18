@@ -78,6 +78,9 @@ OSes like Windows/OSX you will have to run the entire Docker hypervisor in a VM
   file extension), see https://stackoverflow.com/a/5514351/1233435.
 - If you have errors with symlinks or Ruby during initialization, make sure you
   ran `vagrant up` from an elevated command prompt (Windows users).
+- If `gdk run` fails due to webpack failing because the port is already in use
+  (after `gdk install` succeeds in a vagrant box), make sure you terminated all
+  running node processed (spawned from `gdk install`) with `killall node`.
 
 [Vagrant]: https://www.vagrantup.com
 [VirtualBox]: https://www.virtualbox.org
