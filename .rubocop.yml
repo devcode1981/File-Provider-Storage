@@ -15,6 +15,9 @@ AllCops:
   Exclude:
     - 'tmp/**/*'
     - 'bin/**/*'
+    - 'go-gitlab-shell/**/*'
+    - 'gitlab/**/*'
+    - 'gitlab-runner/**/*'
 
 # Gems in consecutive lines should be alphabetically sorted
 Bundler/OrderedGems:
