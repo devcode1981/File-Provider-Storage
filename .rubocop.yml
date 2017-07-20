@@ -1,8 +1,5 @@
-require:
-  - rubocop-rspec
-  - ./rubocop/rubocop
-
-inherit_from: .rubocop_todo.yml
+#require:
+  #- rubocop-rspec
 
 AllCops:
   TargetRubyVersion: 2.3
@@ -16,14 +13,8 @@ AllCops:
   DisplayStyleGuide: false
   # Exclude some GitLab files
   Exclude:
-    - 'vendor/**/*'
-    - 'node_modules/**/*'
-    - 'db/*'
-    - 'db/fixtures/**/*'
     - 'tmp/**/*'
     - 'bin/**/*'
-    - 'generator_templates/**/*'
-    - 'builds/**/*'
 
 # Gems in consecutive lines should be alphabetically sorted
 Bundler/OrderedGems:
@@ -243,9 +234,6 @@ Style/FrozenStringLiteralComment:
 # Do not introduce global variables.
 Style/GlobalVars:
   Enabled: true
-  Exclude:
-    - 'lib/backup/**/*'
-    - 'lib/tasks/**/*'
 
 # Prefer Ruby 1.9 hash syntax `{ a: 1, b: 2 }`
 # over 1.8 syntax `{ :a => 1, :b => 2 }`.
@@ -351,9 +339,6 @@ Style/MultilineTernaryOperator:
 # mutable literal (e.g. array or hash).
 Style/MutableConstant:
   Enabled: true
-  Exclude:
-    - 'db/migrate/**/*'
-    - 'db/post_migrate/**/*'
 
 # Favor unless over if for negative conditions (or control flow or).
 Style/NegatedIf:
@@ -899,9 +884,6 @@ Rails/DynamicFindBy:
 # This cop enforces that 'exit' calls are not used within a rails app.
 Rails/Exit:
   Enabled: true
-  Exclude:
-    - lib/gitlab/upgrader.rb
-    - 'lib/backup/**/*'
 
 # Prefer `find_by` over `where.first`.
 Rails/FindBy:
@@ -924,11 +906,6 @@ Rails/HttpPositionalArguments:
 # Checks for calls to puts, print, etc.
 Rails/Output:
   Enabled: true
-  Exclude:
-    - lib/gitlab/seeder.rb
-    - lib/gitlab/upgrader.rb
-    - 'lib/backup/**/*'
-    - 'lib/tasks/**/*'
 
 # This cop checks for the use of output safety calls like html_safe and
 # raw.
@@ -1019,10 +996,6 @@ RSpec/ExpectOutput:
 RSpec/FilePath:
   Enabled: true
   IgnoreMethods: true
-  Exclude:
-    - 'qa/**/*'
-    - 'spec/javascripts/fixtures/*'
-    - 'spec/requests/api/v3/*'
 
 # Checks if there are focused specs.
 RSpec/Focus:
@@ -1082,9 +1055,6 @@ RSpec/RepeatedDescription:
 # Ensure RSpec hook blocks are always multi-line.
 RSpec/SingleLineHook:
   Enabled: true
-  Exclude:
-    - 'spec/factories/*'
-    - 'spec/requests/api/v3/*'
 
 # Checks for stubbed test subjects.
 RSpec/SubjectStub:
