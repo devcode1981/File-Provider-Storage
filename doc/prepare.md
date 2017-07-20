@@ -60,7 +60,7 @@ sudo apt-get install software-properties-common python-software-properties
 # This PPA contains an up-to-date version of Go
 sudo add-apt-repository ppa:longsleep/golang-backports
 sudo apt-get update
-sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs nodejs-legacy npm libkrb5-dev golang-1.8-go ed pkg-config
+sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs nodejs-legacy npm libre2-dev libkrb5-dev golang-1.8-go ed pkg-config
 sudo npm install phantomjs-prebuilt@2.1.12 yarn -g
 ```
 
@@ -69,7 +69,7 @@ sudo npm install phantomjs-prebuilt@2.1.12 yarn -g
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
-pacman -S postgresql redis postgresql-libs icu npm ed cmake openssh git go
+pacman -S postgresql redis postgresql-libs icu npm ed cmake openssh git go re2
 npm install phantomjs-prebuilt@2.1.12 yarn -g
 ```
 
@@ -78,7 +78,7 @@ npm install phantomjs-prebuilt@2.1.12 yarn -g
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
-sudo apt-get install postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs npm libkrb5-dev ed pkg-config
+sudo apt-get install postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs npm libkrb5-dev libre2-dev ed pkg-config
 ```
 
 If you are running Debian Experimenal or newer you can install a Go
@@ -107,7 +107,7 @@ We assume you are using Fedora >= 22.
 If you are running Fedora < 26 you'll need to install `go` manually using [go] official installation instructions.
 
 ```
-sudo dnf install postgresql libpqxx-devel postgresql-libs redis libicu-devel nodejs git ed cmake rpm-build gcc-c++ krb5-devel go postgresql-server postgresql-contrib
+sudo dnf install postgresql libpqxx-devel postgresql-libs redis libicu-devel nodejs git ed cmake rpm-build gcc-c++ krb5-devel go postgresql-server postgresql-contrib re2
 ```
 
 Install `phantomJS` manually, or download it and put in your $PATH. For
@@ -124,7 +124,7 @@ This is tested on CentOS 6.5:
 ```
 sudo yum install http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-2.noarch.rpm
 sudo yum install https://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-sudo yum install postgresql95-server postgresql95-devel libicu-devel cmake gcc-c++ redis ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 libstdc++.so.6 nodejs npm
+sudo yum install postgresql95-server postgresql95-devel libicu-devel cmake gcc-c++ redis ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 libstdc++.so.6 nodejs npm re2
 
 sudo npm install phantomjs-prebuilt@2.1.12 -g
 
@@ -160,7 +160,7 @@ sudo zypper dup
 
 sudo zypper install libxslt-devel  postgresql postgresql-devel libpqxx-devel redis libicu-devel nodejs git ed cmake \
          rpm-build gcc-c++ krb5-devel postgresql-server postgresql-contrib \
-         libxml2-devel libxml2-devel-32bit findutils-locate
+         libxml2-devel libxml2-devel-32bit findutils-locate re2
 
 sudo npm install -g phantomjs yarn
 ```
@@ -195,7 +195,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 
 ```
 sudo pkg install postgresql93-server postgresql93-contrib postgresql-libpqxx \
-redis go node icu krb5 phantomjs gmake
+redis go node icu krb5 phantomjs gmake re2
 ```
 
 ### **Experimental** Windows 10 using the WSL (Windows Subsystem for Linux)
@@ -238,7 +238,7 @@ sudo apt-get install software-properties-common python-software-properties
 # This PPA contains an up-to-date version of Go
 sudo apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
 sudo apt-get update
-sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ libkrb5-dev golang ed pkg-config
+sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ libkrb5-dev libre2-dev golang ed pkg-config
 sudo npm install phantomjs-prebuilt@2.1.12 -g
 ```
 

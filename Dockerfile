@@ -13,7 +13,7 @@ RUN apt-get -y install curl wget git sudo build-essential \
 
 # rest of gitlab requirements
 RUN apt-get install -y git postgresql postgresql-contrib libpq-dev \
-                       redis-server libicu-dev cmake g++ libkrb5-dev \
+                       redis-server libicu-dev cmake g++ libkrb5-dev libre2-dev \
                        ed pkg-config libsqlite3-dev libreadline-dev libssl-dev
 
 # install nodejs
