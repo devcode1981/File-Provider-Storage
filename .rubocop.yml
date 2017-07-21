@@ -22,10 +22,6 @@ Bundler/OrderedGems:
 
 # Style #######################################################################
 
-# Check indentation of private/protected visibility modifiers.
-Style/AccessModifierIndentation:
-  Enabled: true
-
 # Check the naming of accessor methods for get_/set_.
 Style/AccessorMethodName:
   Enabled: false
@@ -34,19 +30,6 @@ Style/AccessorMethodName:
 Style/Alias:
   EnforcedStyle: prefer_alias_method
   Enabled: true
-
-# Align the elements of an array literal if they span more than one line.
-Style/AlignArray:
-  Enabled: true
-
-# Align the elements of a hash literal if they span more than one line.
-Style/AlignHash:
-  Enabled: true
-
-# Here we check if the parameters on a multi-line method call or
-# definition are aligned.
-Style/AlignParameters:
-  Enabled: false
 
 # Whether `and` and `or` are banned only in conditionals (conditionals)
 # or completely (always).
@@ -82,11 +65,7 @@ Style/BlockComments:
 Style/BlockDelimiters:
   Enabled: true
 
-# Put end statement of multiline block on its own line.
-Style/BlockEndNewline:
-  Enabled: true
-
- # This cop checks for braces around the last parameter in a method call
+# This cop checks for braces around the last parameter in a method call
 # if the last parameter is a hash.
 Style/BracesAroundHashParameters:
   Enabled: false
@@ -94,10 +73,6 @@ Style/BracesAroundHashParameters:
 # This cop checks for uses of the case equality operator(===).
 Style/CaseEquality:
   Enabled: false
-
-# Indentation of when in a case/when/[else/]end.
-Style/CaseIndentation:
-  Enabled: true
 
 # Checks for uses of character literals.
 Style/CharacterLiteral:
@@ -133,10 +108,6 @@ Style/ColonMethodCall:
 Style/CommentAnnotation:
   Enabled: false
 
-# Indentation of comments.
-Style/CommentIndentation:
-  Enabled: true
-
 # Check for `if` and `case` statements where each branch is used for
 # assignment to the same variable when using the return of the
 # condition can be used instead.
@@ -155,55 +126,14 @@ Style/DefWithParentheses:
 Style/Documentation:
   Enabled: false
 
-# Multi-line method chaining should be done with leading dots.
-Style/DotPosition:
-  Enabled: true
-  EnforcedStyle: leading
-
 # This cop checks for uses of double negation (!!) to convert something
 # to a boolean value. As this is both cryptic and usually redundant, it
 # should be avoided.
 Style/DoubleNegation:
   Enabled: false
 
-# Align elses and elsifs correctly.
-Style/ElseAlignment:
-  Enabled: true
-
-# Use empty lines between defs.
-Style/EmptyLineBetweenDefs:
-  Enabled: true
-
-# Don't use several empty lines in a row.
-Style/EmptyLines:
-  Enabled: true
-
-# Keep blank lines around access modifiers.
-Style/EmptyLinesAroundAccessModifier:
-  Enabled: true
-
-# Keeps track of empty lines around block bodies.
-Style/EmptyLinesAroundBlockBody:
-  Enabled: true
-
-# Keeps track of empty lines around class bodies.
-Style/EmptyLinesAroundClassBody:
-  Enabled: true
-
-# Keeps track of empty lines around method bodies.
-Style/EmptyLinesAroundMethodBody:
-  Enabled: true
-
-# Keeps track of empty lines around module bodies.
-Style/EmptyLinesAroundModuleBody:
-  Enabled: true
-
 # Avoid the use of END blocks.
 Style/EndBlock:
-  Enabled: true
-
-# Use Unix-style line endings.
-Style/EndOfLine:
   Enabled: true
 
 # Favor the use of Fixnum#even? && Fixnum#odd?
@@ -212,11 +142,6 @@ Style/EvenOdd:
 
 # Use snake_case for source file names.
 Style/FileName:
-  Enabled: true
-
-# Checks for a line break before the first parameter in a multi-line method
-# parameter definition.
-Style/FirstMethodParameterLineBreak:
   Enabled: true
 
 # Checks for flip flops.
@@ -249,29 +174,12 @@ Style/IdenticalConditionalBranches:
 Style/IfWithSemicolon:
   Enabled: true
 
-# Checks the indentation of the first line of the right-hand-side of a
-# multi-line assignment.
-Style/IndentAssignment:
-  Enabled: true
-
-# Keep indentation straight.
-Style/IndentationConsistency:
-  Enabled: true
-
-# Use 2 spaces for indentation.
-Style/IndentationWidth:
-  Enabled: true
-
 # Use Kernel#loop for infinite loops.
 Style/InfiniteLoop:
   Enabled: true
 
 # Use lambda.call(...) instead of lambda.(...).
 Style/LambdaCall:
-  Enabled: true
-
-# Comments should start with a space.
-Style/LeadingCommentSpace:
   Enabled: true
 
 # Checks if the method definitions have or don't have parentheses.
@@ -286,50 +194,13 @@ Style/MethodName:
 Style/ModuleFunction:
   Enabled: false
 
-# Checks that the closing brace in an array literal is either on the same line
-# as the last array element, or a new line.
-Style/MultilineArrayBraceLayout:
-  Enabled: true
-  EnforcedStyle: symmetrical
-
 # Avoid multi-line chains of blocks.
 Style/MultilineBlockChain:
   Enabled: true
 
-# Ensures newlines after multiline block do statements.
-Style/MultilineBlockLayout:
-  Enabled: true
-
-# Checks that the closing brace in a hash literal is either on the same line as
-# the last hash element, or a new line.
-Style/MultilineHashBraceLayout:
-  Enabled: true
-  EnforcedStyle: symmetrical
-
 # Do not use then for multi-line if/unless.
 Style/MultilineIfThen:
   Enabled: true
-
-# Checks that the closing brace in a method call is either on the same line as
-# the last method argument, or a new line.
-Style/MultilineMethodCallBraceLayout:
-  Enabled: false
-  EnforcedStyle: symmetrical
-
-# Checks indentation of method calls with the dot operator that span more than
-# one line.
-Style/MultilineMethodCallIndentation:
-  Enabled: false
-
-# Checks that the closing brace in a method definition is symmetrical with
-# respect to the opening brace and the method parameters.
-Style/MultilineMethodDefinitionBraceLayout:
-  Enabled: false
-
-# Checks indentation of binary operations that span more than one line.
-Style/MultilineOperationIndentation:
-  Enabled: true
-  EnforcedStyle: indented
 
 # Avoid multi-line `? :` (the ternary operator), use if/unless instead.
 Style/MultilineTernaryOperator:
@@ -406,68 +277,6 @@ Style/SignalException:
   EnforcedStyle: only_raise
   Enabled: true
 
-# Use spaces after colons.
-Style/SpaceAfterColon:
-  Enabled: true
-
-# Use spaces after commas.
-Style/SpaceAfterComma:
-  Enabled: true
-
-# Do not put a space between a method name and the opening parenthesis in a
-# method definition.
-Style/SpaceAfterMethodName:
-  Enabled: true
-
-# Tracks redundant space after the ! operator.
-Style/SpaceAfterNot:
-  Enabled: true
-
-# Use spaces after semicolons.
-Style/SpaceAfterSemicolon:
-  Enabled: true
-
-# Use space around equals in parameter default
-Style/SpaceAroundEqualsInParameterDefault:
-  Enabled: true
-
-# Use a space around keywords if appropriate.
-Style/SpaceAroundKeyword:
-  Enabled: true
-
-# Use a single space around operators.
-Style/SpaceAroundOperators:
-  Enabled: true
-
-# No spaces before commas.
-Style/SpaceBeforeComma:
-  Enabled: true
-
-# Checks for missing space between code and a comment on the same line.
-Style/SpaceBeforeComment:
-  Enabled: true
-
-# No spaces before semicolons.
-Style/SpaceBeforeSemicolon:
-  Enabled: true
-
-# Checks for spaces inside square brackets.
-Style/SpaceInsideBrackets:
-  Enabled: true
-
-# Use spaces inside hash literal braces - or don't.
-Style/SpaceInsideHashLiteralBraces:
-  Enabled: true
-
-# No spaces inside range literals.
-Style/SpaceInsideRangeLiteral:
-  Enabled: true
-
-# Checks for padding/surrounding spaces inside string interpolation.
-Style/SpaceInsideStringInterpolation:
-  EnforcedStyle: no_space
-  Enabled: true
-
 # Check for the usage of parentheses around stabby lambda arguments.
 Style/StabbyLambdaParentheses:
   EnforcedStyle: require_parentheses
@@ -481,14 +290,6 @@ Style/StringLiterals:
 Style/StringMethods:
   PreferredMethods:
     intern: to_sym
-  Enabled: true
-
-# No hard tabs.
-Style/Tab:
-  Enabled: true
-
-# Checks trailing blank lines and final newline.
-Style/TrailingBlankLines:
   Enabled: true
 
 # This cop checks for trailing comma in array and hash literals.
@@ -540,6 +341,207 @@ Style/WordArray:
 
 # Use `proc` instead of `Proc.new`.
 Style/Proc:
+  Enabled: true
+
+# Layout ######################################################################
+
+# Check indentation of private/protected visibility modifiers.
+Layout/AccessModifierIndentation:
+  Enabled: true
+
+# Align the elements of an array literal if they span more than one line.
+Layout/AlignArray:
+  Enabled: true
+
+# Align the elements of a hash literal if they span more than one line.
+Layout/AlignHash:
+  Enabled: true
+
+# Here we check if the parameters on a multi-line method call or
+# definition are aligned.
+Layout/AlignParameters:
+  Enabled: false
+
+# Put end statement of multiline block on its own line.
+Layout/BlockEndNewline:
+  Enabled: true
+
+# Indentation of when in a case/when/[else/]end.
+Layout/CaseIndentation:
+  Enabled: true
+
+# Indentation of comments.
+Layout/CommentIndentation:
+  Enabled: true
+
+# Multi-line method chaining should be done with leading dots.
+Layout/DotPosition:
+  Enabled: true
+  EnforcedStyle: leading
+
+# Align elses and elsifs correctly.
+Layout/ElseAlignment:
+  Enabled: true
+
+# Use empty lines between defs.
+Layout/EmptyLineBetweenDefs:
+  Enabled: true
+
+# Don't use several empty lines in a row.
+Layout/EmptyLines:
+  Enabled: true
+
+# Keep blank lines around access modifiers.
+Layout/EmptyLinesAroundAccessModifier:
+  Enabled: true
+
+# Keeps track of empty lines around block bodies.
+Layout/EmptyLinesAroundBlockBody:
+  Enabled: true
+
+# Keeps track of empty lines around class bodies.
+Layout/EmptyLinesAroundClassBody:
+  Enabled: true
+
+# Keeps track of empty lines around method bodies.
+Layout/EmptyLinesAroundMethodBody:
+  Enabled: true
+
+# Keeps track of empty lines around module bodies.
+Layout/EmptyLinesAroundModuleBody:
+  Enabled: true
+
+# Use Unix-style line endings.
+Layout/EndOfLine:
+  Enabled: true
+
+# Checks for a line break before the first parameter in a multi-line method
+# parameter definition.
+Layout/FirstMethodParameterLineBreak:
+  Enabled: true
+
+# Checks the indentation of the first line of the right-hand-side of a
+# multi-line assignment.
+Layout/IndentAssignment:
+  Enabled: true
+
+# Keep indentation straight.
+Layout/IndentationConsistency:
+  Enabled: true
+
+# Use 2 spaces for indentation.
+Layout/IndentationWidth:
+  Enabled: true
+
+# Comments should start with a space.
+Layout/LeadingCommentSpace:
+  Enabled: true
+
+# Checks that the closing brace in an array literal is either on the same line
+# as the last array element, or a new line.
+Layout/MultilineArrayBraceLayout:
+  Enabled: true
+  EnforcedStyle: symmetrical
+
+# Ensures newlines after multiline block do statements.
+Layout/MultilineBlockLayout:
+  Enabled: true
+
+# Checks that the closing brace in a hash literal is either on the same line as
+# the last hash element, or a new line.
+Layout/MultilineHashBraceLayout:
+  Enabled: true
+  EnforcedStyle: symmetrical
+
+# Checks that the closing brace in a method call is either on the same line as
+# the last method argument, or a new line.
+Layout/MultilineMethodCallBraceLayout:
+  Enabled: false
+  EnforcedStyle: symmetrical
+
+# Checks indentation of method calls with the dot operator that span more than
+# one line.
+Layout/MultilineMethodCallIndentation:
+  Enabled: false
+
+# Checks that the closing brace in a method definition is symmetrical with
+# respect to the opening brace and the method parameters.
+Layout/MultilineMethodDefinitionBraceLayout:
+  Enabled: false
+
+# Checks indentation of binary operations that span more than one line.
+Layout/MultilineOperationIndentation:
+  Enabled: true
+  EnforcedStyle: indented
+
+# Use spaces after colons.
+Layout/SpaceAfterColon:
+  Enabled: true
+
+# Use spaces after commas.
+Layout/SpaceAfterComma:
+  Enabled: true
+
+# Do not put a space between a method name and the opening parenthesis in a
+# method definition.
+Layout/SpaceAfterMethodName:
+  Enabled: true
+
+# Tracks redundant space after the ! operator.
+Layout/SpaceAfterNot:
+  Enabled: true
+
+# Use spaces after semicolons.
+Layout/SpaceAfterSemicolon:
+  Enabled: true
+
+# Use space around equals in parameter default
+Layout/SpaceAroundEqualsInParameterDefault:
+  Enabled: true
+
+# Use a space around keywords if appropriate.
+Layout/SpaceAroundKeyword:
+  Enabled: true
+
+# Use a single space around operators.
+Layout/SpaceAroundOperators:
+  Enabled: true
+
+# No spaces before commas.
+Layout/SpaceBeforeComma:
+  Enabled: true
+
+# Checks for missing space between code and a comment on the same line.
+Layout/SpaceBeforeComment:
+  Enabled: true
+
+# No spaces before semicolons.
+Layout/SpaceBeforeSemicolon:
+  Enabled: true
+
+# Checks for spaces inside square brackets.
+Layout/SpaceInsideBrackets:
+  Enabled: true
+
+# Use spaces inside hash literal braces - or don't.
+Layout/SpaceInsideHashLiteralBraces:
+  Enabled: true
+
+# No spaces inside range literals.
+Layout/SpaceInsideRangeLiteral:
+  Enabled: true
+
+# Checks for padding/surrounding spaces inside string interpolation.
+Layout/SpaceInsideStringInterpolation:
+  EnforcedStyle: no_space
+  Enabled: true
+
+# No hard tabs.
+Layout/Tab:
+  Enabled: true
+
+# Checks trailing blank lines and final newline.
+Layout/TrailingBlankLines:
   Enabled: true
 
 # Metrics #####################################################################
