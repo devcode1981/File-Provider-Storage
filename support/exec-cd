@@ -3,9 +3,7 @@
 # This script implements 'cd foo && exec bar' without the need to invoke
 # /bin/sh for the ' && '.
 
-if ARGV.count < 2
-  abort "Usage: #$0 DIRECTORY COMMAND [ARGUMENTS ...]"
-end
+abort "Usage: #{$0} DIRECTORY COMMAND [ARGUMENTS ...]" if ARGV.count < 2
 
 Dir.chdir(ARGV.shift)
-exec *ARGV
+exec(*ARGV)

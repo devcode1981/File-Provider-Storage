@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 require 'socket'
 
-HOST = '127.0.0.1'
-DATABASE = 'gitlab'
+HOST = '127.0.0.1'.freeze
+DATABASE = 'gitlab'.freeze
 
-def wait_for_socket(host,port)
+def wait_for_socket(host, port)
   30.times do
     begin
       TCPSocket.new(host, port)
@@ -19,33 +19,30 @@ end
 def main(host, port)
   foreman_pid = spawn('./run', 'db')
 
-  abort "#$0: could not connect to InfluxDB at #{host}:#{port}" unless wait_for_socket(host, port)
+  abort "#{$0}: could not connect to InfluxDB at #{host}:#{port}" unless wait_for_socket(host, port)
 
-  IO.popen(%W(influxdb/bin/influx -host #{host} -port #{port}), 'w') do |influx|
+  IO.popen(%W[influxdb/bin/influx -host #{host} -port #{port}], 'w') do |influx|
     influx.puts "CREATE DATABASE #{DATABASE} WITH duration 1d REPLICATION 1;"
   end
-  if !$?.success?
-    abort "#$0: failed to create InfluxDB database #{DATABASE}"
-  end
+
+  abort "#{$0}: failed to create InfluxDB database #{DATABASE}" unless $?.success?
 
   env = {
-    'INFLUX_HOST' => "#{host}",
-    'INFLUX_PORT' => "#{port}",
+    'INFLUX_HOST' => host.to_s,
+    'INFLUX_PORT' => port.to_s,
     'INFLUX_USER' => "",
     'INFLUX_PASSWORD' => "",
-    'INFLUX_DATABASE' => "#{DATABASE}",
+    'INFLUX_DATABASE' => DATABASE.to_s
   }
-  if !system(env, *%W(bundle exec rake), chdir: 'influxdb/influxdb-management')
-    abort "#$0: failed to run influxdb-managemant Rake script"
+  unless system(env, *%w[bundle exec rake], chdir: 'influxdb/influxdb-management')
+    abort "#{$0}: failed to run influxdb-managemant Rake script"
   end
 ensure
   Process.kill('TERM', foreman_pid)
   Process.waitpid(foreman_pid)
 end
 
-if ARGV.count != 1
-  abort "Usage: #$0 INFLUXDB_HTTP_PORT"
-end
+abort "Usage: #{$0} INFLUXDB_HTTP_PORT" if ARGV.count != 1
 
 port = ARGV.shift
 

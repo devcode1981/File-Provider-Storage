@@ -2,7 +2,10 @@
 #
 # Translate SIGTERM to SIGINT to request a 'fast shutdown' from Postgres.
 
-Signal.trap('TERM') { puts "Sending INT to #$pid"; Process.kill('INT', $pid) }
+Signal.trap('TERM') do
+  puts "Sending INT to #{$pid}"
+  Process.kill('INT', $pid)
+end
 
 $pid = spawn(*ARGV)
 Process.wait($pid)

@@ -10,7 +10,7 @@ def main
   db_pid = spawn('./run', 'db')
   grafana_pid = spawn('./run', 'grafana')
 
-  abort "#$0: could not connect to Grafana at #{host}:#{port}" unless wait_socket(host, port)
+  abort "#{$0}: could not connect to Grafana at #{host}:#{port}" unless wait_socket(host, port)
 
   create_data_source(host, port, name: 'InfluxDB', database: 'gitlab', isDefault: true)
   create_data_source(host, port, name: 'InfluxDB Internal', database: '_internal')
@@ -48,8 +48,6 @@ def wait_socket(host, port)
   false
 end
 
-if !ARGV.empty?
-  abort "Usage: #$0"
-end
+abort "Usage: #{$0}" unless ARGV.empty?
 
 main
