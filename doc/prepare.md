@@ -64,6 +64,9 @@ sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server li
 sudo npm install phantomjs-prebuilt@2.1.12 yarn -g
 ```
 
+Ubuntu 14.04 (Trusty Tahir) doesn't have the `libre2-dev` package available, but
+you can [install re2 manually](https://github.com/google/re2/wiki/Install).
+
 ### Arch Linux
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
