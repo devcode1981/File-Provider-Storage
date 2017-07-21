@@ -1,9 +1,7 @@
 #!/usr/bin/env ruby
 require 'erb'
 
-if ARGV.count != 1
-  abort "Usage: #$0 USER_COUNT"
-end
+abort "Usage: #{$PROGRAM_NAME} USER_COUNT" if ARGV.count != 1
 
 user_count = ARGV.first.to_i
 ERB.new(DATA.read).run
