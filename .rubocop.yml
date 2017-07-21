@@ -158,7 +158,7 @@ Style/FrozenStringLiteralComment:
 
 # Do not introduce global variables.
 Style/GlobalVars:
-  Enabled: true
+  Enabled: false
 
 # Prefer Ruby 1.9 hash syntax `{ a: 1, b: 2 }`
 # over 1.8 syntax `{ :a => 1, :b => 2 }`.
