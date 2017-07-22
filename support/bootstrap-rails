@@ -17,4 +17,4 @@ Process.wait(foreman_pid)
 
 exit true if success
 
-abort "#{$0} failed"
+abort "#{$PROGRAM_NAME} failed"

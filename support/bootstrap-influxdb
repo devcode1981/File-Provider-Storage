@@ -19,13 +19,13 @@ end
 def main(host, port)
   foreman_pid = spawn('./run', 'db')
 
-  abort "#{$0}: could not connect to InfluxDB at #{host}:#{port}" unless wait_for_socket(host, port)
+  abort "#{$PROGRAM_NAME}: could not connect to InfluxDB at #{host}:#{port}" unless wait_for_socket(host, port)
 
   IO.popen(%W[influxdb/bin/influx -host #{host} -port #{port}], 'w') do |influx|
     influx.puts "CREATE DATABASE #{DATABASE} WITH duration 1d REPLICATION 1;"
   end
 
-  abort "#{$0}: failed to create InfluxDB database #{DATABASE}" unless $?.success?
+  abort "#{$PROGRAM_NAME}: failed to create InfluxDB database #{DATABASE}" unless $?.success?
 
   env = {
     'INFLUX_HOST' => host.to_s,
@@ -35,14 +35,14 @@ def main(host, port)
     'INFLUX_DATABASE' => DATABASE.to_s
   }
   unless system(env, *%w[bundle exec rake], chdir: 'influxdb/influxdb-management')
-    abort "#{$0}: failed to run influxdb-managemant Rake script"
+    abort "#{$PROGRAM_NAME}: failed to run influxdb-managemant Rake script"
   end
 ensure
   Process.kill('TERM', foreman_pid)
   Process.waitpid(foreman_pid)
 end
 
-abort "Usage: #{$0} INFLUXDB_HTTP_PORT" if ARGV.count != 1
+abort "Usage: #{$PROGRAM_NAME} INFLUXDB_HTTP_PORT" if ARGV.count != 1
 
 port = ARGV.shift
 
