@@ -277,6 +277,15 @@ Style/SignalException:
   EnforcedStyle: only_raise
   Enabled: true
 
+# This cop looks for uses of Perl-style global variables.
+# Files which use $? ($CHILD_STATUS) are excluded
+Style/SpecialGlobalVars:
+  Enabled: true
+  Exclude:
+    - 'support/bootstrap-influxdb'
+    - 'support/create-grafana-db'
+    - 'support/postgresql-signal-wrapper'
+
 # Check for the usage of parentheses around stabby lambda arguments.
 Style/StabbyLambdaParentheses:
   EnforcedStyle: require_parentheses
