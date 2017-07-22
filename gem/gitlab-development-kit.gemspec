@@ -13,6 +13,6 @@ Gem::Specification.new do |spec|
   spec.description   = %q(CLI for GitLab Development Kit.)
   spec.homepage      = "https://gitlab.com/gitlab-org/gitlab-development-kit"
   spec.license       = "MIT"
-  spec.files         = ['lib/gitlab-development-kit.rb']
+  spec.files         = ['lib/gitlab_development_kit.rb']
   spec.executables   = ['gdk']
 end
