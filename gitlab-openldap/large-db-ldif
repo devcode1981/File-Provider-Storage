@@ -3,7 +3,7 @@ require 'erb'
 
 abort "Usage: #{$PROGRAM_NAME} USER_COUNT" if ARGV.count != 1
 
-user_count = ARGV.first.to_i
+# user_count = ARGV.first.to_i
 ERB.new(DATA.read).run
 
 __END__
