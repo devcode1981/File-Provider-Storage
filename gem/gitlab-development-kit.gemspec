@@ -1,7 +1,7 @@
 # coding: utf-8
 
 $LOAD_PATH.unshift(File.expand_path('../lib', __FILE__))
-require 'gitlab-development-kit'
+require 'gitlab_development_kit'
 
 Gem::Specification.new do |spec|
   spec.name          = "gitlab-development-kit"
