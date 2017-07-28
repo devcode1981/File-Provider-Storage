@@ -100,7 +100,7 @@ gitlab-shell/.gitlab_shell_secret:
 
 # Set up gitaly
 
-gitaly-setup: gitaly/bin/gitaly gitaly/config.toml
+gitaly-setup: gitaly/bin/gitaly gitaly/config.toml gitaly/ruby
 
 ${gitaly_clone_dir}/.git:
 	git clone ${gitaly_repo} ${gitaly_clone_dir}
@@ -110,6 +110,9 @@ gitaly/config.toml:
 	  -e "s|^socket_path.*|socket_path = \"${gitlab_development_root}/gitaly.socket\"|" \
 	  -e "s|# prometheus_listen_addr|prometheus_listen_addr|" \
 	  -e "s|/home/git|${gitlab_development_root}|" ${gitaly_clone_dir}/config.toml.example > $@
+
+gitaly/ruby:
+	ln -s ${gitlab_development_root}/${gitaly_clone_dir}/ruby $@
 
 # Update gitlab, gitlab-shell, gitlab-workhorse and gitaly
 
@@ -325,6 +328,7 @@ clean-config:
 	Procfile \
 	gitlab-workhorse/config.toml \
 	gitaly/config.toml \
+	gitaly/ruby \
 	nginx/conf/nginx.conf \
 
 unlock-dependency-installers:
