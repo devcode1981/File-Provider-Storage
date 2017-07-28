@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 require 'yaml'
 
-$:.unshift(File.expand_path('../../lib', __FILE__))
-require 'gitlab-development-kit'
+$LOAD_PATH.unshift(File.expand_path('../../lib', __FILE__))
+require 'gitlab_development_kit'
 
 # Gitlab Development Kit CLI launcher
 #
@@ -12,8 +12,8 @@ require 'gitlab-development-kit'
 
 module GDK
   DOTFILE = File.expand_path('~/.gdk.yml')
-  TRUSTED_KEY = 'trusted_directories'
-  ROOT_CHECK_FILE = '.gdk-install-root'
+  TRUSTED_KEY = 'trusted_directories'.freeze
+  ROOT_CHECK_FILE = '.gdk-install-root'.freeze
   DEFAULT_INIT_DIRECTORY = File.join(Dir.pwd, 'gitlab-development-kit')
 
   def self.launcher_main
@@ -27,7 +27,7 @@ module GDK
         return false
       end
       directory = ARGV.count == 2 ? ARGV[1] : DEFAULT_INIT_DIRECTORY
-      cmd = %W(git clone https://gitlab.com/gitlab-org/gitlab-development-kit.git #{directory})
+      cmd = %W[git clone https://gitlab.com/gitlab-org/gitlab-development-kit.git #{directory}]
       system(*cmd) && trust!(directory) && remember!(directory)
     when 'trust'
       if ARGV.count != 2
@@ -51,7 +51,7 @@ module GDK
       end
       puts "(in #{$gdk_root})"
 
-      if !trusted?($gdk_root)
+      unless trusted?($gdk_root)
         puts <<-EOS.gsub(/^\s+\|/, '')
           |
           |This GitLab Development Kit root directory is not known to the "gdk"
@@ -64,11 +64,9 @@ module GDK
       end
 
       load(File.join($gdk_root, 'lib/gdk.rb'))
-      GDK::main
+      GDK.main
     end
   end
-
-  private
 
   def self.find_root(current)
     if File.exist?(File.join(current, 'GDK_ROOT'))
@@ -84,7 +82,7 @@ module GDK
     trusted_directories = load_dotfile[TRUSTED_KEY] || []
     !!trusted_directories.include?(File.realpath(directory))
   end
-  
+
   def self.trust!(directory)
     directory = File.realpath(directory)
     config = load_dotfile
@@ -103,7 +101,7 @@ module GDK
   end
 
   def self.load_dotfile
-    File.open(DOTFILE, File::RDONLY | File::CREAT) { |f| YAML.load(f) } || {}
+    File.open(DOTFILE, File::RDONLY | File::CREAT) { |f| YAML.safe_load(f) } || {}
   end
 
   def self.remember!(directory)
@@ -117,4 +115,4 @@ module GDK
   end
 end
 
-exit(GDK::launcher_main)
+exit(GDK.launcher_main)

@@ -4,7 +4,7 @@
 # part of the gitlab-development-kit gem so that we can iterate faster.
 
 module GDK
-  PROGNAME = 'gdk'
+  PROGNAME = 'gdk'.freeze
   MAKE = RUBY_PLATFORM =~ /bsd/ ? 'gmake' : 'make'
 
   # This function is called from bin/gdk. It must return true/false or

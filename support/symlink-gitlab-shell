@@ -14,8 +14,6 @@ def main(symlink, target)
   FileUtils.ln_s(target, symlink)
 end
 
-if ARGV.count != 2
-  abort "Usage: #{$0} SYMLINK TARGET"
-end
+abort "Usage: #{$PROGRAM_NAME} SYMLINK TARGET" if ARGV.count != 2
 
 main(*ARGV)

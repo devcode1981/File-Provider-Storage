@@ -9,17 +9,14 @@ ENV RUNLEVEL 1
 # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
 RUN sed -i "s/^exit 101$/exit 0/" /usr/sbin/policy-rc.d
 
-RUN apt-get update ;\
-    apt-get -y install openssh-server supervisor software-properties-common rsync sudo ;\
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get -y install openssh-server supervisor software-properties-common rsync sudo
 
 #password is vagrant
 RUN useradd -m -p '$6$UFLdXsV4$hnP4J2l8w02eCoj7ogsQZ0wdEImAKtzIoQqmrNLEXkyI1UsuPPofdpf4DMViq4QPdFVOz0yekQ35lgaFUB6SF/' -s /bin/bash vagrant
 
 COPY assets /
 
-RUN chown -R vagrant:vagrant /home/vagrant; \
-    chmod 600 /home/vagrant/.ssh/authorized_keys
+RUN chown -R vagrant:vagrant /home/vagrant && chmod 600 /home/vagrant/.ssh/authorized_keys
 
 CMD supervisord -c /etc/supervisord.conf
 EXPOSE 22

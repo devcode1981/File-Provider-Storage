@@ -2,12 +2,20 @@ services:
 - docker:dind
 
 stages:
+- rubocop
 - build
 - test
 
 variables:
   DOCKER_DRIVER: overlay
   TEST_IMAGE: registry.gitlab.com/$CI_PROJECT_NAMESPACE/gitlab-development-kit:latest
+
+rubocop:
+  image: "ruby:2.3"
+  stage: rubocop
+  script:
+    - gem install rubocop
+    - rubocop
 
 build:image:
   image: docker:git
