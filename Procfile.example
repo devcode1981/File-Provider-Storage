@@ -16,3 +16,4 @@ rails-background-jobs: exec /usr/bin/env SIDEKIQ_LOG_ARGUMENTS=1 RAILS_ENV=devel
 #nginx: exec nginx -p /home/git/nginx -c conf/nginx.conf
 gitaly: exec gitaly/bin/gitaly /home/git/gitaly/config.toml
 webpack: exec /usr/bin/env NODE_ENV=development DEV_SERVER_PORT=3808 support/exec-cd gitlab yarn dev-server
+#geo-cursor: exec /usr/bin/env RAILS_ENV=development support/exec-cd gitlab/bin ./geo_log_cursor
