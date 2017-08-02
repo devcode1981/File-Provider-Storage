@@ -149,6 +149,7 @@ gitaly/.git/pull:
 
 gitaly-clean:
 	rm -rf gitaly/bin
+	rm -rf gitlab/tmp/tests/gitaly
 
 .PHONY:	gitaly/bin/gitaly
 gitaly/bin/gitaly:	${gitaly_clone_dir}/.git
