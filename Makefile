@@ -211,8 +211,11 @@ postgresql-replication/config:
 
 # Setup GitLab Geo databases
 
-.PHONY: geo-setup
-geo-setup: gitlab/config/database_geo.yml postgresql/geo gitlab/config/gitlab.yml/geo
+.PHONY: geo-setup geo-cursor
+geo-setup: Procfile geo-cursor gitlab/config/database_geo.yml postgresql/geo gitlab/config/gitlab.yml/geo
+
+geo-cursor:
+	grep '^geo-cursor:' Procfile || (printf ',s/^#geo-cursor/geo-cursor/\nwq\n' | ed -s Procfile)
 
 gitlab/config/database_geo.yml:
 	sed "s|/home/git|${gitlab_development_root}|" database_geo.yml.example > gitlab/config/database_geo.yml
