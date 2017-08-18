@@ -1,6 +1,6 @@
 #!/bin/bash
 replication_include="include = 'replication.conf'"
-postgres_dir=$(realpath $1)
+postgres_dir="$( cd "$1" && pwd )"
 if ! grep -Fxq "$replication_include" $postgres_dir/data/postgresql.conf; then
   echo $replication_include >> $postgres_dir/data/postgresql.conf
 fi

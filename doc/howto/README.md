@@ -24,7 +24,7 @@ to learn how to develop GitLab CE.
 
 - [Simulate slow or broken repository storage](simulate_storage.md)
 - [MySQL](mysql.md)
-- [Postgresql replication](postgresql_replication.md)
+- [GitLab Geo](geo.md)
 - [LDAP](ldap.md)
 - [Elasticsearch](elasticsearch.md)
 - [NFS](nfs.md)
