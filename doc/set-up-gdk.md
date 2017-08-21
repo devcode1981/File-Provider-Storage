@@ -7,7 +7,7 @@ contain 'problematic' characters such as ` ` and `(`. For example,
 `/home/janedoe/projects` is OK, but `/home/janedoe/my projects` will
 cause problems.
 
-Execute the following the Ruby version manager of your choice (`rvm`, `rbenv`, `chruby`, etc.) in Ruby 2.3 (2.3.3 or newer):
+Execute the following with the Ruby version manager of your choice (`rvm`, `rbenv`, `chruby`, etc.) with the current `gitlab-ce` Ruby version:
 
 ```
 gem install gitlab-development-kit
@@ -23,7 +23,7 @@ basic configuration files. Pick one of the methods below. If you don't have
 write access to the upstream repositories, you should use the 'Develop in a fork'
 method.
 
-In either case, use your Ruby version manager to run `gdk install` with the same Ruby version as discussed above.
+In either case, use your Ruby version manager to run `gdk install` with the `gitlab-ce` Ruby version.
 
 ### Develop in a fork
 
