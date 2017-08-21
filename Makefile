@@ -100,7 +100,7 @@ gitlab-shell/.gitlab_shell_secret:
 
 # Set up gitaly
 
-gitaly-setup: gitaly/bin/gitaly gitaly/config.toml gitaly/ruby
+gitaly-setup: gitaly/bin/gitaly gitaly/config.toml gitaly/ruby .gitaly-ruby-bundle
 
 ${gitaly_clone_dir}/.git:
 	git clone ${gitaly_repo} ${gitaly_clone_dir}
@@ -113,6 +113,10 @@ gitaly/config.toml:
 
 gitaly/ruby:
 	ln -s ${gitlab_development_root}/${gitaly_clone_dir}/ruby $@
+
+.gitaly-ruby-bundle:	gitaly/ruby/Gemfile.lock
+	cd gitaly/ruby && bundle install
+	touch $@
 
 # Update gitlab, gitlab-shell, gitlab-workhorse and gitaly
 
@@ -340,4 +344,5 @@ unlock-dependency-installers:
 	.gitlab-bundle \
 	.gitlab-shell-bundle \
 	.gitlab-yarn \
-	.gettext
+	.gettext \
+	.gitaly-ruby-bundle \
