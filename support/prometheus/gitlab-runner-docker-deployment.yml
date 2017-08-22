@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
       - name: gitlab-runner-docker
-        image: gitlab/gitlab-runner:alpine-v1.11.0
+        image: gitlab/gitlab-runner:alpine
         command: ["/bin/bash", "/scripts/entrypoint"]
         imagePullPolicy: IfNotPresent
         resources:
