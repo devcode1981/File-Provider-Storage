@@ -217,7 +217,7 @@ postgresql-replication/config:
 # Setup GitLab Geo databases
 
 .PHONY: geo-setup geo-cursor
-geo-setup: Procfile geo-cursor gitlab/config/database_geo.yml postgresql/geo gitlab/config/gitlab.yml/geo
+geo-setup: Procfile geo-cursor gitlab/config/database_geo.yml postgresql/geo
 
 geo-cursor:
 	grep '^geo-cursor:' Procfile || (printf ',s/^#geo-cursor/geo-cursor/\nwq\n' | ed -s Procfile)
@@ -229,9 +229,6 @@ postgresql/geo:
 	${postgres_bin_dir}/initdb --locale=C -E utf-8 postgresql-geo/data
 	grep '^postgresql-geo:' Procfile || (printf ',s/^#postgresql-geo/postgresql-geo/\nwq\n' | ed -s Procfile)
 	support/bootstrap-geo
-
-gitlab/config/gitlab.yml/geo:
-	sed -i '' -e '/geo_secondary_role\:/ {' -e 'n; s/enabled\: false/enabled\: true/' -e '}' gitlab/config/gitlab.yml
 
 .PHONY:	foreman
 foreman:
