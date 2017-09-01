@@ -80,7 +80,7 @@ gitlab-shell-setup: symlink-gitlab-shell ${gitlab_shell_clone_dir}/.git gitlab-s
 	if [ -x gitlab-shell/bin/compile ] ; then gitlab-shell/bin/compile; fi
 
 symlink-gitlab-shell:
-	support/symlink-gitlab-shell gitlab-shell ${gitlab_shell_clone_dir}
+	support/symlink gitlab-shell ${gitlab_shell_clone_dir}
 
 ${gitlab_shell_clone_dir}/.git:
 	git clone ${gitlab_shell_repo} ${gitlab_shell_clone_dir}
@@ -142,7 +142,7 @@ gitlab-docs-bundle:
 	cd ${gitlab_development_root}/gitlab-docs && bundle install --jobs 4
 
 symlink-gitlab-docs:
-	support/symlink-gitlab-shell ${gitlab_development_root}/gitlab-docs/content/docs ${gitlab_development_root}/gitlab/doc
+	support/symlink ${gitlab_development_root}/gitlab-docs/content/docs ${gitlab_development_root}/gitlab/doc
 
 gitlab-docs-update: gitlab-docs/.git/pull gitlab-docs-bundle
 
