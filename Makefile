@@ -144,7 +144,7 @@ gitlab-docs-bundle:
 symlink-gitlab-docs:
 	support/symlink ${gitlab_development_root}/gitlab-docs/content/docs ${gitlab_development_root}/gitlab/doc
 
-gitlab-docs-update: gitlab-docs/.git/pull gitlab-docs-bundle
+gitlab-docs-update: gitlab-docs/.git/pull gitlab-docs-bundle gitlab-docs/nanoc.yml
 
 # Update gitlab, gitlab-shell, gitlab-workhorse and gitaly
 
