@@ -30,7 +30,7 @@ to run the relative links checks locally or preview the changes, do the followin
 1. (Optionally) Preview the docs site locally:
 
     ```
-    bundle exec nanoc -p 3005
+    bundle exec nanoc live -p 3005
     ```
 
     Visit <http://localhost:3005>
