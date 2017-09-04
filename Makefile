@@ -132,10 +132,13 @@ gitlab-docs/.git/pull:
 		git checkout master &&\
 		git pull --ff-only
 
-# We need PHONY since there's already a nanoc.yaml file
+
+# We need to force delete since there's already a nanoc.yaml file
 # in the docs folder which we need to overwrite.
-.PHONY: gitlab-docs/nanoc.yaml
-gitlab-docs/nanoc.yaml:
+gitlab-docs/rm-nanoc.yaml:
+	rm -f gitlab-docs/nanoc.yaml
+
+gitlab-docs/nanoc.yaml: gitlab-docs/rm-nanoc.yaml
 	cp nanoc.yaml.example $@
 
 gitlab-docs-bundle:
@@ -144,7 +147,7 @@ gitlab-docs-bundle:
 symlink-gitlab-docs:
 	support/symlink ${gitlab_development_root}/gitlab-docs/content/docs ${gitlab_development_root}/gitlab/doc
 
-gitlab-docs-update: gitlab-docs/.git/pull gitlab-docs-bundle gitlab-docs/nanoc.yml
+gitlab-docs-update: gitlab-docs/.git/pull gitlab-docs-bundle gitlab-docs/nanoc.yaml
 
 # Update gitlab, gitlab-shell, gitlab-workhorse and gitaly
 
