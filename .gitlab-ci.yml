@@ -15,7 +15,7 @@ rubocop:
   stage: rubocop
   script:
     - gem install rubocop
-    - rubocop
+    - rubocop -c gdk-rubocop.yml 
 
 build:image:
   image: docker:git
