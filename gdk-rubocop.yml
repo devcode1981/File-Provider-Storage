@@ -13,8 +13,13 @@ AllCops:
     - 'tmp/**/*'
     - 'bin/**/*'
     - 'go-gitlab-shell/**/*'
+    - 'gitlab-shell/**/*'
     - 'gitlab/**/*'
     - 'gitlab-runner/**/*'
+    - 'gitaly/**/*'
+    - 'influxdb/**/*'
+    - 'grafana/**/*'
+    - 'gitlab-workhorse/**/*'
 
 # Gems in consecutive lines should be alphabetically sorted
 Bundler/OrderedGems:
