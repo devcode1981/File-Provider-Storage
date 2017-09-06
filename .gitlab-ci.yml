@@ -44,6 +44,7 @@ test:install:
     - cd /home/gdk
     - gdk init
     - cd gitlab-development-kit
+    - git checkout $CI_COMMIT_SHA
     - netstat -lpt
     - gdk install
     - support/set-gitlab-upstream

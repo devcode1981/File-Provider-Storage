@@ -161,7 +161,7 @@ gitaly/bin/gitaly:	${gitaly_clone_dir}/.git
 
 # Set up supporting services
 
-support-setup: .ruby-version foreman Procfile redis postgresql openssh-setup nginx-setup
+support-setup: .ruby-version foreman Procfile redis gitaly-setup postgresql openssh-setup nginx-setup
 	@echo ""
 	@echo "*********************************************"
 	@echo "************** Setup finished! **************"

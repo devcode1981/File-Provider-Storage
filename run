@@ -70,6 +70,10 @@ thin() {
   exec /usr/bin/env RAILS_ENV=development support/exec-cd gitlab bundle exec thin --socket=$(pwd)/gitlab.socket start
 }
 
+gitaly() {
+  foreman_start -c all=0,gitaly=1
+}
+
 all() {
   print_port
   foreman_start
@@ -90,6 +94,9 @@ xgrafana)
   ;;
 xthin)
   thin
+  ;;
+xgitaly)
+  gitaly
   ;;
 x*)
   all
