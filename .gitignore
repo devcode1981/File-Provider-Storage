@@ -60,3 +60,4 @@
 /gitlab-workhorse/.cache
 /go-gitlab-shell
 /.gitaly-ruby-bundle
+/gitlab-docs

@@ -33,3 +33,4 @@ to learn how to develop GitLab CE.
 - [SSH](ssh.md)
 - [Using GitLab Runner with GDK](runner.md)
 - [Using Prometheus with GDK](prometheus.md)
+- [Preview and test the docs site locally](gitlab_docs.md)

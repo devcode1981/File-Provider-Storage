@@ -7,6 +7,7 @@ gitlab_workhorse_repo = https://gitlab.com/gitlab-org/gitlab-workhorse.git
 gitlab_workhorse_clone_dir = gitlab-workhorse/src/gitlab.com/gitlab-org/gitlab-workhorse
 gitaly_repo = https://gitlab.com/gitlab-org/gitaly.git
 gitaly_clone_dir = gitaly/src/gitlab.com/gitlab-org/gitaly
+gitlab_docs_repo = https://gitlab.com/gitlab-com/gitlab-docs.git
 gitlab_development_root = $(shell pwd)
 postgres_bin_dir = $(shell pg_config --bindir)
 postgres_replication_user = gitlab_replication
@@ -79,7 +80,7 @@ gitlab-shell-setup: symlink-gitlab-shell ${gitlab_shell_clone_dir}/.git gitlab-s
 	if [ -x gitlab-shell/bin/compile ] ; then gitlab-shell/bin/compile; fi
 
 symlink-gitlab-shell:
-	support/symlink-gitlab-shell gitlab-shell ${gitlab_shell_clone_dir}
+	support/symlink gitlab-shell ${gitlab_shell_clone_dir}
 
 ${gitlab_shell_clone_dir}/.git:
 	git clone ${gitlab_shell_repo} ${gitlab_shell_clone_dir}
@@ -117,6 +118,36 @@ gitaly/ruby:
 .gitaly-ruby-bundle:	gitaly/ruby/Gemfile.lock
 	cd gitaly/ruby && bundle install
 	touch $@
+
+# Set up gitlab-docs
+
+gitlab-docs-setup: gitlab-docs/.git gitlab-docs-bundle gitlab-docs/nanoc.yaml symlink-gitlab-docs
+
+gitlab-docs/.git:
+	git clone ${gitlab_docs_repo} gitlab-docs
+
+gitlab-docs/.git/pull:
+	cd gitlab-docs && \
+		git stash && \
+		git checkout master &&\
+		git pull --ff-only
+
+
+# We need to force delete since there's already a nanoc.yaml file
+# in the docs folder which we need to overwrite.
+gitlab-docs/rm-nanoc.yaml:
+	rm -f gitlab-docs/nanoc.yaml
+
+gitlab-docs/nanoc.yaml: gitlab-docs/rm-nanoc.yaml
+	cp nanoc.yaml.example $@
+
+gitlab-docs-bundle:
+	cd ${gitlab_development_root}/gitlab-docs && bundle install --jobs 4
+
+symlink-gitlab-docs:
+	support/symlink ${gitlab_development_root}/gitlab-docs/content/docs ${gitlab_development_root}/gitlab/doc
+
+gitlab-docs-update: gitlab-docs/.git/pull gitlab-docs-bundle gitlab-docs/nanoc.yaml
 
 # Update gitlab, gitlab-shell, gitlab-workhorse and gitaly
 
