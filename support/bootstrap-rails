@@ -2,7 +2,7 @@
 
 success = true
 begin
-  log_options = { out: 'bootstrap-rails.log', err: [:child, :out] }
+  log_options = { out: 'bootstrap-rails.log', err: %i[child out] }
   foreman_pids = [
     spawn('./run', 'db', log_options),
     spawn('./run', 'gitaly', log_options)
