@@ -38,8 +38,8 @@ test:install:
   stage: test
   artifacts:
     paths:
-      - /*.log
-      - /gitlab/log/*.log
+      - ./*.log
+      - ./gitlab/log/*.log
     expire_in: 1 week
   script:
     - source /home/gdk/.bash_profile
