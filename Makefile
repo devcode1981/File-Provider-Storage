@@ -149,6 +149,18 @@ symlink-gitlab-docs:
 
 gitlab-docs-update: gitlab-docs/.git/pull gitlab-docs-bundle gitlab-docs/nanoc.yaml
 
+# Update GDK itself
+
+self-update: unlock-dependency-installers
+	@echo ""
+	@echo "--------------------------"
+	@echo "Running self-update on GDK"
+	@echo "--------------------------"
+	@echo ""
+	cd ${gitlab_development_root} && \
+		git stash && git checkout master && \
+		git pull --ff-only
+
 # Update gitlab, gitlab-shell, gitlab-workhorse and gitaly
 
 update: unlock-dependency-installers gitlab-update gitlab-shell-update gitlab-workhorse-update gitaly-update

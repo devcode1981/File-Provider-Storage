@@ -25,6 +25,9 @@ module GDK
     when 'install'
       exec(MAKE, *ARGV, chdir: $gdk_root)
     when 'update'
+      # Run `make self-update` separately in case the Makefile is updated.
+      # Otherwise we would miss it and end up in a weird state.
+      exec(MAKE, 'self-update', chdir: $gdk_root)
       exec(MAKE, 'update', chdir: $gdk_root)
     when 'reconfigure'
       remember!($gdk_root)
