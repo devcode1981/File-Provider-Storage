@@ -27,8 +27,8 @@ module GDK
     when 'update'
       # Run `make self-update` separately in case the Makefile is updated.
       # Otherwise we would miss it and end up in a weird state.
-      exec(MAKE, 'self-update', chdir: $gdk_root)
-      exec(MAKE, 'update', chdir: $gdk_root)
+      system(MAKE, 'self-update', chdir: $gdk_root)
+      exec(MAKE, 'self-update', 'update', chdir: $gdk_root)
     when 'reconfigure'
       remember!($gdk_root)
       exec(MAKE, 'clean-config', 'unlock-dependency-installers', 'all', chdir: $gdk_root)
