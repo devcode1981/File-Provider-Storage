@@ -51,7 +51,7 @@ required_plugins.each do |plugin|
   exec "vagrant #{ARGV.join(' ')}" if need_restart
 end
 
-$apt_reqs = <<~EOT
+$apt_reqs = <<EOT
   apt-add-repository -y ppa:rael-gc/rvm
   apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
   add-apt-repository -y ppa:longsleep/golang-backports
@@ -65,7 +65,7 @@ $apt_reqs = <<~EOT
 EOT
 
 # Set up swap when using a full VM
-$swap_setup = <<~EOT
+$swap_setup = <<EOT
   # create a swapfile
   sudo fallocate -l 4G /swapfile
   sudo chmod 600 /swapfile
@@ -76,7 +76,7 @@ $swap_setup = <<~EOT
   echo '/swapfile   none    swap    sw    0   0' | sudo tee --append /etc/fstab
 EOT
 
-$user_setup = <<~EOT
+$user_setup = <<EOT
   DEV_USER=$(stat -c %U /vagrant)
   echo "$DEV_USER ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/$DEV_USER
   sudo addgroup $DEV_USER rvm
