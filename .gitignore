@@ -61,3 +61,4 @@
 /go-gitlab-shell
 /.gitaly-ruby-bundle
 /gitlab-docs
+/bootstrap-rails.log

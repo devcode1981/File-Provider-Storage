@@ -36,6 +36,12 @@ build:image:
 test:install:
   image: $TEST_IMAGE
   stage: test
+  artifacts:
+    paths:
+      - ./*.log
+      - ./gitlab/log/*.log
+    expire_in: 2 days
+    when: always
   script:
     - source /home/gdk/.bash_profile
     - cd gem
