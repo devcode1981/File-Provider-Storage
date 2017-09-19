@@ -40,7 +40,8 @@ test:install:
     paths:
       - ./*.log
       - ./gitlab/log/*.log
-    expire_in: 1 week
+    expire_in: 2 days
+    when: always
   script:
     - source /home/gdk/.bash_profile
     - cd gem
