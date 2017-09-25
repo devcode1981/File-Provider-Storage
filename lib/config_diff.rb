@@ -16,15 +16,13 @@ class ConfigDiff
   private
 
   def execute
-    begin
-      FileUtils.mv(file_path, "#{file_path}.unchanged")
+    FileUtils.mv(file_path, "#{file_path}.unchanged")
 
-      @make_output = update_config_file
+    @make_output = update_config_file
 
-      @output = diff_with_unchanged
-    ensure
-      File.rename("#{file_path}.unchanged", file_path)
-    end
+    @output = diff_with_unchanged
+  ensure
+    File.rename("#{file_path}.unchanged", file_path)
   end
 
   def update_config_file
