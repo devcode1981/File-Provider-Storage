@@ -17,6 +17,36 @@ extensions:
 gem pristine charlock_holmes
 ```
 
+## `charlock_holmes` `0.7.3` cannot be installed on macOS Sierra
+
+The installation of the `charlock_holmes` `0.7.3` gem during `bundle install`
+may fail on macOS Sierra with the following error:
+
+```
+[SNIPPED]
+
+/usr/local/Cellar/icu4c/59.1/include/unicode/unistr.h:3025:7: error: delegating constructors are permitted only in C++11
+      UnicodeString(ConstChar16Ptr(text)) {}
+      ^~~~~~~~~~~~~
+/usr/local/Cellar/icu4c/59.1/include/unicode/unistr.h:3087:7: error: delegating constructors are permitted only in C++11
+      UnicodeString(ConstChar16Ptr(text), length) {}
+      ^~~~~~~~~~~~~
+/usr/local/Cellar/icu4c/59.1/include/unicode/unistr.h:3180:7: error: delegating constructors are permitted only in C++11
+      UnicodeString(Char16Ptr(buffer), buffLength, buffCapacity) {}
+
+[SNIPPED]
+```
+
+A working solution is to install the gem with the `--with-cxxflags=-std=c++11`
+flag:
+
+```
+gem install charlock_holmes -v '0.7.3' -- --with-cxxflags=-std=c++11
+```
+
+The solution can be found at
+https://github.com/brianmario/charlock_holmes/issues/117#issuecomment-329798280.
+
 ## Error in database migrations when pg_trgm extension is missing
 
 Since GitLab 8.6+ the PostgreSQL extension `pg_trgm` must be installed. If you
