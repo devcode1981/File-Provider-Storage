@@ -157,7 +157,7 @@ self-update: unlock-dependency-installers
 
 # Update gitlab, gitlab-shell, gitlab-workhorse and gitaly
 
-update: unlock-dependency-installers gitlab-update gitlab-shell-update gitlab-workhorse-update gitaly-update
+update: unlock-dependency-installers gitlab-shell-update gitlab-update gitlab-workhorse-update gitaly-update
 
 gitlab-update: gitlab/.git/pull gitlab-setup
 	@echo ""
