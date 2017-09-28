@@ -9,6 +9,7 @@ gitaly_repo = https://gitlab.com/gitlab-org/gitaly.git
 gitaly_clone_dir = gitaly/src/gitlab.com/gitlab-org/gitaly
 gitlab_docs_repo = https://gitlab.com/gitlab-com/gitlab-docs.git
 gitlab_development_root = $(shell pwd)
+gitaly_assembly_dir = ${gitlab_development_root}/gitaly/assembly
 postgres_bin_dir = $(shell pg_config --bindir)
 postgres_replication_user = gitlab_replication
 postgres_dir = $(realpath ./postgresql)
@@ -101,7 +102,7 @@ gitlab-shell/.gitlab_shell_secret:
 
 # Set up gitaly
 
-gitaly-setup: gitaly/bin/gitaly gitaly/config.toml gitaly/ruby .gitaly-ruby-bundle
+gitaly-setup: gitaly/bin/gitaly gitaly/config.toml
 
 ${gitaly_clone_dir}/.git:
 	git clone ${gitaly_repo} ${gitaly_clone_dir}
@@ -111,13 +112,6 @@ gitaly/config.toml:
 	  -e "s|^socket_path.*|socket_path = \"${gitlab_development_root}/gitaly.socket\"|" \
 	  -e "s|# prometheus_listen_addr|prometheus_listen_addr|" \
 	  -e "s|/home/git|${gitlab_development_root}|" ${gitaly_clone_dir}/config.toml.example > $@
-
-gitaly/ruby:
-	ln -s ${gitlab_development_root}/${gitaly_clone_dir}/ruby $@
-
-.gitaly-ruby-bundle:	gitaly/ruby/Gemfile.lock
-	cd gitaly/ruby && bundle install
-	touch $@
 
 # Set up gitlab-docs
 
@@ -195,12 +189,16 @@ gitaly/.git/pull:
 		git pull --ff-only
 
 gitaly-clean:
-	rm -rf gitaly/bin
+	rm -rf ${gitaly_assembly_dir}
 	rm -rf gitlab/tmp/tests/gitaly
 
 .PHONY:	gitaly/bin/gitaly
 gitaly/bin/gitaly:	${gitaly_clone_dir}/.git
-	GO15VENDOREXPERIMENT=1 GOPATH=${gitlab_development_root}/gitaly go install gitlab.com/gitlab-org/gitaly/cmd/...
+	make -C ${gitaly_clone_dir} assemble ASSEMBLY_ROOT=${gitaly_assembly_dir}
+	mkdir -p ${gitlab_development_root}/gitaly/bin
+	ln -sf ${gitaly_assembly_dir}/bin/* ${gitlab_development_root}/gitaly/bin
+	rm -rf ${gitlab_development_root}/gitaly/ruby
+	ln -sf ${gitaly_assembly_dir}/ruby ${gitlab_development_root}/gitaly/ruby
 
 # Set up supporting services
 
@@ -376,7 +374,6 @@ clean-config:
 	Procfile \
 	gitlab-workhorse/config.toml \
 	gitaly/config.toml \
-	gitaly/ruby \
 	nginx/conf/nginx.conf \
 
 unlock-dependency-installers:
@@ -385,4 +382,3 @@ unlock-dependency-installers:
 	.gitlab-shell-bundle \
 	.gitlab-yarn \
 	.gettext \
-	.gitaly-ruby-bundle \
