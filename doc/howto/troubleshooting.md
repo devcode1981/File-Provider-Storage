@@ -17,10 +17,10 @@ extensions:
 gem pristine charlock_holmes
 ```
 
-## `charlock_holmes` `0.7.3` cannot be installed on macOS Sierra
+## `charlock_holmes` `0.7.x` cannot be installed on macOS Sierra
 
-The installation of the `charlock_holmes` `0.7.3` gem during `bundle install`
-may fail on macOS Sierra with the following error:
+The installation of the `charlock_holmes` gem (`0.7.3` or greater) during
+`bundle install` may fail on macOS Sierra with the following error:
 
 ```
 [SNIPPED]
@@ -37,15 +37,25 @@ may fail on macOS Sierra with the following error:
 [SNIPPED]
 ```
 
-A working solution is to install the gem with the `--with-cxxflags=-std=c++11`
-flag:
+A working solution is to configure the `--with-cxxflags=-std=c++11` flag
+in the Rubygems global build options for this gem:
 
 ```
-gem install charlock_holmes -v '0.7.3' -- --with-cxxflags=-std=c++11
+$ bundle config --global build.charlock_holmes "--with-cxxflags=-std=c++11"
+$ bundle install
 ```
 
 The solution can be found at
 https://github.com/brianmario/charlock_holmes/issues/117#issuecomment-329798280.
+
+**Note:** If you get installation problems related to `icu4c`, make sure to also
+set the `--with-icu-dir=/usr/local/opt/icu4c` option:
+
+```
+$ bundle config --global build.charlock_holmes "--with-icu-dir=/usr/local/opt/icu4c --with-cxxflags=-std=c++11"
+```
+
+[Gitaly]: https://gitlab.com/gitlab-org/gitaly/blob/14fd3b2e3adae00f0a792516e74a4bac29a5b5c1/Makefile#L58
 
 ## Error in database migrations when pg_trgm extension is missing
 
