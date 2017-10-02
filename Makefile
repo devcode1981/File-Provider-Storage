@@ -296,7 +296,7 @@ gitlab-workhorse-clean-bin:
 
 .PHONY:	gitlab-workhorse/bin/gitlab-workhorse
 gitlab-workhorse/bin/gitlab-workhorse: ${gitlab_workhorse_clone_dir}/.git
-	GO15VENDOREXPERIMENT=1 GOPATH=${gitlab_development_root}/gitlab-workhorse go install gitlab.com/gitlab-org/gitlab-workhorse/...
+	GOPATH=${gitlab_development_root}/gitlab-workhorse go install gitlab.com/gitlab-org/gitlab-workhorse/...
 
 ${gitlab_workhorse_clone_dir}/.git:
 	git clone ${gitlab_workhorse_repo} ${gitlab_workhorse_clone_dir}
