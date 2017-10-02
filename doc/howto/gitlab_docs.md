@@ -18,7 +18,7 @@ to run the relative links checks locally or preview the changes, do the followin
 1. Create the HTML files:
 
     ```
-    bundle exec rake nanoc
+    bundle exec nanoc
     ```
 
 1. Run the internal links check:
