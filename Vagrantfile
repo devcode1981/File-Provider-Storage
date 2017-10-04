@@ -113,7 +113,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network "forwarded_port", guest: 3000, host: 3000, auto_correct: true
 
   config.vm.provider "docker" do |d, override|
-    d.build_dir = "docker"
+    d.build_dir = "vagrant"
     d.has_ssh         = true
     d.remains_running = true
     enable_shares(override, false)
