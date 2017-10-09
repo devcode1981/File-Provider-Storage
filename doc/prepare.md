@@ -35,7 +35,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 ```
 brew install git redis postgresql libiconv icu4c pkg-config cmake nodejs go openssl node npm yarn coreutils re2
 bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
-sudo npm install phantomjs-prebuilt@2.1.12 -g
+sudo npm install phantomjs-prebuilt@2.1.12 -g --unsafe-perm
 ```
 
 #### Install OS X prerequisites using macports
@@ -45,7 +45,7 @@ We are using PostgreSQL-9.5 in the following example. If you want to use another
 ```
 sudo port install git redis libiconv postgresql95-server icu pkgconfig cmake nodejs4 go openssl npm2 yarn coreutils re2
 bundle config build.eventmachine --with-cppflags=-I/opt/local/include/openssl
-sudo npm install phantomjs-prebuilt@2.1.12 -g
+sudo npm install phantomjs-prebuilt@2.1.12 -g --unsafe-perm
 echo 'export PATH=/opt/local/lib/postgresql95/bin/:$PATH' >> ~/.profile
 ```
 
@@ -61,7 +61,7 @@ sudo apt-get install software-properties-common python-software-properties
 sudo add-apt-repository ppa:longsleep/golang-backports
 sudo apt-get update
 sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs nodejs-legacy npm libre2-dev libkrb5-dev golang-1.8-go ed pkg-config
-sudo npm install phantomjs-prebuilt@2.1.12 yarn -g
+sudo npm install phantomjs-prebuilt@2.1.12 yarn -g --unsafe-perm
 ```
 
 Ubuntu 14.04 (Trusty Tahr) doesn't have the `libre2-dev` package available, but
@@ -73,7 +73,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 
 ```
 pacman -S postgresql redis postgresql-libs icu npm ed cmake openssh git go re2
-npm install phantomjs-prebuilt@2.1.12 yarn -g
+npm install phantomjs-prebuilt@2.1.12 yarn -g --unsafe-perm
 ```
 
 ### Debian
@@ -129,7 +129,7 @@ sudo yum install http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat9
 sudo yum install https://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 sudo yum install postgresql95-server postgresql95-devel libicu-devel cmake gcc-c++ redis ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 libstdc++.so.6 nodejs npm re2
 
-sudo npm install phantomjs-prebuilt@2.1.12 -g
+sudo npm install phantomjs-prebuilt@2.1.12 -g --unsafe-perm
 
 bundle config build.pg --with-pg-config=/usr/pgsql-9.5/bin/pg_config
 # This example uses Ruby 2.3.3. Substitute with the current version if different.
@@ -244,7 +244,7 @@ sudo apt-get install software-properties-common python-software-properties
 sudo apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
 sudo apt-get update
 sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ libkrb5-dev libre2-dev golang ed pkg-config
-sudo npm install phantomjs-prebuilt@2.1.12 -g
+sudo npm install phantomjs-prebuilt@2.1.12 -g --unsafe-perm
 ```
 
 Start the PostgreSQL database
