@@ -6,7 +6,7 @@ Some customers use JMeter to load test GitLab. Here are instructions to set this
 
 1. Create a Thread Group. Here is where you set the number of users and the ramp-up period.
 
-    ![JMeter Therad Group](img/jmeter_thead_group.png)
+    ![JMeter Thread Group](img/jmeter_thread_group.png)
 
 2. Add a Random Variable element by right-clicking on Thread Group:
 
