@@ -2,6 +2,7 @@ services:
 - docker:dind
 
 stages:
+- shellcheck
 - rubocop
 - build
 - test
@@ -9,6 +10,14 @@ stages:
 variables:
   DOCKER_DRIVER: overlay
   TEST_IMAGE: registry.gitlab.com/$CI_PROJECT_NAMESPACE/gitlab-development-kit:latest
+
+shellcheck:
+  image: "debian:stretch-slim"
+  stage: shellcheck
+  script:
+    - apt-get update
+    - apt-get install -y shellcheck
+    - shellcheck run
 
 rubocop:
   image: "ruby:2.3"
