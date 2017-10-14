@@ -11,12 +11,13 @@
 /usr/sbin/sshd -o MaxAuthTries=10 -o UseDNS=no
 
 #signal handler, clean termination
-trap "kill `cat /var/run/sshd.pid`; exit 0" TERM INT QUIT HUP
+trap 'kill "$(cat /var/run/sshd.pid); exit 0' TERM INT QUIT HUP
 
 #wait for termination or crash
 cnt=1
 while [ $cnt -eq 1 ]; do
-  cnt=$(ps -ax | grep `cat /var/run/sshd.pid` | grep -v grep | wc -l)
+  # shellcheck disable=SC2009
+  cnt="$(ps -ax | grep "$(cat /var/run/sshd.pid)" | grep -v -c grep )"
   sleep 2
 done
 #some crash or similar thing
