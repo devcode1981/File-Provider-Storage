@@ -17,7 +17,10 @@ shellcheck:
   script:
     - apt-get update
     - apt-get install -y shellcheck
-    - shellcheck run
+    # finds all executables (any executable bit is set)
+    # with a shell shebang that are not in .git
+    # POSIX-compliant
+    - find . ! -path "./.git/*" -type f \( -perm -u=x -o -perm -g=x -o -perm -o=x \) -exec grep -l '^#!/bin/sh' {} \; | xargs shellcheck
 
 rubocop:
   image: "ruby:2.3"
