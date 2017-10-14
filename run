@@ -1,19 +1,5 @@
 #!/bin/sh
 
-# Try to read the gitlab-workhorse host:port from the environments
-if [ "x${host}" = x ]; then
-  # Try a host file
-  host="$(cat host 2>/dev/null)"
-fi
-if [ "x${port}" = x ]; then
-  # Try a port file
-  port="$(cat port 2>/dev/null)"
-fi
-
-# Fall back to localhost:3000
-host="${host:-localhost}"
-port="${port:-3000}"
-
 print_port() {
   printf "
 
@@ -79,26 +65,42 @@ all() {
   foreman_start
 }
 
-case "x$1" in
-xdb)
-  db
-  ;;
-xgeo_db)
-  geo_db
-  ;;
-xapp)
-  app
-  ;;
-xgrafana)
-  grafana
-  ;;
-xthin)
-  thin
-  ;;
-xgitaly)
-  gitaly
-  ;;
-x*)
-  all
-  ;;
-esac
+main() {
+  # Try to read the gitlab-workhorse host:port from the environments
+  if [ "x${host}" = x ]; then
+    # Try a host file
+    host="$(cat host 2>/dev/null)"
+  fi
+  if [ "x${port}" = x ]; then
+    # Try a port file
+    port="$(cat port 2>/dev/null)"
+  fi
+
+  # Fall back to localhost:3000
+  host="${host:-localhost}"
+  port="${port:-3000}"
+
+  case "x$1" in
+    xdb)
+      db
+      ;;
+    xgeo_db)
+      geo_db
+      ;;
+    xapp)
+      app
+      ;;
+    xgrafana)
+      grafana
+      ;;
+    xthin)
+      thin
+      ;;
+    xgitaly)
+      gitaly
+      ;;
+    x*)
+      all
+      ;;
+  esac
+}
