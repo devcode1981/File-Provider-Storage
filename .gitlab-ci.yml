@@ -2,8 +2,7 @@ services:
 - docker:dind
 
 stages:
-- shellcheck
-- rubocop
+- static
 - build
 - test
 
@@ -13,7 +12,7 @@ variables:
 
 shellcheck:
   image: "debian:stretch-slim"
-  stage: shellcheck
+  stage: static
   script:
     - apt-get update
     - apt-get install -y shellcheck
@@ -24,7 +23,7 @@ shellcheck:
 
 rubocop:
   image: "ruby:2.3"
-  stage: rubocop
+  stage: static
   script:
     - gem install rubocop -v 0.49.1
     - rubocop -c gdk-rubocop.yml
