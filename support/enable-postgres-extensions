@@ -4,4 +4,4 @@ for db in gitlabhq_development gitlabhq_test; do
 \connect ${db}
 CREATE EXTENSION pg_trgm;
 EOF
-done | psql -h "$(pwd)"/postgresql -d template1
+done | psql -h "$(pwd)/postgresql" -d template1

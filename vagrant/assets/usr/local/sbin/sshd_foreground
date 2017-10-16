@@ -11,7 +11,7 @@
 /usr/sbin/sshd -o MaxAuthTries=10 -o UseDNS=no
 
 #signal handler, clean termination
-trap 'kill "$(cat /var/run/sshd.pid); exit 0' TERM INT QUIT HUP
+trap 'kill "$(cat /var/run/sshd.pid)"; exit 0' TERM INT QUIT HUP
 
 #wait for termination or crash
 cnt=1
