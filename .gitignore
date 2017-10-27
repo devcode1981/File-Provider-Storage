@@ -8,7 +8,7 @@
 /postgresql/data
 /postgresql/.s.*
 /postgresql-geo/
-/postgresql-primary/
+/postgresql-primary
 /postgresql-replica/data
 /postgresql-replica/.s.*
 /redis/*.conf

@@ -91,9 +91,9 @@ known hosts from `~/.ssh/known_hosts`).
 The primary and the secondary nodes will be using the same secret key
 to encrypt attributes in the database. To copy the secret from your primary to your secondary:
 
-1. Open `gdk-ee/gitlab/config/secrets` with your editor of choice
+1. Open `gdk-ee/gitlab/config/secrets.yml` with your editor of choice
 1. Copy the value of `development.db_key_base`
-1. Paste it into `gdk-geo/gitlab/config/secrets`
+1. Paste it into `gdk-geo/gitlab/config/secrets.yml`
 
 ## Store SSH keys in database
 
