@@ -8,7 +8,7 @@ stages:
 
 variables:
   DOCKER_DRIVER: overlay
-  TEST_IMAGE: registry.gitlab.com/$CI_PROJECT_NAMESPACE/gitlab-development-kit:latest
+  TEST_IMAGE: registry.gitlab.com/gitlab-org/gitlab-development-kit:latest
 
 shellcheck:
   image: "debian:stretch-slim"
@@ -58,6 +58,8 @@ test:install:
     - cd /home/gdk
     - gdk init
     - cd gitlab-development-kit
+    - git remote set-url origin $CI_REPOSITORY_URL
+    - git fetch
     - git checkout $CI_COMMIT_SHA
     - netstat -lpt
     - gdk install
