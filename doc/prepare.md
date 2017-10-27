@@ -33,7 +33,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 #### Install OS X prerequisites using homebrew
 
 ```
-brew install git redis postgresql libiconv icu4c pkg-config cmake nodejs go openssl node npm yarn coreutils re2
+brew install git redis postgresql@9.6 libiconv icu4c pkg-config cmake nodejs go openssl node npm yarn coreutils re2
 bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
 sudo npm install phantomjs-prebuilt@2.1.12 -g --unsafe-perm
 ```
