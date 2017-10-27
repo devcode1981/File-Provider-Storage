@@ -1,5 +1,5 @@
 #!/bin/bash
-gitlab_include="include = 'gitlab.conf'"
+gitlab_include="include 'gitlab.conf'"
 postgres_dir="$( cd "$1" && pwd )"
 
 if ! grep -Fxq "$gitlab_include" $postgres_dir/data/postgresql.conf; then
