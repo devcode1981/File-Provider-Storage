@@ -62,3 +62,7 @@
 /.gitaly-ruby-bundle
 /gitlab-docs
 /bootstrap-rails.log
+/registry_enabled
+/registry_port
+/registry/storage/
+/registry/config.yml

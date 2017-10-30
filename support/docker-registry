@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+registry_enabled=$(cat registry_enabled 2>/dev/null)
+
+if [[ "${registry_enabled}" == "true" ]]; then
+  if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    run_opts="--net host"
+  fi
+
+  exec docker run --rm -p ${registry_port:-5000}:5000 ${run_opts} \
+       -v $(pwd)/registry/config.yml:/etc/docker/registry/config.yml \
+       -v $(pwd)/registry/storage:/var/lib/registry \
+       -v $(pwd)/localhost.crt:/root/certs/certbundle \
+       registry:2
+else
+  echo "Docker registry disabled."
+  read
+fi
+
