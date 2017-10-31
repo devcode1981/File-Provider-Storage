@@ -13,7 +13,7 @@ during installation.
    ([RVM](https://rvm.io/), [rbenv], [chruby], etc.), **DO NOT** use the
    system Ruby
 1. Bundler, which you can install with `gem install bundler`
-1. Git version of 2.7.X or higher
+1. Git version of 2.13.6 or higher
 1. Node 4.3 or newer and Yarn 0.17 or newer.  If your package manage does not
    have up-to-date versions of node or yarn available, visit the official
    websites for [node] and [yarn] for installation instructions.
