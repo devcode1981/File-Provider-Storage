@@ -9,10 +9,10 @@ begin
   ]
 
   [
-    %w[bundle exec rake db:create],
-    %w[bundle exec rake dev:setup]
+    %w[support/wait-postgresql-ready support/exec-cd gitlab bundle exec rake db:create],
+    %w[support/exec-cd gitlab bundle exec rake dev:setup]
   ].each do |cmd|
-    success &&= system({ 'force' => 'yes', 'BOOTSTRAP' => '1' }, *cmd, chdir: 'gitlab')
+    success &&= system({ 'force' => 'yes', 'BOOTSTRAP' => '1' }, *cmd)
   end
 ensure
   foreman_pids.each { |pid| Process.kill('TERM', pid) }
