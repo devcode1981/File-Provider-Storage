@@ -1,0 +1,31 @@
+---
+engines:
+  duplication:
+    enabled: false
+    config:
+      languages:
+      - ruby
+  fixme:
+    enabled: false
+  rubocop:
+    enabled: true
+    channel: rubocop-0-49
+    config:
+      file: gdk-rubocop.yml
+  shellcheck:
+    enabled: true
+ratings:
+  paths:
+  - support/**/*
+  - bin/*
+  - "**.rb"
+exclude_paths:
+- "**/vendor/**/*"
+- gitaly/
+- gitlab/
+- gitlab-shell/
+- go-gitlab-shell/
+- gitlab-workhorse/
+- reposities/
+- postgresql/
+- redis/
