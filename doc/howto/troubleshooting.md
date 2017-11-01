@@ -404,6 +404,22 @@ RAILS_ENV=test bundle exec rake db:reset
 
     `sudo service postgresql start`
 
+## Homebrew: Postgres 10.0: "database files are incompatible with server"
+
+```
+FATAL:  database files are incompatible with server
+DETAIL:  The data directory was initialized by PostgreSQL version 9.6, which is not compatible with this version 10.0.
+```
+
+GitLab is not compatible with Postgres 10.0. The following workaround
+lets you get back Postgres 9.6. TODO: find a good way to co-exist with
+Postgres 10.0 in Homebrew.
+
+```
+brew install postgresql@9.6
+brew link --force postgresql@9.6
+```
+
 ## Other problems
 
 Please open an issue on the [GDK issue tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues).
