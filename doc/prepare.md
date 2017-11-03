@@ -19,14 +19,17 @@ during installation.
    websites for [node] and [yarn] for installation instructions.
 1. Go 1.8.3 or newer. If your package manager does not have up-to-date versions
    of Go available, visit the official website for [go] for installation instructions.
+1. [Google Chrome] 60 with [ChromeDriver] version 2.33 or greater
 
 [rbenv]: https://github.com/rbenv/rbenv
 [chruby]: https://github.com/postmodern/chruby
 [node]: https://nodejs.org/en/download/package-manager/
 [yarn]: https://yarnpkg.com/en/docs/install/
 [go]: https://golang.org/doc/install
+[Google Chrome]: https://www.google.com/chrome/
+[ChromeDriver]: https://sites.google.com/a/chromium.org/chromedriver/downloads
 
-### OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan), macOS 10.12 (Sierra)
+### OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan), macOS 10.12 (Sierra), macOS 10.13 (High Sierra)
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
