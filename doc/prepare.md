@@ -19,7 +19,7 @@ during installation.
    websites for [node] and [yarn] for installation instructions.
 1. Go 1.8.3 or newer. If your package manager does not have up-to-date versions
    of Go available, visit the official website for [go] for installation instructions.
-1. [Google Chrome] 60 with [ChromeDriver] version 2.33 or greater
+1. [Google Chrome] 60 or greater with [ChromeDriver] version 2.33 or greater
 
 [rbenv]: https://github.com/rbenv/rbenv
 [chruby]: https://github.com/postmodern/chruby
