@@ -22,7 +22,7 @@ git_bin = $(shell which git)
 webpack_port = $(shell cat webpack_port 2>/dev/null || echo '3808')
 registry_enabled = $(shell cat registry_enabled 2>/dev/null || echo 'false')
 registry_port = $(shell cat registry_port 2>/dev/null || echo '5000')
-gitlab_from_container = $(shell [[ "$OSTYPE" == "linux-gnu" ]] && echo 'localhost' || echo 'docker.for.mac.localhost')
+gitlab_from_container = $(shell [ "$(uname)" = "Linux" ] && echo 'localhost' || echo 'docker.for.mac.localhost')
 
 all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup gitaly-setup
 
