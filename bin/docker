@@ -19,7 +19,8 @@ case "$1" in
         ;;
     store)
         echo "Caching layers"
-        docker save "${TEST_IMAGE} $(docker history -q "${TEST_IMAGE}" | grep -v "<missing>") > ${build_cache_archive}"
+        # shellcheck disable=SC2046,SC2086
+        docker save "${TEST_IMAGE}" $(docker history -q ${TEST_IMAGE} | grep -v '<missing>') > "${build_cache_archive}"
         ;;
     build)
         docker build -t "${TEST_IMAGE}" .
