@@ -13,8 +13,7 @@ spec:
       containers:
       - name: prometheus
         image: prom/prometheus:latest
-        args:
-          - '-config.file=/prometheus-data/prometheus.yml'
+        args: ["--config.file", "/prometheus-data/prometheus.yml"]
         ports:
         - name: prometheus
           containerPort: 9090
