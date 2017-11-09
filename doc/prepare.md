@@ -136,9 +136,9 @@ sudo yum install postgresql95-server postgresql95-devel libicu-devel cmake gcc-c
 sudo npm install phantomjs-prebuilt@2.1.12 -g --unsafe-perm
 
 bundle config build.pg --with-pg-config=/usr/pgsql-9.5/bin/pg_config
-# This example uses Ruby 2.3.3. Substitute with the current version if different.
-sudo rvm install 2.3.3
-sudo rvm use 2.3.3
+# This example uses Ruby 2.3.5. Substitute with the current version if different.
+sudo rvm install 2.3.5
+sudo rvm use 2.3.5
 #Ensure your user is in rvm group
 sudo usermod -a -G rvm <username>
 #add iptables exceptions, or sudo service stop iptables
@@ -227,9 +227,9 @@ sudo make install
 Install the current `gitlab-ce` Ruby version using [RVM](https://rvm.io/):
 
 ```
-# This example uses Ruby 2.3.3. Substitute with the current version if different.
-rvm install 2.3.3
-rvm use 2.3.3
+# This example uses Ruby 2.3.5. Substitute with the current version if different.
+rvm install 2.3.5
+rvm use 2.3.5
 ```
 
 Install yarn

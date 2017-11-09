@@ -80,7 +80,7 @@ $user_setup = <<EOT
   DEV_USER=$(stat -c %U /vagrant)
   echo "$DEV_USER ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/$DEV_USER
   sudo addgroup $DEV_USER rvm
-  sudo -u $DEV_USER -i bash -l -c "rvm install 2.3.3 && rvm use 2.3.3 --default && gem install bundler"
+  sudo -u $DEV_USER -i bash -l -c "rvm install 2.3.5 && rvm use 2.3.5 --default && gem install bundler"
   sudo chown -R $DEV_USER:$DEV_USER /home/$DEV_USER
   sudo ln -s /vagrant /home/$DEV_USER/gitlab-development-kit
 
