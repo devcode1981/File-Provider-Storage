@@ -36,20 +36,20 @@ foreman_start() {
 }
 
 db() {
-  foreman_start -c all=0,redis=1,postgresql=1,openldap=1,influxdb=1,webpack=1,registry=1
+  foreman_start -m all=0,redis=1,postgresql=1,openldap=1,influxdb=1,webpack=1,registry=1
 }
 
 geo_db() {
-  foreman_start -c all=0,postgresql-geo=1
+  foreman_start -m all=0,postgresql-geo=1
 }
 
 app() {
   print_port
-  foreman_start -c all=0,rails-web=1,rails-background-jobs=1,gitlab-workhorse=1,nginx=1,grafana=1,sshd=1,gitaly=1
+  foreman_start -m all=0,rails-web=1,rails-background-jobs=1,gitlab-workhorse=1,nginx=1,grafana=1,sshd=1,gitaly=1
 }
 
 grafana() {
-  foreman_start -c all=0,grafana=1
+  foreman_start -m all=0,grafana=1
 }
 
 thin() {
@@ -57,7 +57,7 @@ thin() {
 }
 
 gitaly() {
-  foreman_start -c all=0,gitaly=1
+  foreman_start -m all=0,gitaly=1
 }
 
 all() {
