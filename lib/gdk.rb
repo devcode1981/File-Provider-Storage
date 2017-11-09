@@ -19,6 +19,9 @@ module GDK
       return false
     end
 
+    pg_port_file = File.join($gdk_root, 'postgresql_port')
+    pg_port = File.exist?(pg_port_file) ? File.read(pg_port_file) : 5432
+
     case ARGV.shift
     when 'run'
       exec('./run', *ARGV, chdir: $gdk_root)
@@ -64,7 +67,7 @@ module GDK
       remember!($gdk_root)
       exec(MAKE, 'clean-config', 'unlock-dependency-installers', 'postgresql-sensible-defaults', 'all', chdir: $gdk_root)
     when 'psql'
-      exec('psql', '-h', File.join($gdk_root, 'postgresql'), *ARGV, chdir: $gdk_root)
+      exec('psql', '-h', File.join($gdk_root, 'postgresql'), '-p', pg_port, *ARGV, chdir: $gdk_root)
     when 'redis-cli'
       exec('redis-cli', '-s', File.join($gdk_root, 'redis/redis.socket'), *ARGV, chdir: $gdk_root)
     when 'help'

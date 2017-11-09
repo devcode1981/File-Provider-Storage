@@ -23,6 +23,7 @@ webpack_port = $(shell cat webpack_port 2>/dev/null || echo '3808')
 registry_enabled = $(shell cat registry_enabled 2>/dev/null || echo 'false')
 registry_port = $(shell cat registry_port 2>/dev/null || echo '5000')
 gitlab_from_container = $(shell [ "$(uname)" = "Linux" ] && echo 'localhost' || echo 'docker.for.mac.localhost')
+postgresql_port = $(shell cat postgresql_port 2>/dev/null || echo '5432')
 
 all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup gitaly-setup
 
@@ -42,7 +43,9 @@ gitlab/config/gitlab.yml:
 	port=${port} webpack_port=${webpack_port} registry_enabled=${registry_enabled} registry_port=${registry_port} support/edit-gitlab.yml gitlab/config/gitlab.yml
 
 gitlab/config/database.yml:
-	sed "s|/home/git|${gitlab_development_root}|" database.yml.example > gitlab/config/database.yml
+	sed -e "s|/home/git|${gitlab_development_root}|"\
+		-e "s|5432|${postgresql_port}|"\
+		database.yml.example > gitlab/config/database.yml
 
 gitlab/config/unicorn.rb:
 	cp gitlab/config/unicorn.rb.example.development gitlab/config/unicorn.rb
@@ -253,9 +256,11 @@ postgresql-replication/role:
 
 postgresql-replication/backup:
 	$(eval postgres_primary_dir := $(realpath postgresql-primary))
-	psql -h ${postgres_primary_dir} -d postgres -c "select pg_start_backup('base backup for streaming rep')"
+	$(eval postgres_primary_port := $(shell cat ${postgres_primary_dir}/postgresql_port 2>/dev/null || echo '5432'))
+
+	psql -h ${postgres_primary_dir} -p ${postgresql_primary_port} -d postgres -c "select pg_start_backup('base backup for streaming rep')"
 	rsync -cva --inplace --exclude="*pg_xlog*" --exclude="*.pid" ${postgres_primary_dir}/data postgresql
-	psql -h ${postgres_primary_dir} -d postgres -c "select pg_stop_backup(), current_timestamp"
+	psql -h ${postgres_primary_dir} -p ${postgresql_primary_port} -d postgres -c "select pg_stop_backup(), current_timestamp"
 	./support/recovery.conf ${postgres_primary_dir} > postgresql/data/recovery.conf
 
 postgresql-replication/config:

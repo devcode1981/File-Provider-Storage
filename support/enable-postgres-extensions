@@ -1,7 +1,9 @@
 #!/bin/sh
+pg_port=$(cat postgresql_port 2>/dev/null || echo '5432')
+
 for db in gitlabhq_development gitlabhq_test; do
   cat <<EOF
 \connect ${db}
 CREATE EXTENSION pg_trgm;
 EOF
-done | psql -h "$(pwd)/postgresql" -d template1
+done | psql -h "$(pwd)/postgresql" -d template1 -p "$pg_port"
