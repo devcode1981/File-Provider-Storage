@@ -78,6 +78,26 @@ make postgresql-replication-secondary
 Now you can go back to **terminal window 1** and stop `foreman` by hitting
 <kbd>Ctrl-C</kbd>.
 
+### Running tests
+
+The secondary has a read-write tracking database, which is necessary for some
+Geo tests to run. However, its copy of the replicated database is read-only, so
+tests will fail to run.
+
+You can add the tracking database to the primary node by running:
+
+```
+# From the gdk-ee folder:
+make geo-setup
+```
+
+This will add both development and test instances, but the primary will continue
+to operate *as* a primary except in tests where the current Geo node has been
+stubbed.
+
+To ensure the tracking database is started, restart GDK. You will need to use
+`gdk run`, rather than `gdk run db`, to run the tests.
+
 ## Copy database encryption key
 
 The primary and the secondary nodes will be using the same secret key
