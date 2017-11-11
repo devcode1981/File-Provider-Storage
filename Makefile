@@ -258,9 +258,9 @@ postgresql-replication/backup:
 	$(eval postgres_primary_dir := $(realpath postgresql-primary))
 	$(eval postgres_primary_port := $(shell cat ${postgres_primary_dir}/postgresql_port 2>/dev/null || echo '5432'))
 
-	psql -h ${postgres_primary_dir} -p ${postgresql_primary_port} -d postgres -c "select pg_start_backup('base backup for streaming rep')"
+	psql -h ${postgres_primary_dir} -p ${postgres_primary_port} -d postgres -c "select pg_start_backup('base backup for streaming rep')"
 	rsync -cva --inplace --exclude="*pg_xlog*" --exclude="*.pid" ${postgres_primary_dir}/data postgresql
-	psql -h ${postgres_primary_dir} -p ${postgresql_primary_port} -d postgres -c "select pg_stop_backup(), current_timestamp"
+	psql -h ${postgres_primary_dir} -p ${postgres_primary_port} -d postgres -c "select pg_stop_backup(), current_timestamp"
 	./support/recovery.conf ${postgres_primary_dir} > postgresql/data/recovery.conf
 
 postgresql-replication/config:
