@@ -200,7 +200,7 @@ gitaly-clean:
 
 .PHONY:	gitaly/bin/gitaly
 gitaly/bin/gitaly:	${gitaly_clone_dir}/.git
-	make -C ${gitaly_clone_dir} assemble ASSEMBLY_ROOT=${gitaly_assembly_dir}
+	make -C ${gitaly_clone_dir} assemble ASSEMBLY_ROOT=${gitaly_assembly_dir} BUNDLE_FLAGS=--no-deployment
 	mkdir -p ${gitlab_development_root}/gitaly/bin
 	ln -sf ${gitaly_assembly_dir}/bin/* ${gitlab_development_root}/gitaly/bin
 	rm -rf ${gitlab_development_root}/gitaly/ruby
