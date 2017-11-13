@@ -429,7 +429,7 @@ error: GET "/users/sign_in": badgateway: failed after 62s: EOF
 ```
 
 Depending on the performance of your development environment, Unicorn may
-timeout. Increase the timeout as a workaround.
+time out. Increase the timeout as a workaround.
 
 Edit `gitlab/config/unicorn.rb`:
 
