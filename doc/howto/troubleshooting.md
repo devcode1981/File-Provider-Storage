@@ -420,6 +420,23 @@ brew install postgresql@9.6
 brew link --force postgresql@9.6
 ```
 
+## Unicorn timeout
+
+Browser shows `EOF`. Logs show a timeout:
+
+```
+error: GET "/users/sign_in": badgateway: failed after 62s: EOF
+```
+
+Depending on the performance of your development environment, Unicorn may
+timeout. Increase the timeout as a workaround.
+
+Edit `gitlab/config/unicorn.rb`:
+
+```
+timeout 3600
+```
+
 ## Other problems
 
 Please open an issue on the [GDK issue tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues).
