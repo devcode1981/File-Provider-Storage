@@ -1,6 +1,9 @@
 #!/bin/sh
 # This script will edit the file named as the first argument in-place.
 ed -s "$1" <<EOF
+/host:/c
+    host: ${hostname:-localhost}
+.
 /port:/c
     port: ${port:-3000}
 .
