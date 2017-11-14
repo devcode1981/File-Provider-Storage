@@ -5,6 +5,13 @@ virtual machine to do GitLab development in. Please see the [main
 README](../README.md#installation) for instructions how to install GDK
 after you have set up your Vagrant machine.
 
+## Clone the GitLab Development Kit
+
+Clone the GDK to you local machine. Enter that directory.
+
+Vagrant will use the `Vagrantfile` and other configuration files to perpare your
+container.
+
 ## Vagrant setup
 
 [Vagrant] is a tool for setting up identical development environments including
@@ -27,7 +34,7 @@ To avoid usage of slow VirtualBox shared folders we use NFS here.
 1. Install [VirtualBox] and [Vagrant].
 1. [Configure NFS for Vagrant](https://docs.vagrantup.com/v2/synced-folders/nfs.html)
    if you are on Linux.
-1. Run `vagrant up --provider=virtualbox` in this directory (from an elevated
+1. Run `vagrant up --provider=virtualbox --provision` in this directory (from an elevated
    command prompt if on Windows). Vagrant will download an OS image, bring it
    up, and install all the prerequisites.
 1. Run `vagrant ssh` to SSH into the box.
@@ -45,7 +52,7 @@ OSes like Windows/OSX you will have to run the entire Docker hypervisor in a VM
 1. Install [Vagrant].
 1. Install [Docker Engine]. Don't forget to add your user to the docker group
    and re-login.
-1. Run `vagrant up --provider=docker` in this directory. Vagrant will build a
+1. Run `vagrant up --provider=docker --provision` in this directory. Vagrant will build a
    docker image and start the container.
 1. Run `vagrant ssh` to SSH into the container.
 1. Continue setup at [Installation](https://gitlab.com/gitlab-org/gitlab-development-kit/blob/master/doc/set-up-gdk.md#install-gdk) below.
