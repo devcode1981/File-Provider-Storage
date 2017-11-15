@@ -12,6 +12,9 @@ development server (localhost:3000) you need to comment out the
 `rails-web:` line in the Procfile in your GDK root directory because
 Unicorn is not compatible with Pry.
 
+You can also run `make pry` to make this change for you.  `make pry-off`
+will revert back to the original configuration.
+
 Then launch GDK as usual (e.g. with `gdk run`) and in a separate
 terminal run: `gdk run thin`. Your Pry prompts will appear in the window
 that runs Thin.

@@ -383,6 +383,17 @@ registry/config.yml:
 	cp registry/config.yml.example $@
 	gitlab_host=${gitlab_from_container} gitlab_port=${port} registry_port=${registry_port} support/edit-registry-config.yml $@
 
+pry:
+	grep '^#rails-web:' Procfile || (printf ',s/^rails-web/#rails-web/\nwq\n' | ed -s Procfile)
+	@echo ""
+	@echo "Commented out 'rails-web' line in the Procfile.  Use 'make pry-off' to reverse."
+	@echo "You can now use Pry for debugging by using 'gdk run' in one terminal, and 'gdk run thin' in another."
+
+pry-off:
+	grep '^rails-web:' Procfile || (printf ',s/^#rails-web/rails-web/\nwq\n' | ed -s Procfile)
+	@echo ""
+	@echo "Re-enabled 'rails-web' in the Procfile.  Debugging with Pry will no longer work."
+
 clean-config:
 	rm -f \
 	gitlab/config/gitlab.yml \
