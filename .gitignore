@@ -28,6 +28,7 @@
 /gitlab-workhorse/src
 /.vagrant_enabled
 /host
+/hostname
 /port
 /webpack_port
 /.ruby-version

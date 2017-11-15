@@ -15,6 +15,7 @@ postgres_replication_user = gitlab_replication
 postgres_dir = $(realpath ./postgresql)
 postgres_replica_dir = $(realpath ./postgresql-replica)
 postgres_geo_dir = $(realpath ./postgresql-geo)
+hostname = $(shell cat hostname 2>/dev/null)
 port = $(shell cat port 2>/dev/null)
 username = $(shell whoami)
 sshd_bin = $(shell which sshd)
@@ -40,7 +41,7 @@ gitlab/config/gitlab.yml:
 	sed -e "s|/home/git|${gitlab_development_root}|"\
 	  -e "s|/usr/bin/git|${git_bin}|"\
 	  gitlab/config/gitlab.yml.example > gitlab/config/gitlab.yml
-	port=${port} webpack_port=${webpack_port} registry_enabled=${registry_enabled} registry_port=${registry_port} support/edit-gitlab.yml gitlab/config/gitlab.yml
+	hostname=${hostname} port=${port} webpack_port=${webpack_port} registry_enabled=${registry_enabled} registry_port=${registry_port} support/edit-gitlab.yml gitlab/config/gitlab.yml
 
 gitlab/config/database.yml:
 	sed -e "s|/home/git|${gitlab_development_root}|"\
