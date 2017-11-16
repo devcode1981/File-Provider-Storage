@@ -384,6 +384,25 @@ If you still encounter some errors, see the troubleshooting FAQ below:
     This means you have not run `npm install` since updating your gitlab CE/EE
     repository.  The `gdk update` command should have done this for you, but you
     can do so manually as well.
+    
+* I'm getting the following error when I try to run `gdk run`:
+
+    ```
+    14:52:22 webpack.1               | [nodemon] starting `node ./node_modules/.bin/webpack-dev-server --config config/webpack.config.js`
+    14:52:22 webpack.1               | events.js:160
+    14:52:22 webpack.1               |       throw er; // Unhandled 'error' event
+    14:52:22 webpack.1               |       ^
+    14:52:22 webpack.1               |
+    14:52:22 webpack.1               | Error: listen EADDRINUSE 127.0.0.1:3808
+    ...
+    ```
+    
+    This means the port is already in use, probably because webpack failed to
+    terminate correctly when the GDK was last shutdown. You can find out the pid
+    of the process using the port with the command `lsof -i :3803`. If you are
+    using Vagrant the `lsof` command is not available. Instead you can use the
+    command `ss -pntl 'sport = :3808'`. The left over process can be killed with
+    the command `kill PID`.
 
 ## Testing environment database problems
 
