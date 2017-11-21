@@ -247,6 +247,8 @@ postgresql-replication-primary: postgresql-replication/access postgresql-replica
 
 postgresql-replication-secondary: postgresql-replication/data postgresql-replication/access postgresql-replication/backup postgresql-replication/config
 
+postgresql-replication-primary-create-slot: postgresql-replication/slot
+
 postgresql-replication/data:
 	${postgres_bin_dir}/initdb --locale=C -E utf-8 postgresql/data
 
@@ -264,6 +266,9 @@ postgresql-replication/backup:
 	rsync -cva --inplace --exclude="*pg_xlog*" --exclude="*.pid" ${postgres_primary_dir}/data postgresql
 	psql -h ${postgres_primary_dir} -p ${postgres_primary_port} -d postgres -c "select pg_stop_backup(), current_timestamp"
 	./support/recovery.conf ${postgres_primary_dir} > postgresql/data/recovery.conf
+
+postgresql-replication/slot:
+	${postgres_bin_dir}/psql -h ${postgres_dir} -d postgres -c "SELECT * FROM pg_create_physical_replication_slot('gitlab_gdk_replication_slot');"
 
 postgresql-replication/config:
 	./support/postgres-replication ${postgres_dir}

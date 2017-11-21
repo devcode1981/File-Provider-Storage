@@ -8,6 +8,7 @@ fi
 if [ ! -f "$postgres_dir/data/replication.conf" ]; then
   cat <<EOF > $postgres_dir/data/replication.conf
 wal_level = hot_standby
+max_replication_slots = 1
 max_wal_senders = 10
 wal_keep_segments = 10
 hot_standby = on
