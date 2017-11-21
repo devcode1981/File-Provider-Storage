@@ -4,6 +4,10 @@ This Changelog tracks major changes to the GitLab Development Kit,
 such as dependency updates (those not handled by Bundler) and new
 features.
 
+## 2017-11-21
+
+- [GitLab GEO] Add replication slot
+
 ## 2017-02-01
 
 - Add webpack process to Procfile configure it within gitlab.yml !237
