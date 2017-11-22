@@ -48,6 +48,13 @@ make postgresql-replication-primary
 # terminal window 1:
 # stop foreman by hitting Ctrl-C, then restart it:
 foreman start postgresql
+
+# terminal window 2:
+make postgresql-replication-primary-create-slot
+
+# terminal window 1:
+# stop foreman by hitting Ctrl-C, then restart it:
+foreman start postgresql
 ```
 
 ### Set up replication on secondary
