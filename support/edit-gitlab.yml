@@ -33,6 +33,12 @@ c
 c
         gitaly_address: unix:$(pwd)/gitaly.socket
 .
+1
+/^  gitaly:/
+/^    client_path:/
+c
+    client_path: $(pwd)/gitaly/bin
+.
 /^  registry:/
 a
     enabled: ${registry_enabled:-false}
