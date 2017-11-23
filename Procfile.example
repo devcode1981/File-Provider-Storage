@@ -18,3 +18,4 @@ gitaly: exec gitaly/bin/gitaly /home/git/gitaly/config.toml
 webpack: exec /usr/bin/env NODE_ENV=development DEV_SERVER_PORT=3808 support/exec-cd gitlab yarn dev-server
 #geo-cursor: exec /usr/bin/env RAILS_ENV=development support/exec-cd gitlab/bin ./geo_log_cursor
 registry: exec support/docker-registry
+#storage-check: exec /usr/bin/env RAILS_ENV=development support/exec-cd gitlab bin/storage_check -t unix:///home/git/gitlab.socket
