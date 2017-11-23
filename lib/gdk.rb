@@ -74,7 +74,7 @@ module GDK
       puts File.read(File.join($gdk_root, 'HELP'))
       true
     else
-      puts "Usage: #{PROGNAME} run|init|install|update|reconfigure|psql|redis-cli|version|help [ARGS...]"
+      puts "Usage: #{PROGNAME} run|init|install|update|reconfigure|psql|redis-cli|diff-config|version|help [ARGS...]"
       false
     end
   end
