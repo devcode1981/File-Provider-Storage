@@ -114,6 +114,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provider "docker" do |d, override|
     d.build_dir = "vagrant"
+    d.privileged      = true
     d.has_ssh         = true
     d.remains_running = true
     enable_shares(override, false)
