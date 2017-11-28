@@ -240,6 +240,9 @@ postgresql/data:
 	${postgres_bin_dir}/initdb --locale=C -E utf-8 postgresql/data
 	support/bootstrap-rails
 
+postgresql/port:
+	./support/postgres-port ${postgres_dir} ${postgresql_port}
+
 postgresql-sensible-defaults:
 	./support/postgresql-sensible-defaults ${postgres_dir}
 
@@ -256,19 +259,26 @@ postgresql-replication/access:
 	cat support/pg_hba.conf.add >> postgresql/data/pg_hba.conf
 
 postgresql-replication/role:
-	${postgres_bin_dir}/psql -h ${postgres_dir} -d postgres -c "CREATE ROLE ${postgres_replication_user} WITH REPLICATION LOGIN;"
+	${postgres_bin_dir}/psql -h ${postgres_dir} -p ${postgresql_port} -d postgres -c "CREATE ROLE ${postgres_replication_user} WITH REPLICATION LOGIN;"
 
 postgresql-replication/backup:
 	$(eval postgres_primary_dir := $(realpath postgresql-primary))
-	$(eval postgres_primary_port := $(shell cat ${postgres_primary_dir}/postgresql_port 2>/dev/null || echo '5432'))
+	$(eval postgres_primary_port := $(shell cat ${postgres_primary_dir}/../postgresql_port 2>/dev/null || echo '5432'))
 
 	psql -h ${postgres_primary_dir} -p ${postgres_primary_port} -d postgres -c "select pg_start_backup('base backup for streaming rep')"
 	rsync -cva --inplace --exclude="*pg_xlog*" --exclude="*.pid" ${postgres_primary_dir}/data postgresql
 	psql -h ${postgres_primary_dir} -p ${postgres_primary_port} -d postgres -c "select pg_stop_backup(), current_timestamp"
-	./support/recovery.conf ${postgres_primary_dir} > postgresql/data/recovery.conf
+	./support/recovery.conf ${postgres_primary_dir} ${postgres_primary_port} > postgresql/data/recovery.conf
+	$(MAKE) postgresql/port
 
 postgresql-replication/slot:
-	${postgres_bin_dir}/psql -h ${postgres_dir} -d postgres -c "SELECT * FROM pg_create_physical_replication_slot('gitlab_gdk_replication_slot');"
+	${postgres_bin_dir}/psql -h ${postgres_dir} -p ${postgresql_port} -d postgres -c "SELECT * FROM pg_create_physical_replication_slot('gitlab_gdk_replication_slot');"
+
+postgresql-replication/list-slots:
+	${postgres_bin_dir}/psql -h ${postgres_dir} -p ${postgresql_port} -d postgres -c "SELECT * FROM pg_replication_slots;"
+
+postgresql-replication/drop-slot:
+	${postgres_bin_dir}/psql -h ${postgres_dir} -p ${postgresql_port} -d postgres -c "SELECT * FROM pg_drop_replication_slot('gitlab_gdk_replication_slot');"
 
 postgresql-replication/config:
 	./support/postgres-replication ${postgres_dir}
