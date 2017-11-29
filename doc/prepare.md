@@ -76,7 +76,7 @@ you can [install re2 manually](https://github.com/google/re2/wiki/Install).
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
-pacman -S postgresql redis postgresql-libs icu npm ed cmake openssh git go re2
+pacman -S postgresql redis postgresql-libs icu npm ed cmake openssh git go re2 unzip
 npm install phantomjs-prebuilt@2.1.12 yarn -g --unsafe-perm
 ```
 
