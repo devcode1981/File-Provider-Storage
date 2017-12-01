@@ -1,0 +1,11 @@
+#!/bin/bash
+if [ "$#" -ne 2 ]; then
+    echo "Illegal number of parameters"
+    exit 1
+fi
+
+postgres_dir="$( cd "$1" && pwd )"
+postgres_port=$2
+timestamp="$(date +"%s")"
+
+sed -E -i ".{$timestamp}.bak" "s/(port[ \t]=[ \t])([0-9]{4,6})/\1${postgres_port}/g" $postgres_dir/data/postgresql.conf

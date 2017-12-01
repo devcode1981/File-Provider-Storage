@@ -25,6 +25,7 @@ registry_enabled = $(shell cat registry_enabled 2>/dev/null || echo 'false')
 registry_port = $(shell cat registry_port 2>/dev/null || echo '5000')
 gitlab_from_container = $(shell [ "$(uname)" = "Linux" ] && echo 'localhost' || echo 'docker.for.mac.localhost')
 postgresql_port = $(shell cat postgresql_port 2>/dev/null || echo '5432')
+postgresql_geo_port = $(shell cat postgresql_geo_port 2>/dev/null || echo '5432')
 
 all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup gitaly-setup
 
@@ -240,6 +241,9 @@ postgresql/data:
 	${postgres_bin_dir}/initdb --locale=C -E utf-8 postgresql/data
 	support/bootstrap-rails
 
+postgresql/port:
+	./support/postgres-port ${postgres_dir} ${postgresql_port}
+
 postgresql-sensible-defaults:
 	./support/postgresql-sensible-defaults ${postgres_dir}
 
@@ -256,19 +260,26 @@ postgresql-replication/access:
 	cat support/pg_hba.conf.add >> postgresql/data/pg_hba.conf
 
 postgresql-replication/role:
-	${postgres_bin_dir}/psql -h ${postgres_dir} -d postgres -c "CREATE ROLE ${postgres_replication_user} WITH REPLICATION LOGIN;"
+	${postgres_bin_dir}/psql -h ${postgres_dir} -p ${postgresql_port} -d postgres -c "CREATE ROLE ${postgres_replication_user} WITH REPLICATION LOGIN;"
 
 postgresql-replication/backup:
 	$(eval postgres_primary_dir := $(realpath postgresql-primary))
-	$(eval postgres_primary_port := $(shell cat ${postgres_primary_dir}/postgresql_port 2>/dev/null || echo '5432'))
+	$(eval postgres_primary_port := $(shell cat ${postgres_primary_dir}/../postgresql_port 2>/dev/null || echo '5432'))
 
 	psql -h ${postgres_primary_dir} -p ${postgres_primary_port} -d postgres -c "select pg_start_backup('base backup for streaming rep')"
 	rsync -cva --inplace --exclude="*pg_xlog*" --exclude="*.pid" ${postgres_primary_dir}/data postgresql
 	psql -h ${postgres_primary_dir} -p ${postgres_primary_port} -d postgres -c "select pg_stop_backup(), current_timestamp"
-	./support/recovery.conf ${postgres_primary_dir} > postgresql/data/recovery.conf
+	./support/recovery.conf ${postgres_primary_dir} ${postgres_primary_port} > postgresql/data/recovery.conf
+	$(MAKE) postgresql/port
 
 postgresql-replication/slot:
-	${postgres_bin_dir}/psql -h ${postgres_dir} -d postgres -c "SELECT * FROM pg_create_physical_replication_slot('gitlab_gdk_replication_slot');"
+	${postgres_bin_dir}/psql -h ${postgres_dir} -p ${postgresql_port} -d postgres -c "SELECT * FROM pg_create_physical_replication_slot('gitlab_gdk_replication_slot');"
+
+postgresql-replication/list-slots:
+	${postgres_bin_dir}/psql -h ${postgres_dir} -p ${postgresql_port} -d postgres -c "SELECT * FROM pg_replication_slots;"
+
+postgresql-replication/drop-slot:
+	${postgres_bin_dir}/psql -h ${postgres_dir} -p ${postgresql_port} -d postgres -c "SELECT * FROM pg_drop_replication_slot('gitlab_gdk_replication_slot');"
 
 postgresql-replication/config:
 	./support/postgres-replication ${postgres_dir}
@@ -288,6 +299,28 @@ postgresql/geo:
 	${postgres_bin_dir}/initdb --locale=C -E utf-8 postgresql-geo/data
 	grep '^postgresql-geo:' Procfile || (printf ',s/^#postgresql-geo/postgresql-geo/\nwq\n' | ed -s Procfile)
 	support/bootstrap-geo
+
+postgresql/geo-fdw: postgresql/geo-fdw/dev postgresql/geo-fdw/test
+
+postgresql/geo-fdw/dev:
+	$(eval dbname := gitlabhq_geo_development)
+	$(eval fdw_dbname := gitlabhq_development)
+
+	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE EXTENSION postgres_fdw;"
+	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE SERVER gitlab_secondary FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$(postgres_dir)', dbname '${fdw_dbname}', port '$(postgresql_port)' );"
+	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE USER MAPPING FOR current_user SERVER gitlab_secondary OPTIONS (user '$(USER)');"
+	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE SCHEMA gitlab_secondary;"
+	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "GRANT USAGE ON FOREIGN SERVER gitlab_secondary TO current_user;"
+
+postgresql/geo-fdw/test:
+	$(eval dbname := gitlabhq_geo_test)
+	$(eval fdw_dbname := gitlabhq_test)
+
+	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE EXTENSION postgres_fdw;"
+	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE SERVER gitlab_secondary FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$(postgres_dir)', dbname '${fdw_dbname}', port '$(postgresql_port)' );"
+	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE USER MAPPING FOR current_user SERVER gitlab_secondary OPTIONS (user '$(USER)');"
+	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE SCHEMA gitlab_secondary;"
+	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "GRANT USAGE ON FOREIGN SERVER gitlab_secondary TO current_user;"
 
 .PHONY:	foreman
 foreman:

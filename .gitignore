@@ -67,3 +67,5 @@
 /registry_port
 /registry/storage/
 /registry/config.yml
+/postgresql_port
+/postgresql_geo_port
