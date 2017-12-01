@@ -300,12 +300,27 @@ postgresql/geo:
 	grep '^postgresql-geo:' Procfile || (printf ',s/^#postgresql-geo/postgresql-geo/\nwq\n' | ed -s Procfile)
 	support/bootstrap-geo
 
-postgresql/geo-fdw:
-	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d postgres -c "CREATE EXTENSION postgres_fdw;"
-	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d postgres -c "CREATE SERVER gitlab_secondary FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$(postgres_dir)', dbname 'gitlabhq_development', port '$(postgresql_port)' );"
-	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d postgres -c "CREATE USER MAPPING FOR current_user SERVER gitlab_secondary OPTIONS (user '$(USER)');"
-	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d postgres -c "CREATE SCHEMA gitlab_secondary;"
-	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d postgres -c "GRANT USAGE ON FOREIGN SERVER gitlab_secondary TO current_user;"
+postgresql/geo-fdw: postgresql/geo-fdw/dev postgresql/geo-fdw/test
+
+postgresql/geo-fdw/dev:
+	$(eval dbname := gitlabhq_geo_development)
+	$(eval fdw_dbname := gitlabhq_development)
+
+	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE EXTENSION postgres_fdw;"
+	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE SERVER gitlab_secondary FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$(postgres_dir)', dbname '${fdw_dbname}', port '$(postgresql_port)' );"
+	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE USER MAPPING FOR current_user SERVER gitlab_secondary OPTIONS (user '$(USER)');"
+	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE SCHEMA gitlab_secondary;"
+	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "GRANT USAGE ON FOREIGN SERVER gitlab_secondary TO current_user;"
+
+postgresql/geo-fdw/test:
+	$(eval dbname := gitlabhq_geo_test)
+	$(eval fdw_dbname := gitlabhq_test)
+
+	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE EXTENSION postgres_fdw;"
+	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE SERVER gitlab_secondary FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$(postgres_dir)', dbname '${fdw_dbname}', port '$(postgresql_port)' );"
+	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE USER MAPPING FOR current_user SERVER gitlab_secondary OPTIONS (user '$(USER)');"
+	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE SCHEMA gitlab_secondary;"
+	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "GRANT USAGE ON FOREIGN SERVER gitlab_secondary TO current_user;"
 
 .PHONY:	foreman
 foreman:
