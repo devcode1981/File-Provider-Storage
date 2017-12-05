@@ -112,7 +112,7 @@ You can also override the host name used by the Rails instance (specified by the
 
      echo my.gitlab.dev > hostname
 
-If you want to work on GitLab CI you will need to install [GitLab Runner](https://gitlab.com/gitlab-org/gitlab-ci-multi-runner).
+If you want to work on GitLab CI you will need to install [GitLab Runner](https://gitlab.com/gitlab-org/gitlab-runner).
 
 To enable the OpenLDAP server, see the OpenLDAP instructions in this [README](./howto/ldap.md).
 
