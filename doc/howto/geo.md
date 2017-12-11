@@ -114,20 +114,10 @@ to encrypt attributes in the database. To copy the secret from your primary to y
 1. Copy the value of `development.db_key_base`
 1. Paste it into `gdk-geo/gitlab/config/secrets.yml`
 
-## Store SSH keys in database
+## SSH cloning
 
-This step is only required if you want to clone from the secondary using SSH.
-In most cases it can be skipped.
-
-GitLab Geo requires SSH keys storage in the database. Check the
-[official documentation](https://docs.gitlab.com/ee/administration/operations/speed_up_ssh.html#the-solution).
-
-The executable configured at `AuthorizedKeysCommand`, and all of its
-parent directories, should be owned by `root`. For example, you can
-place it in the directory as documented:
-`/opt/gitlab-shell/authorized_keys`
-
-You'll also have to follow the [GDK SSH howto](ssh.md).
+To be able to clone over SSH on a secondary, follow the instruction on how
+to set up [SSH](ssh.md), including [SSH key lookup from database](ssh.md#ssh-key-lookup-from-database).
 
 ## Configure Geo nodes
 
