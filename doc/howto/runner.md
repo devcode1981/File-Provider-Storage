@@ -65,14 +65,14 @@ for your operating system
 
 To build from source, you'll need to set up a development environment manually -
 GDK doesn't manage it for you. The official GitLab Runner repository is
-[here](https://gitlab.com/gitlab-org/gitlab-ci-multi-runner); just follow
+[here](https://gitlab.com/gitlab-org/gitlab-runner); just follow
 [the development instructions](https://docs.gitlab.com/runner/development/).
 
-All the methods should (eventually) create a `gitlab-ci-multi-runner` binary.
+All the methods should (eventually) create a `gitlab-runner` binary.
 
 ## Setting up the Runner
 
-Run `gitlab-ci-multi-runner register --config <path-to-gdk>/gitlab-runner-config.toml`
+Run `gitlab-runner register --config <path-to-gdk>/gitlab-runner-config.toml`
 (as your normal user), and follow the prompts. Use `http://localhost:3000/`
 for the coordinator URL, and the `Registration token` as the `gitlab-ci token`.
 The Runner will write its configuration file to `gitlab-runner-config.toml`,
@@ -90,7 +90,7 @@ can be found [here](https://docs.gitlab.com/runner/executors/).
 Each `register` invocation adds a section to the configuration file, so make
 sure you're referencing the same one each time.
 
-Finally, run `gitlab-ci-multi-runner --log-level debug run --config <path-to-gdk>/gitlab-runner-config.toml`
+Finally, run `gitlab-runner --log-level debug run --config <path-to-gdk>/gitlab-runner-config.toml`
 to get a long-lived Runner process, using the configuration you created in the
 last step. It will stay in the foreground, outputting logs as it executes
 builds, so run it in its own terminal session.

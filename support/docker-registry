@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 registry_enabled=$(cat registry_enabled 2>/dev/null)
+registry_port=$(cat registry_port 2>/dev/null)
 
 if [[ "${registry_enabled}" == "true" ]]; then
   if [[ "$OSTYPE" == "linux-gnu" ]]; then
