@@ -27,7 +27,7 @@ gitlab_from_container = $(shell [ "$(uname)" = "Linux" ] && echo 'localhost' || 
 postgresql_port = $(shell cat postgresql_port 2>/dev/null || echo '5432')
 postgresql_geo_port = $(shell cat postgresql_geo_port 2>/dev/null || echo '5432')
 
-all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup gitaly-setup
+all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup gitaly-setup prom-setup
 
 # Set up the GitLab Rails app
 
@@ -121,6 +121,11 @@ gitaly/config.toml:
 	  -e "s|^bin_dir.*|bin_dir = \"${gitlab_development_root}/gitaly/bin\"|" \
 	  -e "s|# prometheus_listen_addr|prometheus_listen_addr|" \
 	  -e "s|/home/git|${gitlab_development_root}|" ${gitaly_clone_dir}/config.toml.example > $@
+
+prom-setup:
+	if [ "$(uname -s)" == "Linux" ]; then \
+		sed -i -e 's/docker\.for\.mac\.localhost/localhost/g' ${gitlab_development_root}/prometheus/prometheus.yml; \
+	fi
 
 # Set up gitlab-docs
 
