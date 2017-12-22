@@ -19,7 +19,7 @@ during installation.
    websites for [node] and [yarn] for installation instructions.
 1. Go 1.8.3 or newer. If your package manager does not have up-to-date versions
    of Go available, visit the official website for [go] for installation instructions.
-1. [Google Chrome] 60 or greater with [ChromeDriver] version 2.33 or greater. 
+1. [Google Chrome] 60 or greater with [ChromeDriver] version 2.33 or greater.
    Visit the [installation details](https://sites.google.com/a/chromium.org/chromedriver/getting-started) for more details.
 
 [rbenv]: https://github.com/rbenv/rbenv
@@ -33,6 +33,12 @@ during installation.
 ### OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan), macOS 10.12 (Sierra), macOS 10.13 (High Sierra)
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
+
+__NOTE__: If you are using macOS 10.13 (High Sierra) with Ruby 2.3.5, please make sure to export the
+`OBJC_DISABLE_INITIALIZE_FORK_SAFETY` environment variable to `YES` (e.g. by typing
+`env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES gdk run app`) to work-around
+[this issue](https://blog.phusion.nl/2017/10/13/why-ruby-app-servers-break-on-macos-high-sierra-and-what-can-be-done-about-it/)
+that causes most Ruby app servers to crash on launch on High Sierra.
 
 #### Install OS X prerequisites using homebrew
 
