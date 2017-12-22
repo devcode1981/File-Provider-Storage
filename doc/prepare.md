@@ -70,7 +70,7 @@ sudo apt-get install software-properties-common python-software-properties
 # This PPA contains an up-to-date version of Go
 sudo add-apt-repository ppa:longsleep/golang-backports
 sudo apt-get update
-sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs nodejs-legacy npm libre2-dev libkrb5-dev golang-1.8-go ed pkg-config
+sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs nodejs-legacy npm libre2-dev libkrb5-dev libsqlite3-dev golang-1.8-go ed pkg-config
 sudo npm install phantomjs-prebuilt@2.1.12 yarn -g --unsafe-perm
 ```
 
