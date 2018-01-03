@@ -34,7 +34,7 @@ during installation.
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
-__NOTE__: If you are using macOS 10.13 (High Sierra) with Ruby 2.3.5, please make sure to export the
+__NOTE__: If you are using macOS 10.13 (High Sierra) with Ruby 2.3.6, please make sure to export the
 `OBJC_DISABLE_INITIALIZE_FORK_SAFETY` environment variable to `YES` (e.g. by typing
 `env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES gdk run app`) to work-around
 [this issue](https://blog.phusion.nl/2017/10/13/why-ruby-app-servers-break-on-macos-high-sierra-and-what-can-be-done-about-it/)
@@ -142,9 +142,9 @@ sudo yum install postgresql95-server postgresql95-devel libicu-devel cmake gcc-c
 sudo npm install phantomjs-prebuilt@2.1.12 -g --unsafe-perm
 
 bundle config build.pg --with-pg-config=/usr/pgsql-9.5/bin/pg_config
-# This example uses Ruby 2.3.5. Substitute with the current version if different.
-sudo rvm install 2.3.5
-sudo rvm use 2.3.5
+# This example uses Ruby 2.3.6. Substitute with the current version if different.
+sudo rvm install 2.3.6
+sudo rvm use 2.3.6
 #Ensure your user is in rvm group
 sudo usermod -a -G rvm <username>
 #add iptables exceptions, or sudo service stop iptables
@@ -233,9 +233,9 @@ sudo make install
 Install the current `gitlab-ce` Ruby version using [RVM](https://rvm.io/):
 
 ```
-# This example uses Ruby 2.3.5. Substitute with the current version if different.
-rvm install 2.3.5
-rvm use 2.3.5
+# This example uses Ruby 2.3.6. Substitute with the current version if different.
+rvm install 2.3.6
+rvm use 2.3.6
 ```
 
 Install yarn
