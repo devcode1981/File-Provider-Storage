@@ -15,7 +15,7 @@ Now we'll create a secondary instance in a `gdk-geo` folder to act as
 a secondary node. We'll configure unique ports for the new instance so
 that it can run alongside the primary.
 
-```
+```bash
 gdk init gdk-geo
 cd gdk-geo
 echo 3002 > port
@@ -36,7 +36,7 @@ replication. This requires the PostgreSQL server to be running, so we'll start
 the server, perform the change (via a `make` task), and then kill and restart
 the server to pick up the change:
 
-```shell
+```bash
 cd gdk-ee
 
 # terminal window 1:
@@ -62,7 +62,7 @@ foreman start postgresql
 Because we'll be replicating the primary database to the secondary, we need to
 remove the secondary's PostgreSQL data folder:
 
-```shell
+```bash
 # terminal window 2:
 cd gdk-geo
 rm -r postgresql
@@ -70,14 +70,14 @@ rm -r postgresql
 
 Now we need to add a symbolic link to the primary instance's data folder:
 
-```
+```bash
 # From the gdk-geo folder:
 ln -s ../gdk-ee/postgresql postgresql-primary
 ```
 
 Initialize a slave database and setup replication:
 
-```
+```bash
 # terminal window 2:
 make postgresql-replication-secondary
 ```
@@ -93,7 +93,7 @@ tests will fail to run.
 
 You can add the tracking database to the primary node by running:
 
-```
+```bash
 # From the gdk-ee folder:
 make geo-setup
 ```
