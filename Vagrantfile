@@ -113,6 +113,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.network "forwarded_port", guest: 3000, host: 3000, auto_correct: true
 
+  # Forward SSH agent to allow SSH git operations
+  config.ssh.forward_agent = true
+
   config.vm.provider "docker" do |d, override|
     d.build_dir = "vagrant"
     d.privileged      = true
