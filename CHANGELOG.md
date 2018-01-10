@@ -4,6 +4,10 @@ This Changelog tracks major changes to the GitLab Development Kit,
 such as dependency updates (those not handled by Bundler) and new
 features.
 
+## 2018-01-11
+
+- Added ChomeDriver to deprecate PhantomJS. !423 !380
+
 ## 2017-11-24
 
 - Add Docker-in-Docker support in Vagrantfile (needed to run GitLab Container Registry)
