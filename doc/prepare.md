@@ -21,6 +21,7 @@ during installation.
    of Go available, visit the official website for [go] for installation instructions.
 1. [Google Chrome] 60 or greater with [ChromeDriver] version 2.33 or greater.
    Visit the [installation details](https://sites.google.com/a/chromium.org/chromedriver/getting-started) for more details.
+1. PostgreSQL 9.x, PostgreSQL 10.x is not yet supported.
 
 [rbenv]: https://github.com/rbenv/rbenv
 [chruby]: https://github.com/postmodern/chruby
