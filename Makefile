@@ -123,7 +123,7 @@ gitaly/config.toml:
 	  -e "s|/home/git|${gitlab_development_root}|" ${gitaly_clone_dir}/config.toml.example > $@
 
 prom-setup:
-	if [ "$(uname -s)" == "Linux" ]; then \
+	if [ "$(uname -s)" = "Linux" ]; then \
 		sed -i -e 's/docker\.for\.mac\.localhost/localhost/g' ${gitlab_development_root}/prometheus/prometheus.yml; \
 	fi
 
