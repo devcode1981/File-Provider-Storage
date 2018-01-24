@@ -1,11 +1,27 @@
-#!/bin/bash
-if [ "$#" -ne 2 ]; then
-    echo "Illegal number of parameters"
+#!/usr/bin/env ruby
+
+if ARGV.length != 2
+  puts "Illegal number of parameters"
+  exit 1
+end
+
+postgres_dir = File.expand_path(ARGV[0])
+postgres_port = ARGV[1]
+timestamp = Time.now.to_i
+config_file = File.join(postgres_dir, 'data', 'postgresql.conf')
+host_os = RbConfig::CONFIG['host_os']
+
+unless File.file?(config_file)
+  puts "PostgreSQL config file: #{config_file} does not exist."
+  exit 1
+end
+
+case host_os
+  when /darwin/i
+    system(%Q(sed -E -i ".{#{timestamp}}.bak" "s/(port[ \t]=[ \t])([0-9]{4,6})/\1#{postgres_port}/g" #{config_file}))
+  when /linux/i
+    system(%Q(sed -i".{#{timestamp}}.bak" -r "s/(port[ \t]=[ \t])([0-9]{4,6})/\1#{postgres_port}/g" #{config_file}))
+  else
+    puts "Unsupported platform: #{host_os.inspect}"
     exit 1
-fi
-
-postgres_dir="$( cd "$1" && pwd )"
-postgres_port=$2
-timestamp="$(date +"%s")"
-
-sed -E -i ".{$timestamp}.bak" "s/(port[ \t]=[ \t])([0-9]{4,6})/\1${postgres_port}/g" $postgres_dir/data/postgresql.conf
+end
