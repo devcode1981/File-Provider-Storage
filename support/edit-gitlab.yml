@@ -49,5 +49,52 @@ a
     path: ../registry/storage/
     issuer: gitlab-issuer
 .
+1
+/^  artifacts:/
+/^    enabled:/
+c
+    enabled: true
+.
+a
+    object_store:
+      enabled: ${object_store_enabled:=false}
+      remote_directory: artifacts
+      connection:
+        provider: AWS
+        aws_access_key_id: minio
+        aws_secret_access_key: gdk-minio
+        region: gdk
+        endpoint: 'http://127.0.0.1:${object_store_port:-9000}'
+        path_style: true
+.
+/^  lfs:/
+/^    enabled:/
+c
+    enabled: true
+.
+/^    object_store:/
+/^      enabled:/
+c
+      enabled: ${object_store_enabled:=false}
+.
+/^      remote_directory:/
+c
+      remote_directory: lfs-objects
+.
+/^      connection:/
+/^        aws_access_key_id:/
+c
+        aws_access_key_id: minio
+.
+/^        aws_secret_access_key:/
+c
+        aws_secret_access_key: gdk-minio
+.
+/^        region:/
+c
+        region: gdk
+        endpoint: 'http://127.0.0.1:${object_store_port:-9000}'
+        path_style: true
+.
 wq
 EOF
