@@ -35,12 +35,6 @@ during installation.
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
-__NOTE__: If you are using macOS 10.13 (High Sierra) with Ruby 2.3.6, please make sure to export the
-`OBJC_DISABLE_INITIALIZE_FORK_SAFETY` environment variable to `YES` (e.g. by typing
-`env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES gdk run app`) to work-around
-[this issue](https://blog.phusion.nl/2017/10/13/why-ruby-app-servers-break-on-macos-high-sierra-and-what-can-be-done-about-it/)
-that causes most Ruby app servers to crash on launch on High Sierra.
-
 #### Install OS X prerequisites using homebrew
 
 ```
