@@ -21,7 +21,7 @@ ldap:
       host: 127.0.0.1
       port: 3890
       uid: 'uid'
-      method: 'plain' # "tls" or "ssl" or "plain"
+      encryption: 'plain' # "tls" or "ssl" or "plain"
       base: 'dc=example,dc=com'
       user_filter: ''
       group_base: 'ou=groups,dc=example,dc=com'
@@ -32,7 +32,7 @@ ldap:
     #   host: 127.0.0.1
     #   port: 3890
     #   uid: 'uid'
-    #   method: 'plain' # "tls" or "ssl" or "plain"
+    #   encryption: 'plain' # "tls" or "ssl" or "plain"
     #   base: 'dc=example-alt,dc=com'
     #   user_filter: ''
     #   group_base: 'ou=groups,dc=example-alt,dc=com'
