@@ -67,6 +67,7 @@ a
         endpoint: 'http://127.0.0.1:${object_store_port:-9000}'
         path_style: true
 .
+1
 /^  lfs:/
 /^    enabled:/
 c
