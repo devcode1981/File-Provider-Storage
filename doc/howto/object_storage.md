@@ -4,49 +4,18 @@ GitLab Enterprise Edition has Object Storage integration. In this
 document we explain how to set this up in your development
 environment.
 
-## minio Setup
+In order to take advantage of the GDK integration you must first install
+[minio](https://docs.minio.io/docs/minio-quickstart-guide) binary (no docker image).
 
-1. Spin up minio container https://github.com/minio/minio
+You can enable the object store writing `true` in `object_store_enabled` file and
+reconfiguring your `gdk` installation.
 
-    ```sh
-    docker pull minio/minio
-    docker run -p 9000:9000 minio/minio server /data
-    ```
+```sh
+echo true > object_store_enabled
+gdk reconfigure
+```
 
-1. Copy AccessKey and SecretKey printed in terminal to 'gitlab.yml' as described below
+Object store port defaults to `9000` but it can be changed writing the desired value
+in `object_store_port`.
 
-    ```sh
-    AccessKey: XXXXXXXXXXXXXXX
-    SecretKey: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-    ```
-
-1. Visit the console on http://127.0.0.1:9000
-1. Create a new bucket from the right-bottom button. Bucket name is "artifacts".
-
-## GDK Setup
-
-1. Configure gitlab/config/gitlab.yml
-
-    ```yml
-    development:
-      <<: *base
-      ## Build Artifacts
-      artifacts:
-        enabled: true
-        # The location where build artifacts are stored (default: shared/artifacts).
-        # path: shared/artifacts
-        object_store:
-          enabled: true
-          remote_directory: artifacts # The bucket name
-          background_upload: true # Temporary option to limit automatic upload (Default: true)
-          connection:
-            provider: AWS # Only AWS supported at the moment
-            aws_access_key_id: XXXXXXXXXXXXXXX # AccessKey 
-            aws_secret_access_key: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX # SecretKey 
-            region: eu-central-1
-            host: 'localhost'
-            endpoint: 'http://127.0.0.1:9000'
-            path_style: true
-    ```
-
-1. Run GDK
+Changing port number requires `gdk reconfigure`.

@@ -26,8 +26,10 @@ registry_port = $(shell cat registry_port 2>/dev/null || echo '5000')
 gitlab_from_container = $(shell [ "$(uname)" = "Linux" ] && echo 'localhost' || echo 'docker.for.mac.localhost')
 postgresql_port = $(shell cat postgresql_port 2>/dev/null || echo '5432')
 postgresql_geo_port = $(shell cat postgresql_geo_port 2>/dev/null || echo '5432')
+object_store_enabled = $(shell cat object_store_enabled 2>/dev/null || echo 'false')
+object_store_port = $(shell cat object_store_port 2>/dev/null || echo '9000')
 
-all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup gitaly-setup prom-setup
+all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup gitaly-setup prom-setup object-storage-setup
 
 # Set up the GitLab Rails app
 
@@ -42,7 +44,10 @@ gitlab/config/gitlab.yml:
 	sed -e "s|/home/git|${gitlab_development_root}|"\
 	  -e "s|/usr/bin/git|${git_bin}|"\
 	  gitlab/config/gitlab.yml.example > gitlab/config/gitlab.yml
-	hostname=${hostname} port=${port} webpack_port=${webpack_port} registry_enabled=${registry_enabled} registry_port=${registry_port} support/edit-gitlab.yml gitlab/config/gitlab.yml
+	hostname=${hostname} port=${port} webpack_port=${webpack_port}\
+		registry_enabled=${registry_enabled} registry_port=${registry_port}\
+		object_store_enabled=${object_store_enabled} object_store_port=${object_store_port}\
+		support/edit-gitlab.yml gitlab/config/gitlab.yml
 
 gitlab/config/database.yml:
 	sed -e "s|/home/git|${gitlab_development_root}|"\
@@ -425,6 +430,11 @@ registry/storage:
 registry/config.yml:
 	cp registry/config.yml.example $@
 	gitlab_host=${gitlab_from_container} gitlab_port=${port} registry_port=${registry_port} support/edit-registry-config.yml $@
+
+object-storage-setup: minio/data/lfs-objects minio/data/artifacts
+
+minio/data/%:
+	mkdir -p $@
 
 pry:
 	grep '^#rails-web:' Procfile || (printf ',s/^rails-web/#rails-web/\nwq\n' | ed -s Procfile)
