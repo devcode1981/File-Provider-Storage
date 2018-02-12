@@ -18,9 +18,9 @@ end
 
 case host_os
   when /darwin/i
-    system(%Q(sed -E -i ".{#{timestamp}}.bak" "s/(port[ \t]=[ \t])([0-9]{4,6})/\1#{postgres_port}/g" #{config_file}))
+    system(%Q(sed -E -i ".{#{timestamp}}.bak" "s/(port[ \\t]=[ \\t])([0-9]{4,6})/\\1#{postgres_port}/g" #{config_file}))
   when /linux/i
-    system(%Q(sed -i".{#{timestamp}}.bak" -r "s/(port[ \t]=[ \t])([0-9]{4,6})/\1#{postgres_port}/g" #{config_file}))
+    system(%Q(sed -i".{#{timestamp}}.bak" -r "s/(port[ \\t]=[ \\t])([0-9]{4,6})/\\1#{postgres_port}/g" #{config_file}))
   else
     puts "Unsupported platform: #{host_os.inspect}"
     exit 1
