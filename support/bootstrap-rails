@@ -1,25 +1,63 @@
 #!/usr/bin/env ruby
+require 'socket'
+require 'fileutils'
 
-success = true
-begin
-  log_options = { out: 'bootstrap-rails.log', err: %i[child out] }
-  foreman_pids = [
-    spawn('./run', 'db', log_options),
-    spawn('./run', 'gitaly', log_options)
-  ]
+LOG_FILE = 'bootstrap-rails.log'.freeze
 
-  [
-    %w[support/wait-postgresql-ready support/exec-cd gitlab bundle exec rake db:create],
-    %w[support/exec-cd gitlab bundle exec rake dev:setup]
-  ].each do |cmd|
-    success &&= system({ 'force' => 'yes', 'BOOTSTRAP' => '1' }, *cmd)
+def main
+  success = true
+  begin
+    FileUtils.rm_f(LOG_FILE)
+
+    log_options = { out: [LOG_FILE, 'a'], err: %i[child out] }
+    foreman_pids = [
+      spawn('./run', 'db', log_options),
+      spawn('./run', 'gitaly', log_options)
+    ]
+
+    try_connect_gitaly!
+
+    [
+      %w[support/wait-postgresql-ready support/exec-cd gitlab bundle exec rake db:create],
+      %w[support/exec-cd gitlab bundle exec rake dev:setup]
+    ].each do |cmd|
+      success &&= system({ 'force' => 'yes', 'BOOTSTRAP' => '1' }, *cmd)
+    end
+  ensure
+    foreman_pids.each { |pid| Process.kill('TERM', pid) }
   end
-ensure
-  foreman_pids.each { |pid| Process.kill('TERM', pid) }
+
+  foreman_pids.each { |pid| Process.wait(pid) }
+
+  exit true if success
+
+  abort "#{$PROGRAM_NAME} failed"
 end
 
-foreman_pids.each { |pid| Process.wait(pid) }
+def try_connect_gitaly!
+  print 'Waiting for Gitaly to boot'
 
-exit true if success
+  sleep_time = 0.1
+  repeats = 100
 
-abort "#{$PROGRAM_NAME} failed"
+  repeats.times do
+    sleep sleep_time
+    print '.'
+
+    begin
+      UNIXSocket.new('gitaly.socket').close
+      puts ' OK'
+
+      return
+    rescue Errno::ENOENT, Errno::ECONNREFUSED
+    end
+  end
+
+  puts " failed to connect to gitaly after #{repeats * sleep_time}s"
+  puts
+  system('grep', 'gitaly\.1', LOG_FILE)
+
+  abort
+end
+
+main
