@@ -14,7 +14,7 @@ during installation.
    system Ruby
 1. Bundler, which you can install with `gem install bundler`
 1. Git version of 2.14.3 or higher
-1. Node 6.x or newer and Yarn 0.17 or newer.  If your package manage does not
+1. Node 6.x or newer and Yarn 0.17 or newer.  If your package manager does not
    have up-to-date versions of node or yarn available, visit the official
    websites for [node] and [yarn] for installation instructions.
 1. Go 1.8.3 or newer. If your package manager does not have up-to-date versions
