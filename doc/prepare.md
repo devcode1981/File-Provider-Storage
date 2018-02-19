@@ -112,7 +112,7 @@ This is tested on CentOS 6.5:
 ```
 sudo yum install http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-2.noarch.rpm
 sudo yum install https://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-sudo yum install postgresql95-server postgresql95-devel libicu-devel cmake gcc-c++ redis ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 libstdc++.so.6 nodejs npm re2
+sudo yum install postgresql95-server postgresql95-devel libicu-devel git cmake gcc-c++ redis ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 libstdc++.so.6 nodejs npm re2
 
 bundle config build.pg --with-pg-config=/usr/pgsql-9.5/bin/pg_config
 # This example uses Ruby 2.3.6. Substitute with the current version if different.
