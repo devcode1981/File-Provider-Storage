@@ -61,6 +61,8 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 sudo apt-get install software-properties-common python-software-properties
 # This PPA contains an up-to-date version of Go
 sudo add-apt-repository ppa:longsleep/golang-backports
+# This PPA contains an up-to-date version of git
+sudo add-apt-repository ppa:git-core/ppa
 sudo apt-get update
 sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs nodejs-legacy npm libre2-dev libkrb5-dev libsqlite3-dev golang-1.8-go ed pkg-config
 ```
