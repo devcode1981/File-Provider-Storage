@@ -97,5 +97,31 @@ c
         endpoint: 'http://127.0.0.1:${object_store_port:-9000}'
         path_style: true
 .
+1
+/^  uploads:/
+/^    object_store:/
+/^      enabled:/
+c
+      enabled: ${object_store_enabled:=false}
+.
+/^      remote_directory:/
+c
+      remote_directory: uploads
+.
+/^      connection:/
+/^        aws_access_key_id:/
+c
+        aws_access_key_id: minio
+.
+/^        aws_secret_access_key:/
+c
+        aws_secret_access_key: gdk-minio
+.
+/^        region:/
+c
+        region: gdk
+        endpoint: 'http://127.0.0.1:${object_store_port:-9000}'
+        path_style: true
+.
 wq
 EOF
