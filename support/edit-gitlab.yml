@@ -77,6 +77,7 @@ c
 /^      enabled:/
 c
       enabled: ${object_store_enabled:=false}
+      direct_upload: true
 .
 /^      remote_directory:/
 c
