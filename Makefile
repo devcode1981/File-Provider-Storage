@@ -433,7 +433,7 @@ registry/config.yml:
 	cp registry/config.yml.example $@
 	gitlab_host=${gitlab_from_container} gitlab_port=${port} registry_port=${registry_port} support/edit-registry-config.yml $@
 
-object-storage-setup: minio/data/lfs-objects minio/data/artifacts
+object-storage-setup: minio/data/lfs-objects minio/data/artifacts minio/data/uploads
 
 minio/data/%:
 	mkdir -p $@
