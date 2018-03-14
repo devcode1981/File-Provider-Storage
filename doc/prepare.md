@@ -44,12 +44,12 @@ bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/includ
 
 #### Install OS X prerequisites using macports
 
-We are using PostgreSQL-9.5 in the following example. If you want to use another version, please adjust paths accordingly.
+We are using PostgreSQL-9.6 in the following example. If you want to use another version, please adjust paths accordingly.
 
 ```
-sudo port install git redis libiconv postgresql95-server icu pkgconfig cmake nodejs4 go openssl npm2 yarn coreutils re2
+sudo port install git redis libiconv postgresql96-server icu pkgconfig cmake nodejs4 go openssl npm2 yarn coreutils re2
 bundle config build.eventmachine --with-cppflags=-I/opt/local/include/openssl
-echo 'export PATH=/opt/local/lib/postgresql95/bin/:$PATH' >> ~/.profile
+echo 'export PATH=/opt/local/lib/postgresql96/bin/:$PATH' >> ~/.profile
 ```
 
 ### Ubuntu
@@ -112,11 +112,11 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 This is tested on CentOS 6.5:
 
 ```
-sudo yum install http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-2.noarch.rpm
+sudo yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-6-x86_64/pgdg-centos96-9.6-3.noarch.rpm
 sudo yum install https://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-sudo yum install postgresql95-server postgresql95-devel libicu-devel git cmake gcc-c++ redis ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 libstdc++.so.6 nodejs npm re2 re2-devel
+sudo yum install postgresql96-server postgresql96-devel libicu-devel git cmake gcc-c++ redis ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 libstdc++.so.6 nodejs npm re2 re2-devel
 
-bundle config build.pg --with-pg-config=/usr/pgsql-9.5/bin/pg_config
+bundle config build.pg --with-pg-config=/usr/pgsql-9.6/bin/pg_config
 # This example uses Ruby 2.3.6. Substitute with the current version if different.
 sudo rvm install 2.3.6
 sudo rvm use 2.3.6
