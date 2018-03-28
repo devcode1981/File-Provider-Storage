@@ -12,6 +12,8 @@ gitaly_proto_repo = https://gitlab.com/gitlab-org/gitaly-proto.git
 gitaly_gopath = $(abspath ./gitaly)
 gitaly_clone_dir = ${gitaly_gopath}/src/gitlab.com/gitlab-org/gitaly
 gitaly_proto_clone_dir = ${gitaly_gopath}/src/gitlab.com/gitlab-org/gitaly-proto
+gitlab_pages_repo = https://gitlab.com/gitlab-org/gitlab-pages.git
+gitlab_pages_clone_dir = gitlab-pages/src/gitlab.com/gitlab-org/gitlab-pages
 gitlab_docs_repo = https://gitlab.com/gitlab-com/gitlab-docs.git
 gitlab_development_root = $(shell pwd)
 gitaly_assembly_dir = ${gitlab_development_root}/gitaly/assembly
@@ -38,11 +40,12 @@ postgresql_port = $(shell cat postgresql_port 2>/dev/null || echo '5432')
 postgresql_geo_port = $(shell cat postgresql_geo_port 2>/dev/null || echo '5432')
 object_store_enabled = $(shell cat object_store_enabled 2>/dev/null || echo 'false')
 object_store_port = $(shell cat object_store_port 2>/dev/null || echo '9000')
+gitlab_pages_port = $(shell cat gitlab_pages_port 2>/dev/null || echo '3010')
 rails_bundle_install_cmd := bundle install --jobs 4 --without production $(if $(shell mysql_config --libs 2>/dev/null),--with,--without) mysql
 elasticsearch_version = 5.5.3
 elasticsearch_tar_gz_sha1 = 81af33ec3ae08a5294133ade331de8e6aa0b146a
 
-all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup gitaly-setup prom-setup object-storage-setup
+all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup gitlab-pages-setup support-setup gitaly-setup prom-setup object-storage-setup
 
 # Set up the GitLab Rails app
 
@@ -63,6 +66,7 @@ gitlab/config/gitlab.yml:
 		registry_host=${registry_host} registry_external_port=${registry_external_port}\
 		registry_enabled=${registry_enabled} registry_port=${registry_port}\
 		object_store_enabled=${object_store_enabled} object_store_port=${object_store_port}\
+		gitlab_pages_port=${gitlab_pages_port}\
 		support/edit-gitlab.yml gitlab/config/gitlab.yml
 
 gitlab/config/database.yml:
@@ -260,6 +264,7 @@ Procfile:
 		-e "s|/usr/sbin/sshd|${sshd_bin}|"\
 		-e "s|postgres |${postgres_bin_dir}/postgres |"\
 		-e "s|DEV_SERVER_PORT=3808 |DEV_SERVER_PORT=${webpack_port} |"\
+		-e "s|-listen-http \":3010\" |-listen-http \":${gitlab_pages_port}\" -artifacts-server http://${hostname}:${port}/api/v4 |"\
 		$@.example > $@
 	if [ -f .vagrant_enabled ]; then \
 		echo "0.0.0.0" > host; \
@@ -398,6 +403,26 @@ ${gitlab_workhorse_clone_dir}/.git:
 
 gitlab-workhorse/.git/pull:
 	cd ${gitlab_workhorse_clone_dir} && \
+		git stash &&\
+		git checkout master &&\
+		git pull --ff-only
+
+gitlab-pages-setup: gitlab-pages/bin/gitlab-pages
+
+gitlab-pages-update:	${gitlab_pages_clone_dir}/.git gitlab-pages/.git/pull gitlab-pages-clean-bin gitlab-pages/bin/gitlab-pages
+
+gitlab-pages-clean-bin:
+	rm -rf gitlab-pages/bin
+
+.PHONY:	gitlab-pages/bin/gitlab-pages
+gitlab-pages/bin/gitlab-pages: ${gitlab_pages_clone_dir}/.git
+	GOPATH=${gitlab_development_root}/gitlab-pages go install gitlab.com/gitlab-org/gitlab-pages
+
+${gitlab_pages_clone_dir}/.git:
+	git clone ${gitlab_pages_repo} ${gitlab_pages_clone_dir}
+
+gitlab-pages/.git/pull:
+	cd ${gitlab_pages_clone_dir} && \
 		git stash &&\
 		git checkout master &&\
 		git pull --ff-only
