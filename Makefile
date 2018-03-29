@@ -310,12 +310,7 @@ postgresql/geo:
 	grep '^postgresql-geo:' Procfile || (printf ',s/^#postgresql-geo/postgresql-geo/\nwq\n' | ed -s Procfile)
 	support/bootstrap-geo
 
-postgresql/geo-fdw: postgresql/geo-fdw/dev/create postgresql/geo-fdw/test/create
-
-postgresql/geo-fdw/dev/%: dbname = gitlabhq_geo_development
-postgresql/geo-fdw/dev/%: fdw_dbname = gitlabhq_development
-postgresql/geo-fdw/dev/%: fdw_host = $(postgres_dir)
-postgresql/geo-fdw/dev/%: fdw_port = $(postgresql_port)
+postgresql/geo-fdw: postgresql/geo-fdw/development/create postgresql/geo-fdw/test/create
 
 # Function to read values from database.yml, parameters:
 #   - file: e.g. database, database_geo
@@ -323,10 +318,10 @@ postgresql/geo-fdw/dev/%: fdw_port = $(postgresql_port)
 #   - value: e.g. host, port
 from_db_config = $(shell grep -A6 "$(2):" ${gitlab_development_root}/gitlab/config/$(1).yml | grep -m1 "$(3):" | cut -d ':' -f 2 | tr -d ' ')
 
-postgresql/geo-fdw/test/%: dbname = $(call from_db_config,database_geo,test,database)
-postgresql/geo-fdw/test/%: fdw_dbname = $(call from_db_config,database,test,database)
-postgresql/geo-fdw/test/%: fdw_host = $(call from_db_config,database,test,host)
-postgresql/geo-fdw/test/%: fdw_port = $(call from_db_config,database,test,port)
+postgresql/geo-fdw/%: dbname = $(call from_db_config,database_geo,$*,database)
+postgresql/geo-fdw/%: fdw_dbname = $(call from_db_config,database,$*,database)
+postgresql/geo-fdw/%: fdw_host = $(call from_db_config,database,$*,host)
+postgresql/geo-fdw/%: fdw_port = $(call from_db_config,database,$*,port)
 postgresql/geo-fdw/test/%: rake_namespace = test:
 
 postgresql/geo-fdw/%/create:
