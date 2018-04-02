@@ -87,6 +87,38 @@ gem install charlock_holmes -v '0.7.5' -- --with-cppflags=-DU_USING_ICU_NAMESPAC
 
 0.7.6 fixes this issue. See [this issue](https://github.com/brianmario/charlock_holmes/issues/126) for more details.
 
+## Unable to build and install pg gem on gdk run
+
+After installing PostgreSQL with brew you will have to set the proper path to PostgreSQL.
+You may run into the following errors on running `gdk run`
+```
+Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
+
+    current directory: /Users/janedoe/.rvm/gems/ruby-2.3.3/gems/pg-0.18.4/ext
+/Users/janedoe/.rvm/rubies/ruby-2.3.3/bin/ruby -r ./siteconf20180330-95521-1k5x76v.rb extconf.rb
+checking for pg_config... no
+No pg_config... trying anyway. If building fails, please try again with
+ --with-pg-config=/path/to/pg_config
+
+ ...
+
+An error occurred while installing pg (0.18.4), and Bundler cannot continue.
+Make sure that `gem install pg -v '0.18.4'` succeeds before bundling.
+
+```
+
+This is because the script fails to find the PostgreSQL instance in the path.
+The instructions for this may show up after installing PostgreSQL.
+The example below is from running `brew install postgresql@9.6` on OS X installation.
+For other versions, other platform install and other shell terminal please adjust the path accordingly.
+
+```
+If you need to have this software first in your PATH run:
+  echo 'export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"' >> ~/.bash_profile
+```
+
+Once this is set, run the `gdk run` command again.
+
 ## Error in database migrations when pg_trgm extension is missing
 
 Since GitLab 8.6+ the PostgreSQL extension `pg_trgm` must be installed. If you
