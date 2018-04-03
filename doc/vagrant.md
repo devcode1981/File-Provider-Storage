@@ -9,7 +9,7 @@ after you have set up your Vagrant machine.
 
 Clone the GDK to you local machine. Enter that directory.
 
-Vagrant will use the `Vagrantfile` and other configuration files to perpare your
+Vagrant will use the `Vagrantfile` and other configuration files to prepare your
 container.
 
 ## Vagrant setup
