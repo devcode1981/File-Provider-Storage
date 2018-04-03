@@ -310,29 +310,35 @@ postgresql/geo:
 	grep '^postgresql-geo:' Procfile || (printf ',s/^#postgresql-geo/postgresql-geo/\nwq\n' | ed -s Procfile)
 	support/bootstrap-geo
 
-postgresql/geo-fdw: postgresql/geo-fdw/dev postgresql/geo-fdw/test
+postgresql/geo-fdw: postgresql/geo-fdw/development/create postgresql/geo-fdw/test/create
 
-postgresql/geo-fdw/dev:
-	$(eval dbname := gitlabhq_geo_development)
-	$(eval fdw_dbname := gitlabhq_development)
+# Function to read values from database.yml, parameters:
+#   - file: e.g. database, database_geo
+#   - environment: e.g. development, test
+#   - value: e.g. host, port
+from_db_config = $(shell grep -A6 "$(2):" ${gitlab_development_root}/gitlab/config/$(1).yml | grep -m1 "$(3):" | cut -d ':' -f 2 | tr -d ' ')
 
+postgresql/geo-fdw/%: dbname = $(call from_db_config,database_geo,$*,database)
+postgresql/geo-fdw/%: fdw_dbname = $(call from_db_config,database,$*,database)
+postgresql/geo-fdw/%: fdw_host = $(call from_db_config,database,$*,host)
+postgresql/geo-fdw/%: fdw_port = $(call from_db_config,database,$*,port)
+postgresql/geo-fdw/test/%: rake_namespace = test:
+
+postgresql/geo-fdw/%/create:
 	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE EXTENSION IF NOT EXISTS postgres_fdw;"
-	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE SERVER gitlab_secondary FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$(postgres_dir)', dbname '${fdw_dbname}', port '$(postgresql_port)' );"
+	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE SERVER gitlab_secondary FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$(fdw_host)', dbname '${fdw_dbname}', port '$(fdw_port)' );"
 	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE USER MAPPING FOR current_user SERVER gitlab_secondary OPTIONS (user '$(USER)');"
 	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE SCHEMA IF NOT EXISTS gitlab_secondary;"
 	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "GRANT USAGE ON FOREIGN SERVER gitlab_secondary TO current_user;"
-	cd ${gitlab_development_root}/gitlab && bundle exec rake geo:db:refresh_foreign_tables
+	cd ${gitlab_development_root}/gitlab && bundle exec rake geo:db:${rake_namespace}refresh_foreign_tables
 
-postgresql/geo-fdw/test:
-	$(eval dbname := gitlabhq_geo_test)
-	$(eval fdw_dbname := gitlabhq_test)
+postgresql/geo-fdw/%/drop:
+	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "DROP SERVER gitlab_secondary CASCADE;"
+	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "DROP SCHEMA gitlab_secondary;"
 
-	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE EXTENSION IF NOT EXISTS postgres_fdw;"
-	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE SERVER gitlab_secondary FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$(postgres_geo_dir)', dbname '${fdw_dbname}', port '$(postgresql_geo_port)' );"
-	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE USER MAPPING FOR current_user SERVER gitlab_secondary OPTIONS (user '$(USER)');"
-	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE SCHEMA IF NOT EXISTS gitlab_secondary;"
-	${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "GRANT USAGE ON FOREIGN SERVER gitlab_secondary TO current_user;"
-	cd ${gitlab_development_root}/gitlab && bundle exec rake geo:db:test:refresh_foreign_tables
+postgresql/geo-fdw/%/rebuild:
+	$(MAKE) postgresql/geo-fdw/$*/drop || true
+	$(MAKE) postgresql/geo-fdw/$*/create
 
 .PHONY:	foreman
 foreman:
