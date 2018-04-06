@@ -14,7 +14,14 @@ gem install gitlab-development-kit
 gdk init
 ```
 
-The GDK is now cloned into `./gitlab-development-kit`. Enter that directory.
+The GDK is now cloned into `./gitlab-development-kit`. Enter that directory. Note that this is the default instantiation directory for the `gdk init` command.
+
+If you plan to work with **CE** and **EE** versions side by side, it is recommended that you name the GDK instance during `init` and not use the default directory name. Pick a good naming convention that will allow you to differentiate and switch between the two versions easily.
+
+For example:
+```
+gdk init gdk-ce
+```
 
 ## Install GDK
 
@@ -23,7 +30,7 @@ basic configuration files. Pick one of the methods below. If you don't have
 write access to the upstream repositories, you should use the 'Develop in a fork'
 method.
 
-In either case, use your Ruby version manager to run `gdk install` with the `gitlab-ce` Ruby version.
+In either case, use your Ruby version manager to run `gdk install` with the `gitlab-ce` Ruby version. The `gdk install` command will install from `https://gitlab.com/gitlab-org/gitlab-ce.git` by default.
 
 ### Develop in a fork
 
@@ -57,7 +64,7 @@ gdk install
 
 The recommended way to do development on GitLab Enterprise Edition is
 to create a separate GDK directory for it. Below we call that
-directory `gdk-ee`. We will configure GDK to start GitLab on port 3001
+directory `gdk-ee` following the naming convention from above. We will configure GDK to start GitLab on port 3001
 instead of 3000 so that you can run GDK EE next to CE without port
 conflicts.
 
