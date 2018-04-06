@@ -14,7 +14,7 @@ gem install gitlab-development-kit
 gdk init
 ```
 
-The GDK is now cloned into `./gitlab-development-kit`. Enter that directory. Note that this is the default instantiation directory for the `init` command.
+The GDK is now cloned into `./gitlab-development-kit`. Enter that directory. Note that this is the default instantiation directory for the `gdk init` command.
 
 If you plan to work with **CE** and **EE** versions side by side, it is recommended that you name the GDK instance during `init` and not use the default directory name. Pick a good naming convention that will allow you to differentiate and switch between the two versions easily.
 
