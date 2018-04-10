@@ -4,7 +4,7 @@ GDK can be deployed to Minikube / Kubernetes.
 
 Note that this setup is an experimental phase.
 
-You won't be able to developer GitLab using this strategy yet.
+You won't be able to develop GitLab using this strategy yet.
 
 See [issue about](https://gitlab.com/gitlab-org/gitlab-development-kit/issues/243) for more details.
 
