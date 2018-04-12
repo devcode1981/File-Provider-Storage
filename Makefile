@@ -176,14 +176,12 @@ self-update: unlock-dependency-installers
 
 # Update gitlab, gitlab-shell, gitlab-workhorse and gitaly
 
-update: unlock-dependency-installers gitlab-shell-update gitlab-workhorse-update gitaly-update gitlab-update
+update: ensure-postgres-running unlock-dependency-installers gitlab-shell-update gitlab-workhorse-update gitaly-update gitlab-update
 
-gitlab-update: gitlab/.git/pull gitlab-setup
-	@echo ""
-	@echo "------------------------------------------------------------"
-	@echo "Make sure Postgres is running otherwise db:migrate will fail"
-	@echo "------------------------------------------------------------"
-	@echo ""
+ensure-postgres-running:
+	@test -f ./postgresql/data/postmaster.pid || (echo "ERROR: Postgres is not running.  Either have 'gdk run db' or 'gdk run' running in another shell.." ; exit 1)
+
+gitlab-update: ensure-postgres-running gitlab/.git/pull gitlab-setup
 	cd ${gitlab_development_root}/gitlab && \
 		bundle exec rake db:migrate db:test:prepare
 
