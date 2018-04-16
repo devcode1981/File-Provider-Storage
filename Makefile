@@ -15,6 +15,7 @@ postgres_replication_user = gitlab_replication
 postgres_dir = $(realpath ./postgresql)
 postgres_replica_dir = $(realpath ./postgresql-replica)
 postgres_geo_dir = $(realpath ./postgresql-geo)
+postgres_data_dir = ${postgres_dir}/data
 hostname = $(shell cat hostname 2>/dev/null || echo 'localhost')
 port = $(shell cat port 2>/dev/null || echo '3000')
 username = $(shell whoami)
@@ -179,7 +180,7 @@ self-update: unlock-dependency-installers
 update: ensure-postgres-running unlock-dependency-installers gitlab-shell-update gitlab-workhorse-update gitaly-update gitlab-update
 
 ensure-postgres-running:
-	@test -f ./postgresql/data/postmaster.pid || (echo "ERROR: Postgres is not running.  Either have 'gdk run db' or 'gdk run' running in another shell.." ; exit 1)
+	@test -f ${postgres_data_dir}/postmaster.pid || (echo "ERROR: Postgres is not running.  Either have 'gdk run db' or 'gdk run' running in another shell.." ; exit 1)
 
 gitlab-update: ensure-postgres-running gitlab/.git/pull gitlab-setup
 	cd ${gitlab_development_root}/gitlab && \
@@ -246,7 +247,7 @@ redis/redis.conf:
 postgresql: postgresql/data
 
 postgresql/data:
-	${postgres_bin_dir}/initdb --locale=C -E utf-8 postgresql/data
+	${postgres_bin_dir}/initdb --locale=C -E utf-8 ${postgres_data_dir}
 	support/bootstrap-rails
 
 postgresql/port:
@@ -262,10 +263,10 @@ postgresql-replication-secondary: postgresql-replication/data postgresql-replica
 postgresql-replication-primary-create-slot: postgresql-replication/slot
 
 postgresql-replication/data:
-	${postgres_bin_dir}/initdb --locale=C -E utf-8 postgresql/data
+	${postgres_bin_dir}/initdb --locale=C -E utf-8 ${postgres_data_dir}
 
 postgresql-replication/access:
-	cat support/pg_hba.conf.add >> postgresql/data/pg_hba.conf
+	cat support/pg_hba.conf.add >> ${postgres_data_dir}/pg_hba.conf
 
 postgresql-replication/role:
 	${postgres_bin_dir}/psql -h ${postgres_dir} -p ${postgresql_port} -d postgres -c "CREATE ROLE ${postgres_replication_user} WITH REPLICATION LOGIN;"
@@ -277,7 +278,7 @@ postgresql-replication/backup:
 	psql -h ${postgres_primary_dir} -p ${postgres_primary_port} -d postgres -c "select pg_start_backup('base backup for streaming rep')"
 	rsync -cva --inplace --exclude="*pg_xlog*" --exclude="*.pid" ${postgres_primary_dir}/data postgresql
 	psql -h ${postgres_primary_dir} -p ${postgres_primary_port} -d postgres -c "select pg_stop_backup(), current_timestamp"
-	./support/recovery.conf ${postgres_primary_dir} ${postgres_primary_port} > postgresql/data/recovery.conf
+	./support/recovery.conf ${postgres_primary_dir} ${postgres_primary_port} > ${postgres_data_dir}/recovery.conf
 	$(MAKE) postgresql/port
 
 postgresql-replication/slot:
