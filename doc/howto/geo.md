@@ -20,7 +20,7 @@ gdk init gdk-geo
 cd gdk-geo
 echo 3002 > port
 echo 3807 > webpack_port
-gdk install gitlab_repo=https://gitlab.com/gitlab-org/gitlab-ee.git
+gdk install gitlab_repo=../gdk-ee/gitlab
 make geo-setup
 ```
 
