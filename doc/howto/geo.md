@@ -21,6 +21,7 @@ cd gdk-geo
 echo 3002 > port
 echo 3807 > webpack_port
 gdk install gitlab_repo=../gdk-ee/gitlab
+# You can cancel (Ctrl-C) seeding when it gets to that point since we will delete the data anyway
 make geo-setup
 ```
 
