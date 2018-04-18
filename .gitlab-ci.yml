@@ -95,7 +95,7 @@ test:install:
     - git fetch
     - git checkout $CI_COMMIT_SHA
     - netstat -lpt
-    - gdk install
+    - IGNORE_POSTGRES_WARNING=true gdk install
     - support/set-gitlab-upstream
     - killall node || true
     - gdk run &

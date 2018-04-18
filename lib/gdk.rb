@@ -28,9 +28,11 @@ module GDK
     when 'install'
       exec(MAKE, *ARGV, chdir: $gdk_root)
     when 'update'
-      # Run `make self-update` separately in case the Makefile is updated.
       # Otherwise we would miss it and end up in a weird state.
+      puts "\n> Running `make self-update` separately in case the Makefile is updated..\n\n"
       system(MAKE, 'self-update', chdir: $gdk_root)
+
+      puts "\n> Running `make self-update update`..\n\n"
       exec(MAKE, 'self-update', 'update', chdir: $gdk_root)
     when 'diff-config'
       require_relative './config_diff.rb'
