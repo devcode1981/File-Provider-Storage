@@ -20,7 +20,9 @@ gdk init gdk-geo
 cd gdk-geo
 echo 3002 > port
 echo 3807 > webpack_port
-gdk install gitlab_repo=https://gitlab.com/gitlab-org/gitlab-ee.git
+gdk install gitlab_repo=../gdk-ee/gitlab
+# You can cancel (Ctrl-C) seeding when it gets to that point since we will delete the data anyway
+gdk run db
 make geo-setup
 ```
 
@@ -136,3 +138,23 @@ to set up [SSH](ssh.md), including [SSH key lookup from database](ssh.md#ssh-key
 1. Fill in the full URL of the secondary, e.g. `http://localhost:3002/`
 1. **Do not** check the box 'This is a primary node'.
 1. Click the **Add node** button.
+
+## Troubleshooting
+
+### postgresql-geo/data exists but is not empty
+
+If you see this error during setup because you have already run `make geo-setup` once:
+
+```
+initdb: directory "postgresql-geo/data" exists but is not empty
+If you want to create a new database system, either remove or empty
+the directory "postgresql-geo/data" or run initdb
+with an argument other than "postgresql-geo/data".
+make: *** [postgresql/geo] Error 1
+```
+
+Then you may delete or move that data in order to run `make geo-setup` again.
+
+```
+$ mv postgresql-geo/data postgresql-geo/data.backup
+```
