@@ -42,10 +42,10 @@ Kubectl is required for Minikube to function.
 
     ```
     ## For macOS
-    curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.17.1/minikube-darwin-amd64
+    curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.26.1/minikube-darwin-amd64
 
     ## For Linux
-    curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.17.1/minikube-linux-amd64
+    curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.26.1/minikube-linux-amd64
     ```
 
 1. Then, add it to your path:
@@ -55,30 +55,26 @@ Kubectl is required for Minikube to function.
     sudo mv ./minikube /usr/local/bin/
     ```
 
-## Set the Minikube default VM driver
+## Install a virtualization driver
 
-We need to install a VM in order to be able to use Minikube. Xhyve is one method,
-unless you have VMware Fusion or Virtual box installed.
 
-See the [Minikube drivers documentation](https://github.com/kubernetes/minikube/blob/master/DRIVERS.md)
-
-Once you have the VM provider of your choice installed, set it as the default
-VM driver:
-
-```
-minikube config set vm-driver xhyve
-```
-
-Replace `xhyve` with `virtuabox`, `vmware` or `kvm` depending on what VM provider
-you chose to use.
+Minikube requires virtualization. Install the appropriate driver for your operation system: [MacOS](https://github.com/kubernetes/minikube/blob/master/docs/drivers.md#hyperkit-driver) or [Linux](https://github.com/kubernetes/minikube/blob/master/docs/drivers.md#kvm2-driver).
 
 ### Start Minikube
 
 The following command will start minikube, running the first few containers
-with Kubernetes components:
+with Kubernetes components.
+
+For MacOS:
 
 ```
-minikube start
+minikube start --vm-driver hyperkit --disk-size=20g 
+```
+
+For Linux:
+
+```
+minikube start --vm-driver kvm2 --disk-size=20g 
 ```
 
 ### Open the Kubernetes Dashboard
@@ -88,26 +84,6 @@ You can use this for future troubleshooting.
 
 ```
 minikube dashboard
-```
-
-## Launch Prometheus
-
-Next, we tell Kubernetes to launch an instance of Prometheus, and we provide
-the configuration in the `ConfigMap`.
-
-```
-kubectl apply -f support/prometheus/prometheus-configmap.yml
-kubectl apply -f support/prometheus/prometheus-svc.yml
-kubectl apply -f support/prometheus/prometheus-deployment.yml
-```
-
-## Get Prometheus Service URL
-
-The following command will display the URL to access the newly started Prometheus
-server. Browse to it to ensure it is operational:
-
-```
-minikube service --url prometheus
 ```
 
 ## Configure GDK to listen to more than localhost.
@@ -140,42 +116,46 @@ Now that we have GDK running, we need to go and create a project with CI/CD
 set up. The easiest way to do this, is to simply import from an existing project
 with a simplified `gitlab-ci.yml`.
 
-Import https://gitlab.com/joshlambert/hello-world.git, to use a very simple
-CI/CD pipeline with no requirements (it just spins up a hello-world container).
+Import `https://gitlab.com/joshlambert/autodevops-deploy.git`, to use a very simple
+CI/CD pipeline with no requirements, based on AutoDevOps. It contains just the `deploy` stages and uses a static image, since the GDK does not contain a registry.
 
-## Edit the Runner's configMap yaml file
+## Connect your cluster
 
-This file configures the Runner to talk to GDK, and we need to edit two sections
-of this file.
+1. In a terminal, run `minikube ip` to get the API endpoint of your cluster.
 
-1. Open it with your editor:
+1. Next go back to your Kubernetes cluster dashboard. If it is not open, you can open one by running `minikube dashboard`.
 
-    ```
-    support/prometheus/gitlab-runner-docker-configmap.yml
-    ```
+1. At bottom of the page you will find a list of secrets, with one named `default`. Click on it to view it, you will need these values later.
 
-1. Replace the existing IP with your local IP address that you found when you
-   configured `gitlab.yml`.
-1. Replace the registration token with the Runner's token of your project. Find
-   it under **Project ➔ Settings ➔ CI/CD Pipelines ➔ Runner token**.
+1. Go to CI/CD -> Kubernetes, and add a cluster. Select the option to add an existing cluster.
 
-    >**Note:**
-    If your project's token contains uppercase characters, it will fail
-    due to a bug in the Runner. You can manually set the token further down
-    the CI/CD settings screen. Set it to all lowercase letters and numbers.
+1. Enter any value for the `Kubernetes cluster name`.
+
+1. For `API URL`, enter `https://<MINIKUBE_IP>:8443` using the value from step 1.
+
+1. For `CA Certificate`, paste in the value from your Kubernetes secret.
+
+1. Similarly for `Token`, paste the value from the Kubernetes secret.
 
 1. Save your changes.
 
-## Deploy GitLab Runner
+## Disable RBAC
 
-Use the following yaml files to deploy GitLab Runner:
+AutoDevOps and Kubernetes app deployments do not yet support RBAC. To disable RBAC in your cluster, run the following command:
 
 ```
-kubectl apply -f support/prometheus/gitlab-runner-docker-configmap.yml
-kubectl apply -f support/prometheus/gitlab-runner-docker-deployment.yml
+kubectl create clusterrolebinding permissive-binding \
+  --clusterrole=cluster-admin \
+  --user=admin \
+  --user=kubelet \
+  --group=system:serviceaccounts
 ```
 
-You can view the Pod logs to confirm it registered successfully.
+## Deploy Helm Tiller, Prometheus, and GitLab Runner
+
+Back in the GDK on the cluster screen, you should now be able to deploy Helm Tiller. Once complete, also deploy a Runner and Prometheus. 
+
+If you get an error about an API token not yet being created, wait a minute or two and try again.
 
 ## Run a Pipeline to deploy to an Environment
 
@@ -192,17 +172,6 @@ To retrieve the URL:
 ```
 minikube service production
 ```
-
-If the deploy failed, you may need to edit the project's runner token to not
-include capital letters. (See Note in the step above.)
-
-## Configure Prometheus Service Integration
-
-Finally, we are ready to configure the Prometheus integration.
-
-1. Go to **Project ➔ Settings ➔ Integrations ➔ Prometheus**.
-1. Enter the [Prometheus URL](#get-prometheus-service-url) and click Active.
-1. Save and test.
 
 ## View Performance metrics
 
