@@ -173,9 +173,6 @@ To retrieve the URL:
 minikube service production
 ```
 
-If the deploy failed, you may need to edit the project's runner token to not
-include capital letters. (See Note in the step above.)
-
 ## View Performance metrics
 
 Go to **Pipelines ➔ Environments** then click on an Environment. You should see
