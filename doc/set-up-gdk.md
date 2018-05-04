@@ -7,7 +7,7 @@ contain 'problematic' characters such as ` ` and `(`. For example,
 `/home/janedoe/projects` is OK, but `/home/janedoe/my projects` will
 cause problems.
 
-Execute the following with the Ruby version manager of your choice (`rvm`, `rbenv`, `chruby`, etc.) with the current `gitlab-ce` Ruby version:
+Execute the following with the Ruby version manager of your choice (`rvm`, `rbenv`, `chruby`, etc.) with the current [`gitlab-ce` Ruby version](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/.ruby-version):
 
 ```
 gem install gitlab-development-kit
