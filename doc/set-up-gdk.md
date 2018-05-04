@@ -49,8 +49,7 @@ repositories](./howto/gdk_commands.md#update-gitlab-and-gitlab-shell-repositorie
 to pull down from the upstream repository instead of your fork, making it
 easier to keep up-to-date with the project.
 
-If you want to push changes from upstream to your fork, run `gdk
-update` and then `git push origin` from the `gitlab` directory.
+If you want to push changes from upstream to your fork, run `gdk update` and then `git push origin` from the `gitlab` directory.
 
 ### Develop in the main repo
 
