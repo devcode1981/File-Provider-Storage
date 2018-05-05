@@ -6,7 +6,7 @@ This document will instruct you to set up GitLab Geo using GDK.
 
 Development on GitLab Geo requires two Enterprise Edition GDK
 instances running side-by-side. You can use an existing `gdk-ee`
-instance based ob the [Set up GDK](../set-up-gdk.md#gitlab-enterprise-edition) documentation as primary node.
+instance based on the [Set up GDK](../set-up-gdk.md#gitlab-enterprise-edition) documentation as primary node.
 
 
 
