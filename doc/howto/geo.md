@@ -6,8 +6,9 @@ This document will instruct you to set up GitLab Geo using GDK.
 
 Development on GitLab Geo requires two Enterprise Edition GDK
 instances running side-by-side. You can use an existing `gdk-ee`
-instance from the [set-up](../set-up-gdk.md#gitlab-enterprise-edition)
-as primary node.
+instance based on the [Set up GDK](../set-up-gdk.md#gitlab-enterprise-edition) documentation as primary node.
+
+
 
 ### Secondary
 
@@ -20,6 +21,7 @@ gdk init gdk-geo
 cd gdk-geo
 echo 3002 > port
 echo 3807 > webpack_port
+# Assuming your primary GDK instance lives in parallel folders:
 gdk install gitlab_repo=../gdk-ee/gitlab
 # You can cancel (Ctrl-C) seeding when it gets to that point since we will delete the data anyway
 gdk run db
@@ -28,8 +30,8 @@ make geo-setup
 
 ## Database replication
 
-For Gitlab Geo, you will need a master/slave database replication defined.
-There are a few extra steps to follow:
+For GitLab Geo, you will need a primary/secondary database replication defined.
+There are a few extra steps to follow.
 
 ### Prepare primary for replication
 
@@ -77,7 +79,7 @@ Now we need to add a symbolic link to the primary instance's data folder:
 ln -s ../gdk-ee/postgresql postgresql-primary
 ```
 
-Initialize a slave database and setup replication:
+Initialize a secondary database and setup replication:
 
 ```bash
 # terminal window 2:
