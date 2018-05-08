@@ -126,6 +126,8 @@ gitaly/config.toml:
 	  -e "s|^socket_path.*|socket_path = \"${gitlab_development_root}/gitaly.socket\"|" \
 	  -e "s|^bin_dir.*|bin_dir = \"${gitlab_development_root}/gitaly/bin\"|" \
 	  -e "s|# prometheus_listen_addr|prometheus_listen_addr|" \
+	  -e "s|# \[logging\]|\[logging\]|" \
+	  -e "s|# level = \"warn\"|level = \"warn\"|" \
 	  -e "s|/home/git|${gitlab_development_root}|" ${gitaly_clone_dir}/config.toml.example > $@
 
 prom-setup:
