@@ -32,7 +32,7 @@ method.
 
 In either case, use your Ruby version manager to run `gdk install` with the `gitlab-ce` Ruby version. The `gdk install` command will install from `https://gitlab.com/gitlab-org/gitlab-ce.git` by default.
 
-### Develop in a fork
+### Option 1: Develop in a fork
 
 ```
 # Set up GDK with 'origin' pointing to your gitlab-ce fork.
@@ -51,7 +51,7 @@ easier to keep up-to-date with the project.
 
 If you want to push changes from upstream to your fork, run `gdk update` and then `git push origin` from the `gitlab` directory.
 
-### Develop in the main repo
+### Option 2: Develop in the main repo
 
 Alternatively, you can clone all components from their official source.
 
