@@ -43,6 +43,7 @@ We are using PostgreSQL 9.6 in the following example. If you want to use another
 brew install git redis postgresql@9.6 libiconv icu4c pkg-config cmake nodejs go openssl node npm yarn coreutils re2
 bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
 echo 'export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"' >> ~/.bash_profile
+source ~/.bash_profile
 ```
 
 #### Install OS X prerequisites using macports
@@ -51,6 +52,7 @@ echo 'export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"' >> ~/.bash_profile
 sudo port install git redis libiconv postgresql96-server icu pkgconfig cmake nodejs4 go openssl npm2 yarn coreutils re2
 bundle config build.eventmachine --with-cppflags=-I/opt/local/include/openssl
 echo 'export PATH=/opt/local/lib/postgresql96/bin/:$PATH' >> ~/.profile
+source ~/.profile
 ```
 
 ### Ubuntu
