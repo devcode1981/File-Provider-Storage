@@ -62,6 +62,9 @@ Minikube requires virtualization. Install the appropriate driver for your operat
 
 ### Start Minikube
 
+**Note:** If you are using a network filter such as [LittleSnitch](https://www.obdev.at/products/littlesnitch/index.html) you may need to disable it or permit `minikube`,
+as minikube needs to download multiple ISO's to operate correctly.
+
 The following command will start minikube, running the first few containers
 with Kubernetes components.
 
