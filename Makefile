@@ -68,7 +68,7 @@ gitlab/public/uploads:
 	mkdir $@
 
 .gitlab-bundle:
-	cd ${gitlab_development_root}/gitlab && bundle install --without mysql production --jobs 4
+	cd ${gitlab_development_root}/gitlab && bundle install --without production --jobs 4
 	touch $@
 
 .gitlab-yarn:
