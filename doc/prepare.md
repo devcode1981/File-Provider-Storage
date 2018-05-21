@@ -118,9 +118,9 @@ sudo yum install https://download.fedoraproject.org/pub/epel/6/x86_64/epel-relea
 sudo yum install postgresql96-server postgresql96-devel libicu-devel git cmake gcc-c++ redis ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 libstdc++.so.6 nodejs npm re2 re2-devel
 
 bundle config build.pg --with-pg-config=/usr/pgsql-9.6/bin/pg_config
-# This example uses Ruby 2.3.7. Substitute with the current version if different.
-sudo rvm install 2.3.7
-sudo rvm use 2.3.7
+# This example uses Ruby 2.4.4. Substitute with the current version if different.
+sudo rvm install 2.4.4
+sudo rvm use 2.4.4
 #Ensure your user is in rvm group
 sudo usermod -a -G rvm <username>
 #add iptables exceptions, or sudo service stop iptables
@@ -204,9 +204,9 @@ sudo make install
 Install the current `gitlab-ce` Ruby version using [RVM](https://rvm.io/):
 
 ```
-# This example uses Ruby 2.3.7. Substitute with the current version if different.
-rvm install 2.3.7
-rvm use 2.3.7
+# This example uses Ruby 2.4.4. Substitute with the current version if different.
+rvm install 2.4.4
+rvm use 2.4.4
 ```
 
 Install yarn
