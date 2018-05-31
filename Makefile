@@ -18,6 +18,7 @@ postgres_geo_dir = $(abspath ./postgresql-geo)
 postgres_data_dir = ${postgres_dir}/data
 hostname = $(shell cat hostname 2>/dev/null || echo 'localhost')
 port = $(shell cat port 2>/dev/null || echo '3000')
+relative_url_root = $(shell cat relative_url_root 2>/dev/null || echo '')
 username = $(shell whoami)
 sshd_bin = $(shell which sshd)
 git_bin = $(shell which git)
@@ -45,7 +46,8 @@ gitlab/config/gitlab.yml:
 	sed -e "s|/home/git|${gitlab_development_root}|"\
 	  -e "s|/usr/bin/git|${git_bin}|"\
 	  gitlab/config/gitlab.yml.example > gitlab/config/gitlab.yml
-	hostname=${hostname} port=${port} webpack_port=${webpack_port}\
+	hostname=${hostname} port=${port} relative_url_root=${relative_url_root}\
+		webpack_port=${webpack_port}\
 		registry_enabled=${registry_enabled} registry_port=${registry_port}\
 		object_store_enabled=${object_store_enabled} object_store_port=${object_store_port}\
 		support/edit-gitlab.yml gitlab/config/gitlab.yml

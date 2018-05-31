@@ -10,23 +10,23 @@ minio: exec support/object-store
 postgresql: exec support/postgresql-signal-wrapper postgres -D /home/git/postgresql/data -k /home/git/postgresql -h ''
 #postgresql-replica: exec support/postgresql-signal-wrapper postgres -D /home/git/postgresql-replica/data -k /home/git/postgresql-replica -h ''
 #openldap: exec support/exec-cd gitlab-openldap libexec/slapd -F slapd.d -d2 -h "ldap://$host:3890"
-#storage-check: exec /usr/bin/env RAILS_ENV=development support/exec-cd gitlab bin/storage_check -t unix:///home/git/gitlab.socket
+#storage-check: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/exec-cd gitlab bin/storage_check -t unix:///home/git/gitlab.socket
 
 # Geo
 #
 #postgresql-geo: exec support/postgresql-signal-wrapper postgres -D /home/git/postgresql-geo/data -k /home/git/postgresql-geo -h ''
-#geo-cursor: exec /usr/bin/env RAILS_ENV=development support/exec-cd gitlab/bin ./geo_log_cursor
+#geo-cursor: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/exec-cd gitlab/bin ./geo_log_cursor
 
 # Backend services
 #
 gitaly: exec gitaly/bin/gitaly /home/git/gitaly/config.toml
 gitlab-workhorse: exec /usr/bin/env PATH="/home/git/gitlab-workhorse/bin:$PATH" gitlab-workhorse -authSocket /home/git/gitlab.socket -listenAddr $host:$port -documentRoot /home/git/gitlab/public -developmentMode -secretPath /home/git/gitlab/.gitlab_workhorse_secret -config /home/git/gitlab-workhorse/config.toml
-rails-background-jobs: exec /usr/bin/env SIDEKIQ_LOG_ARGUMENTS=1 RAILS_ENV=development support/exec-cd gitlab bin/background_jobs start_foreground
+rails-background-jobs: exec /usr/bin/env SIDEKIQ_LOG_ARGUMENTS=1 RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/exec-cd gitlab bin/background_jobs start_foreground
 
 # Frontend services
 #
 webpack: exec /usr/bin/env NODE_ENV=development DEV_SERVER_PORT=3808 support/exec-cd gitlab yarn dev-server
-rails-web: exec /usr/bin/env RAILS_ENV=development support/exec-cd gitlab bin/web start_foreground
+rails-web: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/exec-cd gitlab bin/web start_foreground
 
 # Docker
 #

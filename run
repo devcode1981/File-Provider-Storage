@@ -1,6 +1,6 @@
 #!/bin/sh
 
-print_port() {
+print_url() {
   printf "
 
            \033[38;5;88m\`                        \`
@@ -26,13 +26,13 @@ print_port() {
   "
   echo
   echo
-  echo "Starting GitLab in $(pwd) on port http://${host}:${port}"
+  echo "Starting GitLab in $(pwd) on http://${host}:${port}${relative_url_root}"
   echo
   echo
 }
 
 foreman_start() {
- exec env port="${port}" host="${host}" foreman start "$@"
+ exec env port="${port}" host="${host}" relative_url_root="${relative_url_root}" foreman start "$@"
 }
 
 db() {
@@ -44,7 +44,7 @@ geo_db() {
 }
 
 app() {
-  print_port
+  print_url
   foreman_start -m all=0,rails-web=1,rails-background-jobs=1,gitlab-workhorse=1,nginx=1,grafana=1,sshd=1,gitaly=1,storage-check=1
 }
 
@@ -61,7 +61,7 @@ gitaly() {
 }
 
 all() {
-  print_port
+  print_url
   foreman_start
 }
 
@@ -75,10 +75,15 @@ main() {
     # Try a port file
     port="$(cat port 2>/dev/null)"
   fi
+  if [ "x${relative_url_root}" = x ]; then
+    # Try a relative_url_root file
+    relative_url_root="$(cat relative_url_root 2>/dev/null)"
+  fi
 
   # Fall back to localhost:3000
   host="${host:-localhost}"
   port="${port:-3000}"
+  relative_url_root="${relative_url_root:-/}"
 
   case "x$1" in
     xdb)

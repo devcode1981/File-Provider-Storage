@@ -34,6 +34,7 @@ gitlab-development-kit/**
 /host
 /hostname
 /port
+/relative_url_root
 /webpack_port
 /.ruby-version
 /.ruby-gemset

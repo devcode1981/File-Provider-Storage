@@ -93,30 +93,45 @@ Check the [GitLab Geo instructions](./howto/geo.md).
 
 Start GitLab and all required services:
 
-    gdk run
+```sh
+gdk run
+```
 
 To start only the databases use:
 
-    gdk run db
+```sh
+gdk run db
+```
 
 To start only the app (assuming the DBs are already running):
 
-    gdk run app
+```sh
+gdk run app
+```
 
 To access GitLab you may now go to http://localhost:3000 in your
 browser. The development login credentials are `root` and `5iveL!fe`.
 
-You can override the port used by this GDK with a 'port' file.
+If you like, you can override the port, host, or relative URL root by adding the appropriate file to the GDK root. You'll need to reconfigure and restart the GDK for these changes to take effect.
 
-    echo 4000 > port
+```sh
+echo 4000 > port
 
-Similarly, you can override the host (for example if you plan to use GDK inside a Docker container).
+# This can be useful if you plan to use GDK inside a Docker container
+echo 0.0.0.0 > host
 
-    echo 0.0.0.0 > host
+echo /gitlab > relative_url_root
+
+gdk reconfigure
+```
 
 You can also override the host name used by the Rails instance (specified by the `host` value in `gitlab/config/gitlab.yml`).
 
-     echo my.gitlab.dev > hostname
+```sh
+ echo my.gitlab.dev > hostname
+
+ gdk reconfigure
+ ```
 
 If you want to work on GitLab CI you will need to install [GitLab Runner](https://gitlab.com/gitlab-org/gitlab-runner).
 
