@@ -1,6 +1,7 @@
 # SAML
 
-You can run a test SAMl identity provider using the [kristophjunge/test-saml-idp](https://hub.docker.com/r/kristophjunge/test-saml-idp/) docker image, both to test instance wide SAML and the multi-tenant Group SAML used on GitLab.com
+You can run a test SAML identity provider using the [kristophjunge/test-saml-idp](https://hub.docker.com/r/kristophjunge/test-saml-idp/)
+docker image, both to test instance-wide SAML and the multi-tenant Group SAML used on GitLab.com
 
 ## Group SAML
 
@@ -20,8 +21,7 @@ From GitLab this would then be configured using:
 - **SSO URL:** https://localhost:8443/simplesaml/saml2/idp/SSOService.php
 - **Certificate fingerprint:** 119b9e027959cdb7c662cfd075d9e2ef384e445f
 
-![Group SAML Settings for Docker](img/group-saml-settings-for-docker.png
-)
+![Group SAML Settings for Docker](img/group-saml-settings-for-docker.png)
 
 ## Credentials
 
