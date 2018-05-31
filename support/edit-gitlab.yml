@@ -7,6 +7,9 @@ ed -s "$1" <<EOF
 /port:/c
     port: ${port:-3000}
 .
+/relative_url_root:/c
+    relative_url_root: "${relative_url_root}"
+.
 / user:/c
     user: $(whoami)
 .
