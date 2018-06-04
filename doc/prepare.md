@@ -22,6 +22,7 @@ during installation.
 1. [Google Chrome] 60 or greater with [ChromeDriver] version 2.33 or greater.
    Visit the [installation details](https://sites.google.com/a/chromium.org/chromedriver/getting-started) for more details.
 1. PostgreSQL 9.x, PostgreSQL 10.x is not yet supported.
+1. [GraphicsMagick]
 
 [rbenv]: https://github.com/rbenv/rbenv
 [chruby]: https://github.com/postmodern/chruby
@@ -30,6 +31,7 @@ during installation.
 [go]: https://golang.org/doc/install
 [Google Chrome]: https://www.google.com/chrome/
 [ChromeDriver]: https://sites.google.com/a/chromium.org/chromedriver/downloads
+[GraphicsMagick]: http://www.graphicsmagick.org
 
 ### OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan), macOS 10.12 (Sierra), macOS 10.13 (High Sierra)
 
@@ -40,7 +42,7 @@ We are using PostgreSQL 9.6 in the following example. If you want to use another
 #### Install OS X prerequisites using homebrew
 
 ```
-brew install git redis postgresql@9.6 libiconv icu4c pkg-config cmake nodejs go openssl node npm yarn coreutils re2
+brew install git redis postgresql@9.6 libiconv icu4c pkg-config cmake nodejs go openssl node npm yarn coreutils re2 graphicsmagick
 bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
 echo 'export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"' >> ~/.bash_profile
 ```
@@ -48,7 +50,7 @@ echo 'export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"' >> ~/.bash_profile
 #### Install OS X prerequisites using macports
 
 ```
-sudo port install git redis libiconv postgresql96-server icu pkgconfig cmake nodejs4 go openssl npm2 yarn coreutils re2
+sudo port install git redis libiconv postgresql96-server icu pkgconfig cmake nodejs4 go openssl npm2 yarn coreutils re2 GraphicsMagick
 bundle config build.eventmachine --with-cppflags=-I/opt/local/include/openssl
 echo 'export PATH=/opt/local/lib/postgresql96/bin/:$PATH' >> ~/.profile
 ```
@@ -65,7 +67,7 @@ sudo add-apt-repository ppa:longsleep/golang-backports
 # This PPA contains an up-to-date version of git
 sudo add-apt-repository ppa:git-core/ppa
 sudo apt-get update
-sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs nodejs-legacy npm libre2-dev libkrb5-dev libsqlite3-dev golang-1.8-go ed pkg-config
+sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs nodejs-legacy npm libre2-dev libkrb5-dev libsqlite3-dev golang-1.8-go ed pkg-config graphicsmagick
 ```
 
 Ubuntu 14.04 (Trusty Tahr) doesn't have the `libre2-dev` package available, but
@@ -76,7 +78,7 @@ you can [install re2 manually](https://github.com/google/re2/wiki/Install).
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
-pacman -S postgresql redis postgresql-libs icu npm ed cmake openssh git go re2 unzip
+pacman -S postgresql redis postgresql-libs icu npm ed cmake openssh git go re2 unzip graphicsmagick
 ```
 
 ### Debian
@@ -84,7 +86,7 @@ pacman -S postgresql redis postgresql-libs icu npm ed cmake openssh git go re2 u
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
-sudo apt-get install postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs npm libkrb5-dev libre2-dev ed pkg-config
+sudo apt-get install postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs npm libkrb5-dev libre2-dev ed pkg-config graphicsmagick
 ```
 
 If you are running Debian Experimenal or newer you can install a Go
@@ -101,7 +103,7 @@ We assume you are using Fedora >= 22.
 If you are running Fedora < 26 you'll need to install `go` manually using [go] official installation instructions.
 
 ```
-sudo dnf install postgresql libpqxx-devel postgresql-libs redis libicu-devel nodejs git ed cmake rpm-build gcc-c++ krb5-devel go postgresql-server postgresql-contrib re2
+sudo dnf install postgresql libpqxx-devel postgresql-libs redis libicu-devel nodejs git ed cmake rpm-build gcc-c++ krb5-devel go postgresql-server postgresql-contrib re2 GraphicsMagick
 ```
 
 You may need to install Redis 2.8 or newer manually.
@@ -115,7 +117,7 @@ This is tested on CentOS 6.5:
 ```
 sudo yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-6-x86_64/pgdg-centos96-9.6-3.noarch.rpm
 sudo yum install https://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-sudo yum install postgresql96-server postgresql96-devel libicu-devel git cmake gcc-c++ redis ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 libstdc++.so.6 nodejs npm re2 re2-devel
+sudo yum install postgresql96-server postgresql96-devel libicu-devel git cmake gcc-c++ redis ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 libstdc++.so.6 nodejs npm re2 re2-devel GraphicsMagick
 
 bundle config build.pg --with-pg-config=/usr/pgsql-9.6/bin/pg_config
 # This example uses Ruby 2.4.4. Substitute with the current version if different.
@@ -147,7 +149,7 @@ sudo zypper dup
 
 sudo zypper install libxslt-devel  postgresql postgresql-devel libpqxx-devel redis libicu-devel nodejs git ed cmake \
          rpm-build gcc-c++ krb5-devel postgresql-server postgresql-contrib \
-         libxml2-devel libxml2-devel-32bit findutils-locate re2
+         libxml2-devel libxml2-devel-32bit findutils-locate re2 GraphicsMagick
 ```
 
 On leap 42.1 you also need:
@@ -180,7 +182,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 
 ```
 sudo pkg install postgresql93-server postgresql93-contrib postgresql-libpqxx \
-redis go node icu krb5 gmake re2
+redis go node icu krb5 gmake re2 GraphicsMagick
 ```
 
 ### **Experimental** Windows 10 using the WSL (Windows Subsystem for Linux)
