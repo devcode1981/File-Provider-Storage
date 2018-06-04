@@ -185,6 +185,28 @@ redis go node icu krb5 gmake re2
 
 ### **Experimental** Windows 10 using the WSL (Windows Subsystem for Linux)
 
+**Setting up the Windows Subsystem for Linux:**
+
+Open PowerShell as Administrator and run:
+```
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+```
+Restart your computer when prompted.
+
+Install your Linux Distribution of Choice via the Windows Store. Currently the distro options are:
+
+    Ubuntu
+    OpenSUSE
+    SLES
+    Kali Linux
+    Debian GNU/Linux
+
+Launch the distro of choice. 
+
+Return to the prerequisite installation steps. 
+
+**Installing the remaining GDK Tools & resources**
+
 Install NodeJS from source
 
 ```
