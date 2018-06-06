@@ -17,7 +17,7 @@ during installation.
 1. Node 6.x or newer and Yarn 0.17 or newer.  If your package manager does not
    have up-to-date versions of node or yarn available, visit the official
    websites for [node] and [yarn] for installation instructions.
-1. Go 1.8.3 or newer. If your package manager does not have up-to-date versions
+1. Go 1.9.6 or newer. If your package manager does not have up-to-date versions
    of Go available, visit the official website for [go] for installation instructions.
 1. [Google Chrome] 60 or greater with [ChromeDriver] version 2.33 or greater.
    Visit the [installation details](https://sites.google.com/a/chromium.org/chromedriver/getting-started) for more details.
@@ -67,7 +67,7 @@ sudo add-apt-repository ppa:longsleep/golang-backports
 # This PPA contains an up-to-date version of git
 sudo add-apt-repository ppa:git-core/ppa
 sudo apt-get update
-sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs nodejs-legacy npm libre2-dev libkrb5-dev libsqlite3-dev golang-1.8-go ed pkg-config
+sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs nodejs-legacy npm libre2-dev libkrb5-dev libsqlite3-dev golang-1.9-go ed pkg-config
 ```
 
 Ubuntu 14.04 (Trusty Tahr) doesn't have the `libre2-dev` package available, but
@@ -100,7 +100,7 @@ You may need to install Redis 2.8 or newer manually.
 
 We assume you are using Fedora >= 22.
 
-If you are running Fedora < 26 you'll need to install `go` manually using [go] official installation instructions.
+If you are running Fedora < 27 you'll need to install `go` manually using [go] official installation instructions.
 
 ```
 sudo dnf install postgresql libpqxx-devel postgresql-libs redis libicu-devel nodejs git ed cmake rpm-build gcc-c++ krb5-devel go postgresql-server postgresql-contrib re2
