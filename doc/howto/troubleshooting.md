@@ -253,14 +253,8 @@ LoadError: dlopen(/Users/janedoe/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/exten
 ```
 
 In the above example, you see that the charlock_holmes gem fails to load
-`libicui18n.52.1.dylib`. You can try fixing this by re-installing
-charlock_holmes:
-
-```
-# in /Users/janedoe/gitlab-development-kit
-gem uninstall charlock_holmes
-bundle install # should reinstall charlock_holmes
-```
+`libicui18n.52.1.dylib`. You can try fixing this by [re-installing
+charlock_holmes](#rebuilding-gems-with-native-extensions).
 
 ## 'bundle install' fails due to permission problems
 
