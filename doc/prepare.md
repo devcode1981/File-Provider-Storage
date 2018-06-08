@@ -14,8 +14,8 @@ during installation.
    system Ruby
 1. Bundler, which you can install with `gem install bundler`
 1. Git version of 2.14.3 or higher
-1. Node 6.x or newer and Yarn 0.17 or newer.  If your package manager does not
-   have up-to-date versions of node or yarn available, visit the official
+1. Node **8.x (LTS)** and Yarn 1.2 or newer. If your package manager does not
+   have Node 8.x or yarn available, visit the official
    websites for [node] and [yarn] for installation instructions.
 1. Go 1.9.6 or newer. If your package manager does not have up-to-date versions
    of Go available, visit the official website for [go] for installation instructions.
@@ -26,7 +26,7 @@ during installation.
 
 [rbenv]: https://github.com/rbenv/rbenv
 [chruby]: https://github.com/postmodern/chruby
-[node]: https://nodejs.org/en/download/package-manager/
+[node]: https://nodejs.org/en/download/
 [yarn]: https://yarnpkg.com/en/docs/install/
 [go]: https://golang.org/doc/install
 [Google Chrome]: https://www.google.com/chrome/
@@ -41,8 +41,14 @@ We are using PostgreSQL 9.6 in the following example. If you want to use another
 
 #### Install OS X prerequisites using homebrew
 
+We recommend manual installation of Node LTS, and not using Homebrew,
+to avoid breaking your development setup when you run `brew upgrade`.
+Install NodeJS 8.x LTS [manually](https://nodejs.org/en/download/),
+or use a tool like [NVM](https://github.com/creationix/nvm).
+
 ```
-brew install git redis postgresql@9.6 libiconv icu4c pkg-config cmake nodejs go openssl node npm yarn coreutils re2 graphicsmagick
+brew install git redis postgresql@9.6 libiconv icu4c pkg-config cmake go openssl coreutils re2 graphicsmagick
+brew install yarn --without-node
 bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
 echo 'export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"' >> ~/.bash_profile
 source ~/.bash_profile
@@ -51,7 +57,7 @@ source ~/.bash_profile
 #### Install OS X prerequisites using macports
 
 ```
-sudo port install git redis libiconv postgresql96-server icu pkgconfig cmake nodejs4 go openssl npm2 yarn coreutils re2 GraphicsMagick
+sudo port install git redis libiconv postgresql96-server icu pkgconfig cmake nodejs8 go openssl npm5 yarn coreutils re2 GraphicsMagick
 bundle config build.eventmachine --with-cppflags=-I/opt/local/include/openssl
 echo 'export PATH=/opt/local/lib/postgresql96/bin/:$PATH' >> ~/.profile
 source ~/.profile
@@ -61,6 +67,9 @@ source ~/.profile
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
+You can install NodeJS 8.x from [nodesource APT servers](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions).
+Install Yarn from [a custom APT server](https://yarnpkg.com/lang/en/docs/install/#debian-stable) as well.
+
 ```
 # Add apt-add-repository helper script
 sudo apt-get install software-properties-common python-software-properties
@@ -69,7 +78,7 @@ sudo add-apt-repository ppa:longsleep/golang-backports
 # This PPA contains an up-to-date version of git
 sudo add-apt-repository ppa:git-core/ppa
 sudo apt-get update
-sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs nodejs-legacy npm libre2-dev libkrb5-dev libsqlite3-dev golang-1.9-go ed pkg-config graphicsmagick
+sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ libre2-dev libkrb5-dev libsqlite3-dev golang-1.10-go ed pkg-config graphicsmagick
 ```
 
 Ubuntu 14.04 (Trusty Tahr) doesn't have the `libre2-dev` package available, but
@@ -88,7 +97,7 @@ pacman -S postgresql redis postgresql-libs icu npm ed cmake openssh git go re2 u
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
-sudo apt-get install postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ nodejs npm libkrb5-dev libre2-dev ed pkg-config graphicsmagick
+sudo apt-get install postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ libkrb5-dev libre2-dev ed pkg-config graphicsmagick
 ```
 
 If you are running Debian Experimenal or newer you can install a Go
