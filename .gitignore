@@ -77,3 +77,4 @@ gitlab-development-kit/**
 /object_store_enabled
 /object_store_port
 /minio
+/gettext.log
