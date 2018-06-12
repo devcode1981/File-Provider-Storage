@@ -10,7 +10,7 @@ On OSX, with brew installed run
 brew install mysql
 ```
 
-If you've already done this before, run 
+If you've already done this before, run
 
 ```
 brew info mysql
@@ -25,7 +25,13 @@ Gitlab Development Kit does not manage the MySQL server for you.
 
 ## Setting up Rails to connect to MySQL
 
-If you ran `bundle install` before, or you've fully installed the GitLab Development Kit, the mysql gem was. To make sure the gem will be installed, remove `mysql` in `gitlab/.bundle/config` from the `BUNDLE_WITHOUT` key. Run `bundle` in the `gitlab` folder to install mysql.
+Ensure the `mysql` server is installed. If you ran `gdk update`
+before, and did not have it installed at the time, the `mysql` gem
+will not be installed.
+
+To make sure the gem is be installed, run `gdk update` again after the
+`mysql` server is installed. This will remove `mysql` from
+`BUNDLE_WITHOUT` in `gitlab/.bundle/config`.
 
 Configuration of the database is stored in
 `gitlab/config/database.yml`. The following command will overwrite
