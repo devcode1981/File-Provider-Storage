@@ -29,9 +29,11 @@ Ensure the `mysql` server is installed. If you ran `gdk update`
 before, and did not have it installed at the time, the `mysql` gem
 will not be installed.
 
-To make sure the gem is be installed, run `gdk update` again after the
-`mysql` server is installed. This will remove `mysql` from
-`BUNDLE_WITHOUT` in `gitlab/.bundle/config`.
+To make sure the gem is installed, run `gdk update` again after
+installing the `mysql` server. This should remove `mysql` from
+`BUNDLE_WITHOUT` in `gitlab/.bundle/config`. Or, you can manually
+remove it from that file and run `bundle install` again in the
+`gitlab` directory.
 
 Configuration of the database is stored in
 `gitlab/config/database.yml`. The following command will overwrite
