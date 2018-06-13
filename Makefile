@@ -67,7 +67,7 @@ gitlab/config/resque.yml:
 gitlab/public/uploads:
 	mkdir $@
 
-bundle_install_cmd := bundle install --jobs 4 --without production $(if $(shell which mysql 2>/dev/null),--with,--without) mysql
+bundle_install_cmd := bundle install --jobs 4 --without production $(if $(shell mysql_config --libs 2>/dev/null),--with,--without) mysql
 .PHONY : .gitlab-bundle
 .gitlab-bundle:
 	cd ${gitlab_development_root}/gitlab && $(bundle_install_cmd)
