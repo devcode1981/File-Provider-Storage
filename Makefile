@@ -30,6 +30,7 @@ postgresql_port = $(shell cat postgresql_port 2>/dev/null || echo '5432')
 postgresql_geo_port = $(shell cat postgresql_geo_port 2>/dev/null || echo '5432')
 object_store_enabled = $(shell cat object_store_enabled 2>/dev/null || echo 'false')
 object_store_port = $(shell cat object_store_port 2>/dev/null || echo '9000')
+rails_bundle_install_cmd := bundle install --jobs 4 --without production $(if $(shell mysql_config --libs 2>/dev/null),--with,--without) mysql
 
 all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup gitaly-setup prom-setup object-storage-setup
 
@@ -68,7 +69,7 @@ gitlab/public/uploads:
 	mkdir $@
 
 .gitlab-bundle:
-	cd ${gitlab_development_root}/gitlab && bundle install --without mysql production --jobs 4
+	cd ${gitlab_development_root}/gitlab && $(rails_bundle_install_cmd)
 	touch $@
 
 .gitlab-yarn:
@@ -112,7 +113,7 @@ gitlab-shell/config.yml:
 	  gitlab-shell/config.yml.example > gitlab-shell/config.yml
 
 .gitlab-shell-bundle:
-	cd ${gitlab_development_root}/gitlab-shell && bundle install --without production --jobs 4
+	cd ${gitlab_development_root}/gitlab-shell && $(rails_bundle_install_cmd)
 	touch $@
 
 gitlab-shell/.gitlab_shell_secret:
