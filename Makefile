@@ -68,7 +68,6 @@ gitlab/config/resque.yml:
 gitlab/public/uploads:
 	mkdir $@
 
-.PHONY : .gitlab-bundle
 .gitlab-bundle:
 	cd ${gitlab_development_root}/gitlab && $(rails_bundle_install_cmd)
 	touch $@
