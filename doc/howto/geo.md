@@ -141,6 +141,48 @@ to set up [SSH](ssh.md), including [SSH key lookup from database](ssh.md#ssh-key
 1. **Do not** check the box 'This is a primary node'.
 1. Click the **Add node** button.
 
+## Useful aliases
+
+Customize to your liking. Requires `gdk run` to be running.
+
+```bash
+alias geo_primary_migrate="bundle install && bin/rake db:migrate db:test:prepare geo:db:migrate geo:db:test:prepare"
+alias geo_primary_update="gdk update && geo_primary_migrate && cd .. && make postgresql/geo-fdw/test/rebuild && cd gitlab && gco -- db/schema.rb ee/db/geo/schema.rb"
+alias geo_secondary_migrate="bundle install && bin/rake geo:db:migrate"
+alias geo_secondary_update="gdk update; geo_secondary_migrate && cd .. && make postgresql/geo-fdw/development/rebuild && cd gitlab && gco -- db/schema.rb ee/db/geo/schema.rb"
+```
+
+### `geo_primary_migrate`
+
+Use this when your checked out files have changed, and e.g. your instance or
+tests are now erroring. For example, after you pull master, but you don't care
+to update dependencies right now. Or maybe you checked out someone else's
+branch.
+
+* Bundle installs to ensure gems are up-to-date
+* Migrates main DB and tracking DB (be sure to run `geo_secondary_migrate` on
+your secondary if you have Geo migrations)
+* Prepares main and tracking test DBs
+
+### `geo_primary_update`
+
+Same as `geo_primary_migrate`, but also:
+
+* Does `gdk update`
+* Checks out and pulls master
+* Updates dependencies (e.g. if Gitaly is erroring)
+* Rebuilds FDW tables in test DB
+* Checks out schemas to get rid of irrelevant diffs (not done in
+  `geo_primary_migrate` because you may have created a migration)
+
+### `geo_secondary_migrate`
+
+Similar to `geo_primary_migrate` but for your local secondary.
+
+### `geo_secondary_update`
+
+Similar to `geo_primary_update` but for your local secondary.
+
 ## Troubleshooting
 
 ### postgresql-geo/data exists but is not empty
@@ -157,6 +199,52 @@ make: *** [postgresql/geo] Error 1
 
 Then you may delete or move that data in order to run `make geo-setup` again.
 
-```
+```bash
 $ mv postgresql-geo/data postgresql-geo/data.backup
 ```
+
+### GDK update command error on secondaries
+
+You will see the following error after running `gdk update` on your local Geo
+secondary. It is ok to ignore. Your local Geo secondary does not have or need a
+test DB, and this error occurs on the very last step of `gdk update`.
+
+```bash
+cd /Users/foo/Developer/gdk-geo/gitlab && \
+		bundle exec rake db:migrate db:test:prepare
+rake aborted!
+ActiveRecord::StatementInvalid: PG::ReadOnlySqlTransaction: ERROR:  cannot execute DROP DATABASE in a read-only transaction
+: DROP DATABASE IF EXISTS "gitlabhq_test"
+/Users/foo/.rbenv/versions/2.4.4/bin/bundle:23:in `load'
+/Users/foo/.rbenv/versions/2.4.4/bin/bundle:23:in `<main>'
+
+Caused by:
+PG::ReadOnlySqlTransaction: ERROR:  cannot execute DROP DATABASE in a read-only transaction
+/Users/foo/.rbenv/versions/2.4.4/bin/bundle:23:in `load'
+/Users/foo/.rbenv/versions/2.4.4/bin/bundle:23:in `<main>'
+Tasks: TOP => db:test:load => db:test:purge
+(See full trace by running task with --trace)
+make: *** [gitlab-update] Error 1
+```
+
+### FDW is no longer working even though you have it enabled, after migrations or `gdk update`
+
+You need to rebuild FDW tables.
+
+If your local primary is in `~/Developer/gdk-ee`:
+
+```bash
+cd ~/Developer/gdk-ee
+gdk run # In another tab, if it's not already running
+make postgresql/geo-fdw/test/rebuild
+```
+
+And if your local secondary is in `~/Developer/gdk-geo`:
+
+```bash
+cd ~/Developer/gdk-geo
+gdk run # In another tab, if it's not already running
+make postgresql/geo-fdw/development/rebuild
+```
+
+Also see [Useful aliases](#useful-aliases) above.
