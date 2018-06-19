@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
 brew_cellar_pg9_6=$(brew --cellar postgresql@9.6 2>/dev/null)
+brew_cellar_pg9_6_bin=(${brew_cellar_pg9_6}/*/bin)
 
-if [ -n "$brew_cellar_pg9_6" ]
+if [ -n "$brew_cellar_pg9_6" ] && [ -d ${brew_cellar_pg9_6_bin[0]} ]
 then
-  printf $brew_cellar_pg9_6/*/bin
+  echo ${brew_cellar_pg9_6_bin[0]}
 else
   pg_config --bindir
 fi
