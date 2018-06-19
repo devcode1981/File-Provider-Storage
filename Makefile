@@ -31,6 +31,8 @@ postgresql_geo_port = $(shell cat postgresql_geo_port 2>/dev/null || echo '5432'
 object_store_enabled = $(shell cat object_store_enabled 2>/dev/null || echo 'false')
 object_store_port = $(shell cat object_store_port 2>/dev/null || echo '9000')
 rails_bundle_install_cmd := bundle install --jobs 4 --without production $(if $(shell mysql_config --libs 2>/dev/null),--with,--without) mysql
+elasticsearch_version = 5.5.3
+elasticsearch_tar_gz_sha1 = 81af33ec3ae08a5294133ade331de8e6aa0b146a
 
 all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup gitaly-setup prom-setup object-storage-setup
 
@@ -81,11 +83,11 @@ gitlab/public/uploads:
 	git -C ${gitlab_development_root}/gitlab checkout locale/*/gitlab.po
 	touch $@
 
-.PHONY:	bundler
+.PHONY: bundler
 bundler:
 	command -v $@ > /dev/null || gem install $@
 
-.PHONY:	yarn
+.PHONY: yarn
 yarn:
 	@command -v $@ > /dev/null || {\
 		echo "Error: Yarn executable was not detected in the system.";\
@@ -216,8 +218,8 @@ gitaly-clean:
 	rm -rf ${gitaly_assembly_dir}
 	rm -rf gitlab/tmp/tests/gitaly
 
-.PHONY:	gitaly/bin/gitaly
-gitaly/bin/gitaly:	${gitaly_clone_dir}/.git
+.PHONY: gitaly/bin/gitaly
+gitaly/bin/gitaly: ${gitaly_clone_dir}/.git
 	make -C ${gitaly_clone_dir} assemble ASSEMBLY_ROOT=${gitaly_assembly_dir} BUNDLE_FLAGS=--no-deployment
 	mkdir -p ${gitlab_development_root}/gitaly/bin
 	ln -sf ${gitaly_assembly_dir}/bin/* ${gitlab_development_root}/gitaly/bin
@@ -226,7 +228,7 @@ gitaly/bin/gitaly:	${gitaly_clone_dir}/.git
 
 # Set up supporting services
 
-support-setup: .ruby-version foreman Procfile redis gitaly-setup postgresql openssh-setup nginx-setup registry-setup
+support-setup: .ruby-version foreman Procfile redis gitaly-setup postgresql openssh-setup nginx-setup registry-setup elasticsearch-setup
 	@echo ""
 	@echo "*********************************************"
 	@echo "************** Setup finished! **************"
@@ -345,14 +347,14 @@ postgresql/geo-fdw/%/rebuild:
 	$(MAKE) postgresql/geo-fdw/$*/drop || true
 	$(MAKE) postgresql/geo-fdw/$*/create
 
-.PHONY:	foreman
+.PHONY: foreman
 foreman:
 	command -v $@ > /dev/null || gem install $@
 
 .ruby-version:
 	ln -s ${gitlab_development_root}/gitlab/.ruby-version ${gitlab_development_root}/$@
 
-localhost.crt:	localhost.key
+localhost.crt: localhost.key
 
 localhost.key:
 	openssl req -new -subj "/CN=localhost/" -x509 -days 365 -newkey rsa:2048 -nodes -keyout "localhost.key" -out "localhost.crt"
@@ -363,12 +365,12 @@ gitlab-workhorse-setup: gitlab-workhorse/bin/gitlab-workhorse gitlab-workhorse/c
 gitlab-workhorse/config.toml:
 	sed "s|/home/git|${gitlab_development_root}|" $@.example > $@
 
-gitlab-workhorse-update:	${gitlab_workhorse_clone_dir}/.git gitlab-workhorse/.git/pull gitlab-workhorse-clean-bin gitlab-workhorse/bin/gitlab-workhorse
+gitlab-workhorse-update: ${gitlab_workhorse_clone_dir}/.git gitlab-workhorse/.git/pull gitlab-workhorse-clean-bin gitlab-workhorse/bin/gitlab-workhorse
 
 gitlab-workhorse-clean-bin:
 	rm -rf gitlab-workhorse/bin
 
-.PHONY:	gitlab-workhorse/bin/gitlab-workhorse
+.PHONY: gitlab-workhorse/bin/gitlab-workhorse
 gitlab-workhorse/bin/gitlab-workhorse: ${gitlab_workhorse_clone_dir}/.git
 	GOPATH=${gitlab_development_root}/gitlab-workhorse go install gitlab.com/gitlab-org/gitlab-workhorse/...
 
@@ -381,19 +383,19 @@ gitlab-workhorse/.git/pull:
 		git checkout master &&\
 		git pull --ff-only
 
-influxdb-setup:	influxdb/influxdb.conf influxdb/bin/influxd influxdb/meta/meta.db
+influxdb-setup: influxdb/influxdb.conf influxdb/bin/influxd influxdb/meta/meta.db
 
 influxdb/bin/influxd:
 	cd influxdb && ${MAKE}
 
-influxdb/meta/meta.db:	Procfile
+influxdb/meta/meta.db: Procfile
 	grep '^influxdb:' Procfile || (printf ',s/^#influxdb/influxdb/\nwq\n' | ed -s Procfile)
 	support/bootstrap-influxdb 8086
 
 influxdb/influxdb.conf:
 	sed -e "s|/home/git|${gitlab_development_root}|g" $@.example > $@
 
-grafana-setup:	grafana/grafana.ini grafana/bin/grafana-server grafana/gdk-pg-created grafana/gdk-data-source-created
+grafana-setup: grafana/grafana.ini grafana/bin/grafana-server grafana/gdk-pg-created grafana/gdk-data-source-created
 
 grafana/bin/grafana-server:
 	cd grafana && ${MAKE}
@@ -412,9 +414,9 @@ grafana/gdk-data-source-created:
 	support/bootstrap-grafana
 	touch $@
 
-performance-metrics-setup:	Procfile influxdb-setup grafana-setup
+performance-metrics-setup: Procfile influxdb-setup grafana-setup
 
-openssh-setup:	openssh/sshd_config openssh/ssh_host_rsa_key
+openssh-setup: openssh/sshd_config openssh/ssh_host_rsa_key
 
 openssh/sshd_config:
 	sed -e "s|/home/git|${gitlab_development_root}|g" \
@@ -444,6 +446,19 @@ registry/config.yml:
 	cp registry/config.yml.example $@
 	gitlab_host=${gitlab_from_container} gitlab_port=${port} registry_port=${registry_port} support/edit-registry-config.yml $@
 
+elasticsearch-setup: elasticsearch/bin/elasticsearch
+
+elasticsearch/bin/elasticsearch: elasticsearch-${elasticsearch_version}.tar.gz
+	rm -rf elasticsearch
+	tar zxf elasticsearch-${elasticsearch_version}.tar.gz
+	mv elasticsearch-${elasticsearch_version} elasticsearch
+	touch $@
+
+elasticsearch-${elasticsearch_version}.tar.gz:
+	curl -L -o $@.tmp https://artifacts.elastic.co/downloads/elasticsearch/$@
+	echo "${elasticsearch_tar_gz_sha1}  $@.tmp" | shasum -a1 -c -
+	mv $@.tmp $@
+	
 object-storage-setup: minio/data/lfs-objects minio/data/artifacts minio/data/uploads
 
 minio/data/%:
