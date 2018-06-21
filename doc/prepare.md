@@ -113,6 +113,14 @@ We assume you are using Fedora >= 22.
 
 If you are running Fedora < 27 you'll need to install `go` manually using [go] official installation instructions.
 
+>**Note:** Fedora 28+ ships PostgreSQL 10.x in default repositories, you can use `postgresql:9.6` module to install PostgreSQL 9.6.
+But keep in mind that will replace the PostgreSQL 10.x package, so you cannot use both versions at once.
+
+```sh
+sudo dnf install fedora-repos-modular
+sudo dnf module enable postgresql:9.6
+```
+
 ```
 sudo dnf install postgresql libpqxx-devel postgresql-libs redis libicu-devel nodejs git ed cmake rpm-build gcc-c++ krb5-devel go postgresql-server postgresql-contrib re2 GraphicsMagick
 ```
