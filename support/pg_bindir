@@ -1,11 +1,14 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ruby
 
-brew_cellar_pg9_6=$(brew --cellar postgresql@9.6 2>/dev/null)
-brew_cellar_pg9_6_bin=(${brew_cellar_pg9_6}/*/bin)
+brew_cellar_pg96 = `brew --cellar postgresql@9.6 2>/dev/null`.strip
 
-if [ -n "$brew_cellar_pg9_6" ] && [ -d ${brew_cellar_pg9_6_bin[0]} ]
-then
-  echo ${brew_cellar_pg9_6_bin[0]}
-else
-  pg_config --bindir
-fi
+unless brew_cellar_pg96.empty?
+  brew_cellar_pg96_bin = Dir.glob(File.join(brew_cellar_pg96, '/*/bin'))
+
+  if brew_cellar_pg96_bin.any?
+    puts brew_cellar_pg96_bin.last
+    exit
+  end
+end
+
+system(*%w[pg_config --bindir])
