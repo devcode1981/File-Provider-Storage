@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+ci_sha = ENV['CI_COMMIT_SHA']
+if ci_sha.empty?
+  exec(*%w[git merge --ff-only origin/master])
+else
+  exec(*%W[git checkout #{ci_sha}])
+end

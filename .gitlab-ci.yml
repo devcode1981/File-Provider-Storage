@@ -104,3 +104,27 @@ test:install:
     - gdk run &
     - sleep 30
     - curl -f --retry 10 --retry-delay 5 http://127.0.0.1:3000/
+
+test:update:
+  image: $TEST_IMAGE
+  stage: test
+  artifacts:
+    paths:
+      - ./*.log
+      - ./gitlab/log/*.log
+    expire_in: 2 days
+    when: always
+  script:
+    - source /home/gdk/.bash_profile
+    - gem install gitlab-development-kit 
+    - cd /home/gdk
+    - gdk init
+    - cd gitlab-development-kit
+    - netstat -lpt
+    - IGNORE_POSTGRES_WARNING=true gdk install
+    - support/set-gitlab-upstream
+    - killall node || true
+    - gdk run &
+    - sleep 30
+    - curl -f --retry 10 --retry-delay 5 http://127.0.0.1:3000/
+    - gdk update
