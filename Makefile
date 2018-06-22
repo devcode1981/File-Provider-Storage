@@ -180,8 +180,8 @@ self-update: unlock-dependency-installers
 	@echo "--------------------------"
 	@echo ""
 	cd ${gitlab_development_root} && \
-		git stash && git checkout master && \
-		git pull --ff-only
+		git stash && git checkout master && git fetch && \
+		support/self-update-git-worktree
 
 # Update gitlab, gitlab-shell, gitlab-workhorse and gitaly
 
