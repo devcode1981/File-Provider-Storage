@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-brew_cellar_pg96 = `brew --cellar postgresql@9.6 2>/dev/null`.strip
+brew_cellar_pg96 = IO.popen(%w[brew --cellar postgresql@9.6], err: '/dev/null', &:read).strip
 
 unless brew_cellar_pg96.empty?
   brew_cellar_pg96_bin = Dir.glob(File.join(brew_cellar_pg96, '/*/bin'))
