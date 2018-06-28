@@ -1,6 +1,6 @@
 .NOTPARALLEL:
 
--include .env.mk
+-include env.mk
 
 gitlab_repo = https://gitlab.com/gitlab-org/gitlab-ce.git
 gitlab_shell_repo = https://gitlab.com/gitlab-org/gitlab-shell.git
@@ -38,7 +38,6 @@ object_store_port = $(shell cat object_store_port 2>/dev/null || echo '9000')
 rails_bundle_install_cmd := bundle install --jobs 4 --without production $(if $(shell mysql_config --libs 2>/dev/null),--with,--without) mysql
 elasticsearch_version = 5.5.3
 elasticsearch_tar_gz_sha1 = 81af33ec3ae08a5294133ade331de8e6aa0b146a
-env_variables := postgres_bin_dir
 
 all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup gitaly-setup prom-setup object-storage-setup
 
@@ -510,7 +509,3 @@ unlock-dependency-installers:
 	.gitlab-shell-bundle \
 	.gitlab-yarn \
 	.gettext \
-
-%: .env.mk
-.env.mk: $(filter-out .env.mk,$(MAKEFILE_LIST))
-	@echo $(foreach V,$(env_variables),"$V := $($V)\\n")>$@

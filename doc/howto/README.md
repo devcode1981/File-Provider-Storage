@@ -20,6 +20,7 @@ to learn how to develop GitLab CE.
 - [GitLab performance metrics](performance_metrics.md)
 - [Local network binding](local_network.md)
 - [Load testing](load_testing.md)
+- [Configuration](configuration.md)
 
 ## Special topics
 
