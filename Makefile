@@ -1,5 +1,7 @@
 .NOTPARALLEL:
 
+-include .env.mk
+
 gitlab_repo = https://gitlab.com/gitlab-org/gitlab-ce.git
 gitlab_shell_repo = https://gitlab.com/gitlab-org/gitlab-shell.git
 gitlab_shell_clone_dir = go-gitlab-shell/src/gitlab.com/gitlab-org/gitlab-shell
@@ -13,7 +15,7 @@ gitaly_proto_clone_dir = ${gitaly_gopath}/src/gitlab.com/gitlab-org/gitaly-proto
 gitlab_docs_repo = https://gitlab.com/gitlab-com/gitlab-docs.git
 gitlab_development_root = $(shell pwd)
 gitaly_assembly_dir = ${gitlab_development_root}/gitaly/assembly
-postgres_bin_dir := $(shell support/pg_bindir)
+postgres_bin_dir ?= $(shell support/pg_bindir)
 postgres_replication_user = gitlab_replication
 postgres_dir = $(abspath ./postgresql)
 postgres_replica_dir = $(abspath ./postgresql-replica)
@@ -36,6 +38,7 @@ object_store_port = $(shell cat object_store_port 2>/dev/null || echo '9000')
 rails_bundle_install_cmd := bundle install --jobs 4 --without production $(if $(shell mysql_config --libs 2>/dev/null),--with,--without) mysql
 elasticsearch_version = 5.5.3
 elasticsearch_tar_gz_sha1 = 81af33ec3ae08a5294133ade331de8e6aa0b146a
+env_variables := postgres_bin_dir
 
 all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup support-setup gitaly-setup prom-setup object-storage-setup
 
@@ -468,7 +471,7 @@ elasticsearch-${elasticsearch_version}.tar.gz:
 	curl -L -o $@.tmp https://artifacts.elastic.co/downloads/elasticsearch/$@
 	echo "${elasticsearch_tar_gz_sha1}  $@.tmp" | shasum -a1 -c -
 	mv $@.tmp $@
-	
+
 object-storage-setup: minio/data/lfs-objects minio/data/artifacts minio/data/uploads
 
 minio/data/%:
@@ -507,3 +510,7 @@ unlock-dependency-installers:
 	.gitlab-shell-bundle \
 	.gitlab-yarn \
 	.gettext \
+
+%: .env.mk
+.env.mk: $(filter-out .env.mk,$(MAKEFILE_LIST))
+	@echo $(foreach V,$(env_variables),"$V := $($V)\\n")>$@
