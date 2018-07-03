@@ -17,7 +17,7 @@ The following steps will help you set up Mnikube locally.
 
 ### Install kubectl if you do not have it
 
-Kubectl is required for Minikube to function.
+Kubectl is required for Minikube to function. You can also use `homebrew` to install it using `brew install kubernetes-cli`.
 
 1. First, download it:
 
@@ -119,7 +119,7 @@ Now that we have GDK running, we need to go and create a project with CI/CD
 set up. The easiest way to do this, is to simply import from an existing project
 with a simplified `gitlab-ci.yml`.
 
-Import `https://gitlab.com/joshlambert/autodevops-deploy.git`, to use a very simple
+Import `https://gitlab.com/joshlambert/autodevops-deploy.git` as a public project, to use a very simple
 CI/CD pipeline with no requirements, based on AutoDevOps. It contains just the `deploy` stages and uses a static image, since the GDK does not contain a registry.
 
 ## Connect your cluster
@@ -130,7 +130,7 @@ CI/CD pipeline with no requirements, based on AutoDevOps. It contains just the `
 
 1. At bottom of the page you will find a list of secrets, with one named `default`. Click on it to view it, you will need these values later.
 
-1. Go to CI/CD -> Kubernetes, and add a cluster. Select the option to add an existing cluster.
+1. In your GitLab instance, go to Operations -> Kubernetes, and add a cluster. Select the option to add an existing cluster.
 
 1. Enter any value for the `Kubernetes cluster name`.
 
