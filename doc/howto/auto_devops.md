@@ -92,6 +92,24 @@ Now with this configuration you will have an internet accessible GitLab
 and registry so with a valid SSL cert (terminated in the tunnel server)
 and you should be able to run the full auto devops flow.
 
+## Running The Auto DevOps Integration Tests
+
+Since you may want to save yourself the hassle of manually setting up a whole
+project for Auto DevOps and validating everything works every time you make a
+change you can just run [the QA
+spec](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/qa/qa/specs/features/project/auto_devops_spec.rb)
+like so:
+
+```
+cd qa
+GITLAB_PASSWORD=<root-user-password> GCLOUD_ZONE=us-central1-a CHROME_HEADLESS=false bin/qa Test::Integration::Kubernetes https://1337.qa-tunnel.gitlab.info/
+```
+
+NOTE: [This
+test](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/qa/qa/specs/features/project/auto_devops_spec.rb#L6)
+does teardown the K8s cluster at the end so after the test finishes it won't be
+possible to run the pipeline again unless you comment this out.
+
 ## Troubleshooting
 
 ### If you cannot connect to your internet facing URL
