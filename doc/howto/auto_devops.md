@@ -15,9 +15,13 @@ the ability to run the full Auto DevOps workflow.
    project](https://gitlab.com/gitlab-com/infrastructure/issues/new) and
    provide them with your SSH public key. Once this is done verify that
    you can ssh into `qa-tunnel.gitlab.info`.
-1. Create a Debian VM on google cloud and setup the GDK following [the
-   preparation instructions for debian](../prepare.md) and [setup instructions](../set-up-gdk.md)
-1. 
+1. Set up the GDK for your workstation following [the preparation
+   instructions](../prepare.md) and [setup instructions](../set-up-gdk.md)
+
+NOTE: Running Auto DevOps flow [downloads/uploads gigabytes of data on each
+run](#massive-bandwidth-used-by-auto-devops). For this reason it is not a good
+idea to run on 4G and is recommended you run on a cloud VM in GCP so that
+everything stays in Google's network so it runs much faster.
 
 ## Setup
 
