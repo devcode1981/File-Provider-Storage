@@ -9,9 +9,9 @@ during installation.
 
 1. A non-root Unix user, this can be your normal user but **DO NOT** run the
    installation as a root user
-1. The current [`gitlab-ce` Ruby version](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/.ruby-version) installed with a Ruby version manager
-   ([RVM](https://rvm.io/), [rbenv], [chruby], etc.), **DO NOT** use the
-   system Ruby
+1. Ensure the current [`gitlab-ce` Ruby version](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/.ruby-version) is installed with a Ruby version manager
+   ([RVM](https://rvm.io/), [rbenv], [chruby], etc.) and activated (for example by closing and reopening the terminal).
+   **DO NOT** use the system Ruby. You can check the active version with the command `ruby --version`.
 1. Make sure to close and reopen the terminal after installing a Ruby version manager.
 1. Bundler, which you can install with `gem install bundler`
 1. Git version of 2.14.3 or higher
