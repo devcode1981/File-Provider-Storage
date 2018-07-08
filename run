@@ -45,7 +45,12 @@ geo_db() {
 
 app() {
   print_url
-  foreman_start -m all=0,rails-web=1,rails-background-jobs=1,gitlab-workhorse=1,nginx=1,grafana=1,sshd=1,gitaly=1,storage-check=1
+
+  if [ "$1" = "rails5" ]; then
+    foreman_start -m all=0,rails-web=0,rails5-web=1,rails-background-jobs=0,rails5-background-jobs=1,gitlab-workhorse=1,nginx=1,grafana=1,sshd=1,gitaly=1,storage-check=1
+  else
+    foreman_start -m all=0,rails-web=1,rails5-web=0,rails-background-jobs=1,rails5-background-jobs=0,gitlab-workhorse=1,nginx=1,grafana=1,sshd=1,gitaly=1,storage-check=1
+  fi
 }
 
 grafana() {
@@ -62,7 +67,12 @@ gitaly() {
 
 all() {
   print_url
-  foreman_start
+
+  if [ "$1" = "rails5" ]; then
+    foreman_start -m all=1,rails-web=0,rails-background-jobs=0
+  else
+    foreman_start -m all=1,rails5-web=0,rails5-background-jobs=0
+  fi
 }
 
 main() {
@@ -93,7 +103,7 @@ main() {
       geo_db
       ;;
     xapp)
-      app
+      app "$2"
       ;;
     xgrafana)
       grafana
@@ -103,6 +113,9 @@ main() {
       ;;
     xgitaly)
       gitaly
+      ;;
+    xrails5)
+      all "rails5"
       ;;
     x*)
       all
