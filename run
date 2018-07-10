@@ -1,79 +1,6 @@
 #!/bin/sh
 
-print_url() {
-  printf "
-
-           \033[38;5;88m\`                        \`
-          :s:                      :s:
-         \`oso\`                    \`oso.
-         +sss+                    +sss+
-        :sssss:                  -sssss:
-       \`ossssso\`                \`ossssso\`
-       +sssssss+                +sssssss+
-      -ooooooooo-++++++++++++++-ooooooooo-
-     \033[38;5;208m\`:/\033[38;5;202m+++++++++\033[38;5;88mosssssssssssso\033[38;5;202m+++++++++\033[38;5;208m/:\`
-     -///\033[38;5;202m+++++++++\033[38;5;88mssssssssssss\033[38;5;202m+++++++++\033[38;5;208m///-
-    .//////\033[38;5;202m+++++++\033[38;5;88mosssssssssso\033[38;5;202m+++++++\033[38;5;208m//////.
-    :///////\033[38;5;202m+++++++\033[38;5;88mosssssssso\033[38;5;202m+++++++\033[38;5;208m///////:
-     .:///////\033[38;5;202m++++++\033[38;5;88mssssssss\033[38;5;202m++++++\033[38;5;208m///////:.\`
-       \`-://///\033[38;5;202m+++++\033[38;5;88mosssssso\033[38;5;202m+++++\033[38;5;208m/////:-\`
-          \`-:////\033[38;5;202m++++\033[38;5;88mosssso\033[38;5;202m++++\033[38;5;208m////:-\`
-             .-:///\033[38;5;202m++\033[38;5;88mosssso\033[38;5;202m++\033[38;5;208m///:-.
-               \`.://\033[38;5;202m++\033[38;5;88mosso\033[38;5;202m++\033[38;5;208m//:.\`
-                  \`-:/\033[38;5;202m+\033[38;5;88moo\033[38;5;202m+\033[38;5;208m/:-\`
-                     \`-++-\`\033[0m
-
-  "
-  echo
-  echo
-  echo "Starting GitLab in $(pwd) on http://${host}:${port}${relative_url_root}"
-  echo
-  echo
-}
-
-foreman_start() {
- exec env port="${port}" host="${host}" relative_url_root="${relative_url_root}" foreman start "$@"
-}
-
-db() {
-  foreman_start -m all=0,redis=1,postgresql=1,openldap=1,influxdb=1,webpack=1,registry=1,minio=1,elasticsearch=1
-}
-
-geo_db() {
-  foreman_start -m all=0,postgresql-geo=1
-}
-
-app() {
-  print_url
-
-  if [ "$1" = "rails5" ]; then
-    foreman_start -m all=0,rails-web=0,rails5-web=1,rails-background-jobs=0,rails5-background-jobs=1,gitlab-workhorse=1,nginx=1,grafana=1,sshd=1,gitaly=1,storage-check=1
-  else
-    foreman_start -m all=0,rails-web=1,rails5-web=0,rails-background-jobs=1,rails5-background-jobs=0,gitlab-workhorse=1,nginx=1,grafana=1,sshd=1,gitaly=1,storage-check=1
-  fi
-}
-
-grafana() {
-  foreman_start -m all=0,grafana=1
-}
-
-thin() {
-  exec /usr/bin/env RAILS_ENV=development support/exec-cd gitlab bundle exec thin --socket="$(pwd)"/gitlab.socket start
-}
-
-gitaly() {
-  foreman_start -m all=0,gitaly=1
-}
-
-all() {
-  print_url
-
-  if [ "$1" = "rails5" ]; then
-    foreman_start -m all=1,rails-web=0,rails-background-jobs=0
-  else
-    foreman_start -m all=1,rails5-web=0,rails5-background-jobs=0
-  fi
-}
+# TODO rewrite config parsing in lib/run.rb
 
 main() {
   # Try to read the gitlab-workhorse host:port from the environments
@@ -95,32 +22,11 @@ main() {
   port="${port:-3000}"
   relative_url_root="${relative_url_root:-/}"
 
-  case "x$1" in
-    xdb)
-      db
-      ;;
-    xgeo_db)
-      geo_db
-      ;;
-    xapp)
-      app "$2"
-      ;;
-    xgrafana)
-      grafana
-      ;;
-    xthin)
-      thin
-      ;;
-    xgitaly)
-      gitaly
-      ;;
-    xrails5)
-      all "rails5"
-      ;;
-    x*)
-      all
-      ;;
-  esac
+  export host
+  export port
+  export relative_url_root
+
+  exec ruby lib/run.rb "$@"
 }
 
 main "$@"
