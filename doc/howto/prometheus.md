@@ -178,7 +178,7 @@ minikube service production
 
 ## View Performance metrics
 
-Go to **Pipelines ➔ Environments** then click on an Environment. You should see
+Go to **Operations ➔ Environments** then click on an Environment. You should see
 a new button appearing that looks like a chart. Click on it to view the metrics.
 
 It may take 30-60 seconds for the Prometheus server to get a few sets of data points.
