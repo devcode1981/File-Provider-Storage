@@ -64,7 +64,11 @@ echo 'export PATH=/opt/local/lib/postgresql96/bin/:$PATH' >> ~/.profile
 source ~/.profile
 ```
 
-### Ubuntu
+### Linux
+
+**Note:** Unless already set, you will likely have to increase the watches limit of `inotify` in order for frontend development tools such as `webpack` and `karma` to effectively track file changes. [See here](https://confluence.jetbrains.com/display/IDEADEV/Inotify+Watches+Limit) for details and instructions on how to apply this change.
+
+#### Ubuntu
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
@@ -85,7 +89,7 @@ sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server li
 Ubuntu 14.04 (Trusty Tahr) doesn't have the `libre2-dev` package available, but
 you can [install re2 manually](https://github.com/google/re2/wiki/Install).
 
-### Arch Linux
+#### Arch Linux
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
@@ -93,7 +97,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 pacman -S postgresql redis postgresql-libs icu npm ed cmake openssh git go re2 unzip graphicsmagick
 ```
 
-### Debian
+#### Debian
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
@@ -108,7 +112,7 @@ instructions.
 
 You may need to install Redis 2.8 or newer manually.
 
-### Fedora
+#### Fedora
 
 We assume you are using Fedora >= 22.
 
@@ -128,7 +132,7 @@ sudo dnf install postgresql libpqxx-devel postgresql-libs redis libicu-devel nod
 
 You may need to install Redis 2.8 or newer manually.
 
-### CentOS
+#### CentOS
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
@@ -157,7 +161,7 @@ binary version of Git.
 
 You may need to install Redis 2.8 or newer manually.
 
-### OpenSUSE
+#### OpenSUSE
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
@@ -195,8 +199,7 @@ Manual fix required on OpenSUSE LEAP to place redis-server in the path for non-r
 sudo ln -s /usr/sbin/redis-server /usr/bin/redis-server
 ```
 
-
-### FreeBSD
+#### FreeBSD
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
