@@ -6,7 +6,10 @@ gitlab_shell_clone_dir = go-gitlab-shell/src/gitlab.com/gitlab-org/gitlab-shell
 gitlab_workhorse_repo = https://gitlab.com/gitlab-org/gitlab-workhorse.git
 gitlab_workhorse_clone_dir = gitlab-workhorse/src/gitlab.com/gitlab-org/gitlab-workhorse
 gitaly_repo = https://gitlab.com/gitlab-org/gitaly.git
-gitaly_clone_dir = gitaly/src/gitlab.com/gitlab-org/gitaly
+gitaly_proto_repo = https://gitlab.com/gitlab-org/gitaly-proto.git
+gitaly_gopath = $(abspath ./gitaly)
+gitaly_clone_dir = ${gitaly_gopath}/src/gitlab.com/gitlab-org/gitaly
+gitaly_proto_clone_dir = ${gitaly_gopath}/src/gitlab.com/gitlab-org/gitaly-proto
 gitlab_docs_repo = https://gitlab.com/gitlab-com/gitlab-docs.git
 gitlab_development_root = $(shell pwd)
 gitaly_assembly_dir = ${gitlab_development_root}/gitaly/assembly
@@ -122,10 +125,13 @@ gitlab-shell/.gitlab_shell_secret:
 
 # Set up gitaly
 
-gitaly-setup: gitaly/bin/gitaly gitaly/config.toml
+gitaly-setup: gitaly/bin/gitaly gitaly/config.toml ${gitaly_proto_clone_dir}/.git
 
 ${gitaly_clone_dir}/.git:
-	git clone ${gitaly_repo} ${gitaly_clone_dir}
+	git clone --quiet ${gitaly_repo} ${gitaly_clone_dir}
+
+${gitaly_proto_clone_dir}/.git:
+	git clone --quiet ${gitaly_proto_repo} ${gitaly_proto_clone_dir}
 
 gitaly/config.toml:
 	sed \
@@ -207,10 +213,14 @@ gitlab-shell/.git/pull:
 		git stash && git checkout master && \
 		git pull --ff-only
 
-gitaly-update: ${gitaly_clone_dir}/.git gitaly/.git/pull gitaly-clean gitaly/bin/gitaly
+gitaly-update: gitaly/.git/pull gitaly-clean gitaly/bin/gitaly
 
-gitaly/.git/pull:
+.PHONY: gitaly/.git/pull
+gitaly/.git/pull: ${gitaly_clone_dir}/.git ${gitaly_proto_clone_dir}/.git
 	cd ${gitaly_clone_dir} && \
+		git stash && git checkout master && \
+		git pull --ff-only
+	cd ${gitaly_proto_clone_dir} && \
 		git stash && git checkout master && \
 		git pull --ff-only
 
