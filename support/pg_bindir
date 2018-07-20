@@ -1,12 +1,8 @@
 #!/usr/bin/env ruby
 
-def run(commands)
-  IO.popen(commands, err: '/dev/null', &:read).chomp
-rescue Errno::ENOENT
-  ''
-end
+require_relative '../lib/shellout.rb'
 
-brew_cellar_pg96 = run(%w[brew --cellar postgresql@9.6])
+brew_cellar_pg96 = Shellout.new(%w[brew --cellar postgresql@9.6]).try_run
 
 unless brew_cellar_pg96.empty?
   brew_cellar_pg96_bin = Dir.glob(File.join(brew_cellar_pg96, '/*/bin'))
@@ -17,4 +13,4 @@ unless brew_cellar_pg96.empty?
   end
 end
 
-system(*%w[pg_config --bindir])
+puts Shellout.new(%w[pg_config --bindir]).run
