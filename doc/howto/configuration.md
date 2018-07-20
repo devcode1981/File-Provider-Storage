@@ -4,7 +4,7 @@ This document describes ways how you can configure you GDK environment.
 
 ## Custom ports
 
-You may want to customize the ports in which services runs at, so they can
+You may want to customize the ports used by the services, so they can
 coexist and be accessible when running multiple GDKs at the same time.
 
 This may also be necessary when simulating some HA behavior or to run Geo.
@@ -15,8 +15,8 @@ when using some Java-based IDEs).
 
 ### List of port files
 
-Below is a list of all possible/existing port files and the service they are
-related to:
+Below is a list of all existing port configuration files and the
+service they are related to:
 
 | Port filename         | Service name                                  |
 | --------------------- | --------------------------------------------- |
@@ -44,7 +44,7 @@ defaults.
 To override the default variables used in [`Makefile`](../../Makefile),
 you can create a file called `env.mk` at the root of your gdk. In this
 file you can assign variables to override the defaults. The possible
-variable assignments are:
+variable assignment is:
 
 - `postgres_bin_dir`: GDK automatically detects the directory of the
   PostgreSQL executables, but if you want to override that (e.g. to
