@@ -79,3 +79,4 @@ gitlab-development-kit/**
 /minio
 /gettext.log
 /elasticsearch*
+/env.mk

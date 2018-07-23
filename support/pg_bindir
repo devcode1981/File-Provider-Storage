@@ -1,10 +1,16 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ruby
 
-brew_cellar_pg9_6=$(brew --cellar postgresql@9.6 2>/dev/null)
+require_relative '../lib/shellout.rb'
 
-if [ -n "$brew_cellar_pg9_6" ]
-then
-  printf $brew_cellar_pg9_6/*/bin
-else
-  pg_config --bindir
-fi
+brew_cellar_pg96 = Shellout.new(%w[brew --cellar postgresql@9.6]).try_run
+
+unless brew_cellar_pg96.empty?
+  brew_cellar_pg96_bin = Dir.glob(File.join(brew_cellar_pg96, '/*/bin'))
+
+  if brew_cellar_pg96_bin.any?
+    puts brew_cellar_pg96_bin.last
+    exit
+  end
+end
+
+puts Shellout.new(%w[pg_config --bindir]).run
