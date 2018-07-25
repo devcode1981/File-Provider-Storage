@@ -64,7 +64,7 @@ tunnel_gitlab: ssh -N -R 1337:localhost:3000 qa-tunnel.gitlab.info
 tunnel_registry: ssh -N -R 1338:localhost:5000 qa-tunnel.gitlab.info
 ```
 
-Then edit `config/registry.yml` like so:
+Then edit `registry/config.yml` like so:
 
 ```yml
   auth:
