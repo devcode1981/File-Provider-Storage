@@ -34,27 +34,13 @@ actual range.
 From the GDK directory run:
 
 ```
-echo true > registry_enabled
 echo 1337.qa-tunnel.gitlab.info > hostname
+echo 443 > port
+echo true > https
+echo true > registry_enabled
+echo 1338.qa-tunnel.gitlab.info > registry_host
+echo 443 > registry_external_port
 gdk reconfigure
-```
-
-After this you need to edit the file `gitlab/config/gitlab.yml` like so:
-
-```yml
-  gitlab:
-    host: 1337.qa-tunnel.gitlab.info
-    port: 443
-    https: true
-```
-
-Also:
-
-```yml
-  registry:
-    enabled: true
-    host: 1338.qa-tunnel.gitlab.info
-    port: 443
 ```
 
 Then you will need to add the following lines to the end of `Procfile`:
