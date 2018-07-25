@@ -7,6 +7,9 @@ ed -s "$1" <<EOF
 /port:/c
     port: ${port:-3000}
 .
+/https:/c
+    https: ${https:-false}
+.
 /relative_url_root:/c
     relative_url_root: "${relative_url_root}"
 .
@@ -45,8 +48,8 @@ c
 /^  registry:/
 a
     enabled: ${registry_enabled:-false}
-    host: 127.0.0.1
-    port: ${registry_port:-5000}
+    host: ${registry_host:-127.0.0.1}
+    port: ${registry_external_port:-5000}
     api_url: http://127.0.0.1:${registry_port:-5000}/
     key: ../localhost.key
     path: ../registry/storage/

@@ -34,6 +34,7 @@ gitlab-development-kit/**
 /host
 /hostname
 /port
+/https
 /relative_url_root
 /webpack_port
 /.ruby-version
@@ -69,6 +70,8 @@ gitlab-development-kit/**
 /gitlab-docs
 /bootstrap-rails.log
 /registry_enabled
+/registry_host
+/registry_external_port
 /registry_port
 /registry/storage/
 /registry/config.yml
