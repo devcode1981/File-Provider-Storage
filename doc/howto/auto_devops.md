@@ -46,7 +46,7 @@ gdk reconfigure
 Then you will need to add the following lines to the end of `Procfile`:
 
 ```yml
-tunnel_gitlab: ssh -N -R 1337:localhost:3000 qa-tunnel.gitlab.info
+tunnel_gitlab: ssh -N -R 1337:localhost:$port qa-tunnel.gitlab.info
 tunnel_registry: ssh -N -R 1338:localhost:5000 qa-tunnel.gitlab.info
 ```
 
@@ -61,7 +61,7 @@ Then edit `registry/config.yml` like so:
 Then start with:
 
 ```
-gdk run
+port=8080 gdk run
 ```
 
 Now you should be able to view your internet accessible application at
