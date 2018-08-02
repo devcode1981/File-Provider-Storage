@@ -13,8 +13,14 @@ the ability to run the full Auto DevOps workflow.
    will need to request an account for this by [creating an issue in the
    infrastructure
    project](https://gitlab.com/gitlab-com/infrastructure/issues/new) and
-   provide them with your SSH public key. Once this is done verify that
-   you can ssh into `qa-tunnel.gitlab.info`.
+   provide them with your SSH public key.
+1. Once your account has been created, configure your SSH config `~/.ssh/config` to set the correct username.
+
+    ```
+    Host qa-tunnel.gitlab.info
+      User <username>
+    ```
+    Verify that you can now ssh into `qa-tunnel.gitlab.info`.
 1. Set up the GDK for your workstation following [the preparation
    instructions](../prepare.md) and [setup instructions](../set-up-gdk.md)
 
