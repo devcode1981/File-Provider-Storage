@@ -78,6 +78,12 @@ Now login as root using the default password and change your password.
 IMPORTANT: You should change your root password since it is now internet
 accessible.
 
+## Google OAuth2
+
+To be able to create a new GKE Cluster via GitLab, you need to configure
+Gitlab to be able to authenticate with Google. See the [Google Oauth2
+howto](/doc/howto/google-oauth2.md) for instructions.
+
 ## Conclusion
 
 Now with this configuration you will have an internet accessible GitLab
