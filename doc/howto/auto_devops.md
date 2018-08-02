@@ -83,13 +83,67 @@ and you should be able to run the full auto devops flow.
 Since you may want to save yourself the hassle of manually setting up a whole
 project for Auto DevOps and validating everything works every time you make a
 change you can just run [the QA
-spec](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/qa/qa/specs/features/project/auto_devops_spec.rb)
-like so:
+spec](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/qa/qa/specs/features/project/auto_devops_spec.rb).
+
+### Install gcloud and kubectl
+
+Before you can run the spec, you will need `gcloud` and `kubectl`
+installed.
+
+Follow the instructions at https://cloud.google.com/sdk/docs/quickstarts
+for the Operating System that you are using to install gcloud.
+Alternatively, if you are using Homebrew on MacOS, you can install
+`gcloud` with :
+
+```
+brew cask install google-cloud-sdk
+```
+
+After you have installed `gcloud`, run the
+[init](https://cloud.google.com/sdk/docs/quickstart-macos#initialize_the_sdk) step :
+
+```
+gcloud init
+```
+
+This will help you setup your default gcloud zone and project. It will
+also prompt you to log in with your Google account.
+
+```
+To continue, you must log in. Would you like to log in (Y/n)? Y
+```
+
+After you have logged in, select your default project and zone.
+GitLabbers, please refer to the handbook for details on which [GCP
+project to use](https://about.gitlab.com/handbook/engineering/#google-cloud-platform-gcp).
+
+Next, install `kubectl` as a component of gcloud :
+
+```
+gcloud components install kubectl
+```
+
+NOTE: if you have installed gcloud via Homebrew Cask, you need to add
+the following lines in your `~/.bash_profile` to set the correct PATH to
+be able to run the `kubectl` binary.
+
+```
+  # Add to ~/.bash_profile
+  source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.bash.inc'
+  source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.bash.inc'
+```
+
+### Run the integration test
+
+You should now be ready to run the test :
 
 ```
 cd qa
 GITLAB_PASSWORD=<root-user-password> GCLOUD_ZONE=us-central1-a CHROME_HEADLESS=false bin/qa Test::Integration::Kubernetes https://1337.qa-tunnel.gitlab.info/
 ```
+
+NOTE: This test will run as the default project ID. To set or override
+the project ID, set `CLOUDSDK_CORE_PROJECT=<gcloud-project-id>`.
 
 NOTE: [This
 test](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/qa/qa/specs/features/project/auto_devops_spec.rb#L6)
