@@ -197,7 +197,7 @@ update: ensure-postgres-running unlock-dependency-installers gitlab-shell-update
 
 ensure-postgres-running:
 	@test -f ${postgres_data_dir}/postmaster.pid || \
-	test ${IGNORE_POSTGRES_WARNING} = "true" || \
+	test "${IGNORE_POSTGRES_WARNING}" = "true" || \
 	(echo "WARNING: Postgres is not running.  Run 'gdk run db' or 'gdk run' in another shell." && echo "WARNING: Hit <ENTER> to ignore or <CTRL-C> to quit." && read v;)
 
 gitlab-update: ensure-postgres-running gitlab/.git/pull gitlab-setup
