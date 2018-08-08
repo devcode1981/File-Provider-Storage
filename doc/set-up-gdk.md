@@ -83,7 +83,7 @@ might still be running.
 Instructions to generate a developer license can be found in the
 onboarding document: https://about.gitlab.com/handbook/developer-onboarding/#working-on-gitlab-ee
 
-License key generator is only available for GitLab employees.
+The license key generator is only available for GitLab employees, who should use the "Sign in with GitLab" link using their dev.gitlab.com account.
 
 ### GitLab Geo
 
