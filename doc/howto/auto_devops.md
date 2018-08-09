@@ -49,6 +49,9 @@ echo 443 > registry_external_port
 gdk reconfigure
 ```
 
+NOTE: `gdk reconfigure` will overwrite various files it controls, such
+as `Procfile`.
+
 Then you will need to add the following lines to the end of `Procfile`:
 
 ```yml
@@ -135,15 +138,17 @@ Next, install `kubectl` as a component of gcloud :
 gcloud components install kubectl
 ```
 
-NOTE: if you have installed gcloud via Homebrew Cask, you need to add
-the following lines in your `~/.bash_profile` to set the correct PATH to
-be able to run the `kubectl` binary.
+NOTE: If you have installed gcloud via Homebrew Cask, as described
+above, you need to add the following lines in your `~/.bash_profile`
+to set the correct PATH to be able to run the `kubectl` binary.
 
 ```
   # Add to ~/.bash_profile
   source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.bash.inc'
   source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.bash.inc'
 ```
+
+Make sure to close and reopen your terminal after making these changes.
 
 ### Run the integration test
 
