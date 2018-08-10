@@ -43,7 +43,7 @@ GDK directory, run:
 ```
 echo 1337.qa-tunnel.gitlab.info > hostname
 echo 443 > port
-echo true > https
+echo true > https_enabled
 echo true > registry_enabled
 echo 1338.qa-tunnel.gitlab.info > registry_host
 echo 443 > registry_external_port

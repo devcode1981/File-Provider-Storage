@@ -34,7 +34,7 @@ gitlab-development-kit/**
 /host
 /hostname
 /port
-/https
+/https_enabled
 /relative_url_root
 /webpack_port
 /.ruby-version
