@@ -32,10 +32,10 @@ everything stays in Google's network so it runs much faster.
 ## Setup
 
 Pick 2 random numbers in [20000,29999]. These will be used as your subdomain for
-your internet facing URLs for GitLab and the registry so I say random because we don't want them to
-conflict. The following steps assuming your numbers are `1337` for gitlab and
-`1338` for the registry so you need to change those to your chosen numbers in the
-actual range.
+your internet-facing URLs for GitLab and the registry so I say random because we don't want them to
+conflict. The following steps assuming your numbers are `1337` for
+GitLab and
+`1338` for the registry so you need to change those to your chosen numbers.
 
 From the GDK directory run:
 
@@ -106,7 +106,7 @@ Before you can run the spec, you will need `gcloud` and `kubectl`
 installed.
 
 Follow the instructions at https://cloud.google.com/sdk/docs/quickstarts
-for the Operating System that you are using to install gcloud.
+for the operating system that you are using to install `gcloud`.
 Alternatively, if you are using Homebrew on MacOS, you can install
 `gcloud` with :
 
@@ -121,7 +121,7 @@ After you have installed `gcloud`, run the
 gcloud init
 ```
 
-This will help you setup your default gcloud zone and project. It will
+This init command will help you setup your default zone and project. It will
 also prompt you to log in with your Google account.
 
 ```
@@ -132,13 +132,13 @@ After you have logged in, select your default project and zone.
 GitLabbers, please refer to the handbook for details on which [GCP
 project to use](https://about.gitlab.com/handbook/engineering/#google-cloud-platform-gcp).
 
-Next, install `kubectl` as a component of gcloud :
+Next, install `kubectl` as a component of `gcloud` :
 
 ```
 gcloud components install kubectl
 ```
 
-NOTE: If you have installed gcloud via Homebrew Cask, as described
+NOTE: If you have installed `gcloud` via Homebrew Cask, as described
 above, you need to add the following lines in your `~/.bash_profile`
 to set the correct PATH to be able to run the `kubectl` binary.
 
@@ -169,7 +169,7 @@ possible to run the pipeline again unless you comment this out.
 
 ## Troubleshooting
 
-### If you cannot connect to your internet facing URL
+### If you cannot connect to your internet-facing URL
 
 It may be because the port is already taken. In this case you would see:
 
@@ -192,7 +192,7 @@ of the straightforward approaches here.
 #### Registry Must Be Routable
 
 Auto DevOps will "deploy" your application to a K8s cluster but the way
-this works in K8s is that the cluster cluster actually needs to
+this works in K8s is that the cluster actually needs to
 download the image from your docker registry running on your machine. Put
 another way the K8s cluster needs access over HTTPS to the registry running
 on your machine. And HTTPS is necessary as K8s won't download insecure images
@@ -203,7 +203,7 @@ by default.
 You will likely want to run K8s clusters on GKE as this allows us to test our
 GCP integrations as well. You can use minikube too but there are limitations
 with this as minikube won't test our GCP integration and minikube does not
-simulate a real cluser (eg. internet facing load balancers with external IP
+simulate a real cluser (eg. internet-facing load balancers with external IP
 address are not possible). So when you do choose GKE you conclude that your
 registry running on your machine needs to be internet accessible since.
 
@@ -233,7 +233,7 @@ network you really won't be able to run these pipelines at all because it will
 take hours to complete. Even if you do have a fast connection you're still
 looking at around 20 mins to complete a single run. To speed things up
 dramatically you can run everything on a VM on GCP. This will ensure that all
-data is staying inside google's network and things move a lot faster.
+data is staying inside Google's network and things move a lot faster.
 
 ### Alternatives
 
