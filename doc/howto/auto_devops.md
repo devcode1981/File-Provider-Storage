@@ -37,7 +37,8 @@ conflict. The following steps assuming your numbers are `1337` for
 GitLab and
 `1338` for the registry so you need to change those to your chosen numbers.
 
-From the GDK directory run:
+Using your chosen numbers, you will need to reconfigure GDK. From the
+GDK directory, run:
 
 ```
 echo 1337.qa-tunnel.gitlab.info > hostname
@@ -49,10 +50,11 @@ echo 443 > registry_external_port
 gdk reconfigure
 ```
 
-NOTE: `gdk reconfigure` will overwrite various files it controls, such
-as `Procfile`.
+There are currently two files, `Procfile` and `registry/config.xml` which
+we need to manually edit as we don't have support to automatically
+add the required settings below using `gdk reconfigure`.
 
-Then you will need to add the following lines to the end of `Procfile`:
+Firstly, add the following lines to the end of `Procfile`:
 
 ```yml
 tunnel_gitlab: ssh -N -R 1337:localhost:$port qa-tunnel.gitlab.info
