@@ -1,7 +1,7 @@
 # Auto DevOps
 
-IMPORTANT: These docs are currently for GitLab employees only as it
-depends on our infrastructure.
+IMPORTANT: These docs are currently only applicable to GitLab employees
+as it depends on our infrastructure.
 
 This document will instruct you to set up a working GitLab instance with
 the ability to run the full Auto DevOps workflow.
@@ -30,10 +30,9 @@ idea to run on 4G and is recommended you run on a cloud VM in GCP so that
 everything stays in Google's network so it runs much faster.
 
 ## Setup
-
-Pick 2 random numbers in [20000,29999]. These will be used as your subdomain for
-your internet-facing URLs for GitLab and the registry so I say random because we don't want them to
-conflict. The following steps assuming your numbers are `1337` for
+Pick two random numbers between 20000 and 29999. These will be used as your subdomain for
+your internet-facing URLs for GitLab and the registry so we choose randomly to avoid
+conflicts. The following steps assuming your numbers are `1337` for
 GitLab and
 `1338` for the registry so you need to change those to your chosen numbers.
 
@@ -91,9 +90,10 @@ howto](/doc/howto/google-oauth2.md) for instructions.
 
 ## Conclusion
 
-Now with this configuration you will have an internet accessible GitLab
-and registry so with a valid SSL cert (terminated in the tunnel server)
-and you should be able to run the full auto devops flow.
+With this configuration you will have an internet-accessible
+GitLab and registry, so with a valid SSL cert (terminated in the
+tunnel server) you should be able to run the full Auto DevOps
+flow.
 
 ## Running The Auto DevOps Integration Tests
 
@@ -165,24 +165,9 @@ NOTE: This test will run as the default project ID. To set or override
 the project ID, set `CLOUDSDK_CORE_PROJECT=<gcloud-project-id>`.
 
 NOTE: [This
-test](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/qa/qa/specs/features/project/auto_devops_spec.rb#L6)
+test](https://gitlab.com/gitlab-org/gitlab-ce/blob/3db2f327594e134729a0ca2f48a748bb28ab7d6c/qa/qa/specs/features/project/auto_devops_spec.rb#L6)
 does teardown the K8s cluster at the end so after the test finishes it won't be
 possible to run the pipeline again unless you comment this out.
-
-## Troubleshooting
-
-### If you cannot connect to your internet-facing URL
-
-It may be because the port is already taken. In this case you would see:
-
-```
-Warning: remote port forwarding failed for listen port
-```
-
-in your log.
-
-It may also be because the SSH connection got stuck. I'm not sure how to
-stop this from happening but you can fix this by restarting `gdk run`.
 
 ## Technical Details and Alternatives
 
@@ -207,7 +192,8 @@ GCP integrations as well. You can use minikube too but there are limitations
 with this as minikube won't test our GCP integration and minikube does not
 simulate a real cluser (eg. internet-facing load balancers with external IP
 address are not possible). So when you do choose GKE you conclude that your
-registry running on your machine needs to be internet accessible since.
+registry running on your machine needs to be internet accessible since GKE
+is outside your network.
 
 #### Runner on K8s cluster is outside of your network
 
