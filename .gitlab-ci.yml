@@ -103,7 +103,7 @@ test:install:
     - killall node || true
     - gdk run &
     - sleep 30
-    - curl -f --retry 10 --retry-delay 5 http://127.0.0.1:3000/
+    - curl -f --retry 100 --retry-delay 5 http://127.0.0.1:3000/
 
 test:update:
   image: $TEST_IMAGE
@@ -116,7 +116,7 @@ test:update:
     when: always
   script:
     - source /home/gdk/.bash_profile
-    - gem install gitlab-development-kit 
+    - gem install gitlab-development-kit
     - cd /home/gdk
     - gdk init
     - cd gitlab-development-kit
@@ -126,5 +126,5 @@ test:update:
     - killall node || true
     - gdk run &
     - sleep 30
-    - curl -f --retry 10 --retry-delay 5 http://127.0.0.1:3000/
+    - curl -f --retry 100 --retry-delay 5 http://127.0.0.1:3000/
     - gdk update
