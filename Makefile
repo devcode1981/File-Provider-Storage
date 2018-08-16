@@ -23,12 +23,15 @@ postgres_geo_dir = $(abspath ./postgresql-geo)
 postgres_data_dir = ${postgres_dir}/data
 hostname = $(shell cat hostname 2>/dev/null || echo 'localhost')
 port = $(shell cat port 2>/dev/null || echo '3000')
+https = $(shell cat https_enabled 2>/dev/null || echo 'false')
 relative_url_root = $(shell cat relative_url_root 2>/dev/null || echo '')
 username = $(shell whoami)
 sshd_bin = $(shell which sshd)
 git_bin = $(shell which git)
 webpack_port = $(shell cat webpack_port 2>/dev/null || echo '3808')
 registry_enabled = $(shell cat registry_enabled 2>/dev/null || echo 'false')
+registry_host = $(shell cat registry_host 2>/dev/null || echo '127.0.0.1')
+registry_external_port = $(shell cat registry_external_port 2>/dev/null || echo '5000')
 registry_port = $(shell cat registry_port 2>/dev/null || echo '5000')
 gitlab_from_container = $(shell [ "$(uname)" = "Linux" ] && echo 'localhost' || echo 'docker.for.mac.localhost')
 postgresql_port = $(shell cat postgresql_port 2>/dev/null || echo '5432')
@@ -55,7 +58,9 @@ gitlab/config/gitlab.yml:
 	  -e "s|/usr/bin/git|${git_bin}|"\
 	  gitlab/config/gitlab.yml.example > gitlab/config/gitlab.yml
 	hostname=${hostname} port=${port} relative_url_root=${relative_url_root}\
+	  https=${https}\
 		webpack_port=${webpack_port}\
+		registry_host=${registry_host} registry_external_port=${registry_external_port}\
 		registry_enabled=${registry_enabled} registry_port=${registry_port}\
 		object_store_enabled=${object_store_enabled} object_store_port=${object_store_port}\
 		support/edit-gitlab.yml gitlab/config/gitlab.yml
