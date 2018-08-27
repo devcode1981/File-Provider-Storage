@@ -1,4 +1,5 @@
 require 'pathname'
+require 'shellwords'
 
 module GDK
   class Env
@@ -19,7 +20,7 @@ module GDK
 
     def print_env
       env(get_project).each do |k, v|
-        puts "export #{k}=#{v}"
+        puts "export #{Shellwords.shellescape(k)}=#{Shellwords.shellescape(v)}"
       end
     end
     
