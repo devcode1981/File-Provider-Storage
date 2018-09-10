@@ -25,6 +25,7 @@ service they are related to:
 | `postgresql_port`     | main postgresql server                        |
 | `postgresql_geo_port` | postgresql server for tracking database (Geo) |
 | `registry_port`       | docker registry server                        |
+| `gitlab_pages_port`   | gitlab-pages port                             |
 
 ### Using custom ports
 

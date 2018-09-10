@@ -130,5 +130,19 @@ c
         endpoint: 'http://127.0.0.1:${object_store_port:-9000}'
         path_style: true
 .
+1
+/^  pages:/
+/^    enabled:/
+c
+    enabled: true
+.
+/^    host:/
+c
+    host: 127.0.0.1.xip.io
+.
+/^    port:/
+c
+    port: ${gitlab_pages_port:-3010}
+.
 wq
 EOF

@@ -29,6 +29,7 @@ rails5-background-jobs: exec /usr/bin/env BUNDLE_GEMFILE=Gemfile.rails5 RAILS5=1
 webpack: exec /usr/bin/env NODE_ENV=development DEV_SERVER_PORT=3808 support/exec-cd gitlab yarn dev-server
 rails-web: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/exec-cd gitlab bin/web start_foreground
 rails5-web: exec /usr/bin/env BUNDLE_GEMFILE=Gemfile.rails5 RAILS5=1 RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/exec-cd gitlab bin/web start_foreground
+gitlab-pages: exec gitlab-pages/bin/gitlab-pages -listen-http ":3010" -pages-root /home/git/gitlab/shared/pages/ -pages-domain 127.0.0.1.xip.io
 
 # Docker
 #

@@ -30,6 +30,10 @@ gitlab-development-kit/**
 /gitlab-workhorse/pkg
 /gitlab-workhorse/bin
 /gitlab-workhorse/src
+/gitlab-pages/pkg
+/gitlab-pages/bin
+/gitlab-pages/src
+/gitlab_pages_port
 /.vagrant_enabled
 /host
 /hostname
