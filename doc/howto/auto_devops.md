@@ -175,6 +175,13 @@ test](https://gitlab.com/gitlab-org/gitlab-ce/blob/3db2f327594e134729a0ca2f48a74
 does teardown the K8s cluster at the end so after the test finishes it won't be
 possible to run the pipeline again unless you comment this out.
 
+NOTE: There are other ways of running the QA specs that are documented in the
+[gitlab-qa project](https://gitlab.com/gitlab-org/gitlab-qa) but using the
+above approach is recommended as it will allow you to debug and iterate on the
+spec without rebuilding any docker images and since the above command runs the
+spec in your environment rather than in docker it requires less configuration
+as it inherits your `gcloud` credentials.
+
 ## Technical Details and Alternatives
 
 There are many ways to test out Auto DevOps and we have outlined hopefully one
