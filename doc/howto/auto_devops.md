@@ -100,7 +100,7 @@ flow.
 Since you may want to save yourself the hassle of manually setting up a whole
 project for Auto DevOps and validating everything works every time you make a
 change you can just run [the QA
-spec](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/qa/qa/specs/features/project/auto_devops_spec.rb).
+spec](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/qa/qa/specs/features/browser_ui/7_configure/auto_devops/create_project_with_auto_devops_spec.rb).
 
 ### Install gcloud and kubectl
 
@@ -165,7 +165,7 @@ NOTE: This test will run as the default project ID. To set or override
 the project ID, set `CLOUDSDK_CORE_PROJECT=<gcloud-project-id>`.
 
 NOTE: [This
-test](https://gitlab.com/gitlab-org/gitlab-ce/blob/3db2f327594e134729a0ca2f48a748bb28ab7d6c/qa/qa/specs/features/project/auto_devops_spec.rb#L6)
+test](https://gitlab.com/gitlab-org/gitlab-ce/blob/144b017d77c341849d37927b765c75888569d530/qa/qa/specs/features/browser_ui/7_configure/auto_devops/create_project_with_auto_devops_spec.rb#L9)
 does teardown the K8s cluster at the end so after the test finishes it won't be
 possible to run the pipeline again unless you comment this out.
 
