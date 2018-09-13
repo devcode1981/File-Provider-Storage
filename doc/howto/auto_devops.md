@@ -1,12 +1,13 @@
 # Auto DevOps
 
-IMPORTANT: These docs are currently only applicable to GitLab employees
-as it depends on our infrastructure.
-
 This document will instruct you to set up a working GitLab instance with
 the ability to run the full Auto DevOps workflow.
 
-## Prerequisites
+## Prerequisites (For GitLab employees only)
+
+IMPORTANT: These steps are currently only applicable to GitLab employees as it
+depends on our infrastructure. For non-GitLab employees you can see
+[Alternatives](#alternatives) below.
 
 1. Get access to [the SSH tunnel
    VM](https://gitlab.com/gitlab-com/infrastructure/issues/4298). You
@@ -30,6 +31,11 @@ idea to run on 4G and is recommended you run on a cloud VM in GCP so that
 everything stays in Google's network so it runs much faster.
 
 ## Setup
+
+IMPORTANT: These steps are currently only applicable to GitLab employees as it
+depends on our infrastructure. For non-GitLab employees you can see
+[Alternatives](#alternatives) below.
+
 Pick two random numbers between 20000 and 29999. These will be used as your subdomain for
 your internet-facing URLs for GitLab and the registry so we choose randomly to avoid
 conflicts. The following steps assuming your numbers are `1337` for
@@ -224,6 +230,51 @@ dramatically you can run everything on a VM on GCP. This will ensure that all
 data is staying inside Google's network and things move a lot faster.
 
 ### Alternatives
+
+#### Configure A Reverse Proxy In Front Of Your GDK Manually
+
+If you want you can just manually configure a reverse proxy in front of your
+GDK instance that does SSL termination for you. A good approach to this would
+be to use nginx for SSL termination on a VM with a static IP address. It is
+also necessary to have a different external hostname for the container registry
+so your reverse proxy will need to virtual hosts configured and both will need
+SSL termination.
+
+You will need to replace `<gitlab-hostname>` and `<registry-hostname>` below
+with the appropriate values from your reverse proxy settings and run the
+following commmands:
+
+```
+echo <gitlab-hostname> > hostname
+echo 443 > port
+echo true > https_enabled
+echo true > registry_enabled
+echo <registry-hostname> > registry_host
+echo 443 > registry_external_port
+gdk reconfigure
+```
+
+You will need to replace `<gitlab-hostname>` below with the appropriate values
+from your reverse proxy settings and edit `registry/config.yml` like so:
+
+```yml
+  auth:
+    token:
+      realm: https://<gitlab-hostname>/jwt/auth
+```
+
+NOTE: You should ensure your nginx (or other proxy) is configured to allow up
+to 1GB files transferred since the docker images uploaded and downloaded
+can be quite large.
+
+#### Why can't we use ngrok or localtunnel?
+
+In theory both of these tools accomplish what we need which is exposing our
+local running GitLab instance to the internet.  However, both of these
+services, at least in their hosted forms, place limitations on the number of
+open connections and the max size of files being uploaded. As such neither of
+them, even in the paid plans, will work with proxying the `docker pull` and
+`docker push` commands to the container registry.
 
 #### Test changes to `Auto-DevOps.gitlab-ci.yml` on GitLab.com
 
