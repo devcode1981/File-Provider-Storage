@@ -3,6 +3,8 @@
 -include env.mk
 
 gitlab_repo = https://gitlab.com/gitlab-org/gitlab-ce.git
+gitlab_repo_base = $(basename ${gitlab_repo})
+gitlab_repo_ruby_version = $(shell curl -s "${gitlab_repo_base}/raw/master/.ruby-version")
 gitlab_shell_repo = https://gitlab.com/gitlab-org/gitlab-shell.git
 gitlab_shell_clone_dir = go-gitlab-shell/src/gitlab.com/gitlab-org/gitlab-shell
 gitlab_workhorse_repo = https://gitlab.com/gitlab-org/gitlab-workhorse.git
@@ -44,12 +46,21 @@ gitlab_pages_port = $(shell cat gitlab_pages_port 2>/dev/null || echo '3010')
 rails_bundle_install_cmd := bundle install --jobs 4 --without production $(if $(shell mysql_config --libs 2>/dev/null),--with,--without) mysql
 elasticsearch_version = 5.5.3
 elasticsearch_tar_gz_sha1 = 81af33ec3ae08a5294133ade331de8e6aa0b146a
+ruby_version = UNKNOWN
 
 all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup gitlab-pages-setup support-setup gitaly-setup prom-setup object-storage-setup
 
 # Set up the GitLab Rails app
 
-gitlab-setup: gitlab/.git gitlab-config bundler .gitlab-bundle yarn .gitlab-yarn .gettext
+check-ruby-version:
+	@if [ "${gitlab_repo_ruby_version}" != "${ruby_version}" ]; then \
+	  echo "WARNING: You're using Ruby version ${ruby_version}."; \
+	  echo "WARNING: However we recommend using Ruby version ${gitlab_repo_ruby_version} for this repository."; \
+		test "${IGNORE_INSTALL_WARNINGS}" = "true" || \
+	  (echo "WARNING: Press <ENTER> to continue installation or <CTRL-C> to abort" && read v;) \
+	fi
+
+gitlab-setup: check-ruby-version gitlab/.git gitlab-config bundler .gitlab-bundle yarn .gitlab-yarn .gettext
 
 gitlab/.git:
 	git clone ${gitlab_repo} gitlab
@@ -206,7 +217,7 @@ update: ensure-postgres-running unlock-dependency-installers gitlab-shell-update
 
 ensure-postgres-running:
 	@test -f ${postgres_data_dir}/postmaster.pid || \
-	test "${IGNORE_POSTGRES_WARNING}" = "true" || \
+	test "${IGNORE_INSTALL_WARNINGS}" = "true" || \
 	(echo "WARNING: Postgres is not running.  Run 'gdk run db' or 'gdk run' in another shell." && echo "WARNING: Hit <ENTER> to ignore or <CTRL-C> to quit." && read v;)
 
 gitlab-update: ensure-postgres-running gitlab/.git/pull gitlab-setup
