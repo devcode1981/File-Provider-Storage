@@ -26,7 +26,7 @@ module GDK
     when 'run'
       exec('./run', *ARGV, chdir: $gdk_root)
     when 'install'
-      exec(MAKE, *ARGV, chdir: $gdk_root)
+      exec(MAKE, *ARGV, "ruby_version=#{RUBY_VERSION}", chdir: $gdk_root)
     when 'update'
       # Otherwise we would miss it and end up in a weird state.
       puts "\n> Running `make self-update` separately in case the Makefile is updated..\n\n"
