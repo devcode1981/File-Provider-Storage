@@ -117,8 +117,7 @@ gdk run app
 gdk run app rails5
 ```
 
-To access GitLab you may now go to http://localhost:3000 in your
-browser. The development login credentials are `root` and `5iveL!fe`.
+To access GitLab you may now go to http://localhost:3000 in your browser. The development login credentials are `root` and `5iveL!fe`. If you followed the GitLab Enterprise Edition instructions above, you will need to access http://localhost:3001 in your browser.
 
 If you like, you can override the port, host, or relative URL root by adding the appropriate file to the GDK root. You'll need to reconfigure and restart the GDK for these changes to take effect.
 
