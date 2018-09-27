@@ -2,46 +2,47 @@ require 'pathname'
 require 'shellwords'
 
 module GDK
-  class Env
-    def self.exec(argv)
-      new.exec(argv)
-    end
-    
-    def exec(argv)
-      if argv.empty?
-        print_env
-        exit
-      else
-        exec_env(argv)
+  module Env
+    class << self
+      def exec(argv)
+        if argv.empty?
+          print_env
+          exit
+        else
+          exec_env(argv)
+        end
       end
-    end
-
-    private
-
-    def print_env
-      env(get_project).each do |k, v|
-        puts "export #{Shellwords.shellescape(k)}=#{Shellwords.shellescape(v)}"
+  
+      private
+  
+      def print_env
+        env.each do |k, v|
+          puts "export #{Shellwords.shellescape(k)}=#{Shellwords.shellescape(v)}"
+        end
       end
-    end
-    
-    def exec_env(argv)
-      Kernel::exec(env(get_project), *argv)
-    end
-    
-    def env(project)
-      case project
-      when 'gitaly'
-        { 'GOPATH' => File.join($gdk_root, project) }
-      when 'gitlab-workhorse'
-        { 'GOPATH' => File.join($gdk_root, project) }
-      else
-        {}
+      
+      def exec_env(argv)
+        # Use Kernel:: namespace to avoid recursive method call
+        Kernel::exec(env, *argv)
       end
-    end
-    
-    def get_project
-      relative_path = Pathname.new(Dir.pwd).relative_path_from(Pathname.new($gdk_root)).to_s
-      relative_path.split('/').first
+      
+      def env
+        case get_project
+        when 'gitaly'
+          { 'GOPATH' => File.join($gdk_root, 'gitaly') }
+        when 'gitlab-workhorse'
+          { 'GOPATH' => File.join($gdk_root, 'gitlab-workhorse') }
+        when 'gitlab-shell', 'go-gitlab-shell'
+          { 'GOPATH' => File.join($gdk_root, 'go-gitlab-shell') }
+        else
+          {}
+        end
+      end
+      
+      def get_project
+        relative_path = Pathname.new(Dir.pwd).relative_path_from(Pathname.new($gdk_root)).to_s
+        relative_path.split('/').first
+      end
     end
   end
 end
