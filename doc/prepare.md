@@ -235,9 +235,9 @@ Return to the prerequisite installation steps.
 Install NodeJS from source
 
 ```
-curl -O https://nodejs.org/dist/v6.10.2/node-v6.10.2.tar.gz
-tar -zxf node-v6.10.2.tar.gz
-cd node-v6.10.2
+curl -O https://nodejs.org/dist/v8.12.0/node-v8.12.0.tar.gz
+tar -zxf node-v8.12.0.tar.gz
+cd node-v8.12.0
 ```
 Build the NodeJS library. The following instructions are copied from the NodeJS BUILDING.md document:
 
