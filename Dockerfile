@@ -17,7 +17,7 @@ RUN apt-get install -y git postgresql postgresql-contrib libpq-dev \
                        ed pkg-config libsqlite3-dev libreadline-dev libssl-dev
 
 # install nodejs
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN apt-get install -y nodejs
 
 # GDK tools
