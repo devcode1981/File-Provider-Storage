@@ -167,11 +167,16 @@ cd qa
 GITLAB_PASSWORD=<root-user-password> GCLOUD_ZONE=us-central1-a CHROME_HEADLESS=false bin/qa Test::Integration::Kubernetes https://1337.qa-tunnel.gitlab.info/
 ```
 
+TIP: Consider adding `require 'pry'; binding.pry` breakpoint before [the last
+assertion about
+builds](https://gitlab.com/gitlab-org/gitlab-ce/blob/eb146e9abe08c3991b5a54237c24d15312c70ee8/qa/qa/specs/features/browser_ui/7_configure/auto_devops/create_project_with_auto_devops_spec.rb#L61)
+to save yourself from setting up a full working Auto DevOps project.
+
 NOTE: This test will run as the default project ID. To set or override
 the project ID, set `CLOUDSDK_CORE_PROJECT=<gcloud-project-id>`.
 
 NOTE: [This
-test](https://gitlab.com/gitlab-org/gitlab-ce/blob/144b017d77c341849d37927b765c75888569d530/qa/qa/specs/features/browser_ui/7_configure/auto_devops/create_project_with_auto_devops_spec.rb#L9)
+test](https://gitlab.com/gitlab-org/gitlab-ce/blob/eb146e9abe08c3991b5a54237c24d15312c70ee8/qa/qa/specs/features/browser_ui/7_configure/auto_devops/create_project_with_auto_devops_spec.rb#L9)
 does teardown the K8s cluster at the end so after the test finishes it won't be
 possible to run the pipeline again unless you comment this out.
 
