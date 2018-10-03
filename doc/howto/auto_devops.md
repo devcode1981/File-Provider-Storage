@@ -15,13 +15,23 @@ depends on our infrastructure. For non-GitLab employees you can see
    infrastructure
    project](https://gitlab.com/gitlab-com/infrastructure/issues/new) and
    provide them with your SSH public key.
+
 1. Once your account has been created, configure your SSH config `~/.ssh/config` to set the correct username.
 
     ```
     Host qa-tunnel.gitlab.info
       User <username>
     ```
-    Verify that you can now ssh into `qa-tunnel.gitlab.info`.
+
+1. Verify you have `ssh` access into `qa-tunnel.gitlab.info`:
+
+    ```bash
+   ssh qa-tunnel.gitlab.info
+   > Welcome to Ubuntu 16.04.4 LTS (GNU/Linux 4.13.0-1019-gcp x86_64)
+   ```
+
+   If you're able to log in, it means you can move on to the next step.
+
 1. Set up the GDK for your workstation following [the preparation
    instructions](../prepare.md) and [setup instructions](../set-up-gdk.md)
 
