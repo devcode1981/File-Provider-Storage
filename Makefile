@@ -516,7 +516,7 @@ elasticsearch-${elasticsearch_version}.tar.gz:
 	echo "${elasticsearch_tar_gz_sha1}  $@.tmp" | shasum -a1 -c -
 	mv $@.tmp $@
 
-object-storage-setup: minio/data/lfs-objects minio/data/artifacts minio/data/uploads
+object-storage-setup: minio/data/lfs-objects minio/data/artifacts minio/data/uploads minio/data/packages
 
 minio/data/%:
 	mkdir -p $@
