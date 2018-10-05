@@ -9,6 +9,12 @@ IMPORTANT: These steps are currently only applicable to GitLab employees as it
 depends on our infrastructure. For non-GitLab employees you can see
 [Alternatives](#alternatives) below.
 
+1. Request the required IAM permissions on GCP by [creating an issue in the
+   infrastructure
+   project](https://gitlab.com/gitlab-com/infrastructure/issues/new) and asking
+   for `roles/container.admin` role for `gitlab-internal-153318` GCP project.
+   You will also need to provide them with your email address.
+
 1. Get access to [the SSH tunnel
    VM](https://gitlab.com/gitlab-com/infrastructure/issues/4298). You
    will need to request an account for this by [creating an issue in the
@@ -184,6 +190,10 @@ to save yourself from setting up a full working Auto DevOps project.
 
 NOTE: This test will run as the default project ID. To set or override
 the project ID, set `CLOUDSDK_CORE_PROJECT=<gcloud-project-id>`.
+
+NOTE: The GCP account you are using for `gcloud` will require the
+`roles/container.admin` for the given GCP project in order for the tests to
+succeed.
 
 NOTE: [This
 test](https://gitlab.com/gitlab-org/gitlab-ce/blob/eb146e9abe08c3991b5a54237c24d15312c70ee8/qa/qa/specs/features/browser_ui/7_configure/auto_devops/create_project_with_auto_devops_spec.rb#L9)
