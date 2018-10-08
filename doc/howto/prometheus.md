@@ -38,14 +38,16 @@ Kubectl is required for Minikube to function. You can also use `homebrew` to ins
 
 ### Install Minikube
 
+For macOS with homebrew, run `brew cask install minikube`.
+
 1. First, download it:
 
     ```
     ## For macOS
-    curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.26.1/minikube-darwin-amd64
+    curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-amd64
 
     ## For Linux
-    curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.26.1/minikube-linux-amd64
+    curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
     ```
 
 1. Then, add it to your path:
