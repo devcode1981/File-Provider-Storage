@@ -16,22 +16,30 @@ def main(argv)
     foreman_exec(%w[grafana])
   when 'thin'
     exec(
-      {'RAILS_ENV' => 'development'},
+      { 'RAILS_ENV' => 'development' },
       *%W[bundle exec thin --socket=#{Dir.pwd}/gitlab.socket start],
       chdir: 'gitlab'
     )
   when 'gitaly'
     foreman_exec(%w[gitaly])
+  when 'jobs'
+    foreman_exec(%w[rails-background-jobs])
   when 'rails5'
     print_url
     foreman_exec(%w[all], exclude: %w[rails-web rails-background-jobs])
-  else
+  when nil
     print_url
     foreman_exec(%w[all], exclude: %w[rails5-web rails5-background-jobs])
+  else
+    puts
+    puts "GitLab Development Kit does not recognize this command."
+    puts "Make sure you are using the latest version or check available commands with: \`gdk help\` "
+    puts
+    exit 1
   end
 end
 
-def foreman_exec(svcs=[], exclude: [])
+def foreman_exec(svcs = [], exclude: [])
   args = %w[foreman start]
   unless svcs.empty? && exclude.empty?
     args << '-m'
@@ -41,7 +49,7 @@ def foreman_exec(svcs=[], exclude: [])
   exec(*args)
 end
 
-def print_url
+def print_logo
   printf "
 
            \033[38;5;88m\`                        \`
@@ -66,11 +74,14 @@ def print_url
 
   "
   puts
+end
+
+def print_url
+  print_logo
   puts
   puts "Starting GitLab in #{Dir.pwd} on http://#{ENV['host']}:#{ENV['port']}#{ENV['relative_url_root']}"
   puts
   puts
-
 end
 
 main(ARGV)
