@@ -10,17 +10,13 @@ variables:
   DOCKER_DRIVER: overlay
   TEST_IMAGE: registry.gitlab.com/gitlab-org/gitlab-development-kit:latest
 
-codequality:
+code_quality:
   image: docker:stable
-  allow_failure: true
-  before_script: []
-  cache: {}
-  dependencies: []
-  tags: []
-  services:
-    - docker:stable-dind
   variables:
     DOCKER_DRIVER: overlay2
+  allow_failure: true
+  services:
+    - docker:stable-dind
   script:
     - export SP_VERSION=$(echo "$CI_SERVER_VERSION" | sed 's/^\([0-9]*\)\.\([0-9]*\).*/\1-\2-stable/')
     - docker run
@@ -29,8 +25,8 @@ codequality:
         --volume /var/run/docker.sock:/var/run/docker.sock
         "registry.gitlab.com/gitlab-org/security-products/codequality:$SP_VERSION" /code
   artifacts:
-    paths:
-      - codeclimate.json
+    reports:
+      codequality: [gl-code-quality-report.json]
 
 container_scanning:
   image: docker:stable

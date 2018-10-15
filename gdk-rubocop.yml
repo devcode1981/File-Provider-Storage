@@ -25,11 +25,45 @@ AllCops:
 Bundler/OrderedGems:
   Enabled: false
 
-# Style #######################################################################
+# Naming ######################################################################
 
 # Check the naming of accessor methods for get_/set_.
-Style/AccessorMethodName:
+Naming/AccessorMethodName:
   Enabled: false
+
+# Use only ascii symbols in identifiers.
+Naming/AsciiIdentifiers:
+  Enabled: true
+
+# Use CamelCase for classes and modules.'
+Naming/ClassAndModuleCamelCase:
+  Enabled: true
+
+# Constants should use SCREAMING_SNAKE_CASE.
+Naming/ConstantName:
+  Enabled: true
+
+# Use snake_case for source file names.
+Naming/FileName:
+  Enabled: true
+
+# Use the configured style when naming methods.
+Naming/MethodName:
+  Enabled: true
+
+  # Use the configured style when naming variables.
+Naming/VariableName:
+  EnforcedStyle: snake_case
+  Enabled: true
+
+# Use the configured style when numbering variables.
+Naming/VariableNumber:
+  Enabled: false
+
+# When defining binary operators, name the argument other.
+Naming/BinaryOperatorParameterName:
+  Enabled: true
+# Style #######################################################################
 
 # Use alias_method instead of alias.
 Style/Alias:
@@ -47,10 +81,6 @@ Style/ArrayJoin:
 
 # Use only ascii symbols in comments.
 Style/AsciiComments:
-  Enabled: true
-
-# Use only ascii symbols in identifiers.
-Style/AsciiIdentifiers:
   Enabled: true
 
 # Checks for uses of Module#attr.
@@ -81,10 +111,6 @@ Style/CaseEquality:
 
 # Checks for uses of character literals.
 Style/CharacterLiteral:
-  Enabled: true
-
-# Use CamelCase for classes and modules.'
-Style/ClassAndModuleCamelCase:
   Enabled: true
 
 # Checks style of children classes and modules.
@@ -119,10 +145,6 @@ Style/CommentAnnotation:
 Style/ConditionalAssignment:
   Enabled: true
 
-# Constants should use SCREAMING_SNAKE_CASE.
-Style/ConstantName:
-  Enabled: true
-
 # Use def with parentheses when there are arguments.
 Style/DefWithParentheses:
   Enabled: true
@@ -143,10 +165,6 @@ Style/EndBlock:
 
 # Favor the use of Fixnum#even? && Fixnum#odd?
 Style/EvenOdd:
-  Enabled: true
-
-# Use snake_case for source file names.
-Style/FileName:
   Enabled: true
 
 # Checks for flip flops.
@@ -189,10 +207,6 @@ Style/LambdaCall:
 
 # Checks if the method definitions have or don't have parentheses.
 Style/MethodDefParentheses:
-  Enabled: true
-
-# Use the configured style when naming methods.
-Style/MethodName:
   Enabled: true
 
 # Checks for usage of `extend self` in modules.
@@ -246,10 +260,6 @@ Style/NumericLiterals:
 
 # Favor the ternary operator(?:) over if/then/else/end constructs.
 Style/OneLineConditional:
-  Enabled: true
-
-# When defining binary operators, name the argument other.
-Style/OpMethod:
   Enabled: true
 
 # Don't use parentheses around the condition of an if/unless/while.
@@ -306,8 +316,13 @@ Style/StringMethods:
     intern: to_sym
   Enabled: true
 
-# This cop checks for trailing comma in array and hash literals.
-Style/TrailingCommaInLiteral:
+# This cop checks for trailing comma in array literals.
+Style/TrailingCommaInArrayLiteral:
+  Enabled: true
+  EnforcedStyleForMultiline: no_comma
+
+# This cop checks for trailing comma in hash literals.
+Style/TrailingCommaInHashLiteral:
   Enabled: true
   EnforcedStyleForMultiline: no_comma
 
@@ -327,15 +342,6 @@ Style/UnneededPercentQ:
 # Don't interpolate global, instance and class variables directly in strings.
 Style/VariableInterpolation:
   Enabled: true
-
-# Use the configured style when naming variables.
-Style/VariableName:
-  EnforcedStyle: snake_case
-  Enabled: true
-
-# Use the configured style when numbering variables.
-Style/VariableNumber:
-  Enabled: false
 
 # Use when x then ... for one-line cases.
 Style/WhenThen:
@@ -358,6 +364,22 @@ Style/Proc:
   Enabled: true
 
 # Layout ######################################################################
+
+# Align ends correctly.
+Layout/EndAlignment:
+  Enabled: true
+
+# Align ends corresponding to defs correctly.
+Layout/DefEndAlignment:
+  Enabled: true
+
+# Checks for condition placed in a confusing position relative to the keyword.
+Layout/ConditionPosition:
+  Enabled: true
+
+# Align block ends correctly.
+Layout/BlockAlignment:
+  Enabled: true
 
 # Check indentation of private/protected visibility modifiers.
 Layout/AccessModifierIndentation:
@@ -533,10 +555,6 @@ Layout/SpaceBeforeComment:
 Layout/SpaceBeforeSemicolon:
   Enabled: true
 
-# Checks for spaces inside square brackets.
-Layout/SpaceInsideBrackets:
-  Enabled: true
-
 # Use spaces inside hash literal braces - or don't.
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
@@ -624,25 +642,13 @@ Lint/AmbiguousRegexpLiteral:
 Lint/AssignmentInCondition:
   Enabled: false
 
-# Align block ends correctly.
-Lint/BlockAlignment:
-  Enabled: true
-
 # Default values in optional keyword arguments and optional ordinal arguments
 # should not refer back to the name of the argument.
 Lint/CircularArgumentReference:
   Enabled: true
 
-# Checks for condition placed in a confusing position relative to the keyword.
-Lint/ConditionPosition:
-  Enabled: true
-
 # Check for debugger calls.
 Lint/Debugger:
-  Enabled: true
-
-# Align ends corresponding to defs correctly.
-Lint/DefEndAlignment:
   Enabled: true
 
 # Check for deprecated class method calls.
@@ -663,10 +669,6 @@ Lint/EmptyEnsure:
 
 # Checks for the presence of `when` branches without a body.
 Lint/EmptyWhen:
-  Enabled: true
-
-# Align ends correctly.
-Lint/EndAlignment:
   Enabled: true
 
 # END blocks should not be placed inside method definitions.
@@ -699,13 +701,8 @@ Lint/ImplicitStringConcatenation:
 Lint/IneffectiveAccessModifier:
   Enabled: false
 
-# Checks for invalid character literals with a non-escaped whitespace
-# character.
-Lint/InvalidCharacterLiteral:
-  Enabled: true
-
 # Checks of literals used in conditions.
-Lint/LiteralInCondition:
+Lint/LiteralAsCondition:
   Enabled: true
 
 # Checks for literals used in interpolation.
@@ -765,7 +762,7 @@ Lint/UnifiedInteger:
 # Checks for rubocop:disable comments that can be removed.
 # Note: this cop is not disabled when disabling all cops.
 # It must be explicitly disabled.
-Lint/UnneededDisable:
+Lint/UnneededCopDisableDirective:
   Enabled: false
 
 # This cop checks for unneeded usages of splat expansion
