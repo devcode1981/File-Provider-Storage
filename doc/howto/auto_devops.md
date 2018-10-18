@@ -328,3 +328,87 @@ circumstances:
 - clusters_applications_prometheus
 - clusters_applications_runners
 - clusters_applications_jupyter
+
+## Cleaning up unused GCP resources
+
+When you create a new cluster in GCP for testing purposes it is usually a good
+idea to clean up after yourself. Particularly during testing you may wish to
+regularly create new test clusters with each test and as such you should be
+making sure you delete your old cluster from GCP. You can find your clusters on
+the [Kubernetes page](https://console.cloud.google.com/kubernetes/list) in GCP
+console. If you see one of your clusters you are no longer using then simply
+delete it from this page.
+
+Unfortunately deleting a cluster is not enough to fully clean up after yourself
+on GCP. When creating a cluster and installing helm apps on that cluster you
+actually end up creating other GCP resources that are not deleted when the
+cluster is deleted. As such it is important to also periodically find and
+delete these unused (orphaned) GCP resources. Please read on for how to do
+that.
+
+### Unused Load Balancers
+
+When you install the Ingress on your cluster it will create a GCP Load Balancer
+behind the scenes with a static IP address. Because static IP addresses have a
+fixed limit per GCP project and also because they cost money it is important
+that we periodically clean up all the unused orphaned load balancers from
+deleted clusters.
+
+You can find and delete any unused load balancers following these steps:
+
+1. Open [The Load Balancers
+   page](https://console.cloud.google.com/net-services/loadbalancing/loadBalancers/list?filter=%255B%257B_22k_22_3A_22Protocol_22_2C_22t_22_3A10_2C_22v_22_3A_22_5C_22TCP_5C_22_22%257D%255D)
+   in the GCP console
+1. Open every one of the TCP load balancers in new tabs
+1. Check through every tab for the yellow warning next to the nodes list saying
+   the nodes they point to no longer exist
+1. Delete the load balancer if it has no green ticks and only yellow warnings
+   about nodes no longer existing
+
+### Unused Persistent Disks
+
+When creating a new GKE cluster it will also provision peristent disks in your
+GCP project. Because persistent disks have a fixed limit per GCP project and
+also because they cost money it is important that we periodically clean up all
+the unused orphaned persistent disks from deleted clusters.
+
+You can find and delete any unused persistent disks following these steps:
+
+1. Open [Compute Engine Disks page](https://console.cloud.google.com/compute/disks?diskssize=200&disksquery=%255B%257B_22k_22_3A_22userNames_22_2C_22t_22_3A10_2C_22v_22_3A_22_5C_22%27%27_5C_22_22%257D%255D)
+   in the GCP console
+1. Be sure you are filtered by `In use by: ''` and you should also notice the
+   `In use by` column is empty to verify they are not in use
+1. Search this list for a `Name` that matches how you were naming your
+   clusters. For example a cluster called `mycluster` would end up with
+   persistent disks named `gke-mycluster-pvc-<random-suffix>`. If they match
+   the name you are expecting and they are not in use it is safe to delete
+   them.
+
+NOTE: When [running the integration test](#run-the-integration-test) it is
+creating clusters named `qa-cluster-<timestamp>-<random-suffix>`. As such it is
+actually safe and encouraged for you to also delete unused persistent disks
+created by these automated tests. The disk name will start with
+`gke-qa-cluster-`. Also note there will likely be many such disks here as our
+automated tests do not clean these up after each run. It is a good idea to
+clean them up yourself while you're on this page.
+
+## Troubleshooting
+
+### The Ingress is never assigned an IP address
+
+If your ingress is never assigned an IP address and you've waited on the cluster
+applications page looking for the IP to appear for several minutes it's quite
+possible that your GCP project has hit a limit of static IP addresses. See [how
+to clean up unused load balancers above](#unused-load-balancers).
+
+### Error due to `Insufficient regional quota` for `DISKS_TOTAL_GB`
+
+When creating a new cluster it will create persistent disks for you. If you are
+running into the following error:
+
+```
+ResponseError: code=403, message=Insufficient regional quota to satisfy request: resource "DISKS_TOTAL_GB"
+```
+
+this would indicate you have reached your limit of persistent disks. See [how
+to clean up unused persistent disks above](#unused-persistent-disks).
