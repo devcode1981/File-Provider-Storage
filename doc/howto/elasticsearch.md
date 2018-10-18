@@ -8,12 +8,12 @@ environment.
 
 1. Install Java 8 (Elasticsearch dependency)
 
-If needed, install Java 8 (JRE). For macOS you can download it from
+   If needed, install Java 8 (JRE). For macOS you can download it from
 https://www.java.com.
 
 1. Uncomment ElasticSearch in your Procfile
 
-ElasticSearch 5.5.3 should already be installed into your GDK root
+   ElasticSearch 5.5.3 should already be installed into your GDK root
 under /elasticsearch. Uncomment the `#elasticsearch:` line in your
 Procfile to make ElasticSearch run as part of your `gdk run` or `gdk
 run db` processes.
