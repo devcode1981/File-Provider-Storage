@@ -3,6 +3,8 @@
 # This file is loaded by the 'gdk' command in the gem. This file is NOT
 # part of the gitlab-development-kit gem so that we can iterate faster.
 
+require_relative 'gdk/env'
+
 module GDK
   PROGNAME = 'gdk'.freeze
   MAKE = RUBY_PLATFORM =~ /bsd/ ? 'gmake' : 'make'
@@ -72,6 +74,8 @@ module GDK
       exec('psql', '-h', File.join($gdk_root, 'postgresql'), '-p', pg_port.to_s, *ARGV, chdir: $gdk_root)
     when 'redis-cli'
       exec('redis-cli', '-s', File.join($gdk_root, 'redis/redis.socket'), *ARGV, chdir: $gdk_root)
+    when 'env'
+      GDK::Env.exec(ARGV)
     when 'help'
       puts File.read(File.join($gdk_root, 'HELP'))
       true

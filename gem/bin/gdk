@@ -56,7 +56,7 @@ module GDK
         EOS
         return false
       end
-      puts "(in #{$gdk_root})"
+      warn "(in #{$gdk_root})"
 
       unless trusted?($gdk_root)
         puts <<-EOS.gsub(/^\s+\|/, '')
