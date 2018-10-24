@@ -5,8 +5,8 @@ gitlab-development-kit/**
 /gitlab-shell/
 /gitlab-shell
 /.ssh/
-/gitlab-satellites/
-/repositories*
+/repositories
+!/repositories/.gitkeep
 /gitlab/
 /Procfile
 /postgresql/data
