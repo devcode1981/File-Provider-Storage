@@ -512,6 +512,19 @@ Edit `gitlab/config/unicorn.rb`:
 timeout 3600
 ```
 
+## fatal: not a git repository
+
+If `gdk init` or any other `gdk` command gives you the following error:
+
+```
+fatal: not a git repository (or any of the parent directories): .git
+```
+
+Make sure you don't have `gdk` aliased in your shell.
+For example the git module in [prezto](https://github.com/sorin-ionescu/prezto)
+has an [alias](https://github.com/sorin-ionescu/prezto/blob/master/modules/git/README.md#data)
+for `gdk` that lists killed files.
+
 ## Other problems
 
 Please open an issue on the [GDK issue tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues).
