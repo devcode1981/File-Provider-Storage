@@ -162,6 +162,12 @@ Back in the GDK on the cluster screen, you should now be able to deploy Helm Til
 
 If you get an error about an API token not yet being created, wait a minute or two and try again.
 
+If installing Helm Tiller fails with 'Kubernetes error', you may have an existing config. To remove it:
+
+```
+kubectl delete configmap values-content-configuration-helm -n gitlab-managed-apps
+```
+
 ## Run a Pipeline to deploy to an Environment
 
 Now that we have a Runner configured, we need to kick off a Pipeline. This is
