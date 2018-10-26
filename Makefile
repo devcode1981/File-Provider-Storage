@@ -65,7 +65,7 @@ gitlab-setup: check-ruby-version gitlab/.git gitlab-config bundler .gitlab-bundl
 gitlab/.git:
 	git clone ${gitlab_repo} gitlab
 
-gitlab-config: gitlab/config/gitlab.yml gitlab/config/database.yml gitlab/config/unicorn.rb gitlab/config/resque.yml gitlab/public/uploads
+gitlab-config: gitlab/config/gitlab.yml gitlab/config/database.yml gitlab/config/unicorn.rb gitlab/config/resque.yml gitlab/public/uploads gitlab/config/puma.rb
 
 gitlab/config/gitlab.yml:
 	sed -e "s|/home/git|${gitlab_development_root}|"\
@@ -85,9 +85,11 @@ gitlab/config/database.yml:
 		-e "s|5432|${postgresql_port}|"\
 		database.yml.example > gitlab/config/database.yml
 
-gitlab/config/unicorn.rb:
-	cp gitlab/config/unicorn.rb.example.development gitlab/config/unicorn.rb
-	echo "listen '${gitlab_development_root}/gitlab.socket'" >> $@
+gitlab/config/puma.rb:	gitlab/config/puma.example.development.rb
+	bin/safe-replace-file "$<" "$@" "${gitlab_development_root}"
+
+gitlab/config/unicorn.rb:	gitlab/config/unicorn.rb.example.development
+	bin/safe-replace-file "$<" "$@" "${gitlab_development_root}"
 
 gitlab/config/resque.yml:
 	sed "s|/home/git|${gitlab_development_root}|" redis/resque.yml.example > $@
@@ -535,6 +537,7 @@ clean-config:
 	gitlab/config/gitlab.yml \
 	gitlab/config/database.yml \
 	gitlab/config/unicorn.rb \
+	gitlab/config/puma.rb \
 	gitlab/config/resque.yml \
 	gitlab-shell/config.yml \
 	gitlab-shell/.gitlab_shell_secret \
