@@ -16,12 +16,20 @@ docker run --name=gitlab_saml_idp -p 8080:8080 -p 8443:8443 \
 -d jamedjo/test-saml-idp
 ```
 
-From GitLab this would then be configured using:
+From GitLab this would then be [configured](https://docs.gitlab.com/ee/user/group/saml_sso/#how-to-configure) using:
 
 - **SSO URL:** https://localhost:8443/simplesaml/saml2/idp/SSOService.php
 - **Certificate fingerprint:** 119b9e027959cdb7c662cfd075d9e2ef384e445f
 
 ![Group SAML Settings for Docker](img/group-saml-settings-for-docker.png)
+
+You'll also need to enable Group SAML in [gitlab/config/gitlab.yml](https://gitlab.com/gitlab-org/gitlab-ee/blob/d8ef45c25ef3f08e5fcda703185f36203bfecd6b/config/gitlab.yml.example#L693):
+
+```yaml
+omniauth:
+    providers:
+      - { name: 'group_saml' }
+```
 
 ## Credentials
 
