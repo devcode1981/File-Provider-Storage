@@ -1,6 +1,6 @@
 # SAML
 
-You can run a test SAML identity provider using the [kristophjunge/test-saml-idp](https://hub.docker.com/r/kristophjunge/test-saml-idp/)
+You can run a test SAML identity provider using the [jamedjo/test-saml-idp](https://hub.docker.com/r/jamedjo/test-saml-idp/)
 docker image, both to test instance-wide SAML and the multi-tenant Group SAML used on GitLab.com
 
 ## Group SAML
@@ -13,7 +13,7 @@ For example, an identity provider for the "zebra" group can be ran using the fol
 docker run --name=gitlab_saml_idp -p 8080:8080 -p 8443:8443 \
 -e SIMPLESAMLPHP_SP_ENTITY_ID=https://localhost:3443/groups/zebra \
 -e SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE=https://localhost:3443/groups/zebra/-/saml/callback \
--d kristophjunge/test-saml-idp
+-d jamedjo/test-saml-idp
 ```
 
 From GitLab this would then be configured using:
@@ -25,7 +25,7 @@ From GitLab this would then be configured using:
 
 ## Credentials
 
-The following users are described in the [docker image documenation](https://hub.docker.com/r/kristophjunge/test-saml-idp/#usage):
+The following users are described in the [docker image documenation](https://hub.docker.com/r/jamedjo/test-saml-idp/#usage):
 
 | Username | Password |
 | -------- | -------- |
