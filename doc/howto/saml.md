@@ -31,6 +31,8 @@ omniauth:
       - { name: 'group_saml' }
 ```
 
+Once this is set up you can sign in from `https://localhost:3443/groups/zebra/-/saml/sso` on GitLab, or initiate the login from the identity provider at `https://localhost:8443/simplesaml/saml2/idp/SSOService.php?spentityid=https%3A%2F%2Flocalhost%3A3443%2Fgroups%2Fzebra`
+
 ## Credentials
 
 The following users are described in the [docker image documenation](https://hub.docker.com/r/jamedjo/test-saml-idp/#usage):
