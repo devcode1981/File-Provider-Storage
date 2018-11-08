@@ -85,6 +85,10 @@ gitlab/config/database.yml:
 		-e "s|5432|${postgresql_port}|"\
 		database.yml.example > gitlab/config/database.yml
 
+# Versions older than GitLab 11.5 won't have this file
+gitlab/config/puma.example.development.rb:
+	touch $@
+
 gitlab/config/puma.rb:	gitlab/config/puma.example.development.rb
 	bin/safe-replace-file "$<" "$@" "${gitlab_development_root}"
 
