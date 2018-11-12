@@ -71,7 +71,7 @@ echo 443 > registry_external_port
 gdk reconfigure
 ```
 
-There are currently two files, `Procfile` and `registry/config.xml` which
+There are currently two files, `Procfile` and `registry/config.yml` which
 we need to manually edit as we don't have support to automatically
 add the required settings below using `gdk reconfigure`.
 
