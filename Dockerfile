@@ -26,12 +26,12 @@ RUN apt-get install -y net-tools psmisc apt-transport-https
 # install yarn
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-RUN apt-get update && apt-get install -y yarn
+RUN apt-get update && apt-get install -y yarn && apt-get clean -yqq && rm -rf /var/lib/apt/lists/*
 
 # install Go
 RUN curl --silent --location --remote-name https://dl.google.com/go/go1.10.2.linux-amd64.tar.gz
 RUN printf '4b677d698c65370afa33757b6954ade60347aaca310ea92a63ed717d7cb0c2ff  go1.10.2.linux-amd64.tar.gz' | shasum -a256 -c -
-RUN tar -C /usr/local -xzf go1.10.2.linux-amd64.tar.gz
+RUN tar -C /usr/local -xzf go1.10.2.linux-amd64.tar.gz && rm go1.10.2.linux-amd64.tar.gz
 ENV PATH $PATH:/usr/local/go/bin
 
 # Add GDK user
