@@ -43,16 +43,19 @@ We are using PostgreSQL 9.6 in the following example. If you want to use another
 #### Install OS X prerequisites using homebrew
 
 We recommend manual installation of Node LTS, and not using Homebrew,
-to avoid breaking your development setup when you run `brew upgrade`.
+to avoid breaking your development setup when you run `brew upgrade`. 
 Install NodeJS 8.x LTS [manually](https://nodejs.org/en/download/),
 or use a tool like [NVM](https://github.com/creationix/nvm).
+But you can also install NodeJS 8.x LTS using Homebrew and prevent Homebrew from upgrading the node@8 formula by pinning it with `brew pin node@8`.
 
 ```
-brew install git redis postgresql@9.6 libiconv icu4c pkg-config cmake go openssl coreutils re2 graphicsmagick
+brew install git redis postgresql@9.6 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@8
 brew install yarn --without-node
+brew pin node@8
 bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
-echo 'export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"' >> ~/.bash_profile
+echo 'export PATH="/usr/local/opt/postgresql@9.6/bin:/usr/local/opt/node@8/bin:$PATH"' >> ~/.bash_profile
 source ~/.bash_profile
+brew cask install google-chrome chromedriver
 ```
 
 #### Install OS X prerequisites using macports
