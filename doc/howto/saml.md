@@ -52,6 +52,12 @@ The following users are described in the [docker image documenation](https://hub
 | user1 | user1pass |
 | user2 | user2pass |
 
+## Video tutorial
+
+We made a video demoing SAML setup and debugging, describing key SAML concepts,
+and giving a run through of our SAML codebase. This can be found at
+https://www.youtube.com/embed/CW0SujsABrs with [slides also available](https://gitlab.com/gl-retrospectives/manage/uploads/2c057dd7fddb91512e93d006a3fc0048/SAML_Knowledge_Sharing__Manage_201s_.pdf).
+
 ## Debugging tools
 
 Because SAML is a browser based protocol with base64 encoded messages it can be
