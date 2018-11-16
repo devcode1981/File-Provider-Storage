@@ -59,6 +59,10 @@ Alternatively, you can clone all components from their official source.
 gdk install
 ```
 
+### Common errors during installation and troubleshooting
+
+During `gdk install` process, you may encounter some dependencies related errors. Please refer to the [Troubleshooting page](./howto/troubleshooting.md) or [open an issue on GDK tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues) if you get stuck.
+
 ## GitLab Enterprise Edition
 
 The recommended way to do development on GitLab Enterprise Edition is
