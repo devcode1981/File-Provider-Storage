@@ -59,3 +59,5 @@ useful to use a tool that decodes these messages on the fly. Tools such as:
 
 - [SAML tracer for Firefox](https://addons.mozilla.org/en-US/firefox/addon/saml-tracer/)
 - [Chrome SAML Panel](https://chrome.google.com/webstore/detail/saml-chrome-panel/paijfdbeoenhembfhkhllainmocckace?hl=en)
+
+![SAML debugging tools](img/saml_debugging_tools.jpg)
