@@ -51,3 +51,11 @@ The following users are described in the [docker image documenation](https://hub
 | -------- | -------- |
 | user1 | user1pass |
 | user2 | user2pass |
+
+## Debugging tools
+
+Because SAML is a browser based protocol with base64 encoded messages it can be
+useful to use a tool that decodes these messages on the fly. Tools such as:
+
+- [SAML tracer for Firefox](https://addons.mozilla.org/en-US/firefox/addon/saml-tracer/)
+- [Chrome SAML Panel](https://chrome.google.com/webstore/detail/saml-chrome-panel/paijfdbeoenhembfhkhllainmocckace?hl=en)
