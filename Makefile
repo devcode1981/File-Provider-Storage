@@ -214,7 +214,9 @@ self-update: unlock-dependency-installers
 	@echo "--------------------------"
 	@echo ""
 	cd ${gitlab_development_root} && \
-		git stash && git checkout master && git fetch && \
+		git stash && \
+		git checkout master && \
+		git fetch && \
 		support/self-update-git-worktree
 
 # Update gitlab, gitlab-shell, gitlab-workhorse and gitaly
@@ -235,23 +237,27 @@ gitlab-shell-update: gitlab-shell/.git/pull gitlab-shell-setup
 gitlab/.git/pull:
 	cd ${gitlab_development_root}/gitlab && \
 		git checkout -- Gemfile.lock db/schema.rb && \
-		git stash && git checkout master && \
+		git stash && \
+		git checkout master && \
 		git pull --ff-only
 
 gitlab-shell/.git/pull:
 	cd ${gitlab_development_root}/gitlab-shell && \
-		git stash && git checkout master && \
-		git pull --ff-only
+		git stash && \
+		git fetch --all --tags --prune && \
+		git checkout v$(shell cat ${gitlab_development_root}/gitlab/GITLAB_SHELL_VERSION)
 
 gitaly-update: gitaly/.git/pull gitaly-clean gitaly/bin/gitaly
 
 .PHONY: gitaly/.git/pull
 gitaly/.git/pull: ${gitaly_clone_dir}/.git ${gitaly_proto_clone_dir}/.git
 	cd ${gitaly_clone_dir} && \
-		git stash && git checkout master && \
-		git pull --ff-only
+		git stash && \
+		git fetch --all --tags --prune && \
+		git checkout v$(shell cat ${gitlab_development_root}/gitlab/GITALY_SERVER_VERSION)
 	cd ${gitaly_proto_clone_dir} && \
-		git stash && git checkout master && \
+		git stash && \
+		git checkout master && \
 		git pull --ff-only
 
 gitaly-clean:
@@ -420,9 +426,9 @@ ${gitlab_workhorse_clone_dir}/.git:
 
 gitlab-workhorse/.git/pull:
 	cd ${gitlab_workhorse_clone_dir} && \
-		git stash &&\
-		git checkout master &&\
-		git pull --ff-only
+		git stash && \
+		git fetch --all --tags --prune && \
+		git checkout v$(shell cat ${gitlab_development_root}/gitlab/GITLAB_WORKHORSE_VERSION)
 
 gitlab-pages-setup: gitlab-pages/bin/gitlab-pages
 
