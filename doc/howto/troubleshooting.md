@@ -455,7 +455,7 @@ If you still encounter some errors, see the troubleshooting FAQ below:
     
     This means the port is already in use, probably because webpack failed to
     terminate correctly when the GDK was last shutdown. You can find out the pid
-    of the process using the port with the command `lsof -i :3803`. If you are
+    of the process using the port with the command `lsof -i :3808`. If you are
     using Vagrant the `lsof` command is not available. Instead you can use the
     command `ss -pntl 'sport = :3808'`. The left over process can be killed with
     the command `kill PID`.
