@@ -44,8 +44,8 @@ object_store_enabled = $(shell cat object_store_enabled 2>/dev/null || echo 'fal
 object_store_port = $(shell cat object_store_port 2>/dev/null || echo '9000')
 gitlab_pages_port = $(shell cat gitlab_pages_port 2>/dev/null || echo '3010')
 rails_bundle_install_cmd := bundle install --jobs 4 --without production $(if $(shell mysql_config --libs 2>/dev/null),--with,--without) mysql
-elasticsearch_version = 5.5.3
-elasticsearch_tar_gz_sha1 = 81af33ec3ae08a5294133ade331de8e6aa0b146a
+elasticsearch_version = 6.5.1
+elasticsearch_tar_gz_sha1 = 5903e1913a7c96aad96a8227517c40490825f672
 ruby_version = UNKNOWN
 
 all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup gitlab-pages-setup support-setup gitaly-setup prom-setup object-storage-setup
