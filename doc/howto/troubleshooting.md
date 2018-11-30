@@ -150,6 +150,7 @@ completely.
 
 ## Rails cannot connect to Postgres
 
+- Until [gitlab-ce#54718](https://gitlab.com/gitlab-org/gitlab-ce/issues/54718) is fixed, [comment out](https://gitlab.com/gitlab-org/gitlab-development-kit/issues/420#note_121439593) Sidekiq's reliable fetch initialization.
 - Check if foreman is running in the gitlab-development-kit directory.
 - Check for custom Postgres connection settings defined via the environment; we
   assume none such variables are set. Look for them with `set | grep '^PG'`.
