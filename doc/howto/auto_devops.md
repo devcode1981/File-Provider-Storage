@@ -261,6 +261,10 @@ looking at around 20 mins to complete a single run. To speed things up
 dramatically you can run everything on a VM on GCP. This will ensure that all
 data is staying inside Google's network and things move a lot faster.
 
+If you don't need a full-fledged application, consider testing with the
+[minimal-ruby-app](https://gitlab.com/auto-devops-examples/minimal-ruby-app) project
+which creates smaller docker images on the order of 20-50MB.
+
 ### Alternatives
 
 #### Configure A Reverse Proxy In Front Of Your GDK Manually
