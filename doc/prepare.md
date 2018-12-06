@@ -15,7 +15,7 @@ during installation.
 1. Make sure to close and reopen the terminal after installing a Ruby version manager.
 1. Bundler, which you can install with `gem install bundler`
 1. We recommend using Git version 2.18 or higher.
-1. Node **8.x (LTS)** and Yarn 1.2 or newer. If your package manager does not
+1. Node **8.x (LTS)** and Yarn 1.10 or newer. If your package manager does not
    have Node 8.x or yarn available, visit the official
    websites for [node] and [yarn] for installation instructions.
 1. Go 1.9.6 or newer. If your package manager does not have up-to-date versions
