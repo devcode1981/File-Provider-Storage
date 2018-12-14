@@ -47,6 +47,9 @@ rails_bundle_install_cmd := bundle install --jobs 4 --without production $(if $(
 elasticsearch_version = 6.5.1
 elasticsearch_tar_gz_sha1 = 5903e1913a7c96aad96a8227517c40490825f672
 ruby_version = UNKNOWN
+workhorse_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_WORKHORSE_VERSION")
+gitlab_shell_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_SHELL_VERSION")
+gitaly_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITALY_SERVER_VERSION")
 
 all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup gitlab-pages-setup support-setup gitaly-setup prom-setup object-storage-setup
 
@@ -245,7 +248,7 @@ gitlab-shell/.git/pull:
 	cd ${gitlab_development_root}/gitlab-shell && \
 		git stash && \
 		git fetch --all --tags --prune && \
-		git checkout v$(shell cat ${gitlab_development_root}/gitlab/GITLAB_SHELL_VERSION)
+		git checkout "${gitlab_shell_version}"
 
 gitaly-update: gitaly/.git/pull gitaly-clean gitaly/bin/gitaly
 
@@ -254,7 +257,7 @@ gitaly/.git/pull: ${gitaly_clone_dir}/.git ${gitaly_proto_clone_dir}/.git
 	cd ${gitaly_clone_dir} && \
 		git stash && \
 		git fetch --all --tags --prune && \
-		git checkout v$(shell cat ${gitlab_development_root}/gitlab/GITALY_SERVER_VERSION)
+		git checkout "${gitaly_version}"
 	cd ${gitaly_proto_clone_dir} && \
 		git stash && \
 		git checkout master && \
@@ -428,7 +431,7 @@ gitlab-workhorse/.git/pull:
 	cd ${gitlab_workhorse_clone_dir} && \
 		git stash && \
 		git fetch --all --tags --prune && \
-		git checkout v$(shell cat ${gitlab_development_root}/gitlab/GITLAB_WORKHORSE_VERSION)
+		git checkout "${workhorse_version}"
 
 gitlab-pages-setup: gitlab-pages/bin/gitlab-pages
 

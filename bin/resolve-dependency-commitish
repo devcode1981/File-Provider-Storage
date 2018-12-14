@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+version_file="${1}"
+version="$(cat "${version_file}")"
+
+case "$version" in
+  =*)
+      echo "${version#"="}"
+      ;;
+  *)
+      echo "v${version}"
+      ;;
+esac
