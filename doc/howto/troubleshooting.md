@@ -319,6 +319,30 @@ xcode-select --install
 gem install nokogiri
 ```
 
+## `gem install gpgme` `2.0.x` fails to compile native extension on macOS Mojave
+
+If building `gpgme` gem fails with an `Undefined symbols for architecture x86_64` error on macOS Mojave, build `gpgme` using system libraries instead.
+
+1. Ensure necessary dependencies are installed:
+
+   ```sh
+   brew install gpgme
+   ```
+
+1. (optional) Try building the `gpgme` gem manually to ensure it compiles. If it fails, debug the failure with the error messages. To compile the `gpgme` gem manually run:
+
+   ```sh
+   gem install gpgme -- --use-system-libraries
+   ```
+
+1. Configure Bundler to use system libraries for the `gpgme` gem:
+
+   ```sh
+   bundle config build.gpgme --use-system-libraries
+   ```
+
+You can now run `gdk install` or `bundle` again.
+
 ## Delete non-existent migrations from the database
 
 If for some reason you end up having database migrations that no longer exist
