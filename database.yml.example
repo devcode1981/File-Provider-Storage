@@ -4,7 +4,7 @@ development:
   database: gitlabhq_development
   host: /home/git/postgresql
   port: 5432
-  pool: 6
+  pool: 10
 
 test: &test
   adapter: postgresql
@@ -12,4 +12,4 @@ test: &test
   database: gitlabhq_test
   host: /home/git/postgresql
   port: 5432
-  pool: 6
+  pool: 10
