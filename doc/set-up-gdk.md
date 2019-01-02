@@ -98,11 +98,7 @@ Check the [GitLab Geo instructions](./howto/geo.md).
 Start GitLab and all required services:
 
 ```sh
-# Rails 4 (current stable)
 gdk run
-
-# Rails 5.0 (next version, we're migrating to it now)
-gdk run rails5
 ```
 
 To start only the databases use:
@@ -114,11 +110,7 @@ gdk run db
 To start only the app (assuming the DBs are already running):
 
 ```sh
-# Rails 4 (current stable)
 gdk run app
-
-# Rails 5.0 (next version, we're migrating to it now)
-gdk run app rails5
 ```
 
 To access GitLab you may now go to http://localhost:3000 in your browser. The development login credentials are `root` and `5iveL!fe`. If you followed the GitLab Enterprise Edition instructions above, you will need to access http://localhost:3001 in your browser.
