@@ -7,11 +7,7 @@ def main(argv)
   when 'app'
     svcs = %w[gitlab-workhorse nginx grafana sshd gitaly storage-check gitlab-pages]
 
-    if argv[1] == 'rails5'
-      foreman_exec(svcs + %w[rails5-web rails5-background-jobs], exclude: %w[rails-web rails-background-jobs])
-    else
-      foreman_exec(svcs + %w[rails-web rails-background-jobs], exclude: %w[rails5-web rails5-background-jobs])
-    end
+    foreman_exec(svcs + %w[rails-web rails-background-jobs])
   when 'grafana'
     foreman_exec(%w[grafana])
   when 'thin'
@@ -24,12 +20,9 @@ def main(argv)
     foreman_exec(%w[gitaly])
   when 'jobs'
     foreman_exec(%w[rails-background-jobs])
-  when 'rails5'
-    print_url
-    foreman_exec(%w[all], exclude: %w[rails-web rails-background-jobs])
   when nil
     print_url
-    foreman_exec(%w[all], exclude: %w[rails5-web rails5-background-jobs])
+    foreman_exec(%w[all])
   else
     puts
     puts "GitLab Development Kit does not recognize this command."
