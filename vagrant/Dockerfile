@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM ubuntu:18.04
 MAINTAINER GitLab.com
 
 ENV DEBIAN_FRONTEND noninteractive
