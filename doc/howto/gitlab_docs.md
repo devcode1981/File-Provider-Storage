@@ -33,6 +33,8 @@ to run the relative links checks locally or preview the changes, do the followin
     bundle exec nanoc live -p 3005
     ```
 
-    Visit <http://localhost:3005>
+    Visit <http://127.0.0.1:3005/docs/README.html>.
+
+> Global navigation links (left-hand pane) are not supported.
 
 [lint]: https://docs.gitlab.com/ee/development/writing_documentation.html#testing
