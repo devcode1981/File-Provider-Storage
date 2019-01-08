@@ -77,6 +77,7 @@ gdk init gdk-ee
 cd gdk-ee
 echo 3001 > port
 echo 3809 > webpack_port
+echo 3011 > gitlab_pages_port
 gdk install gitlab_repo=https://gitlab.com/gitlab-org/gitlab-ee.git
 ```
 
