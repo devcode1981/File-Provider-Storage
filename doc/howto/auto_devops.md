@@ -97,7 +97,7 @@ port=8080 gdk run
 ```
 
 Now you should be able to view your internet accessible application at
-1337.qa-tunnel.gitlab.info
+`1337.qa-tunnel.gitlab.info`
 
 Now login as root using the default password and change your password.
 
@@ -153,8 +153,7 @@ To continue, you must log in. Would you like to log in (Y/n)? Y
 ```
 
 After you have logged in, select your default project and zone.
-GitLabbers, please refer to the handbook for details on which [GCP
-project to use](https://about.gitlab.com/handbook/engineering/#google-cloud-platform-gcp).
+Developers should use the GCP project called `gitlab-internal-153318` for development and testing.
 
 Next, install `kubectl` as a component of `gcloud` :
 
@@ -273,7 +272,7 @@ If you want you can just manually configure a reverse proxy in front of your
 GDK instance that does SSL termination for you. A good approach to this would
 be to use nginx for SSL termination on a VM with a static IP address. It is
 also necessary to have a different external hostname for the container registry
-so your reverse proxy will need to virtual hosts configured and both will need
+so your reverse proxy will need two virtual hosts configured and both will need
 SSL termination.
 
 You will need to replace `<gitlab-hostname>` and `<registry-hostname>` below
