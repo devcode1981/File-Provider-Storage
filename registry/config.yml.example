@@ -30,3 +30,5 @@ auth:
     issuer: gitlab-issuer
     rootcertbundle: /root/certs/certbundle
     autoredirect: true
+validation:
+  disabled: true
