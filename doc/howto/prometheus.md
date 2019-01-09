@@ -190,3 +190,28 @@ Go to **Operations ➔ Environments** then click on an Environment. You should s
 a new button appearing that looks like a chart. Click on it to view the metrics.
 
 It may take 30-60 seconds for the Prometheus server to get a few sets of data points.
+
+## Configuring multiple Minikube instances
+
+Use the `--profile` or `-p` flag to define the minikube machine name. This allows multiple instances to run simultaneously. For instance, running a minikube instance for working in GitLab CE and GitLab EE at the same time can be accomplished by using all of the same commands outlined above with the additional `--profile` flag added:
+
+For macOS:
+
+```
+minikube start --vm-driver hyperkit --disk-size=20g --profile ce-instance
+minikube start --vm-driver hyperkit --disk-size=20g --profile ee-instance
+```
+
+To get the CE instance IP:
+
+```
+minikube ip --profile ce-instance
+```
+
+To look at the EE instance dashboard:
+
+```
+minikube dashboard --profile ee-instance
+```
+
+Electing to use a specified machine name will mean appending the `--profile` flag and name to each minikube command you would like to execute. Without the flag, minikube will assume you mean the default instance named `minikube`. All machines are stored by default in `~/.minikube/machines`.
