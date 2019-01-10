@@ -50,6 +50,7 @@ ruby_version = UNKNOWN
 workhorse_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_WORKHORSE_VERSION")
 gitlab_shell_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_SHELL_VERSION")
 gitaly_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITALY_SERVER_VERSION")
+pages_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_PAGES_VERSION")
 
 all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup gitlab-pages-setup support-setup gitaly-setup prom-setup object-storage-setup
 
@@ -222,9 +223,9 @@ self-update: unlock-dependency-installers
 		git fetch && \
 		support/self-update-git-worktree
 
-# Update gitlab, gitlab-shell, gitlab-workhorse and gitaly
+# Update gitlab, gitlab-shell, gitlab-workhorse, gitlab-pages and gitaly
 
-update: ensure-postgres-running unlock-dependency-installers gitlab-shell-update gitlab-workhorse-update gitaly-update gitlab-update
+update: ensure-postgres-running unlock-dependency-installers gitlab-shell-update gitlab-workhorse-update gitlab-pages-update gitaly-update gitlab-update
 
 ensure-postgres-running:
 	@test -f ${postgres_data_dir}/postmaster.pid || \
@@ -450,8 +451,8 @@ ${gitlab_pages_clone_dir}/.git:
 gitlab-pages/.git/pull:
 	cd ${gitlab_pages_clone_dir} && \
 		git stash &&\
-		git checkout master &&\
-		git pull --ff-only
+		git fetch --all --tags --prune && \
+		git checkout "${pages_version}"
 
 influxdb-setup: influxdb/influxdb.conf influxdb/bin/influxd influxdb/meta/meta.db
 
