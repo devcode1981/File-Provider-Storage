@@ -343,6 +343,23 @@ If building `gpgme` gem fails with an `Undefined symbols for architecture x86_64
 
 You can now run `gdk install` or `bundle` again.
 
+## LoadError due to readline
+
+On MacOS, GitLab may fail to start and fail with an error message about
+`libreadline`:
+
+```
+LoadError:
+      dlopen(/Users/janedoe/.rbenv/versions/2.5.3/lib/ruby/2.5.0/x86_64-darwin15/readline.bundle, 9): Library not loaded: /usr/local/opt/readline/lib/libreadline.7.dylib
+        Referenced from: /Users/janedoe/.rbenv/versions/2.5.3/lib/ruby/2.5.0/x86_64-darwin15/readline.bundle
+        Reason: image not found - /Users/janedoe/.rbenv/versions/2.5.3/lib/ruby/2.5.0/x86_64-darwin15/readline.bundle
+```
+
+This happens because the Ruby interpreter was linked with a version of
+the readline library that may have been updated on your system. You
+should re-install the Ruby interpreter (e.g. `rbenv install 2.5.3`) when
+this happens.
+
 ## Delete non-existent migrations from the database
 
 If for some reason you end up having database migrations that no longer exist
