@@ -1,5 +1,5 @@
 # Packages used by Dockerfile
-# Keep the file list sorted, makes diffs and merges easier
+# Keep the file list alphabetically sorted, makes diffs and merges easier
 
 # essentials
 build-essential
