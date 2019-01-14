@@ -1,6 +1,5 @@
 FROM ubuntu:16.04 AS base
-LABEL authors.maintainer "Grzegorz Bizon <grzegorz@gitlab.com>"
-LABEL authors.contributor "Hrvoje Marjanovic <hrvoje.marjanovic@gmail.com>, Elan Ruusamäe <glen@pld-linux.org>"
+LABEL authors.maintainer "GDK contributors: https://gitlab.com/gitlab-org/gitlab-development-kit/graphs/master"
 
 # Directions when writing this dockerfile:
 # Keep least changed directives first. This improves layers caching when rebuilding.
