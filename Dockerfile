@@ -14,10 +14,12 @@ FROM alpine AS fetch
 RUN apk add --no-cache coreutils curl tar git
 
 FROM fetch AS source-rbenv
-RUN git clone https://github.com/sstephenson/rbenv.git
+ARG RBENV_REVISION=59785f6762e9325982584cdab1a4c988ed062020
+RUN git clone https://github.com/rbenv/rbenv && cd rbenv && git checkout $RBENV_REVISION
 
 FROM fetch AS source-ruby-build
-RUN git clone https://github.com/sstephenson/ruby-build.git
+ARG RUBY_BUILD_REVISION=095d9db34fcbe24d38a16c9462cb853748bc65e7
+RUN git clone https://github.com/rbenv/ruby-build && cd ruby-build && git checkout $RUBY_BUILD_REVISION
 
 FROM fetch AS go
 ARG GO_SHA256=4b677d698c65370afa33757b6954ade60347aaca310ea92a63ed717d7cb0c2ff
