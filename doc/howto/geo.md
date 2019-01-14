@@ -8,8 +8,6 @@ Development on GitLab Geo requires two Enterprise Edition GDK
 instances running side-by-side. You can use an existing `gdk-ee`
 instance based on the [Set up GDK](../set-up-gdk.md#gitlab-enterprise-edition) documentation as primary node.
 
-
-
 ### Secondary
 
 Now we'll create a secondary instance in a `gdk-geo` folder to act as
@@ -127,7 +125,7 @@ to set up [SSH](ssh.md), including [SSH key lookup from database](ssh.md#ssh-key
 
 ### Add primary node
 
-1. Visit the **primary** node's **Admin Area ➔ Geo Nodes** (`/admin/geo_nodes`)
+1. Visit the **primary** node's **Admin Area ➔ Geo Nodes** (`/admin/geo/nodes`)
    in your browser.
 1. Fill in the full URL of the primary, e.g. `http://localhost:3001/`
 1. Check the box 'This is a primary node'.
@@ -135,7 +133,7 @@ to set up [SSH](ssh.md), including [SSH key lookup from database](ssh.md#ssh-key
 
 ### Add secondary node
 
-1. Visit the **primary** node's **Admin Area ➔ Geo Nodes** (`/admin/geo_nodes`)
+1. Visit the **primary** node's **Admin Area ➔ Geo Nodes** (`/admin/geo/nodes`)
    in your browser.
 1. Fill in the full URL of the secondary, e.g. `http://localhost:3002/`
 1. **Do not** check the box 'This is a primary node'.
