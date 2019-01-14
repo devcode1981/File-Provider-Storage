@@ -13,7 +13,7 @@ during installation.
    ([RVM](https://rvm.io/), [rbenv], [chruby], etc.) and activated (for example by closing and reopening the terminal).
    **DO NOT** use the system Ruby. You can check the active version with the command `ruby --version`.
 1. Make sure to close and reopen the terminal after installing a Ruby version manager.
-1. Bundler, which you can install with `gem install bundler`
+1. Bundler. Install using `gem install bundler -v <version>`, where `<version>` is replaced with the version of bundler found below the text `BUNDLED WITH` at the very bottom of [Gemfile.lock](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/Gemfile.lock)
 1. We recommend using Git version 2.18 or higher.
 1. Node **8.x (LTS)** and Yarn 1.10 or newer. If your package manager does not
    have Node 8.x or yarn available, visit the official
