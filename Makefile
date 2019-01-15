@@ -120,7 +120,7 @@ gitlab/public/uploads:
 
 .PHONY: bundler
 bundler:
-	command -v $@ > /dev/null || gem install $@
+	command -v $@ > /dev/null || gem install $@ -v 1.17.3
 
 .PHONY: yarn
 yarn:
