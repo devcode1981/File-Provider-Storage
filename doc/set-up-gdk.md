@@ -25,9 +25,9 @@ gdk init gdk-ce
 
 ## Install GDK
 
-The `gdk install` command will clone the repositories, install the Gem bundles and set up
-basic configuration files. Pick one of the methods below. If you don't have
-write access to the upstream repositories, you should use the 'Develop in a fork'
+The `gdk install` command clones the repositories, installs the Gem bundles, and sets up basic configuration files. The command must be run within the directory GDK was initialized into. For example, if you ran `gdk init gdk-ce`, you would run `cd ./gdk-ce && gdk install`.
+
+Pick one of the installation methods below. If you don't have write access to the upstream repositories, you should use the 'Develop in a fork'
 method.
 
 In either case, use your Ruby version manager to run `gdk install` with the `gitlab-ce` Ruby version. The `gdk install` command will install from `https://gitlab.com/gitlab-org/gitlab-ce.git` by default.
