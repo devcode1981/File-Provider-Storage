@@ -31,6 +31,10 @@ RUN tar -C /usr/local -xzf go.tar.gz
 FROM node:8-jessie AS nodejs
 # contains nodejs and yarn in /usr/local
 # https://github.com/nodejs/docker-node/blob/86b9618674b01fc5549f83696a90d5bc21f38af0/8/jessie/Dockerfile
+WORKDIR /stage
+RUN install -d usr opt
+RUN cp -al /usr/local usr
+RUN cp -al /opt/yarn* opt
 
 FROM base AS rbenv
 WORKDIR /home/gdk
@@ -48,7 +52,7 @@ WORKDIR /home/gdk
 ENV PATH $PATH:/usr/local/go/bin
 
 COPY --from=go /usr/local/ /usr/local/
-COPY --from=nodejs /usr/local/ /usr/local/
+COPY --from=nodejs /stage/ /
 COPY --from=rbenv --chown=gdk /home/gdk/ .
 
 USER gdk
