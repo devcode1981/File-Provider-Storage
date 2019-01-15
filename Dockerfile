@@ -56,3 +56,6 @@ COPY --from=nodejs /stage/ /
 COPY --from=rbenv --chown=gdk /home/gdk/ .
 
 USER gdk
+
+# simple tests that tools work
+RUN ["bash", "-lec", "yarn --version; node --version; rbenv --version" ]
