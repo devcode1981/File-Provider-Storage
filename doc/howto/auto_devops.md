@@ -175,12 +175,29 @@ Make sure to close and reopen your terminal after making these changes.
 
 ### Run the integration test
 
-You should now be ready to run the test :
+You should now be ready to run the test. Execute the following command
+in the `qa/` directory:
 
-```
-cd qa
+```bash
 GITLAB_PASSWORD=<root-user-password> GCLOUD_ZONE=us-central1-a CHROME_HEADLESS=false bin/qa Test::Integration::Kubernetes https://1337.qa-tunnel.gitlab.info/
 ```
+
+You can also run single tests with RSpec line number arguments. As the
+`orchestrated` tag is normally excluded, we will also need to include a
+`--tag ` argument to override the exclusion:
+
+```bash
+GITLAB_PASSWORD=<root-user-password> GCLOUD_ZONE=us-central1-a CHROME_HEADLESS=false bin/qa Test::Instance::All https://1337.qa-tunnel.gitlab.info/ --tag orchestrated qa/specs/features/browser_ui/7_configure/auto_devops/create_project_with_auto_devops_spec.rb:71
+```
+
+More information about running QA tests can be found in
+[qa/README.md](https://gitlab.com/gitlab-org/gitlab-ee/blob/master/qa/README.md#how-can-i-use-it).
+There are also other ways of running the QA specs that are documented in the
+[gitlab-qa project](https://gitlab.com/gitlab-org/gitlab-qa) but using the
+above approach is recommended as it will allow you to debug and iterate on the
+spec without rebuilding any docker images and since the above command runs the
+spec in your environment rather than in docker it requires less configuration
+as it inherits your `gcloud` credentials.
 
 TIP: Consider adding `require 'pry'; binding.pry` breakpoint before [the last
 assertion about
@@ -198,13 +215,6 @@ NOTE: [This
 test](https://gitlab.com/gitlab-org/gitlab-ce/blob/eb146e9abe08c3991b5a54237c24d15312c70ee8/qa/qa/specs/features/browser_ui/7_configure/auto_devops/create_project_with_auto_devops_spec.rb#L9)
 does teardown the K8s cluster at the end so after the test finishes it won't be
 possible to run the pipeline again unless you comment this out.
-
-NOTE: There are other ways of running the QA specs that are documented in the
-[gitlab-qa project](https://gitlab.com/gitlab-org/gitlab-qa) but using the
-above approach is recommended as it will allow you to debug and iterate on the
-spec without rebuilding any docker images and since the above command runs the
-spec in your environment rather than in docker it requires less configuration
-as it inherits your `gcloud` credentials.
 
 ## Technical Details and Alternatives
 
