@@ -1,50 +1,61 @@
-FROM ubuntu:16.04
-LABEL authors.maintainer "Grzegorz Bizon <grzegorz@gitlab.com>"
-LABEL authors.contributor "Hrvoje Marjanovic <hrvoje.marjanovic@gmail.com>"
+FROM ubuntu:16.04 AS base
+LABEL authors.maintainer "GDK contributors: https://gitlab.com/gitlab-org/gitlab-development-kit/graphs/master"
 
-ENV DEBIAN_FRONTEND noninteractive
+# Directions when writing this dockerfile:
+# Keep least changed directives first. This improves layers caching when rebuilding.
 
-# install essentials
+RUN useradd --user-group --create-home gdk
+COPY packages.txt /
+RUN apt-get update && apt-get install -y $(sed -e 's/#.*//' /packages.txt)
 
-RUN apt-get update
-RUN apt-get -y install curl wget git sudo build-essential \
-                       software-properties-common \
-                       python-software-properties
+# stages for fetching remote content
+# highly cacheable
+FROM alpine AS fetch
+RUN apk add --no-cache coreutils curl tar git
 
-# rest of gitlab requirements
-RUN apt-get install -y git postgresql postgresql-contrib libpq-dev \
-                       redis-server libicu-dev cmake g++ libkrb5-dev libre2-dev \
-                       ed pkg-config libsqlite3-dev libreadline-dev libssl-dev
+FROM fetch AS source-rbenv
+ARG RBENV_REVISION=v1.1.1
+RUN git clone --branch $RBENV_REVISION --depth 1 https://github.com/rbenv/rbenv
 
-# install nodejs
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
-RUN apt-get install -y nodejs
+FROM fetch AS source-ruby-build
+ARG RUBY_BUILD_REVISION=v20181225
+RUN git clone --branch $RUBY_BUILD_REVISION --depth 1 https://github.com/rbenv/ruby-build
 
-# GDK tools
-RUN apt-get install -y net-tools psmisc apt-transport-https
+FROM fetch AS go
+ARG GO_SHA256=4b677d698c65370afa33757b6954ade60347aaca310ea92a63ed717d7cb0c2ff
+ARG GO_VERSION=1.10.2
+RUN curl --silent --location --output go.tar.gz https://dl.google.com/go/go$GO_VERSION.linux-amd64.tar.gz
+RUN echo "$GO_SHA256  go.tar.gz" | sha256sum -c -
+RUN tar -C /usr/local -xzf go.tar.gz
 
-# install yarn
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-RUN apt-get update && apt-get install -y yarn && apt-get clean -yqq && rm -rf /var/lib/apt/lists/*
+FROM node:8-jessie AS nodejs
+# contains nodejs and yarn in /usr/local
+# https://github.com/nodejs/docker-node/blob/86b9618674b01fc5549f83696a90d5bc21f38af0/8/jessie/Dockerfile
+WORKDIR /stage
+RUN install -d usr opt
+RUN cp -al /usr/local usr
+RUN cp -al /opt/yarn* opt
 
-# install Go
-RUN curl --silent --location --remote-name https://dl.google.com/go/go1.10.2.linux-amd64.tar.gz
-RUN printf '4b677d698c65370afa33757b6954ade60347aaca310ea92a63ed717d7cb0c2ff  go1.10.2.linux-amd64.tar.gz' | shasum -a256 -c -
-RUN tar -C /usr/local -xzf go1.10.2.linux-amd64.tar.gz && rm go1.10.2.linux-amd64.tar.gz
+FROM base AS rbenv
+WORKDIR /home/gdk
+RUN echo 'export PATH="/home/gdk/.rbenv/bin:$PATH"' >> .bash_profile
+RUN echo 'eval "$(rbenv init -)"' >> .bash_profile
+COPY --from=source-rbenv --chown=gdk /rbenv .rbenv
+COPY --from=source-ruby-build --chown=gdk /ruby-build .rbenv/plugins/ruby-build
+USER gdk
+RUN bash -l -c "rbenv install 2.5.3 && rbenv global 2.5.3"
+
+# build final image
+FROM base AS release
+
+WORKDIR /home/gdk
 ENV PATH $PATH:/usr/local/go/bin
 
-# Add GDK user
-RUN useradd --user-group --create-home gdk
+COPY --from=go /usr/local/ /usr/local/
+COPY --from=nodejs /stage/ /
+COPY --from=rbenv --chown=gdk /home/gdk/ .
 
 USER gdk
 
-# Install rbenv
-RUN git clone https://github.com/sstephenson/rbenv.git /home/gdk/.rbenv
-RUN echo 'export PATH="/home/gdk/.rbenv/bin:$PATH"' >> /home/gdk/.bash_profile
-RUN echo 'eval "$(rbenv init -)"' >> /home/gdk/.bash_profile
-
-# install ruby-build
-RUN mkdir /home/gdk/.rbenv/plugins
-RUN git clone https://github.com/sstephenson/ruby-build.git /home/gdk/.rbenv/plugins/ruby-build
-RUN bash -l -c "rbenv install 2.5.3 && rbenv global 2.5.3"
+# simple tests that tools work
+RUN ["bash", "-lec", "yarn --version; node --version; rbenv --version" ]
