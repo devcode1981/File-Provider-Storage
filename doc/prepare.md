@@ -15,8 +15,8 @@ during installation.
 1. Make sure to close and reopen the terminal after installing a Ruby version manager.
 1. Bundler. Install using `gem install bundler -v <version>`, where `<version>` is replaced with the version of bundler found below the text `BUNDLED WITH` at the very bottom of [Gemfile.lock](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/Gemfile.lock)
 1. We recommend using Git version 2.18 or higher.
-1. Node **8.x (LTS)** and Yarn 1.10 or newer. If your package manager does not
-   have Node 8.x or yarn available, visit the official
+1. Node.js **10.x (LTS)** or 8.x (LTS) and Yarn 1.12 or newer. If your package manager does not
+   have Node.js 10.x or yarn available, visit the official
    websites for [node] and [yarn] for installation instructions.
 1. Go 1.9.6 or newer. If your package manager does not have up-to-date versions
    of Go available, visit the official website for [go] for installation instructions.
@@ -42,18 +42,18 @@ We are using PostgreSQL 9.6 in the following example. If you want to use another
 
 #### Install OS X prerequisites using homebrew
 
-We recommend manual installation of Node LTS, and not using Homebrew,
+We recommend manual installation of Node.js LTS, and not using Homebrew,
 to avoid breaking your development setup when you run `brew upgrade`. 
-Install NodeJS 8.x LTS [manually](https://nodejs.org/en/download/),
+Install Node.js 10.x LTS [manually](https://nodejs.org/en/download/),
 or use a tool like [NVM](https://github.com/creationix/nvm).
-But you can also install NodeJS 8.x LTS using Homebrew and prevent Homebrew from upgrading the node@8 formula by pinning it with `brew pin node@8`.
+But you can also install Node.js 10.x LTS using Homebrew and prevent Homebrew from upgrading the current Node.js formula by pinning it with `brew pin node@10`.
 
 ```
-brew install git redis postgresql@9.6 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@8
+brew install git redis postgresql@9.6 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@10
 brew install yarn --without-node
-brew pin node@8
+brew pin node@10
 bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
-echo 'export PATH="/usr/local/opt/postgresql@9.6/bin:/usr/local/opt/node@8/bin:$PATH"' >> ~/.bash_profile
+echo 'export PATH="/usr/local/opt/postgresql@9.6/bin:/usr/local/opt/node@10/bin:$PATH"' >> ~/.bash_profile
 source ~/.bash_profile
 brew cask install google-chrome chromedriver
 ```
@@ -61,7 +61,7 @@ brew cask install google-chrome chromedriver
 #### Install OS X prerequisites using macports
 
 ```
-sudo port install git redis libiconv postgresql96-server icu pkgconfig cmake nodejs8 go openssl npm5 yarn coreutils re2 GraphicsMagick
+sudo port install git redis libiconv postgresql96-server icu pkgconfig cmake nodejs10 go openssl npm5 yarn coreutils re2 GraphicsMagick
 bundle config build.eventmachine --with-cppflags=-I/opt/local/include/openssl
 echo 'export PATH=/opt/local/lib/postgresql96/bin/:$PATH' >> ~/.profile
 source ~/.profile
@@ -75,7 +75,7 @@ source ~/.profile
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
-You can install NodeJS 8.x from [nodesource APT servers](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions).
+You can install Node.js 10.x from [nodesource APT servers](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions).
 Install Yarn from [a custom APT server](https://yarnpkg.com/lang/en/docs/install/#debian-stable) as well.
 
 ```
@@ -235,14 +235,15 @@ Return to the prerequisite installation steps.
 
 **Installing the remaining GDK Tools & resources**
 
-Install NodeJS from source
+Install Node.js from source:
 
+```sh
+curl -O https://nodejs.org/dist/v10.15.0/node-v10.15.0.tar.gz
+tar -zxf node-v10.15.0.tar.gz
+cd node-v10.15.0
 ```
-curl -O https://nodejs.org/dist/v8.12.0/node-v8.12.0.tar.gz
-tar -zxf node-v8.12.0.tar.gz
-cd node-v8.12.0
-```
-Build the NodeJS library. The following instructions are copied from the NodeJS BUILDING.md document:
+
+Build the Node.js library. The following instructions are copied from the Node.js BUILDING.md document:
 
 ```
 sudo apt-get install build-essential
