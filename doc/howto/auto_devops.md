@@ -17,10 +17,10 @@ depends on our infrastructure. For non-GitLab employees you can see
 
 1. Get access to [the SSH tunnel
    VM](https://gitlab.com/gitlab-com/infrastructure/issues/4298). You
-   will need to request an account for this by [creating an issue in the
-   infrastructure
-   project](https://gitlab.com/gitlab-com/infrastructure/issues/new) and
-   provide them with your SSH public key.
+   will need to request an account for this by [creating an access
+   request](https://gitlab.com/gitlab-com/access-requests/issues/new) and provide
+   them with your SSH public key. You can copy [this previous example access
+   request](https://gitlab.com/gitlab-com/access-requests/issues/253).
 
 1. Once your account has been created, configure your SSH config `~/.ssh/config` to set the correct username.
 
