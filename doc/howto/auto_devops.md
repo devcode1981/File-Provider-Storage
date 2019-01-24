@@ -52,21 +52,20 @@ IMPORTANT: These steps are currently only applicable to GitLab employees as it
 depends on our infrastructure. For non-GitLab employees you can see
 [Alternatives](#alternatives) below.
 
-Pick two random numbers between 20000 and 29999. These will be used as your subdomain for
-your internet-facing URLs for GitLab and the registry so we choose randomly to avoid
-conflicts. The following steps assuming your numbers are `1337` for
-GitLab and
-`1338` for the registry so you need to change those to your chosen numbers.
+Pick two random numbers between 20000 and 29999. These will be used as your
+subdomain for your internet-facing URLs for GitLab and the registry so we
+choose randomly to avoid conflicts. One number for Gitlab `<gitlab-number>`
+and another number for registry `<registry-number>`.
 
 Using your chosen numbers, you will need to reconfigure GDK. From the
 GDK directory, run:
 
 ```
-echo 1337.qa-tunnel.gitlab.info > hostname
+echo <gitlab-number>.qa-tunnel.gitlab.info > hostname
 echo 443 > port
 echo true > https_enabled
 echo true > registry_enabled
-echo 1338.qa-tunnel.gitlab.info > registry_host
+echo <registry-number>.qa-tunnel.gitlab.info > registry_host
 echo 443 > registry_external_port
 gdk reconfigure
 ```
@@ -78,8 +77,8 @@ add the required settings below using `gdk reconfigure`.
 Firstly, add the following lines to the end of `Procfile`:
 
 ```yml
-tunnel_gitlab: ssh -N -R 1337:localhost:$port qa-tunnel.gitlab.info
-tunnel_registry: ssh -N -R 1338:localhost:5000 qa-tunnel.gitlab.info
+tunnel_gitlab: ssh -N -R <gitlab-number>:localhost:$port qa-tunnel.gitlab.info
+tunnel_registry: ssh -N -R <registry-number>:localhost:5000 qa-tunnel.gitlab.info
 ```
 
 Then edit `registry/config.yml` like so:
@@ -87,7 +86,7 @@ Then edit `registry/config.yml` like so:
 ```yml
   auth:
     token:
-      realm: https://1337.qa-tunnel.gitlab.info/jwt/auth
+      realm: https://<gitlab-number>.qa-tunnel.gitlab.info/jwt/auth
 ```
 
 Then start with:
@@ -97,7 +96,7 @@ port=8080 gdk run
 ```
 
 Now you should be able to view your internet accessible application at
-`1337.qa-tunnel.gitlab.info`
+`<gitlab-number>.qa-tunnel.gitlab.info`
 
 Now login as root using the default password and change your password.
 
@@ -179,7 +178,7 @@ You should now be ready to run the test. Execute the following command
 in the `qa/` directory:
 
 ```bash
-GITLAB_PASSWORD=<root-user-password> GCLOUD_ZONE=us-central1-a CHROME_HEADLESS=false bin/qa Test::Integration::Kubernetes https://1337.qa-tunnel.gitlab.info/
+GITLAB_PASSWORD=<root-user-password> GCLOUD_ZONE=us-central1-a CHROME_HEADLESS=false bin/qa Test::Integration::Kubernetes https://<gitlab-number>.qa-tunnel.gitlab.info/
 ```
 
 You can also run single tests with RSpec line number arguments. As the
@@ -187,7 +186,7 @@ You can also run single tests with RSpec line number arguments. As the
 `--tag ` argument to override the exclusion:
 
 ```bash
-GITLAB_PASSWORD=<root-user-password> GCLOUD_ZONE=us-central1-a CHROME_HEADLESS=false bin/qa Test::Instance::All https://1337.qa-tunnel.gitlab.info/ --tag orchestrated qa/specs/features/browser_ui/7_configure/auto_devops/create_project_with_auto_devops_spec.rb:71
+GITLAB_PASSWORD=<root-user-password> GCLOUD_ZONE=us-central1-a CHROME_HEADLESS=false bin/qa Test::Instance::All https://<gitlab-number>.qa-tunnel.gitlab.info/ --tag orchestrated qa/specs/features/browser_ui/7_configure/auto_devops/create_project_with_auto_devops_spec.rb:71
 ```
 
 More information about running QA tests can be found in
