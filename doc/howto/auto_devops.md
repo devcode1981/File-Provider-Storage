@@ -54,7 +54,7 @@ depends on our infrastructure. For non-GitLab employees you can see
 
 Pick two random numbers between 20000 and 29999. These will be used as your
 subdomain for your internet-facing URLs for GitLab and the registry so we
-choose randomly to avoid conflicts. One number for Gitlab `<gitlab-number>`
+choose randomly to avoid conflicts. One number for GitLab `<gitlab-number>`
 and another number for registry `<registry-number>`.
 
 Using your chosen numbers, you will need to reconfigure GDK. From the
