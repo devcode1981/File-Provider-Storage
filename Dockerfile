@@ -1,4 +1,4 @@
-FROM ubuntu:16.04 AS base
+FROM ubuntu:18.04 AS base
 LABEL authors.maintainer "GDK contributors: https://gitlab.com/gitlab-org/gitlab-development-kit/graphs/master"
 
 # Directions when writing this dockerfile:
