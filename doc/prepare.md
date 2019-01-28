@@ -49,7 +49,7 @@ or use a tool like [NVM](https://github.com/creationix/nvm).
 But you can also install Node.js 10.x LTS using Homebrew and prevent Homebrew from upgrading the current Node.js formula by pinning it with `brew pin node@10`.
 
 ```
-brew install git redis postgresql@9.6 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@10
+brew install git redis postgresql@9.6 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@10 gpg
 brew install yarn --without-node
 brew pin node@10
 bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
