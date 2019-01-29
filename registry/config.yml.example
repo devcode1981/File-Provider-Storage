@@ -29,6 +29,6 @@ auth:
     service: container_registry
     issuer: gitlab-issuer
     rootcertbundle: /root/certs/certbundle
-    autoredirect: true
+    autoredirect: false
 validation:
   disabled: true
