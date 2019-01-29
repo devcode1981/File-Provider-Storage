@@ -198,11 +198,6 @@ spec without rebuilding any docker images and since the above command runs the
 spec in your environment rather than in docker it requires less configuration
 as it inherits your `gcloud` credentials.
 
-TIP: Consider adding `require 'pry'; binding.pry` breakpoint before [the last
-assertion about
-builds](https://gitlab.com/gitlab-org/gitlab-ce/blob/eb146e9abe08c3991b5a54237c24d15312c70ee8/qa/qa/specs/features/browser_ui/7_configure/auto_devops/create_project_with_auto_devops_spec.rb#L61)
-to save yourself from setting up a full working Auto DevOps project.
-
 NOTE: This test will run as the default project ID. To set or override
 the project ID, set `CLOUDSDK_CORE_PROJECT=<gcloud-project-id>`.
 
@@ -214,6 +209,15 @@ NOTE: [This
 test](https://gitlab.com/gitlab-org/gitlab-ce/blob/eb146e9abe08c3991b5a54237c24d15312c70ee8/qa/qa/specs/features/browser_ui/7_configure/auto_devops/create_project_with_auto_devops_spec.rb#L9)
 does teardown the K8s cluster at the end so after the test finishes it won't be
 possible to run the pipeline again unless you comment this out.
+
+## Tips, Troubleshooting and Useful Commands
+
+Be sure to check out:
+
+- [Auto DevOps - Tips and Troubleshooting](doc/howto/auto_devops/tips_and_troubleshooting.md)
+- [Auto DevOps - Useful Commands](doc/howto/auto_devops/useful_commands.md)
+
+They might save you a lot of time time during work.
 
 ## Technical Details and Alternatives
 
@@ -403,24 +407,3 @@ created by these automated tests. The disk name will start with
 `gke-qa-cluster-`. Also note there will likely be many such disks here as our
 automated tests do not clean these up after each run. It is a good idea to
 clean them up yourself while you're on this page.
-
-## Troubleshooting
-
-### The Ingress is never assigned an IP address
-
-If your ingress is never assigned an IP address and you've waited on the cluster
-applications page looking for the IP to appear for several minutes it's quite
-possible that your GCP project has hit a limit of static IP addresses. See [how
-to clean up unused load balancers above](#unused-load-balancers).
-
-### Error due to `Insufficient regional quota` for `DISKS_TOTAL_GB`
-
-When creating a new cluster it will create persistent disks for you. If you are
-running into the following error:
-
-```
-ResponseError: code=403, message=Insufficient regional quota to satisfy request: resource "DISKS_TOTAL_GB"
-```
-
-this would indicate you have reached your limit of persistent disks. See [how
-to clean up unused persistent disks above](#unused-persistent-disks).
