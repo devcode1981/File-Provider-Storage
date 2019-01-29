@@ -345,7 +345,7 @@ You can now run `gdk install` or `bundle` again.
 
 ## LoadError due to readline
 
-On MacOS, GitLab may fail to start and fail with an error message about
+On macOS, GitLab may fail to start and fail with an error message about
 `libreadline`:
 
 ```
