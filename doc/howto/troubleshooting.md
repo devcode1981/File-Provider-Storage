@@ -356,9 +356,12 @@ LoadError:
 ```
 
 This happens because the Ruby interpreter was linked with a version of
-the readline library that may have been updated on your system. You
-should re-install the Ruby interpreter (e.g. `rbenv install 2.5.3`) when
-this happens.
+the `readline` library that may have been updated on your system. To fix
+the error, reinstall the Ruby interpreter. For example, for environments
+managed with:
+
+- [rbenv](https://github.com/rbenv/rbenv), run `rbenv install 2.5.3`.
+- [RVM](https://rvm.io), run `rvm reinstall ruby-2.5.3`.
 
 ## Delete non-existent migrations from the database
 
