@@ -52,6 +52,8 @@ gitlab_shell_version = $(shell bin/resolve-dependency-commitish "${gitlab_develo
 gitaly_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITALY_SERVER_VERSION")
 pages_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_PAGES_VERSION")
 tracer_build_tags = tracer_static tracer_static_jaeger
+jaeger_server_enabled ?= true
+jaeger_version = 1.10.1
 
 all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup gitlab-pages-setup support-setup gitaly-setup prom-setup object-storage-setup
 
@@ -289,7 +291,7 @@ gitaly/bin/gitaly: ${gitaly_clone_dir}/.git
 
 # Set up supporting services
 
-support-setup: .ruby-version foreman Procfile redis gitaly-setup postgresql openssh-setup nginx-setup registry-setup elasticsearch-setup
+support-setup: .ruby-version foreman Procfile redis gitaly-setup jaeger-setup postgresql openssh-setup nginx-setup registry-setup elasticsearch-setup
 	@echo ""
 	@echo "*********************************************"
 	@echo "************** Setup finished! **************"
@@ -304,6 +306,8 @@ Procfile: Procfile.example
 		-e "s|postgres |${postgres_bin_dir}/postgres |"\
 		-e "s|DEV_SERVER_PORT=3808 |DEV_SERVER_PORT=${webpack_port} |"\
 		-e "s|-listen-http \":3010\" |-listen-http \":${gitlab_pages_port}\" -artifacts-server http://${hostname}:${port}/api/v4 |"\
+		-e "s|jaeger-VERSION|jaeger-${jaeger_version}|" \
+		-e "$(if $(filter false,$(jaeger_server_enabled)),/^jaeger:/s/^/#/,/^#\s*jaeger:/s/^#\s*//)" \
 		"$<"
 	if [ -f .vagrant_enabled ]; then \
 		echo "0.0.0.0" > host; \
@@ -570,8 +574,28 @@ pry-off:
 	@echo ""
 	@echo "Re-enabled 'rails-web' in the Procfile.  Debugging with Pry will no longer work."
 
+ifeq ($(jaeger_server_enabled),true)
+.PHONY: jaeger-setup
+jaeger-setup: jaeger/jaeger-${jaeger_version}/jaeger-all-in-one
+else
+.PHONY: jaeger-setup
+jaeger-setup:
+	@echo Skipping jaeger-setup as Jaeger has been disabled.
+endif
+
+jaeger-artifacts/jaeger-${jaeger_version}.tar.gz:
+	mkdir -p $(@D)
+	./bin/download-jaeger "${jaeger_version}" "$@"
+	# To save disk space, delete old versions of the download,
+	# but to save bandwidth keep the current version....
+	find jaeger-artifacts ! -path "$@" -type f -exec rm -f {} + -print
+
+jaeger/jaeger-${jaeger_version}/jaeger-all-in-one: jaeger-artifacts/jaeger-${jaeger_version}.tar.gz
+	mkdir -p "jaeger/jaeger-${jaeger_version}"
+	tar -xf "$<" -C "jaeger/jaeger-${jaeger_version}" --strip-components 1
+
 clean-config:
-	rm -f \
+	rm -rf \
 	gitlab/config/gitlab.yml \
 	gitlab/config/database.yml \
 	gitlab/config/unicorn.rb \
@@ -586,6 +610,7 @@ clean-config:
 	gitaly/config.toml \
 	nginx/conf/nginx.conf \
 	registry/config.yml \
+	jaeger \
 
 unlock-dependency-installers:
 	rm -f \

@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+jaeger_version="$1"
+download_path="$2"
+
+function sha_for_url() {
+  # Add new URLs in here as we upgrade to new version of Jaeger
+  # Releases found at https://github.com/jaegertracing/jaeger/releases
+  # SHA can be generated with:
+  # curl -C - -L --fail "<url>"|shasum -a1
+  case "$1" in
+    https://github.com/jaegertracing/jaeger/releases/download/v1.10.1/jaeger-1.10.1-linux-amd64.tar.gz)
+      echo 667f14a528077ca6c346831cd69c295439f071da
+      ;;
+    https://github.com/jaegertracing/jaeger/releases/download/v1.10.1/jaeger-1.10.1-darwin-amd64.tar.gz)
+      echo ce5b8610f73caf625b75a50ed27b0ab45bfe1dbe
+      ;;
+    *)
+      >&2 echo "Unable to determine sha for url ${1}"
+      return 1
+  esac
+}
+
+function url_for_version() {
+  # Add new architectures/operating systems in here as needed
+  case "$OSTYPE" in
+    linux-gnu)
+      echo "https://github.com/jaegertracing/jaeger/releases/download/v${1}/jaeger-${1}-linux-amd64.tar.gz"
+      ;;
+    darwin*)
+      echo "https://github.com/jaegertracing/jaeger/releases/download/v${1}/jaeger-${1}-darwin-amd64.tar.gz"
+      ;;
+    *)
+    >&2 echo "cannot download jaeger binary: unable to determine operation system."
+    return 1
+  esac
+}
+
+url=$(url_for_version "${jaeger_version}")
+sha=$(sha_for_url "${url}")
+
+curl -C - -L --fail "$url" -o "$download_path"
+if ! (echo "$sha  $download_path" | shasum -a1 -c -); then
+  rm -f "$download_path"
+  >&2 echo "cannot verify jaeger binary: sha checksum mismatch."
+  exit 1
+fi
+
