@@ -7,32 +7,29 @@
 If you do not have the dependencies below you will experience strange errors
 during installation.
 
-1. A non-root Unix user, this can be your normal user but **DO NOT** run the
-   installation as a root user
-1. Ensure the current [`gitlab-ce` Ruby version](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/.ruby-version) is installed with a Ruby version manager
-   ([RVM](https://rvm.io/), [rbenv], [chruby], etc.) and activated (for example by closing and reopening the terminal).
-   **DO NOT** use the system Ruby. You can check the active version with the command `ruby --version`.
-1. Make sure to close and reopen the terminal after installing a Ruby version manager.
-1. Bundler. Install using `gem install bundler -v <version>`, where `<version>` is replaced with the version of bundler found below the text `BUNDLED WITH` at the very bottom of [Gemfile.lock](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/Gemfile.lock)
-1. We recommend using Git version 2.18 or higher.
-1. Node.js **10.x (LTS)** or 8.x (LTS) and Yarn 1.12 or newer. If your package manager does not
-   have Node.js 10.x or yarn available, visit the official
-   websites for [node] and [yarn] for installation instructions.
-1. Go 1.9.6 or newer. If your package manager does not have up-to-date versions
-   of Go available, visit the official website for [go] for installation instructions.
-1. [Google Chrome] 60 or greater with [ChromeDriver] version 2.33 or greater.
-   Visit the [installation details](https://sites.google.com/a/chromium.org/chromedriver/getting-started) for more details.
-1. PostgreSQL version 9.x, with 9.6 recommended. Using PostgreSQL version 10.x is officially not yet supported.
-1. [GraphicsMagick]
+| Requsite | Description |
+| -------- | ----------- |
+| User account | Use a **non-root** Unix user to install GDK. This can be your normal user, but **DO NOT** run the installation as a root user. |
+| Ruby | <p>Use a Ruby version manager ([RVM], [rbenv], [chruby], etc.) to install the current [`gitlab-ce` Ruby version](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/.ruby-version).</p><p>**DO NOT** use the system Ruby.</p>|
+| Terminal | <p>Make sure to close and reopen the Terminal after installing a Ruby version manager to make sure it is activated.</p><p>You can check the active version with the command `ruby --version`.</p>|
+| Bundler | <p>Install the version of Bundler specified in [Gemfile.lock]. You will find it at the very bottom, right below the text `BUNDLED WITH`.</p><p> Use the command `gem install bundler -v <version>`, replacing `<version>` with the number you found above.</p> |
+| Git | <p>We recommend using Git version 2.18 or higher.</p><p>Installation of git is covered in the instructions below</p> |
+| Node.js | <p>Node.js **10.x (LTS)** or 8.x (LTS) and Yarn 1.12 or newer.</p><p>Installation of Node.js and Yarn is coverred in the instructions below. If your package manager does not have Node.js 10.x or yarn available, visit the official websites for [node] and [yarn] for installation instructions.</p> |
+| Go | <p>Go 1.9.6 or newer.</p><p>Installation of Go is covered in the instructions below. If your package manager does not have up-to-date versions of Go available, visit the official [Go] website for installation instructions.</p> |
+| Google Chrome | [Google Chrome] 60 or greater with [ChromeDriver] version 2.33 or greater. Visit the Chrome Driver '[Getting started' page](https://sites.google.com/a/chromium.org/chromedriver/getting-started) for more details. |
+| PostgreSQL | <p>PostgreSQL version 9.x, with 9.6 recommended. Using PostgreSQL version 10.x is officially not yet supported.</p><p>Installation of PostgreSQL is covered in the instructions below.</p> |
+| [GraphicsMagick] | Installation of GraphicsMagick is covered in the instructions below. |
 
+[RVM]: https://rvm.io/
 [rbenv]: https://github.com/rbenv/rbenv
 [chruby]: https://github.com/postmodern/chruby
 [node]: https://nodejs.org/en/download/
 [yarn]: https://yarnpkg.com/en/docs/install/
-[go]: https://golang.org/doc/install
+[Go]: https://golang.org/doc/install
 [Google Chrome]: https://www.google.com/chrome/
 [ChromeDriver]: https://sites.google.com/a/chromium.org/chromedriver/downloads
 [GraphicsMagick]: http://www.graphicsmagick.org
+[Gemfile.lock]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/Gemfile.lock
 
 ### OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan), macOS 10.12 (Sierra), macOS 10.13 (High Sierra)
 
