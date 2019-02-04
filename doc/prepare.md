@@ -4,8 +4,7 @@
 
 ### Prerequisites for all platforms
 
-If you do not have the dependencies below you will experience strange errors
-during installation.
+Make sure you follow all the guidelines and resolve all the dependencies listed below before installing GDK. Otherwise, you will experience strange errors during installation.
 
 | Requsite | Description |
 | -------- | ----------- |
