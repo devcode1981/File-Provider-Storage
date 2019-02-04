@@ -39,6 +39,8 @@ We are using PostgreSQL 9.6 in the following example. If you want to use another
 
 #### Install OS X prerequisites using Homebrew
 
+[Homebrew](https://brew.sh/) is a package manager for macOS that allows you to easily install programs or tools you may need using the Terminal. Visit their website for installation details.
+
 > **Note on Node.js**:
 >
 > We recommend manual installation of Node.js LTS instead of using Homebrew to avoid breaking your development setup when you run `brew upgrade`.
@@ -57,7 +59,9 @@ source ~/.bash_profile
 brew cask install google-chrome chromedriver
 ```
 
-#### Install OS X prerequisites using macports
+#### Install OS X prerequisites using MacPorts
+
+[MacPorts](https://www.macports.org/) is another package manager for macOS. Visit their website for installation details.
 
 ```
 sudo port install git redis libiconv postgresql96-server icu pkgconfig cmake nodejs10 go openssl npm5 yarn coreutils re2 GraphicsMagick
