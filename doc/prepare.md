@@ -37,13 +37,15 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 
 We are using PostgreSQL 9.6 in the following example. If you want to use another version, please adjust paths accordingly.
 
-#### Install OS X prerequisites using homebrew
+#### Install OS X prerequisites using Homebrew
 
-We recommend manual installation of Node.js LTS, and not using Homebrew,
-to avoid breaking your development setup when you run `brew upgrade`. 
-Install Node.js 10.x LTS [manually](https://nodejs.org/en/download/),
-or use a tool like [NVM](https://github.com/creationix/nvm).
-But you can also install Node.js 10.x LTS using Homebrew and prevent Homebrew from upgrading the current Node.js formula by pinning it with `brew pin node@10`.
+> **Note on Node.js**:
+>
+> We recommend manual installation of Node.js LTS instead of using Homebrew to avoid breaking your development setup when you run `brew upgrade`.
+>
+> Install Node.js 10.x LTS [manually](https://nodejs.org/en/download/) or use a tool like [NVM](https://github.com/creationix/nvm).
+>
+> If you want to use Homebrew, you can prevent it from upgrading the current Node.js formula by pinning it with `brew pin node@10`.
 
 ```
 brew install git redis postgresql@9.6 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@10 gpg
