@@ -15,7 +15,7 @@ Make sure you follow all the guidelines and resolve all the dependencies listed 
 | Git | <p>We recommend using Git version 2.18 or higher.</p><p>Installation of git is covered in the instructions below</p> |
 | Node.js | <p>Node.js **10.x (LTS)** or 8.x (LTS) and Yarn 1.12 or newer.</p><p>Installation of Node.js and Yarn is coverred in the instructions below. If your package manager does not have Node.js 10.x or yarn available, visit the official websites for [node] and [yarn] for installation instructions.</p> |
 | Go | <p>Go 1.9.6 or newer.</p><p>Installation of Go is covered in the instructions below. If your package manager does not have up-to-date versions of Go available, visit the official [Go] website for installation instructions.</p> |
-| Google Chrome | [Google Chrome] 60 or greater with [ChromeDriver] version 2.33 or greater. Visit the Chrome Driver '[Getting started' page](https://sites.google.com/a/chromium.org/chromedriver/getting-started) for more details. |
+| Google Chrome | [Google Chrome] 60 or greater with [ChromeDriver] version 2.33 or greater. Visit the Chrome Driver [Getting started](https://sites.google.com/a/chromium.org/chromedriver/getting-started) page for more details. |
 | PostgreSQL | <p>PostgreSQL version 9.x, with 9.6 recommended. Using PostgreSQL version 10.x is officially not yet supported.</p><p>Installation of PostgreSQL is covered in the instructions below.</p> |
 | [GraphicsMagick] | Installation of GraphicsMagick is covered in the instructions below. |
 
