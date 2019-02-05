@@ -7,7 +7,7 @@
 Make sure you follow all the guidelines and resolve all the dependencies listed below before installing GDK. Otherwise, you will experience strange errors during installation.
 
 | Requisite | Description |
-| -------- | ----------- |
+| --------- | ----------- |
 | User account | Use a **non-root** Unix user to install GDK. This can be your normal user, but **DO NOT** run the installation as a root user. |
 | Ruby | <p>Use a Ruby version manager ([RVM], [rbenv], [chruby], etc.) to install the current [`gitlab-ce` Ruby version](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/.ruby-version).</p><p>**DO NOT** use the system Ruby.</p>|
 | Terminal | <p>Make sure to close and reopen the Terminal after installing a Ruby version manager to make sure it is activated.</p><p>You can check the active version with the command `ruby --version`.</p>|
@@ -38,15 +38,11 @@ We are using PostgreSQL 9.6 in the following example. If you want to use another
 
 #### Install OS X prerequisites using Homebrew
 
-[Homebrew](https://brew.sh/) is a package manager for macOS that allows you to easily install programs or tools you may need using the Terminal. Visit their website for installation details.
+[Homebrew](https://brew.sh/) is a package manager for macOS that allows you to easily install programs and tools through the Terminal. Visit their website for installation details.
 
-> **Note on Node.js**:
->
-> We recommend manual installation of Node.js LTS instead of using Homebrew to avoid breaking your development setup when you run `brew upgrade`.
->
-> Install Node.js 10.x LTS [manually](https://nodejs.org/en/download/) or use a tool like [NVM](https://github.com/creationix/nvm).
->
-> If you want to use Homebrew, you can prevent it from upgrading the current Node.js formula by pinning it with `brew pin node@10`.
+| **Note on Node.js** |
+| ------------------- |
+| <p>We recommend manual installation of Node.js LTS instead of using Homebrew to avoid breaking your development setup when you run `brew upgrade`.</p><p>Install Node.js 10.x LTS [manually](https://nodejs.org/en/download/) or use a tool like [NVM](https://github.com/creationix/nvm).</p><p>If you want to use Homebrew, you can prevent it from upgrading the current Node.js formula by pinning it with `brew pin node@10`.</p> |
 
 ```
 brew install git redis postgresql@9.6 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@10 gpg
