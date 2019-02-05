@@ -36,3 +36,5 @@ to learn how to develop GitLab CE.
 - [Using Prometheus with GDK](prometheus.md)
 - [Using Container Registry with GDK](registry.md)
 - [Preview and test the docs site locally](gitlab_docs.md)
+- [Auto DevOps](auto_devops.md)
+- [Google OAuth2](google-oauth2.md)
