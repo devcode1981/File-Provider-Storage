@@ -6,7 +6,7 @@
 
 Make sure you follow all the guidelines and resolve all the dependencies listed below before installing GDK. Otherwise, you will experience strange errors during installation.
 
-| Requsite | Description |
+| Requisite | Description |
 | -------- | ----------- |
 | User account | Use a **non-root** Unix user to install GDK. This can be your normal user, but **DO NOT** run the installation as a root user. |
 | Ruby | <p>Use a Ruby version manager ([RVM], [rbenv], [chruby], etc.) to install the current [`gitlab-ce` Ruby version](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/.ruby-version).</p><p>**DO NOT** use the system Ruby.</p>|
