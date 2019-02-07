@@ -9,26 +9,16 @@ Make sure you follow all the guidelines and resolve all the dependencies listed 
 | Requisite | Description |
 | --------- | ----------- |
 | User account | Use a **non-root** Unix user to install GDK. This can be your normal user, but **DO NOT** run the installation as a root user. |
-| Ruby | <p>Use a Ruby version manager ([RVM], [rbenv], [chruby], etc.) to install the current [`gitlab-ce` Ruby version](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/.ruby-version).</p><p>**DO NOT** use the system Ruby.</p>|
+| Ruby | <p>Use a Ruby version manager ([RVM](https://rvm.io/), [rbenv](https://github.com/rbenv/rbenv), [chruby](https://github.com/postmodern/chruby), etc.) to install the current [`gitlab-ce` Ruby version](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/.ruby-version).</p><p>**DO NOT** use the system Ruby.</p>|
 | Terminal | <p>Make sure to close and reopen the Terminal after installing a Ruby version manager to make sure it is activated.</p><p>You can check the active version with the command `ruby --version`.</p>|
-| Bundler | <p>Install the version of Bundler specified in [Gemfile.lock]. You will find it at the very bottom, right below the text `BUNDLED WITH`.</p><p> Use the command `gem install bundler -v <version>`, replacing `<version>` with the number you found above.</p> |
-| Git | <p>We recommend using Git version 2.18 or higher.</p><p>Installation of git is covered in the instructions below</p> |
-| Node.js | <p>Node.js **10.x (LTS)** or 8.x (LTS) and Yarn 1.12 or newer.</p><p>Installation of Node.js and Yarn is coverred in the instructions below. If your package manager does not have Node.js 10.x or yarn available, visit the official websites for [node] and [yarn] for installation instructions.</p> |
-| Go | <p>Go 1.9.6 or newer.</p><p>Installation of Go is covered in the instructions below. If your package manager does not have up-to-date versions of Go available, visit the official [Go] website for installation instructions.</p> |
-| Google Chrome | [Google Chrome] 60 or greater with [ChromeDriver] version 2.33 or greater. Visit the Chrome Driver [Getting started](https://sites.google.com/a/chromium.org/chromedriver/getting-started) page for more details. |
-| PostgreSQL | <p>PostgreSQL version 9.x, with 9.6 recommended. Using PostgreSQL version 10.x is officially not yet supported.</p><p>Installation of PostgreSQL is covered in the instructions below.</p> |
-| [GraphicsMagick] | Installation of GraphicsMagick is covered in the instructions below. |
+| Bundler | <p>Install the version of Bundler specified in [Gemfile.lock](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/Gemfile.lock). You will find it at the very bottom, right below the text `BUNDLED WITH`.</p><p> Use the command `gem install bundler -v <version>`, replacing `<version>` with the number you found above.</p> |
+| Git | <p>We recommend using Git version 2.18 or higher.</p><p>git installation is covered in the instructions below</p> |
+| Node.js | <p>Node.js **10.x (LTS)** or 8.x (LTS) and Yarn 1.12 or newer.</p><p>Node.js and Yarn installation is coverred in the instructions below. If your package manager does not have Node.js 10.x or yarn available, visit the official websites for [Node](https://nodejs.org/en/download/) and [Yarn](https://yarnpkg.com/en/docs/install/) for installation instructions.</p> |
+| Go | <p>Go 1.9.6 or newer.</p><p>Go installation is covered in the instructions below. If your package manager does not have up-to-date versions of Go available, visit the official [Go](https://golang.org/doc/install) website for installation instructions.</p> |
+| Google Chrome | [Google Chrome](https://www.google.com/chrome/) 60 or greater with [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) version 2.33 or greater. Visit the Chrome Driver [Getting started](https://sites.google.com/a/chromium.org/chromedriver/getting-started) page for more details. |
+| PostgreSQL | <p>PostgreSQL version 9.x, with 9.6 recommended. Using PostgreSQL version 10.x is officially not yet supported.</p><p>PostgreSQL installation is covered in the instructions below.</p> |
+| [GraphicsMagick](http://www.graphicsmagick.org) | GraphicsMagick installation is covered in the instructions below. |
 
-[RVM]: https://rvm.io/
-[rbenv]: https://github.com/rbenv/rbenv
-[chruby]: https://github.com/postmodern/chruby
-[node]: https://nodejs.org/en/download/
-[yarn]: https://yarnpkg.com/en/docs/install/
-[Go]: https://golang.org/doc/install
-[Google Chrome]: https://www.google.com/chrome/
-[ChromeDriver]: https://sites.google.com/a/chromium.org/chromedriver/downloads
-[GraphicsMagick]: http://www.graphicsmagick.org
-[Gemfile.lock]: https://gitlab.com/gitlab-org/gitlab-ce/blob/master/Gemfile.lock
 
 ### OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan), macOS 10.12 (Sierra), macOS 10.13 (High Sierra)
 
