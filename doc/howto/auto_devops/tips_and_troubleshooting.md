@@ -37,3 +37,12 @@ ResponseError: code=403, message=Insufficient regional quota to satisfy request:
 
 this would indicate you have reached your limit of persistent disks. See [how
 to clean up unused persistent disks above](../auto_devops.md#unused-persistent-disks).
+
+### SSH requires a passphrase
+
+For GDK to run, it needs to be able to SSH into `qa-tunnel.gitlab.info` without user input. The following steps will allow you to authenticate without entering your passphrase on future logins:
+
+1. Run [`ssh-add`](https://linux.die.net/man/1/ssh-add).
+1. Enter your passphrase.
+
+If not set up correctly, expect `502 Bad Gateway` responses when navigating to `<gitlab-number>.qa-tunnel.gitlab.info` and the string `Enter passphrase for key '/Users/username/.ssh/id_rsa'` to pepper the GDK logs.
