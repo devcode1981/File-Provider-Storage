@@ -5,6 +5,7 @@ LABEL authors.maintainer "GDK contributors: https://gitlab.com/gitlab-org/gitlab
 # Keep least changed directives first. This improves layers caching when rebuilding.
 
 RUN useradd --user-group --create-home gdk
+ENV DEBIAN_FRONTEND=noninteractive
 COPY packages.txt /
 RUN apt-get update && apt-get install -y $(sed -e 's/#.*//' /packages.txt)
 
