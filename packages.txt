@@ -5,7 +5,6 @@
 build-essential
 curl
 git
-python-software-properties
 software-properties-common
 sudo
 wget
