@@ -37,6 +37,7 @@ We are using PostgreSQL 9.6 in the following example. If you want to use another
 ```
 brew install git redis postgresql@9.6 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@10 gpg
 brew install yarn --without-node
+brew link pkg-config
 brew pin node@10
 bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
 echo 'export PATH="/usr/local/opt/postgresql@9.6/bin:/usr/local/opt/node@10/bin:$PATH"' >> ~/.bash_profile
