@@ -6,7 +6,8 @@ Load testing is done by simply running siege
 on a bunch of URLs at a regular interval. Monitoring of the results in turn is
 done using Prometheus.
 
-See the repository at: https://gitlab.com/gitlab-com/large-staging-collider/
+See the [Large Staging Collider repository](https://gitlab.com/gitlab-com/large-staging-collider/) for additional
+instructions.
 
 ## GitLab Load Kit
 
@@ -14,7 +15,7 @@ GitLab Load Kit uses k6 to generate load.
 The author reports:
 > `gitlab-load-kit` is able to quick induce enough load from my laptop to start causing issues in staging
 
-See the repository at: https://gitlab.com/andrewn/gitlab-load-kit/
+See the [GitLab Load Kit repository](https://gitlab.com/andrewn/gitlab-load-kit/) for additional instructions.
 
 ## JMeter
 
