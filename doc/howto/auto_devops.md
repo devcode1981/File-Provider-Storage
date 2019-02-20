@@ -101,7 +101,8 @@ Now you should be able to view your internet accessible application at
 Now login as root using the default password and change your password.
 
 IMPORTANT: You should change your root password since it is now internet
-accessible.
+accessible. You should also disable a new users registration feature on
+instance settings page (in the admin panel).
 
 ## Google OAuth2
 
@@ -314,6 +315,126 @@ from your reverse proxy settings and edit `registry/config.yml` like so:
 NOTE: You should ensure your nginx (or other proxy) is configured to allow up
 to 1GB files transferred since the docker images uploaded and downloaded
 can be quite large.
+
+Below you can find an example on how to configure reverse proxy using Nginx
+with a valid SSL certificate generated using Let's Encrypt on Debian.
+
+The example below allows you to install packages from Debian Sid (unstable)
+in order to use latest versions. APT pinning can be configured to make it
+possible to install packages from unstable Debian distribution on a stable
+version of Debian GNU/Linux.
+
+1. Install Nginx
+
+    ```bash
+    sudo apt-get install -t unstable nginx
+    ```
+1. Install `certbot` to manage your certificates easier
+
+    ```bash
+    sudo apt-get install -t unstable certbot python-certbot-nginx
+    ```
+
+1. Configure your domains
+
+    The commands the next point assume you have set up a DNS record for
+    `gdk.example.com` and `registry.example.com` and that both point to the IP
+    address of your VM. You can replace those domain names with anything of
+    your choosing.
+
+1. Request a certificate for your domain or subdomains
+
+    You will need to obtain certificates for GitLab web application and for
+    Container Registry separately. You can do that using following commands:
+
+    ```bash
+    sudo certbot -i nginx -d gdk.example.com -d registry.example.com
+    ```
+
+    certbot will attempt to verify your domain ownership, however you might
+    want to do this manually. You can append `--manual` argument in order to
+    do that.
+
+    ```bash
+    sudo certbot --manual -i nginx -d gdk.example.com -d registry.example.com
+    ```
+
+    It is also possible to generate a wildcard ceriticate if you forcsee the
+    need of using more subdomains than just for GDK and Container Registry:
+
+    ```bash
+    sudo certbot --manual -i nginx -d "*.gdk.example.com" --server https://acme-v02.api.letsencrypt.org/directory
+    ```
+
+    Certificates generated with `--manual` option will not be renewed
+    automatically.
+
+1. Configure Nginx
+
+    Cerbot is going to pre-configure your files, what is useful because you
+    do not need to add certificates manually, however you will need to adjust
+    a few things in the configuration.
+
+    You can find an example of how to configure reverse proxy with SSL
+    termination with Nginx to proxy requests to GitLab Registry and GDK.
+
+    ```
+    server {
+      server_name gdk.gcp.example.com;
+
+      listen [::]:443 ssl ;
+      listen 443 ssl;
+      ssl_certificate /etc/letsencrypt/live/gcp.example.com/fullchain.pem;
+      ssl_certificate_key /etc/letsencrypt/live/gcp.example.com/privkey.pem;
+      ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
+      ssl_ciphers "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4";
+
+      ssl_session_cache    shared:SSL:10m;
+      ssl_session_timeout  30m;
+
+      client_max_body_size 1024m;
+
+      location / {
+        proxy_pass http://127.0.0.1:3000;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Nginx-Proxy true;
+
+        proxy_redirect off;
+      }
+    }
+
+    server {
+      server_name registry.gcp.example.com;
+
+      listen [::]:443 ssl;
+      listen 443 ssl;
+      ssl_certificate /etc/letsencrypt/live/gcp.example.com/fullchain.pem;
+      ssl_certificate_key /etc/letsencrypt/live/gcp.example.com/privkey.pem;
+      ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
+      ssl_ciphers "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4";
+
+      ssl_session_cache    shared:SSL:10m;
+      ssl_session_timeout  30m;
+
+      client_max_body_size 1024m;
+
+      location / {
+        proxy_pass http://127.0.0.1:5000;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Nginx-Proxy true;
+
+        proxy_redirect off;
+      }
+    }
+    ```
 
 #### Why can't we use ngrok or localtunnel?
 
