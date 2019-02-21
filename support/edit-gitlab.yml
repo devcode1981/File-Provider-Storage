@@ -175,5 +175,11 @@ c
 c
     port: ${gitlab_pages_port:-3010}
 .
+1
+/^test:/
+/^  gitlab:/
+/ user:/c
+    user: $(whoami)
+.
 wq
 EOF
