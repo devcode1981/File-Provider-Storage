@@ -47,6 +47,8 @@ rails_bundle_install_cmd := bundle install --jobs 4 --without production $(if $(
 elasticsearch_version = 6.5.1
 elasticsearch_tar_gz_sha1 = 5903e1913a7c96aad96a8227517c40490825f672
 ruby_version = UNKNOWN
+go_minimum_version = go1.9.6
+go_version = $(shell go version | grep -Eo 'go[0-9]+.[0-9]+.[0-9]+.')
 workhorse_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_WORKHORSE_VERSION")
 gitlab_shell_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_SHELL_VERSION")
 gitaly_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITALY_SERVER_VERSION")
@@ -63,6 +65,12 @@ check-ruby-version:
 		echo "WARNING: However we recommend using Ruby version ${gitlab_repo_ruby_version} for this repository."; \
 		test "${IGNORE_INSTALL_WARNINGS}" = "true" || \
 		(echo "WARNING: Press <ENTER> to continue installation or <CTRL-C> to abort" && read v;) \
+	fi
+
+check-go-version:
+	@if [ "$$(printf '%s\n' ${go_minimum_version} ${go_version} | sort -V | head -n1)" != "${go_minimum_version}" ]; then \
+	  echo "Golang version ${go_minimum_version} or higher is required"; \
+	  exit 1; \
 	fi
 
 gitlab-setup: check-ruby-version gitlab/.git gitlab-config bundler .gitlab-bundle yarn .gitlab-yarn .gettext
@@ -280,7 +288,7 @@ gitaly-clean:
 	rm -rf gitlab/tmp/tests/gitaly
 
 .PHONY: gitaly/bin/gitaly
-gitaly/bin/gitaly: ${gitaly_clone_dir}/.git
+gitaly/bin/gitaly: check-go-version ${gitaly_clone_dir}/.git
 	make -C ${gitaly_clone_dir} assemble ASSEMBLY_ROOT=${gitaly_assembly_dir} BUNDLE_FLAGS=--no-deployment BUILD_TAGS="${tracer_build_tags}"
 	mkdir -p ${gitlab_development_root}/gitaly/bin
 	ln -sf ${gitaly_assembly_dir}/bin/* ${gitlab_development_root}/gitaly/bin
@@ -440,7 +448,7 @@ gitlab-workhorse-clean-bin:
 	rm -rf gitlab-workhorse/bin
 
 .PHONY: gitlab-workhorse/bin/gitlab-workhorse
-gitlab-workhorse/bin/gitlab-workhorse: ${gitlab_workhorse_clone_dir}/.git
+gitlab-workhorse/bin/gitlab-workhorse: check-go-version ${gitlab_workhorse_clone_dir}/.git
 	GOPATH=${gitlab_development_root}/gitlab-workhorse go install -tags "${tracer_build_tags}" gitlab.com/gitlab-org/gitlab-workhorse/...
 
 ${gitlab_workhorse_clone_dir}/.git:
@@ -460,7 +468,7 @@ gitlab-pages-clean-bin:
 	rm -rf gitlab-pages/bin
 
 .PHONY: gitlab-pages/bin/gitlab-pages
-gitlab-pages/bin/gitlab-pages: ${gitlab_pages_clone_dir}/.git
+gitlab-pages/bin/gitlab-pages: check-go-version ${gitlab_pages_clone_dir}/.git
 	GOPATH=${gitlab_development_root}/gitlab-pages go install gitlab.com/gitlab-org/gitlab-pages
 
 ${gitlab_pages_clone_dir}/.git:
