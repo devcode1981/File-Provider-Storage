@@ -9,14 +9,13 @@ if [[ "${registry_enabled}" == "true" ]]; then
   fi
 
   exec docker run --rm -p ${registry_port:-5000}:5000 ${run_opts} \
-       -v $(pwd)/registry/config.yml:/etc/docker/registry/config.yml \
-       -v $(pwd)/registry/storage:/var/lib/registry \
-       -v $(pwd)/localhost.crt:/root/certs/certbundle \
-       registry:2
+      -v $(pwd)/registry/config.yml:/etc/docker/registry/config.yml \
+      -v $(pwd)/registry/storage:/var/lib/registry \
+      -v $(pwd)/localhost.crt:/root/certs/certbundle \
+      registry:2
 else
   echo "Docker registry disabled."
   # If we exit now, Foreman will shut down all our sibling process too.
   # We want to block until Foreman signals us to exit.
   tail -f /dev/null
 fi
-

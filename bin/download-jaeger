@@ -48,4 +48,3 @@ if ! (echo "$sha  $download_path" | shasum -a1 -c -); then
   >&2 echo "cannot verify jaeger binary: sha checksum mismatch."
   exit 1
 fi
-

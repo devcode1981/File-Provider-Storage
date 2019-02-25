@@ -7,7 +7,7 @@ objectClass: dcObject
 objectclass: organization
 o: Example Organization
 dc: Example
-description: LDAP Example 
+description: LDAP Example
 
 # Admin user.
 dn: cn=admin,dc=example,dc=com

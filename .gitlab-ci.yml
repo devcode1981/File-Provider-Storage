@@ -56,6 +56,13 @@ container_scanning:
     paths:
       - gl-sast-container-report.json
 
+# Use eclint to check that the .editorconfig rulesets are being adhered to
+verify:
+  stage: build
+  image: registry.gitlab.com/gitlab-org/gitlab-build-images:node-10
+  script:
+    - npm config set unsafe-perm true # enable run npm as root
+    - make verify
 
 build:image:
   image: docker:git

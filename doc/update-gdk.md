@@ -8,7 +8,7 @@
     ```
 
 1. Then, **open a separate terminal window** and update gdk along with all its
-   components:
+    components:
 
     ```
     cd <gdk-dir>
@@ -18,4 +18,4 @@
     ```
 
 1. Then stop the `gdk run db` process running in the first tab.  It must be
-   restarted once `gdk reconfigure` has been run.
+    restarted once `gdk reconfigure` has been run.

@@ -17,7 +17,7 @@ omniauth:
 
 ### Docker
 
-The docker identity provider needs to be configured using your group's callback URL and entity ID.  
+The docker identity provider needs to be configured using your group's callback URL and entity ID.
 For example, an identity provider for the "zebra" group can be ran using the following:
 
 ```shell

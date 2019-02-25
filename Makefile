@@ -246,7 +246,7 @@ update: ensure-postgres-running unlock-dependency-installers gitlab-shell-update
 ensure-postgres-running:
 	@test -f ${postgres_data_dir}/postmaster.pid || \
 	test "${IGNORE_INSTALL_WARNINGS}" = "true" || \
-	(echo "WARNING: Postgres is not running.  Run 'gdk run db' or 'gdk run' in another shell." && echo "WARNING: Hit <ENTER> to ignore or <CTRL-C> to quit." && read v;)
+	(echo "WARNING: Postgres is not running. Run 'gdk run db' or 'gdk run' in another shell." && echo "WARNING: Hit <ENTER> to ignore or <CTRL-C> to quit." && read v;)
 
 gitlab-update: ensure-postgres-running gitlab/.git/pull gitlab-setup
 	cd ${gitlab_development_root}/gitlab && \
@@ -569,13 +569,13 @@ minio/data/%:
 pry:
 	grep '^#rails-web:' Procfile || (printf ',s/^rails-web/#rails-web/\nwq\n' | ed -s Procfile)
 	@echo ""
-	@echo "Commented out 'rails-web' line in the Procfile.  Use 'make pry-off' to reverse."
+	@echo "Commented out 'rails-web' line in the Procfile. Use 'make pry-off' to reverse."
 	@echo "You can now use Pry for debugging by using 'gdk run' in one terminal, and 'gdk run thin' in another."
 
 pry-off:
 	grep '^rails-web:' Procfile || (printf ',s/^#rails-web/rails-web/\nwq\n' | ed -s Procfile)
 	@echo ""
-	@echo "Re-enabled 'rails-web' in the Procfile.  Debugging with Pry will no longer work."
+	@echo "Re-enabled 'rails-web' in the Procfile. Debugging with Pry will no longer work."
 
 ifeq ($(jaeger_server_enabled),true)
 .PHONY: jaeger-setup
@@ -621,3 +621,25 @@ unlock-dependency-installers:
 	.gitlab-shell-bundle \
 	.gitlab-yarn \
 	.gettext \
+
+.PHONY: verify
+verify: verify-editorconfig
+
+.PHONY: verify-editorconfig
+verify-editorconfig: install-eclint
+	eclint check $$(git ls-files) || (echo "editorconfig check failed. Please run \`make correct\`" && exit 1)
+
+.PHONY: correct
+correct: correct-editorconfig
+
+.PHONY: correct-editorconfig
+correct-editorconfig: install-eclint
+	eclint fix $$(git ls-files)
+
+.PHONY: install-eclint
+install-eclint:
+	# Some distros come with `npm`, some with `yarn`
+	# So, we attempt to install eclint with either package manager
+	(command -v eclint > /dev/null) || \
+	((command -v npm > /dev/null) && npm install -g eclint) || \
+	((command -v yarn > /dev/null) && yarn global add eclint)

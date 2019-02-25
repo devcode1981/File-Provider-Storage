@@ -174,9 +174,9 @@ This was tested on OpenSUSE LEAP 42.1, and Tumbleweed (20161109)
 sudo zypper dup
 
 sudo zypper install libxslt-devel  postgresql postgresql-devel libpqxx-devel redis libicu-devel nodejs git ed cmake \
-         rpm-build gcc-c++ krb5-devel postgresql-server postgresql-contrib \
-         libxml2-devel libxml2-devel-32bit findutils-locate re2 GraphicsMagick \
-         runit
+        rpm-build gcc-c++ krb5-devel postgresql-server postgresql-contrib \
+        libxml2-devel libxml2-devel-32bit findutils-locate re2 GraphicsMagick \
+        runit
 ```
 
 On leap 42.1 you also need:
