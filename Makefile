@@ -59,10 +59,10 @@ all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup gitlab-pages-setup s
 
 check-ruby-version:
 	@if [ "${gitlab_repo_ruby_version}" != "${ruby_version}" ]; then \
-	  echo "WARNING: You're using Ruby version ${ruby_version}."; \
-	  echo "WARNING: However we recommend using Ruby version ${gitlab_repo_ruby_version} for this repository."; \
+		echo "WARNING: You're using Ruby version ${ruby_version}."; \
+		echo "WARNING: However we recommend using Ruby version ${gitlab_repo_ruby_version} for this repository."; \
 		test "${IGNORE_INSTALL_WARNINGS}" = "true" || \
-	  (echo "WARNING: Press <ENTER> to continue installation or <CTRL-C> to abort" && read v;) \
+		(echo "WARNING: Press <ENTER> to continue installation or <CTRL-C> to abort" && read v;) \
 	fi
 
 gitlab-setup: check-ruby-version gitlab/.git gitlab-config bundler .gitlab-bundle yarn .gitlab-yarn .gettext
@@ -72,12 +72,13 @@ gitlab/.git:
 
 gitlab-config: gitlab/config/gitlab.yml gitlab/config/database.yml gitlab/config/unicorn.rb gitlab/config/resque.yml gitlab/public/uploads gitlab/config/puma.rb
 
-gitlab/config/gitlab.yml:
-	sed -e "s|/home/git|${gitlab_development_root}|"\
-	  -e "s|/usr/bin/git|${git_bin}|"\
-	  gitlab/config/gitlab.yml.example > gitlab/config/gitlab.yml
+gitlab/config/gitlab.yml: gitlab/config/gitlab.yml.example
+	bin/safe-sed "$@" \
+		-e "s|/home/git|${gitlab_development_root}|g"\
+		-e "s|/usr/bin/git|${git_bin}|"\
+		"$<"
 	hostname=${hostname} port=${port} relative_url_root=${relative_url_root}\
-	  https=${https}\
+		https=${https}\
 		webpack_port=${webpack_port}\
 		registry_host=${registry_host} registry_external_port=${registry_external_port}\
 		registry_enabled=${registry_enabled} registry_port=${registry_port}\
@@ -85,23 +86,30 @@ gitlab/config/gitlab.yml:
 		gitlab_pages_port=${gitlab_pages_port}\
 		support/edit-gitlab.yml gitlab/config/gitlab.yml
 
-gitlab/config/database.yml:
-	sed -e "s|/home/git|${gitlab_development_root}|"\
-		-e "s|5432|${postgresql_port}|"\
-		database.yml.example > gitlab/config/database.yml
+gitlab/config/database.yml: database.yml.example
+	bin/safe-sed "$@" \
+		-e "s|/home/git|${gitlab_development_root}|g" \
+		-e "s|5432|${postgresql_port}|" \
+		"$<"
 
 # Versions older than GitLab 11.5 won't have this file
 gitlab/config/puma.example.development.rb:
 	touch $@
 
-gitlab/config/puma.rb:	gitlab/config/puma.example.development.rb
-	bin/safe-replace-file "$<" "$@" "${gitlab_development_root}"
+gitlab/config/puma.rb: gitlab/config/puma.example.development.rb
+	bin/safe-sed "$@" \
+		-e "s|/home/git|${gitlab_development_root}|g" \
+		"$<"
 
-gitlab/config/unicorn.rb:	gitlab/config/unicorn.rb.example.development
-	bin/safe-replace-file "$<" "$@" "${gitlab_development_root}"
+gitlab/config/unicorn.rb: gitlab/config/unicorn.rb.example.development
+	bin/safe-sed "$@" \
+		-e "s|/home/git|${gitlab_development_root}|g" \
+		"$<"
 
-gitlab/config/resque.yml:
-	sed "s|/home/git|${gitlab_development_root}|" redis/resque.yml.example > $@
+gitlab/config/resque.yml: redis/resque.yml.example
+	bin/safe-sed "$@" \
+		-e "s|/home/git|${gitlab_development_root}|g" \
+		"$<"
 
 gitlab/public/uploads:
 	mkdir $@
@@ -142,12 +150,13 @@ symlink-gitlab-shell:
 ${gitlab_shell_clone_dir}/.git:
 	git clone ${gitlab_shell_repo} ${gitlab_shell_clone_dir}
 
-gitlab-shell/config.yml:
-	sed -e "s|/home/git|${gitlab_development_root}|"\
-	  -e "s|^gitlab_url:.*|gitlab_url: http+unix://${shell echo ${gitlab_development_root}/gitlab.socket | sed 's|/|%2F|g'}|"\
-	  -e "s|/usr/bin/redis-cli|$(shell which redis-cli)|"\
-	  -e "s|^  socket: .*|  socket: ${gitlab_development_root}/redis/redis.socket|"\
-	  gitlab-shell/config.yml.example > gitlab-shell/config.yml
+gitlab-shell/config.yml: gitlab-shell/config.yml.example
+	bin/safe-sed "$@" \
+		-e "s|/home/git|${gitlab_development_root}|g" \
+		-e "s|^gitlab_url:.*|gitlab_url: http+unix://$(subst /,%2F,${gitlab_development_root}/gitlab.socket)|" \
+		-e "s|/usr/bin/redis-cli|$(shell which redis-cli)|" \
+		-e "s|^  socket: .*|  socket: ${gitlab_development_root}/redis/redis.socket|" \
+		"$<"
 
 .gitlab-shell-bundle:
 	cd ${gitlab_development_root}/gitlab-shell && $(rails_bundle_install_cmd)
@@ -166,14 +175,15 @@ ${gitaly_clone_dir}/.git:
 ${gitaly_proto_clone_dir}/.git:
 	git clone --quiet ${gitaly_proto_repo} ${gitaly_proto_clone_dir}
 
-gitaly/config.toml:
-	sed \
-	  -e "s|/home/git|${gitlab_development_root}|" \
-	  -e "s|^socket_path.*|socket_path = \"${gitlab_development_root}/gitaly.socket\"|" \
-	  -e "s|^bin_dir.*|bin_dir = \"${gitlab_development_root}/gitaly/bin\"|" \
-	  -e "s|# prometheus_listen_addr|prometheus_listen_addr|" \
-	  -e "s|# \[logging\]|\[logging\]|" \
-	  -e "s|# level = \"warn\"|level = \"warn\"|" ${gitaly_clone_dir}/config.toml.example > $@
+gitaly/config.toml: $(gitaly_clone_dir)/config.toml.example
+	bin/safe-sed "$@" \
+		-e "s|/home/git|${gitlab_development_root}|g" \
+		-e "s|^socket_path.*|socket_path = \"${gitlab_development_root}/gitaly.socket\"|" \
+		-e "s|^bin_dir.*|bin_dir = \"${gitlab_development_root}/gitaly/bin\"|" \
+		-e "s|# prometheus_listen_addr|prometheus_listen_addr|" \
+		-e "s|# \[logging\]|\[logging\]|" \
+		-e "s|# level = \"warn\"|level = \"warn\"|" \
+		"$<"
 
 prom-setup:
 	if [ "$(uname -s)" = "Linux" ]; then \
@@ -287,13 +297,14 @@ support-setup: .ruby-version foreman Procfile redis gitaly-setup postgresql open
 	cat HELP
 	@echo "*********************************************"
 
-Procfile:
-	sed -e "s|/home/git|${gitlab_development_root}|g"\
+Procfile: Procfile.example
+	bin/safe-sed "$@" \
+		-e "s|/home/git|${gitlab_development_root}|g"\
 		-e "s|/usr/sbin/sshd|${sshd_bin}|"\
 		-e "s|postgres |${postgres_bin_dir}/postgres |"\
 		-e "s|DEV_SERVER_PORT=3808 |DEV_SERVER_PORT=${webpack_port} |"\
 		-e "s|-listen-http \":3010\" |-listen-http \":${gitlab_pages_port}\" -artifacts-server http://${hostname}:${port}/api/v4 |"\
-		$@.example > $@
+		"$<"
 	if [ -f .vagrant_enabled ]; then \
 		echo "0.0.0.0" > host; \
 		echo "3000" > port; \
@@ -301,8 +312,10 @@ Procfile:
 
 redis: redis/redis.conf
 
-redis/redis.conf:
-	sed "s|/home/git|${gitlab_development_root}|" $@.example > $@
+redis/redis.conf: redis/redis.conf.example
+	bin/safe-sed "$@" \
+		-e "s|/home/git|${gitlab_development_root}|g" \
+		"$<"
 
 postgresql: postgresql/data
 
@@ -361,8 +374,10 @@ geo-setup: Procfile geo-cursor gitlab/config/database_geo.yml postgresql/geo
 geo-cursor:
 	grep '^geo-cursor:' Procfile || (printf ',s/^#geo-cursor/geo-cursor/\nwq\n' | ed -s Procfile)
 
-gitlab/config/database_geo.yml:
-	sed "s|/home/git|${gitlab_development_root}|" database_geo.yml.example > gitlab/config/database_geo.yml
+gitlab/config/database_geo.yml: database_geo.yml.example
+	bin/safe-sed "$@" \
+		-e "s|/home/git|${gitlab_development_root}|g" \
+		"$<"
 
 postgresql/geo:
 	${postgres_bin_dir}/initdb --locale=C -E utf-8 postgresql-geo/data
@@ -414,8 +429,10 @@ localhost.key:
 
 gitlab-workhorse-setup: gitlab-workhorse/bin/gitlab-workhorse gitlab-workhorse/config.toml
 
-gitlab-workhorse/config.toml:
-	sed "s|/home/git|${gitlab_development_root}|" $@.example > $@
+gitlab-workhorse/config.toml: gitlab-workhorse/config.toml.example
+	bin/safe-sed "$@" \
+		-e "s|/home/git|${gitlab_development_root}|g" \
+		"$<"
 
 gitlab-workhorse-update: ${gitlab_workhorse_clone_dir}/.git gitlab-workhorse/.git/pull gitlab-workhorse-clean-bin gitlab-workhorse/bin/gitlab-workhorse
 
@@ -437,12 +454,12 @@ gitlab-workhorse/.git/pull:
 
 gitlab-pages-setup: gitlab-pages/bin/gitlab-pages
 
-gitlab-pages-update:	${gitlab_pages_clone_dir}/.git gitlab-pages/.git/pull gitlab-pages-clean-bin gitlab-pages/bin/gitlab-pages
+gitlab-pages-update: ${gitlab_pages_clone_dir}/.git gitlab-pages/.git/pull gitlab-pages-clean-bin gitlab-pages/bin/gitlab-pages
 
 gitlab-pages-clean-bin:
 	rm -rf gitlab-pages/bin
 
-.PHONY:	gitlab-pages/bin/gitlab-pages
+.PHONY: gitlab-pages/bin/gitlab-pages
 gitlab-pages/bin/gitlab-pages: ${gitlab_pages_clone_dir}/.git
 	GOPATH=${gitlab_development_root}/gitlab-pages go install gitlab.com/gitlab-org/gitlab-pages
 
@@ -464,18 +481,21 @@ influxdb/meta/meta.db: Procfile
 	grep '^influxdb:' Procfile || (printf ',s/^#influxdb/influxdb/\nwq\n' | ed -s Procfile)
 	support/bootstrap-influxdb 8086
 
-influxdb/influxdb.conf:
-	sed -e "s|/home/git|${gitlab_development_root}|g" $@.example > $@
+influxdb/influxdb.conf: influxdb/influxdb.conf.example
+	bin/safe-sed "$@" \
+		-e "s|/home/git|${gitlab_development_root}|g" \
+		"$<"
 
 grafana-setup: grafana/grafana.ini grafana/bin/grafana-server grafana/gdk-pg-created grafana/gdk-data-source-created
 
 grafana/bin/grafana-server:
 	cd grafana && ${MAKE}
 
-grafana/grafana.ini:
-	sed -e "s|/home/git|${gitlab_development_root}|g" \
+grafana/grafana.ini: grafana/grafana.ini.example
+	bin/safe-sed "$@" \
+		-e "s|/home/git|${gitlab_development_root}|g" \
 		-e "s/GDK_USERNAME/${username}/g" \
-		$@.example > $@
+		"$<"
 
 grafana/gdk-pg-created:
 	PATH=${postgres_bin_dir}:${PATH} support/create-grafana-db
@@ -490,18 +510,21 @@ performance-metrics-setup: Procfile influxdb-setup grafana-setup
 
 openssh-setup: openssh/sshd_config openssh/ssh_host_rsa_key
 
-openssh/sshd_config:
-	sed -e "s|/home/git|${gitlab_development_root}|g" \
+openssh/sshd_config: openssh/sshd_config.example
+	bin/safe-sed "$@" \
+		-e "s|/home/git|${gitlab_development_root}|g" \
 		-e "s/GDK_USERNAME/${username}/g" \
-		$@.example > $@
+		"$<"
 
 openssh/ssh_host_rsa_key:
 	ssh-keygen -f $@ -N '' -t rsa
 
 nginx-setup: nginx/conf/nginx.conf nginx/logs nginx/tmp
 
-nginx/conf/nginx.conf:
-	sed -e "s|/home/git|${gitlab_development_root}|" nginx/conf/nginx.conf.example > $@
+nginx/conf/nginx.conf: nginx/conf/nginx.conf.example
+	bin/safe-sed "$@" \
+		-e "s|/home/git|${gitlab_development_root}|g" \
+		"$<"
 
 nginx/logs:
 	mkdir -p $@

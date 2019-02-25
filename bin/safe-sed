@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+# Usage: safe-sed [dest-file-name] [sed-params]...
+# The first parameter is the destination file
+# The remaining parameters are sent to sed
+dest_file=$1
+shift
+
+dest_new_content_temp_file=$(mktemp)
+function finish {
+  rm -f "${dest_new_content_temp_file}"
+}
+trap finish EXIT
+
+sed "$@" > "${dest_new_content_temp_file}"
+
+if [[ -f "$dest_file" ]]; then
+  # If the target file exists and differs from what we want to see in it...
+  if ! cmp --silent "${dest_file}" "${dest_new_content_temp_file}"; then
+    echo "-------------------------------------------------------------------------------------------------------------"
+    echo "Warning: Your \`${dest_file}\` is outdated. Below are the changes GDK wanted to apply."
+    echo " - To automatically update: \`rm ${dest_file}\`"
+    echo "   and re-run \`gdk update\`."
+    echo " - To silence this warning (at your own peril): \`touch ${dest_file}\`"
+    echo "-------------------------------------------------------------------------------------------------------------"
+    git diff --no-index --color -u "${dest_file}" "${dest_new_content_temp_file}" || true
+    echo "-------------------------------------------------------------------------------------------------------------"
+    echo "Waiting 5 seconds for previous warning to be noticed...."
+    echo "-------------------------------------------------------------------------------------------------------------"
+    sleep 5
+  fi
+else
+  mv "${dest_new_content_temp_file}" "${dest_file}"
+fi
