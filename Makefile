@@ -47,8 +47,6 @@ rails_bundle_install_cmd := bundle install --jobs 4 --without production $(if $(
 elasticsearch_version = 6.5.1
 elasticsearch_tar_gz_sha1 = 5903e1913a7c96aad96a8227517c40490825f672
 ruby_version = UNKNOWN
-go_minimum_version = go1.9.6
-go_version = $(shell go version | grep -Eo 'go[0-9]+.[0-9]+.[0-9]+.')
 workhorse_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_WORKHORSE_VERSION")
 gitlab_shell_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_SHELL_VERSION")
 gitaly_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITALY_SERVER_VERSION")
@@ -68,10 +66,7 @@ check-ruby-version:
 	fi
 
 check-go-version:
-	@if [ "$$(printf '%s\n' ${go_minimum_version} ${go_version} | sort -V | head -n1)" != "${go_minimum_version}" ]; then \
-	  echo "Golang version ${go_minimum_version} or higher is required"; \
-	  exit 1; \
-	fi
+	bin/$@
 
 gitlab-setup: check-ruby-version gitlab/.git gitlab-config bundler .gitlab-bundle yarn .gitlab-yarn .gettext
 
