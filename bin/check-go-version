@@ -2,7 +2,7 @@
 set -euo pipefail
 
 go_minimum_version='go1.10'
-go_version=$(go version | grep -Eo 'go[0-9]+.[0-9]+.[0-9]+.')
+go_version=$(go version | grep -Eo 'go[0-9]+(\.[0-9]+)+')
 go_cmp=$(printf '%s\n' ${go_minimum_version} ${go_version} | sort -V | head -n1)
 
 if [ "${go_cmp}" != "${go_minimum_version}" ]; then
