@@ -65,6 +65,9 @@ check-ruby-version:
 		(echo "WARNING: Press <ENTER> to continue installation or <CTRL-C> to abort" && read v;) \
 	fi
 
+check-go-version:
+	bin/$@
+
 gitlab-setup: check-ruby-version gitlab/.git gitlab-config bundler .gitlab-bundle yarn .gitlab-yarn .gettext
 
 gitlab/.git:
@@ -280,7 +283,7 @@ gitaly-clean:
 	rm -rf gitlab/tmp/tests/gitaly
 
 .PHONY: gitaly/bin/gitaly
-gitaly/bin/gitaly: ${gitaly_clone_dir}/.git
+gitaly/bin/gitaly: check-go-version ${gitaly_clone_dir}/.git
 	make -C ${gitaly_clone_dir} assemble ASSEMBLY_ROOT=${gitaly_assembly_dir} BUNDLE_FLAGS=--no-deployment BUILD_TAGS="${tracer_build_tags}"
 	mkdir -p ${gitlab_development_root}/gitaly/bin
 	ln -sf ${gitaly_assembly_dir}/bin/* ${gitlab_development_root}/gitaly/bin
@@ -440,7 +443,7 @@ gitlab-workhorse-clean-bin:
 	rm -rf gitlab-workhorse/bin
 
 .PHONY: gitlab-workhorse/bin/gitlab-workhorse
-gitlab-workhorse/bin/gitlab-workhorse: ${gitlab_workhorse_clone_dir}/.git
+gitlab-workhorse/bin/gitlab-workhorse: check-go-version ${gitlab_workhorse_clone_dir}/.git
 	GOPATH=${gitlab_development_root}/gitlab-workhorse go install -tags "${tracer_build_tags}" gitlab.com/gitlab-org/gitlab-workhorse/...
 
 ${gitlab_workhorse_clone_dir}/.git:
@@ -460,7 +463,7 @@ gitlab-pages-clean-bin:
 	rm -rf gitlab-pages/bin
 
 .PHONY: gitlab-pages/bin/gitlab-pages
-gitlab-pages/bin/gitlab-pages: ${gitlab_pages_clone_dir}/.git
+gitlab-pages/bin/gitlab-pages: check-go-version ${gitlab_pages_clone_dir}/.git
 	GOPATH=${gitlab_development_root}/gitlab-pages go install gitlab.com/gitlab-org/gitlab-pages
 
 ${gitlab_pages_clone_dir}/.git:
