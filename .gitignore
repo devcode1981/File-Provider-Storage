@@ -87,3 +87,5 @@ gitlab-development-kit/**
 /gettext.log
 /elasticsearch*
 /env.mk
+/jaeger-artifacts/
+/jaeger/

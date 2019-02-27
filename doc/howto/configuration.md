@@ -51,6 +51,12 @@ variable assignment is:
   PostgreSQL executables, but if you want to override that (e.g. to
   use a different version), use this variable.
 
+- `jaeger_server_enabled`: By default, the GDK will launch an instance of
+  the [Jaeger distributed tracing all-in-one
+  server](http://localhost:16686/search). If you are running multiple
+  copies of GDK, you should set `jaeger_server_enabled=false` in all but
+  one GDK instance, and have traces get send to a single instance.
+
 ### Example
 
 Here an example what `env.mk` might look like:
