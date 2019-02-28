@@ -586,7 +586,7 @@ jaeger: exec jaeger/jaeger-1.10.1/jaeger-all-in-one --memory.max-traces 512
 
 * If it exists, make sure it's not commented out.
 * If it does not exist, the recommended approach is to rebuild your `Procfile`.
-* This can be done by running `mv Procfile Procfile.old; make Procfile`
+* This can be done by running `mv Procfile Procfile.old; make Procfile`.
 * Then run `gdk reconfigure`.
 
 For more information about Jaeger, visit the [distributed tracing GitLab developer
