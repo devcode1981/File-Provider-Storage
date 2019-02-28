@@ -544,8 +544,8 @@ registry-setup: registry/storage registry/config.yml localhost.crt
 registry/storage:
 	mkdir -p $@
 
-registry/config.yml:
-	cp registry/config.yml.example $@
+registry/config.yml: registry/config.yml.example
+	cp $< $@
 	gitlab_host=${gitlab_from_container} gitlab_port=${port} registry_port=${registry_port} support/edit-registry-config.yml $@
 
 elasticsearch-setup: elasticsearch/bin/elasticsearch
@@ -613,7 +613,22 @@ clean-config:
 	gitaly/config.toml \
 	nginx/conf/nginx.conf \
 	registry/config.yml \
-	jaeger \
+	jaeger
+
+touch-examples:
+	touch \
+	gitlab/config/gitlab.yml.example \
+	gitlab/config/database.yml.example \
+	gitlab/config/unicorn.rb.example.development \
+	gitlab/config/puma.example.development.rb \
+	redis/resque.yml.example \
+	gitlab-shell/config.yml.example \
+	redis/redis.conf.example \
+	Procfile.example \
+	gitlab-workhorse/config.toml.example \
+	$(gitaly_clone_dir)/config.toml.example \
+	nginx/conf/nginx.conf.example \
+	registry/config.yml.example
 
 unlock-dependency-installers:
 	rm -f \
