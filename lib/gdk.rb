@@ -69,7 +69,7 @@ module GDK
       true
     when 'reconfigure'
       remember!($gdk_root)
-      exec(MAKE, "ruby_version=#{RUBY_VERSION}", 'touch-examples', 'unlock-dependency-installers', 'postgresql-sensible-defaults', 'all', chdir: $gdk_root)
+      exec(MAKE, "ruby_version=#{RUBY_VERSION}", 'clean-config', 'unlock-dependency-installers', 'postgresql-sensible-defaults', 'all', chdir: $gdk_root)
     when 'psql'
       exec('psql', '-h', File.join($gdk_root, 'postgresql'), '-p', pg_port.to_s, *ARGV, chdir: $gdk_root)
     when 'redis-cli'
