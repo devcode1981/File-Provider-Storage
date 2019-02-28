@@ -466,31 +466,6 @@ circumstances:
 - clusters_applications_runners
 - clusters_applications_jupyter
 
-#### Using an external virtual machine for the development
-
-If you decide to use an external virtual machine to run GDK on it, you might
-want to still be able to use your favorite tools and IDE locally.
-
-If you decide to follow this direction it might be a good idea to avoid
-uploading your private SSH keys there, in case if you want to push to
-GitLab from the virtual machine.
-
-You can use `unison` to synchronize your local and remote files. Use:
-
-```bash
-unison -batch ./gdk ssh://my-account@gcp.vm.example.com
-```
-
-You need to install `unison` locally and on the remote machine with
-
-```bash
-apt-get install unison
-```
-
-`unison` makes it easier to synchronize files bi-directionally, however it does
-not happen automatically, you need to invoke the command to trigger the
-synchronization.
-
 ## Cleaning up unused GCP resources
 
 When you create a new cluster in GCP for testing purposes it is usually a good

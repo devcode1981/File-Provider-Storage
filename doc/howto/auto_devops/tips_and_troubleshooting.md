@@ -20,6 +20,39 @@ to save yourself from setting up a full working Auto DevOps project.
 
 - One can run manual Helm commands from your local machine and communicate to our remote Tiller running on GKE. Check our [Useful Commands - Talking to Tiller](./useful_commands.md#talking-to-tiller) to know how to achieve it.
 
+## Using an external virtual machine for the development
+
+If you decide to use an external virtual machine to run GDK on it, you might
+want to still be able to use your favorite tools and IDE locally.
+
+If you decide to follow this direction it might be a good idea to avoid
+uploading your private SSH keys there, in case if you want to push to
+GitLab from the virtual machine.
+
+You can use `unison` to synchronize your local and remote files. Use:
+
+```bash
+unison -batch ./gdk ssh://my-account@gcp.vm.example.com
+```
+
+You need to install `unison` locally and on the remote machine with
+
+```bash
+apt-get install unison
+```
+
+`unison` makes it easier to synchronize files bi-directionally, however it does
+not happen automatically, you need to invoke the command to trigger the
+synchronization.
+
+Some people also use [Mutagen](https://github.com/havoc-io/mutagen) instead of
+`unison`, you can also give it a try and choose the solution you prefer.
+
+It is also possible to configure your environment in a way that only local ->
+remote synchronization is needed. In this case you can use `lsyncd` tool, which
+appears to work reasonably well when bi-directional communication is not
+needed.
+
 ## Troubleshooting
 
 ### The Ingress is never assigned an IP address
