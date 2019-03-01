@@ -29,7 +29,8 @@ If you decide to follow this direction it might be a good idea to avoid
 uploading your private SSH keys there, in case if you want to push to
 GitLab from the virtual machine.
 
-You can use `unison` to synchronize your local and remote files. Use:
+You can use [`unison`](https://www.cis.upenn.edu/~bcpierce/unison/index.html)
+to synchronize your local and remote files. Use:
 
 ```bash
 unison -batch ./gdk ssh://my-account@gcp.vm.example.com
