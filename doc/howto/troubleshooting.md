@@ -576,18 +576,12 @@ If you're seeing errors such as:
 
 `ERROR -- : Failure while sending a batch of spans: Failed to open TCP connection to localhost:14268 (Connection refused - connect(2) for "localhost" port 14268)`
 
-This could be because your local GDK Jaeger instance is not running. This is most 
-likely because Jaeger is not configured in your `$GDKROOT\Procfile`. Open the
-file and look for a line as follows:
+This is most likely because Jaeger is not configured in your `$GDKROOT\Procfile`.
+The easiest way to fix this is by re-creating your `Procfile` and then running 
+a `gdk reconfigure`:
 
-```
-jaeger: exec jaeger/jaeger-1.10.1/jaeger-all-in-one --memory.max-traces 512
-```
-
-* If it exists, make sure it's not commented out.
-* If it does not exist, the recommended approach is to rebuild your `Procfile`.
-* This can be done by running `mv Procfile Procfile.old; make Procfile`.
-* Then run `gdk reconfigure`.
+1. `mv Procfile Procfile.old; make Procfile`
+1. `gdk reconfigure`
 
 For more information about Jaeger, visit the [distributed tracing GitLab developer
 documentation] (https://docs.gitlab.com/ee/development/distributed_tracing.html).
