@@ -35,7 +35,7 @@ We are using PostgreSQL 9.6 in the following example. If you want to use another
 | We recommend manual installation of Node.js LTS instead of using Homebrew to avoid breaking your development setup when you run `brew upgrade`. Install Node.js 10.x LTS [manually](https://nodejs.org/en/download/) or use a tool like [NVM](https://github.com/creationix/nvm). If you want to use Homebrew, you can prevent it from upgrading the current Node.js formula by pinning it with `brew pin node@10`. |
 
 ```
-brew install git redis postgresql@9.6 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@10 gpg
+brew install git redis postgresql@9.6 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@10 gpg runit
 brew install yarn --without-node
 brew link pkg-config
 brew pin node@10
@@ -50,7 +50,7 @@ brew cask install google-chrome chromedriver
 [MacPorts](https://www.macports.org/) is another package manager for macOS. Visit their website for installation details.
 
 ```
-sudo port install git redis libiconv postgresql96-server icu pkgconfig cmake nodejs10 go openssl npm5 yarn coreutils re2 GraphicsMagick
+sudo port install git redis libiconv postgresql96-server icu pkgconfig cmake nodejs10 go openssl npm5 yarn coreutils re2 GraphicsMagick runit
 bundle config build.eventmachine --with-cppflags=-I/opt/local/include/openssl
 echo 'export PATH=/opt/local/lib/postgresql96/bin/:$PATH' >> ~/.profile
 source ~/.profile
@@ -75,7 +75,9 @@ sudo add-apt-repository ppa:longsleep/golang-backports
 # This PPA contains an up-to-date version of git
 sudo add-apt-repository ppa:git-core/ppa
 sudo apt-get update
-sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ libre2-dev libkrb5-dev libsqlite3-dev golang-1.10-go ed pkg-config graphicsmagick
+sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server \
+  libicu-dev cmake g++ libre2-dev libkrb5-dev libsqlite3-dev golang-1.10-go ed \
+  pkg-config graphicsmagick runit
 ```
 
 Ubuntu 14.04 (Trusty Tahr) doesn't have the `libre2-dev` package available, but
@@ -86,7 +88,8 @@ you can [install re2 manually](https://github.com/google/re2/wiki/Install).
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
-pacman -S postgresql redis postgresql-libs icu npm ed cmake openssh git go re2 unzip graphicsmagick
+pacman -S postgresql redis postgresql-libs icu npm ed cmake openssh git go re2 \
+  unzip graphicsmagick runit
 ```
 
 #### Debian
@@ -94,7 +97,9 @@ pacman -S postgresql redis postgresql-libs icu npm ed cmake openssh git go re2 u
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
-sudo apt-get install postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ libkrb5-dev libre2-dev ed pkg-config graphicsmagick
+sudo apt-get install postgresql postgresql-contrib libpq-dev redis-server \
+  libicu-dev cmake g++ libkrb5-dev libre2-dev ed pkg-config graphicsmagick \
+  runit
 ```
 
 If you are running Debian Experimenal or newer you can install a Go
@@ -119,7 +124,10 @@ sudo dnf module enable postgresql:9.6
 ```
 
 ```
-sudo dnf install postgresql libpqxx-devel postgresql-libs redis libicu-devel nodejs git ed cmake rpm-build gcc-c++ krb5-devel go postgresql-server postgresql-contrib re2 GraphicsMagick re2-devel sqlite-devel perl-Digest-SHA
+sudo dnf install postgresql libpqxx-devel postgresql-libs redis libicu-devel \
+  nodejs git ed cmake rpm-build gcc-c++ krb5-devel go postgresql-server \
+  postgresql-contrib re2 GraphicsMagick re2-devel sqlite-devel perl-Digest-SHA \
+  runit
 ```
 
 You may need to install Redis 2.8 or newer manually.
@@ -133,7 +141,9 @@ This is tested on CentOS 6.5:
 ```
 sudo yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-6-x86_64/pgdg-centos96-9.6-3.noarch.rpm
 sudo yum install https://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-sudo yum install postgresql96-server postgresql96-devel libicu-devel git cmake gcc-c++ redis ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 libstdc++.so.6 nodejs npm re2 re2-devel GraphicsMagick
+sudo yum install postgresql96-server postgresql96-devel libicu-devel git cmake \
+  gcc-c++ redis ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 \
+  libstdc++.so.6 nodejs npm re2 re2-devel GraphicsMagick runit
 
 bundle config build.pg --with-pg-config=/usr/pgsql-9.6/bin/pg_config
 # This example uses Ruby 2.5.3. Substitute with the current version if different.
@@ -165,7 +175,8 @@ sudo zypper dup
 
 sudo zypper install libxslt-devel  postgresql postgresql-devel libpqxx-devel redis libicu-devel nodejs git ed cmake \
          rpm-build gcc-c++ krb5-devel postgresql-server postgresql-contrib \
-         libxml2-devel libxml2-devel-32bit findutils-locate re2 GraphicsMagick
+         libxml2-devel libxml2-devel-32bit findutils-locate re2 GraphicsMagick \
+         runit
 ```
 
 On leap 42.1 you also need:
@@ -264,7 +275,8 @@ sudo apt-get install software-properties-common python-software-properties
 # This PPA contains an up-to-date version of Go
 sudo apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
 sudo apt-get update
-sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server libicu-dev cmake g++ libkrb5-dev libre2-dev golang ed pkg-config
+sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server \
+  libicu-dev cmake g++ libkrb5-dev libre2-dev golang ed pkg-config runit
 ```
 
 Start the PostgreSQL database
