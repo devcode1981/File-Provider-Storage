@@ -1,5 +1,7 @@
 # Set up GDK
 
+> 🚨**Note:** Before undertaking these steps, be sure you have [prepared your system](./prepare.md).🚨
+
 ## Clone GitLab Development Kit repository
 
 Make sure that none of the directories 'above' GitLab Development Kit
