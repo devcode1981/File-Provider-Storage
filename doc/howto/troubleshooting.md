@@ -584,7 +584,7 @@ a `gdk reconfigure`:
 1. `gdk reconfigure`
 
 For more information about Jaeger, visit the [distributed tracing GitLab developer
-documentation] (https://docs.gitlab.com/ee/development/distributed_tracing.html).
+documentation](https://docs.gitlab.com/ee/development/distributed_tracing.html).
 
 ## Other problems
 
