@@ -576,7 +576,7 @@ If you're seeing errors such as:
 
 `ERROR -- : Failure while sending a batch of spans: Failed to open TCP connection to localhost:14268 (Connection refused - connect(2) for "localhost" port 14268)`
 
-This is most likely because Jaeger is not configured in your `$GDKROOT\Procfile`.
+This is most likely because Jaeger is not configured in your `$GDKROOT/Procfile`.
 The easiest way to fix this is by re-creating your `Procfile` and then running 
 a `gdk reconfigure`:
 
