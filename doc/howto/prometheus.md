@@ -124,6 +124,15 @@ with a simplified `gitlab-ci.yml`.
 Import `https://gitlab.com/joshlambert/autodevops-deploy.git` as a public project, to use a very simple
 CI/CD pipeline with no requirements, based on AutoDevOps. It contains just the `deploy` stages and uses a static image, since the GDK does not contain a registry.
 
+## Allow requests to the local network
+
+We have CSRF protection in place on the cluster url, so if we try to connect minikube now, we'll get 
+a `Requests to the local network are not allowed` error. The below steps will disable this protection 
+for use with minikube.
+
+1. As root user, navigate to **Admin Area** (the little wrench in the top nav) > **Settings** > **Network**. 
+1. Expand the **Outbound requests** section, check the box to *Allow requests to the local network from hooks and services*, and save your changes.
+
 ## Connect your cluster
 
 1. In a terminal, run `minikube ip` to get the API endpoint of your cluster.
