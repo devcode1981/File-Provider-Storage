@@ -43,7 +43,9 @@ gitlab-development-kit/**
 /webpack_port
 /.ruby-version
 /.ruby-gemset
-/localhost.*
+*.key
+*.crt
+*.pem
 /influxdb/
 /grafana/
 /openssh/*_key
