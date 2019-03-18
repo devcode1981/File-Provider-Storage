@@ -1,0 +1,61 @@
+# This file contains the defaults for GDK
+# It is a YAML file, but it will be parsed by ERB first
+
+repositories:
+  gitlab: https://gitlab.com/gitlab-org/gitlab-ce.git
+  gitlab_shell: https://gitlab.com/gitlab-org/gitlab-shell.git
+  gitlab_workhorse: https://gitlab.com/gitlab-org/gitlab-workhorse.git
+  gitaly: https://gitlab.com/gitlab-org/gitaly.git
+  gitaly_proto: https://gitlab.com/gitlab-org/gitaly-proto.git
+  gitlab_pages: https://gitlab.com/gitlab-org/gitlab-pages.git
+  gitlab_docs: https://gitlab.com/gitlab-com/gitlab-docs.git
+
+gdk_root: <%= `pwd`.chomp %>
+hostname: localhost
+port: 3000
+https: false
+relative_url_root: ''
+username: <%= `whoami`.chomp %>
+
+webpack:
+  port: 3808
+
+registry:
+  enabled: false
+  host: 127.0.0.1
+  external_port: 5000
+  port: 5000
+
+object_store:
+  enabled: false
+  port: 9000
+
+gitlab_pages:
+  port: 3010
+
+elasticsearch:
+  version: 6.5.1
+  checksum: 5903e1913a7c96aad96a8227517c40490825f672
+
+tracer:
+  build_tags: tracer_static tracer_static_jaeger
+  jaeger:
+    enabled: true
+    version: 1.10.1
+
+postgresql:
+  bin_dir: <%= `support/pg_bindir` %>
+  replication_user: gitlab_replication
+  dir: <%= config.gdk_root %>/postgresql
+  data_dir: <%= config.postgresql.dir %>/data
+  replica_dir: <%= config.gdk_root %>/postgresql-replica
+  geo_dir: <%= config.gdk_root %>/postgresql-geo
+
+gitaly:
+  assembly_dir: <%= config.gdk_root %>/gitaly/assembly
+
+sshd:
+  bin: <%= `which sshd`.chomp %>
+
+git:
+  bin: <%= `which git`.chomp %>
