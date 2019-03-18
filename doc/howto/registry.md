@@ -14,4 +14,3 @@ gdk reconfigure
 Registry port defaults to `5000` but it can be changed writing the desired value
 in `registry_port`.
 Changing either registry or GitLab port number requires `gdk reconfigure`.
-

@@ -14,8 +14,8 @@ VAGRANTFILE_API_VERSION = "2".freeze
 def enable_shares(config, nfs)
   # paths must be listed as shortest to longest per bug: https://github.com/GM-Alex/vagrant-winnfsd/issues/12#issuecomment-78195957
   config.vm.synced_folder ".", "/vagrant", type: "rsync",
-                                           rsync__exclude: ['gitlab', 'postgresql', 'gitlab-shell', 'gitlab-runner', 'gitlab-workhorse'],
-                                           rsync__auto: false
+                                          rsync__exclude: ['gitlab', 'postgresql', 'gitlab-shell', 'gitlab-runner', 'gitlab-workhorse'],
+                                          rsync__auto: false
   config.vm.synced_folder "gitlab/", "/vagrant/gitlab", create: true, nfs: nfs
   config.vm.synced_folder "go-gitlab-shell/", "/vagrant/go-gitlab-shell", create: true, nfs: nfs
   config.vm.synced_folder "gitlab-runner/", "/vagrant/gitlab-runner", create: true, nfs: nfs
@@ -89,9 +89,9 @@ $user_setup = <<EOT
   # automatically move into the gitlab-development-kit folder, but only add the command
   # if it's not already there
   if [ -f /home/$DEV_USER/.bash_profile ]; then
-  	sudo -u $DEV_USER -i bash -c "grep -q \"cd /home/$DEV_USER/gitlab-development-kit/\" /home/$DEV_USER/.bash_profile || echo \"cd /home/$DEV_USER/gitlab-development-kit/\" >> /home/$DEV_USER/.bash_profile"
+    sudo -u $DEV_USER -i bash -c "grep -q \"cd /home/$DEV_USER/gitlab-development-kit/\" /home/$DEV_USER/.bash_profile || echo \"cd /home/$DEV_USER/gitlab-development-kit/\" >> /home/$DEV_USER/.bash_profile"
   else
-  	sudo -u $DEV_USER -i bash -c "touch /home/$DEV_USER/.bash_profile && echo \"cd /home/$DEV_USER/gitlab-development-kit/\" >> /home/$DEV_USER/.bash_profile"
+    sudo -u $DEV_USER -i bash -c "touch /home/$DEV_USER/.bash_profile && echo \"cd /home/$DEV_USER/gitlab-development-kit/\" >> /home/$DEV_USER/.bash_profile"
   fi
 
   # set up gdk

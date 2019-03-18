@@ -244,6 +244,3 @@ mode = console
 [dashboards.json]
 enabled = true
 path = /home/git/grafana/grafana-dashboards/dashboards
-
-
-

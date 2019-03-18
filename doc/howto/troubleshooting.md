@@ -26,13 +26,13 @@ The installation of the `charlock_holmes` gem (`0.7.3` or greater) during
 [SNIPPED]
 
 /usr/local/Cellar/icu4c/59.1/include/unicode/unistr.h:3025:7: error: delegating constructors are permitted only in C++11
-      UnicodeString(ConstChar16Ptr(text)) {}
-      ^~~~~~~~~~~~~
+    UnicodeString(ConstChar16Ptr(text)) {}
+    ^~~~~~~~~~~~~
 /usr/local/Cellar/icu4c/59.1/include/unicode/unistr.h:3087:7: error: delegating constructors are permitted only in C++11
-      UnicodeString(ConstChar16Ptr(text), length) {}
-      ^~~~~~~~~~~~~
+    UnicodeString(ConstChar16Ptr(text), length) {}
+    ^~~~~~~~~~~~~
 /usr/local/Cellar/icu4c/59.1/include/unicode/unistr.h:3180:7: error: delegating constructors are permitted only in C++11
-      UnicodeString(Char16Ptr(buffer), buffLength, buffCapacity) {}
+    UnicodeString(Char16Ptr(buffer), buffLength, buffCapacity) {}
 
 [SNIPPED]
 ```
@@ -71,10 +71,10 @@ transliterator.cpp:108:3: error: no template named 'StringByteSink'; did you mea
   icu_61::StringByteSink
 /usr/local/include/unicode/bytestream.h:232:7: note: 'icu_61::StringByteSink' declared here
 class StringByteSink : public ByteSink {
-      ^
+    ^
 transliterator.cpp:106:34: warning: implicit conversion loses integer precision: 'size_t' (aka 'unsigned long') to 'int32_t' (aka 'int') [-Wshorten-64-to-32]
   u_txt = new UnicodeString(txt, txt_len);
-              ~~~~~~~~~~~~~      ^~~~~~~
+            ~~~~~~~~~~~~~      ^~~~~~~
 1 warning and 9 errors generated.
 make: *** [transliterator.o] Error 1
 ```
@@ -281,7 +281,7 @@ compiling binder.cpp
 In file included from binder.cpp:20:
 ./project.h:116:10: fatal error: 'openssl/ssl.h' file not found
 #include <openssl/ssl.h>
-         ^
+        ^
 1 error generated.
 make: *** [binder.o] Error 1
 
@@ -325,21 +325,21 @@ If building `gpgme` gem fails with an `Undefined symbols for architecture x86_64
 
 1. Ensure necessary dependencies are installed:
 
-   ```sh
-   brew install gpgme
-   ```
+    ```sh
+    brew install gpgme
+    ```
 
 1. (optional) Try building the `gpgme` gem manually to ensure it compiles. If it fails, debug the failure with the error messages. To compile the `gpgme` gem manually run:
 
-   ```sh
-   gem install gpgme -- --use-system-libraries
-   ```
+    ```sh
+    gem install gpgme -- --use-system-libraries
+    ```
 
 1. Configure Bundler to use system libraries for the `gpgme` gem:
 
-   ```sh
-   bundle config build.gpgme --use-system-libraries
-   ```
+    ```sh
+    bundle config build.gpgme --use-system-libraries
+    ```
 
 You can now run `gdk install` or `bundle` again.
 
@@ -350,7 +350,7 @@ On macOS, GitLab may fail to start and fail with an error message about
 
 ```
 LoadError:
-      dlopen(/Users/janedoe/.rbenv/versions/2.5.3/lib/ruby/2.5.0/x86_64-darwin15/readline.bundle, 9): Library not loaded: /usr/local/opt/readline/lib/libreadline.7.dylib
+    dlopen(/Users/janedoe/.rbenv/versions/2.5.3/lib/ruby/2.5.0/x86_64-darwin15/readline.bundle, 9): Library not loaded: /usr/local/opt/readline/lib/libreadline.7.dylib
         Referenced from: /Users/janedoe/.rbenv/versions/2.5.3/lib/ruby/2.5.0/x86_64-darwin15/readline.bundle
         Reason: image not found - /Users/janedoe/.rbenv/versions/2.5.3/lib/ruby/2.5.0/x86_64-darwin15/readline.bundle
 ```
@@ -369,7 +369,7 @@ If for some reason you end up having database migrations that no longer exist
 but are present in your database, you might want to remove them.
 
 1. Find the non-existent migrations with `rake db:migrate:status`. You should
-   see some entries like:
+    see some entries like:
 
     ```
     up     20160727191041  ********** NO FILE **********
@@ -485,7 +485,7 @@ If you still encounter some errors, see the troubleshooting FAQ below:
     This means you have not run `npm install` since updating your gitlab CE/EE
     repository.  The `gdk update` command should have done this for you, but you
     can do so manually as well.
-    
+
 * I'm getting the following error when I try to run `gdk run`:
 
     ```
@@ -497,7 +497,7 @@ If you still encounter some errors, see the troubleshooting FAQ below:
     14:52:22 webpack.1               | Error: listen EADDRINUSE 127.0.0.1:3808
     ...
     ```
-    
+
     This means the port is already in use, probably because webpack failed to
     terminate correctly when the GDK was last shutdown. You can find out the pid
     of the process using the port with the command `lsof -i :3808`. If you are
@@ -577,7 +577,7 @@ If you're seeing errors such as:
 `ERROR -- : Failure while sending a batch of spans: Failed to open TCP connection to localhost:14268 (Connection refused - connect(2) for "localhost" port 14268)`
 
 This is most likely because Jaeger is not configured in your `$GDKROOT/Procfile`.
-The easiest way to fix this is by re-creating your `Procfile` and then running 
+The easiest way to fix this is by re-creating your `Procfile` and then running
 a `gdk reconfigure`:
 
 1. `mv Procfile Procfile.old; make Procfile`

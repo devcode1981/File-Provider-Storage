@@ -20,15 +20,15 @@ DevOps](./auto_devops.md) before following any steps in here.
   Alternatively there are some [workarounds to avoid buying a domain
   name](#workarounds-to-avoid-buying-a-domain-name) below.
 1. Assuming you used a domain name that you own you will then need to setup a
-   wildcard DNS record that points to the IP address of the Knative ingress.
-   Once the IP address finishes fetching (usually a few minutes after Knative
-   intall finishes) then go to your DNS provider and set up a wildcard A record
-   pointing to this IP address. Assuming you used `example.com` as the domain
-   for Knative and the IP address is `1.2.3.4` then you need to create an `A`
-   record like `*.example.com -> 1.2.3.4`.
+  wildcard DNS record that points to the IP address of the Knative ingress.
+  Once the IP address finishes fetching (usually a few minutes after Knative
+  intall finishes) then go to your DNS provider and set up a wildcard A record
+  pointing to this IP address. Assuming you used `example.com` as the domain
+  for Knative and the IP address is `1.2.3.4` then you need to create an `A`
+  record like `*.example.com -> 1.2.3.4`.
 1. Now clone [this minimal example ruby
-   app](https://gitlab.com/gitlab-org/cluster-integration/knative-examples/knative-ruby-app-kubectl)
-   and push to your project to deploy a Knative service
+  app](https://gitlab.com/gitlab-org/cluster-integration/knative-examples/knative-ruby-app-kubectl)
+  and push to your project to deploy a Knative service
 
 ## Workarounds to avoid buying a domain name
 

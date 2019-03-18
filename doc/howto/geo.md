@@ -171,7 +171,7 @@ Same as `geo_primary_migrate`, but also:
 * Updates dependencies (e.g. if Gitaly is erroring)
 * Rebuilds FDW tables in test DB
 * Checks out schemas to get rid of irrelevant diffs (not done in
-  `geo_primary_migrate` because you may have created a migration)
+   `geo_primary_migrate` because you may have created a migration)
 
 ### `geo_secondary_migrate`
 
@@ -209,7 +209,7 @@ test DB, and this error occurs on the very last step of `gdk update`.
 
 ```bash
 cd /Users/foo/Developer/gdk-geo/gitlab && \
-		bundle exec rake db:migrate db:test:prepare
+      bundle exec rake db:migrate db:test:prepare
 rake aborted!
 ActiveRecord::StatementInvalid: PG::ReadOnlySqlTransaction: ERROR:  cannot execute DROP DATABASE in a read-only transaction
 : DROP DATABASE IF EXISTS "gitlabhq_test"

@@ -28,11 +28,11 @@ module GDK
       end
       directory = ARGV.count == 2 ? ARGV[1] : DEFAULT_INIT_DIRECTORY
       if directory.start_with?('-')
-	puts <<-EOS.gsub(/^\s+\|/, '')
-	  |The gdk directory cannot start with a dash ('-').  Did you mean:
-	  |gdk init #{directory.sub(/^-+/,'')}
-	EOS
-	return false
+  puts <<-EOS.gsub(/^\s+\|/, '')
+    |The gdk directory cannot start with a dash ('-').  Did you mean:
+    |gdk init #{directory.sub(/^-+/,'')}
+  EOS
+  return false
       end
       cmd = %W[git clone https://gitlab.com/gitlab-org/gitlab-development-kit.git #{directory}]
       system(*cmd) && trust!(directory) && remember!(directory)

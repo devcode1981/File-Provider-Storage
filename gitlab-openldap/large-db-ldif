@@ -73,7 +73,7 @@ postalAddress:
 initials: JD
 <% end %>
 
-<% 
+<%
 (1...user_count.to_s.length).each do |group_size|
   group_size = 10 ** group_size
   (user_count/group_size + 1).times do |group_count|

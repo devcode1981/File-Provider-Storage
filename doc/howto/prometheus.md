@@ -73,13 +73,13 @@ with Kubernetes components.
 For MacOS:
 
 ```
-minikube start --vm-driver hyperkit --disk-size=20g 
+minikube start --vm-driver hyperkit --disk-size=20g
 ```
 
 For Linux:
 
 ```
-minikube start --vm-driver kvm2 --disk-size=20g 
+minikube start --vm-driver kvm2 --disk-size=20g
 ```
 
 ### Open the Kubernetes Dashboard
@@ -107,9 +107,9 @@ This is because GDK returns this information to the Runner, and if it is wrong,
 pipelines will fail.
 
 1. Get your local IP address by running `ifconfig` or opening up Network Settings
-   if on macOS. On Linux you can also use `ip addr show`.
+    if on macOS. On Linux you can also use `ip addr show`.
 1. Open `gitlab/config/gitlab.yml` and change the `host: localhost` line to
-   reflect the IP of the previous step.
+    reflect the IP of the previous step.
 1. Save the file and restart GDK to apply this change.
 
 You should now be able to access GitLab by the external URL
@@ -126,11 +126,11 @@ CI/CD pipeline with no requirements, based on AutoDevOps. It contains just the `
 
 ## Allow requests to the local network
 
-We have CSRF protection in place on the cluster url, so if we try to connect minikube now, we'll get 
-a `Requests to the local network are not allowed` error. The below steps will disable this protection 
+We have CSRF protection in place on the cluster url, so if we try to connect minikube now, we'll get
+a `Requests to the local network are not allowed` error. The below steps will disable this protection
 for use with minikube.
 
-1. As root user, navigate to **Admin Area** (the little wrench in the top nav) > **Settings** > **Network**. 
+1. As root user, navigate to **Admin Area** (the little wrench in the top nav) > **Settings** > **Network**.
 1. Expand the **Outbound requests** section, check the box to *Allow requests to the local network from hooks and services*, and save your changes.
 
 ## Connect your cluster
@@ -167,7 +167,7 @@ kubectl create clusterrolebinding permissive-binding \
 
 ## Deploy Helm Tiller, Prometheus, and GitLab Runner
 
-Back in the GDK on the cluster screen, you should now be able to deploy Helm Tiller. Once complete, also deploy a Runner and Prometheus. 
+Back in the GDK on the cluster screen, you should now be able to deploy Helm Tiller. Once complete, also deploy a Runner and Prometheus.
 
 If you get an error about an API token not yet being created, wait a minute or two and try again.
 
