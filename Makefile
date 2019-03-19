@@ -54,8 +54,9 @@ pages_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_r
 tracer_build_tags = tracer_static tracer_static_jaeger
 jaeger_server_enabled ?= true
 jaeger_version = 1.10.1
-shallow_clone ?= false
-clone_depth = 1
+ifeq ($(shallow_clone),true)
+  git_depth_param = --depth=1
+endif
 
 all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup gitlab-pages-setup support-setup gitaly-setup prom-setup object-storage-setup
 
@@ -75,11 +76,7 @@ check-go-version:
 gitlab-setup: check-ruby-version gitlab/.git gitlab-config bundler .gitlab-bundle yarn .gitlab-yarn .gettext
 
 gitlab/.git:
-ifeq ($(shallow_clone), true)
-	git clone --depth=${clone_depth} ${gitlab_repo} gitlab
-else
-	git clone ${gitlab_repo} gitlab
-endif
+	git clone ${git_depth_param} ${gitlab_repo} gitlab
 
 gitlab-config: gitlab/config/gitlab.yml gitlab/config/database.yml gitlab/config/unicorn.rb gitlab/config/resque.yml gitlab/public/uploads gitlab/config/puma.rb
 
@@ -159,11 +156,7 @@ symlink-gitlab-shell:
 	support/symlink gitlab-shell ${gitlab_shell_clone_dir}
 
 ${gitlab_shell_clone_dir}/.git:
-ifeq ($(shallow_clone), true)
-	git clone --depth=${clone_depth} ${gitlab_shell_repo} ${gitlab_shell_clone_dir}
-else
-	git clone ${gitlab_shell_repo} ${gitlab_shell_clone_dir}
-endif
+	git clone ${git_depth_param} ${gitlab_shell_repo} ${gitlab_shell_clone_dir}
 
 gitlab-shell/config.yml: gitlab-shell/config.yml.example
 	bin/safe-sed "$@" \
@@ -185,18 +178,10 @@ gitlab-shell/.gitlab_shell_secret:
 gitaly-setup: gitaly/bin/gitaly gitaly/config.toml ${gitaly_proto_clone_dir}/.git
 
 ${gitaly_clone_dir}/.git:
-ifeq ($(shallow_clone), true)
-	git clone --depth=${clone_depth} --quiet ${gitaly_repo} ${gitaly_clone_dir}
-else
-	git clone --quiet ${gitaly_repo} ${gitaly_clone_dir}
-endif
+	git clone ${git_depth_param} --quiet ${gitaly_repo} ${gitaly_clone_dir}
 
 ${gitaly_proto_clone_dir}/.git:
-ifeq ($(shallow_clone), true)
-	git clone --depth=${clone_depth} --quiet ${gitaly_proto_repo} ${gitaly_proto_clone_dir}
-else
-	git clone --quiet ${gitaly_proto_repo} ${gitaly_proto_clone_dir}
-endif
+	git clone ${git_depth_param} --quiet ${gitaly_proto_repo} ${gitaly_proto_clone_dir}
 
 gitaly/config.toml: $(gitaly_clone_dir)/config.toml.example
 	bin/safe-sed "$@" \
@@ -218,11 +203,7 @@ prom-setup:
 gitlab-docs-setup: gitlab-docs/.git gitlab-docs-bundle gitlab-docs/nanoc.yaml symlink-gitlab-docs
 
 gitlab-docs/.git:
-ifeq ($(shallow_clone), true)
-	git clone --depth=${clone_depth} ${gitlab_docs_repo} gitlab-docs
-else
-	git clone ${gitlab_docs_repo} gitlab-docs
-endif
+	git clone ${git_depth_param} ${gitlab_docs_repo} gitlab-docs
 
 gitlab-docs/.git/pull:
 	cd gitlab-docs && \
@@ -473,11 +454,7 @@ gitlab-workhorse/bin/gitlab-workhorse: check-go-version ${gitlab_workhorse_clone
 	GOPATH=${gitlab_development_root}/gitlab-workhorse go install -tags "${tracer_build_tags}" gitlab.com/gitlab-org/gitlab-workhorse/...
 
 ${gitlab_workhorse_clone_dir}/.git:
-ifeq ($(shallow_clone), true)
-	git clone --depth=${clone_depth} ${gitlab_workhorse_repo} ${gitlab_workhorse_clone_dir}
-else
-	git clone ${gitlab_workhorse_repo} ${gitlab_workhorse_clone_dir}
-endif
+	git clone ${git_depth_param} ${gitlab_workhorse_repo} ${gitlab_workhorse_clone_dir}
 
 gitlab-workhorse/.git/pull:
 	cd ${gitlab_workhorse_clone_dir} && \
@@ -497,11 +474,7 @@ gitlab-pages/bin/gitlab-pages: check-go-version ${gitlab_pages_clone_dir}/.git
 	GOPATH=${gitlab_development_root}/gitlab-pages go install gitlab.com/gitlab-org/gitlab-pages
 
 ${gitlab_pages_clone_dir}/.git:
-ifeq ($(shallow_clone), true)
-	git clone --depth=${clone_depth} ${gitlab_pages_repo} ${gitlab_pages_clone_dir}
-else
-	git clone ${gitlab_pages_repo} ${gitlab_pages_clone_dir}
-endif
+	git clone ${git_depth_param} ${gitlab_pages_repo} ${gitlab_pages_clone_dir}
 
 gitlab-pages/.git/pull:
 	cd ${gitlab_pages_clone_dir} && \
