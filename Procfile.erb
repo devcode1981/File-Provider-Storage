@@ -1,0 +1,47 @@
+# GDK Procfile rules to help foreman shut down services:
+# - all commands must start with 'exec'
+# - no inline shell scripts ('&&' or ';')
+#
+
+# Datasources
+#
+redis: exec redis-server <%= config.gdk_root %>/redis/redis.conf
+minio: exec support/object-store
+postgresql: exec support/postgresql-signal-wrapper <%= config.postgresql.bin_dir %>/postgres -D <%= config.postgresql.data_dir %> -k <%= config.postgresql.dir %> -h ''
+#postgresql-replica: exec support/postgresql-signal-wrapper <%= config.postgresql.bin_dir %>/postgres -D <%= config.postgresql.replica_dir %>/data -k <%= config.postgresql.replica_dir %> -h ''
+#openldap: exec support/exec-cd gitlab-openldap libexec/slapd -F slapd.d -d2 -h "ldap://$host:3890"
+#storage-check: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/exec-cd gitlab bin/storage_check -t unix://<%= config.gdk_root %>/gitlab.socket
+
+# Geo
+#
+<%= '#' unless config.geo.enabled %>postgresql-geo: exec support/postgresql-signal-wrapper <%= config.postgresql.bin_dir %>/postgres -D <%= config.postgresql.geo_dir %>/data -k <%= config.postgresql.geo_dir %> -h ''
+<%= '#' unless config.geo.enabled %>geo-cursor: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/exec-cd gitlab/bin ./geo_log_cursor
+
+# Backend services
+#
+gitaly: exec gitaly/bin/gitaly <%= config.gdk_root %>/gitaly/config.toml
+gitlab-workhorse: exec /usr/bin/env PATH="<%= config.gdk_root %>/gitlab-workhorse/bin:$PATH" gitlab-workhorse -authSocket <%= config.gdk_root %>/gitlab.socket -listenAddr $host:$port -documentRoot <%= config.gdk_root %>/gitlab/public -developmentMode -secretPath <%= config.gdk_root %>/gitlab/.gitlab_workhorse_secret -config <%= config.gdk_root %>/gitlab-workhorse/config.toml
+rails-background-jobs: exec /usr/bin/env SIDEKIQ_LOG_ARGUMENTS=1 RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/exec-cd gitlab bin/background_jobs start_foreground
+
+# Frontend services
+#
+webpack: exec /usr/bin/env NODE_ENV=development DEV_SERVER_PORT=<%= config.webpack.port %> DEV_SERVER_HOST=$host support/exec-cd gitlab yarn dev-server
+rails-web: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/exec-cd gitlab bin/web start_foreground
+gitlab-pages: exec gitlab-pages/bin/gitlab-pages -listen-http ":3010" -artifacts-server http://localhost:443/api/v4 -pages-root <%= config.gdk_root %>/gitlab/shared/pages/ -pages-domain 127.0.0.1.xip.io
+
+# Docker
+#
+registry: exec support/docker-registry
+
+# Monitoring and tracing
+#
+#influxdb: exec influxdb/bin/influxd -config influxdb/influxdb.conf
+#grafana: exec support/wait-postgresql-ready support/exec-cd grafana bin/grafana-server -config grafana.ini
+#prometheus: exec docker run --net host -p 9090:9090 -v <%= config.gdk_root %>/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus:v2.0.0
+jaeger: exec jaeger/jaeger-<%= config.tracer.jaeger.version %>/jaeger-all-in-one --memory.max-traces 512
+
+# Additional services
+#
+#sshd: exec <%= config.sshd.bin %> -e -D -f <%= config.gdk_root %>/openssh/sshd_config
+#nginx: exec nginx -p <%= config.gdk_root %>/nginx -c conf/nginx.conf
+#elasticsearch: exec elasticsearch/bin/elasticsearch

@@ -322,23 +322,8 @@ support-setup: .ruby-version foreman Procfile redis gitaly-setup jaeger-setup po
 		echo "*********************************************"; \
 	fi
 
-
 Procfile: Procfile.example auto_devops_enabled auto_devops_gitlab_port auto_devops_registry_port
-	bin/safe-sed "$@" \
-		-e "s|/home/git|${gitlab_development_root}|g"\
-		-e "s|/usr/sbin/sshd|${sshd_bin}|"\
-		-e "s|postgres |${postgres_bin_dir}/postgres |"\
-		-e "s|DEV_SERVER_PORT=3808 |DEV_SERVER_PORT=${webpack_port} |"\
-		-e "s|-listen-http \":3010\" |-listen-http \":${gitlab_pages_port}\" -artifacts-server http://${hostname}:${port}/api/v4 |"\
-		-e "s|jaeger-VERSION|jaeger-${jaeger_version}|" \
-		-e "$(if $(filter false,$(jaeger_server_enabled)),/^jaeger:/s/^/#/,/^#\s*jaeger:/s/^#\s*//)" \
-		-e "$(if $(filter true,$(auto_devops_enabled)),s|#tunnel_gitlab:.*|tunnel_gitlab: ssh -N -R $(auto_devops_gitlab_port):localhost:\$$port qa-tunnel.gitlab.info|g,/^#tunnel_gitlab:/s/^//)" \
-		-e "$(if $(filter true,$(auto_devops_enabled)),s|#tunnel_registry:.*|tunnel_registry: ssh -N -R ${auto_devops_registry_port}:localhost:${registry_port} qa-tunnel.gitlab.info|g,/^#tunnel_registry:/s/^//)" \
-		"$<"
-	if [ -f .vagrant_enabled ]; then \
-		echo "0.0.0.0" > host; \
-		echo "3000" > port; \
-	fi
+	bundle exec rake $@
 
 redis: redis/redis.conf
 
