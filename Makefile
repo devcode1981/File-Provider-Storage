@@ -55,7 +55,7 @@ tracer_build_tags = tracer_static tracer_static_jaeger
 jaeger_server_enabled ?= true
 jaeger_version = 1.10.1
 ifeq ($(shallow_clone),true)
-  git_depth_param = --depth=1
+git_depth_param = --depth=1
 endif
 
 all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup gitlab-pages-setup support-setup gitaly-setup prom-setup object-storage-setup
