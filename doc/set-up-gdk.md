@@ -29,6 +29,8 @@ gdk init gdk-ce
 
 The `gdk install` command clones the repositories, installs the Gem bundles, and sets up basic configuration files. The command must be run within the directory GDK was initialized into. For example, if you ran `gdk init gdk-ce`, you would run `cd ./gdk-ce && gdk install`.
 
+Use `gdk install shallow_clone=true` for faster clone and lesser disk-space. Clone will be done using [`git clone --depth=1`](https://www.git-scm.com/docs/git-clone#Documentation/git-clone.txt---depthltdepthgt).
+
 Pick one of the installation methods below. If you don't have write access to the upstream repositories, you should use the 'Develop in a fork'
 method.
 
