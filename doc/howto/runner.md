@@ -100,3 +100,9 @@ project in the GitLab web interface and add a
 [.gitlab-ci.yml](https://docs.gitlab.com/ce/ci/examples/) file,
 or clone an [example project](https://gitlab.com/groups/gitlab-examples), and
 watch as the Runner processes the builds just as it would on a "real" install!
+
+If your job get stuck in the pipeline (orange color), go to the `admin/runners` page, 
+edit the Runner listed on the runners list, and check the option `Run untagged jobs`.
+To learn about tags, read [this page](https://docs.gitlab.com/ce/ci/yaml/#tags).
+
+
