@@ -72,7 +72,7 @@ All the methods should (eventually) create a `gitlab-runner` binary.
 
 ## Setting up the Runner
 
-Run `gitlab-runner register --config <path-to-gdk>/gitlab-runner-config.toml`
+Run `gitlab-runner register --run-untagged --config <path-to-gdk>/gitlab-runner-config.toml`
 (as your normal user), and follow the prompts. Use `http://localhost:3000/`
 for the coordinator URL, and the `Registration token` as the `gitlab-ci token`.
 The Runner will write its configuration file to `gitlab-runner-config.toml`,
@@ -101,8 +101,5 @@ project in the GitLab web interface and add a
 or clone an [example project](https://gitlab.com/groups/gitlab-examples), and
 watch as the Runner processes the builds just as it would on a "real" install!
 
-If your job get stuck in the pipeline (orange color), go to the `admin/runners` page, 
-edit the Runner listed on the runners list, and check the option `Run untagged jobs`.
-To learn about tags, read [this page](https://docs.gitlab.com/ce/ci/yaml/#tags).
 
 
