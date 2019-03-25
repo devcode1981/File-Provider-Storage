@@ -31,6 +31,7 @@ object_store:
   port: 9000
 
 gitlab_pages:
+  enabled: true
   port: 3010
 
 geo:
