@@ -46,6 +46,11 @@ tracer:
     enabled: true
     version: 1.10.1
 
+nginx:
+  enabled: false
+  bin: <%= `which nginx`.chomp %>
+  workhorse_port: 3333
+
 postgresql:
   bin_dir: <%= `support/pg_bindir`.chomp %>
   replication_user: gitlab_replication
