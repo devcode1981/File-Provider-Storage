@@ -18,3 +18,7 @@ end
 file 'Procfile' => ['Procfile.erb', 'gdk.yml', 'gdk-defaults.yml'] do |t|
   render_erb(t.source, t.name)
 end
+
+file 'nginx/conf/nginx.conf' => ['nginx/conf/nginx.conf.erb', 'gdk.yml', 'gdk-defaults.yml'] do |t|
+  render_erb(t.source, t.name)
+end
