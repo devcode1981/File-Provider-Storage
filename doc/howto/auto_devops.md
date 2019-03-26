@@ -31,10 +31,10 @@ depends on our infrastructure. For non-GitLab employees you can see
 
 1. Verify you have `ssh` access into `qa-tunnel.gitlab.info`:
 
-    ```bash
-  ssh qa-tunnel.gitlab.info
-  > Welcome to Ubuntu 16.04.4 LTS (GNU/Linux 4.13.0-1019-gcp x86_64)
-  ```
+    ```
+    ssh qa-tunnel.gitlab.info
+    > Welcome to Ubuntu 16.04.4 LTS (GNU/Linux 4.13.0-1019-gcp x86_64)
+    ```
 
   If you're able to log in [without entering your passphrase](doc/howto/auto_devops/tips_and_troubleshooting.md#ssh-requires-a-passphrase), it means you can move on to the next step.
 
