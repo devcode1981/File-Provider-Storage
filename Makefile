@@ -34,7 +34,6 @@ https = $(shell (${auto_devops_enabled} && echo 'true') || cat https_enabled 2>/
 relative_url_root = $(shell cat relative_url_root 2>/dev/null || echo '')
 username = $(shell whoami)
 sshd_bin = $(shell which sshd)
-git_bin = $(shell which git)
 webpack_port = $(shell cat webpack_port 2>/dev/null || echo '3808')
 registry_enabled = $(shell cat registry_enabled 2>/dev/null || echo 'false')
 registry_host = $(if $(filter true,$(auto_devops_enabled)),"$(auto_devops_registry_port).qa-tunnel.gitlab.info",$(shell cat registry_host 2>/dev/null || echo '127.0.0.1'))
@@ -93,10 +92,6 @@ auto_devops_registry_port: auto_devops_gitlab_port
 	expr ${auto_devops_gitlab_port} + 5000 > $@
 
 gitlab/config/gitlab.yml: gitlab/config/gitlab.yml.example auto_devops_enabled auto_devops_gitlab_port auto_devops_registry_port
-	bin/safe-sed "$@" \
-		-e "s|/home/git|${gitlab_development_root}|g"\
-		-e "s|/usr/bin/git|${git_bin}|"\
-		"$<"
 	hostname=${hostname} port=${port} relative_url_root=${relative_url_root}\
 		https=${https}\
 		webpack_port=${webpack_port}\
@@ -104,7 +99,7 @@ gitlab/config/gitlab.yml: gitlab/config/gitlab.yml.example auto_devops_enabled a
 		registry_enabled=${registry_enabled} registry_port=${registry_port}\
 		object_store_enabled=${object_store_enabled} object_store_port=${object_store_port}\
 		gitlab_pages_port=${gitlab_pages_port}\
-		support/edit-gitlab.yml gitlab/config/gitlab.yml
+		support/edit-gitlab-yml gitlab/config/gitlab.yml
 
 gitlab/config/database.yml: database.yml.example
 	bin/safe-sed "$@" \
