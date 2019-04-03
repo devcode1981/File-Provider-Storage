@@ -100,6 +100,3 @@ project in the GitLab web interface and add a
 [.gitlab-ci.yml](https://docs.gitlab.com/ce/ci/examples/) file,
 or clone an [example project](https://gitlab.com/groups/gitlab-examples), and
 watch as the Runner processes the builds just as it would on a "real" install!
-
-
-
