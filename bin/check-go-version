@@ -1,11 +1,27 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/usr/bin/env ruby
 
-go_minimum_version='go1.10'
-go_version=$(go version | grep -Eo 'go[0-9]+(\.[0-9]+)+')
-go_cmp=$(printf '%s\n' ${go_minimum_version} ${go_version} | sort -V | head -n1)
+def version_to_a(v)
+  v.split('.').map(&:to_i)
+end
 
-if [ "${go_cmp}" != "${go_minimum_version}" ]; then
-  echo "Golang version ${go_minimum_version} or higher is required"
-  exit 1
-fi
+MINIMAL_VERSION = "1.10"
+
+version_output = ""
+
+begin
+  version_output = `go version`
+rescue Errno::ENOENT
+  abort "Go is not installed, please install Go #{MINIAL_VERSION} or higher"
+end
+
+abort 'Could not determine version of Go' unless $?.success?
+
+expected = version_to_a(MINIMAL_VERSION)
+actual = version_to_a(version_output[/go(\d+\.\d+)\.\d+/, 1])
+
+case actual <=> expected
+when -1
+  abort "Please install Go version #{MINIMAL_VERSION} or higher"
+when nil
+  abort "Unable to determine version of Go"
+end
