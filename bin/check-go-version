@@ -17,7 +17,7 @@ end
 abort 'Could not determine version of Go' unless $?.success?
 
 expected = version_to_a(MINIMAL_VERSION)
-actual = version_to_a(version_output[/go(\d+\.\d+)\.\d+/, 1])
+actual = version_to_a(version_output[/go(\d+\.\d+)/, 1])
 
 case actual <=> expected
 when -1
