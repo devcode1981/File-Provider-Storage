@@ -18,6 +18,7 @@ Make sure you follow all the guidelines and resolve all the dependencies listed 
 | Google Chrome  | [Google Chrome](https://www.google.com/chrome/) 60 or greater with [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) version 2.33 or greater. Visit the Chrome Driver [Getting started](https://sites.google.com/a/chromium.org/chromedriver/getting-started) page for more details.                                                           |
 | PostgreSQL     | <p>PostgreSQL version 9.x, with 9.6 recommended. Using PostgreSQL version 10.x is officially not yet supported.</p><p>PostgreSQL installation is covered in the instructions below.</p>                                                                                                                                                                                     |
 | GraphicsMagick | GraphicsMagick installation is covered in the instructions below.                                                                                                                                                                                                                                                                                                           |
+| Exiftool       | Exiftool installation is covered in the instructions below.                                                                                                                                                                                                                                                                                                           |
 
 
 ### OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan), macOS 10.12 (Sierra), macOS 10.13 (High Sierra)
@@ -50,7 +51,7 @@ brew cask install google-chrome chromedriver
 [MacPorts](https://www.macports.org/) is another package manager for macOS. Visit their website for installation details.
 
 ```
-sudo port install git redis libiconv postgresql96-server icu pkgconfig cmake nodejs10 go openssl npm5 yarn coreutils re2 GraphicsMagick runit
+sudo port install git redis libiconv postgresql96-server icu pkgconfig cmake nodejs10 go openssl npm5 yarn coreutils re2 GraphicsMagick runit exiftool
 bundle config build.eventmachine --with-cppflags=-I/opt/local/include/openssl
 echo 'export PATH=/opt/local/lib/postgresql96/bin/:$PATH' >> ~/.profile
 source ~/.profile
@@ -77,7 +78,7 @@ sudo add-apt-repository ppa:git-core/ppa
 sudo apt-get update
 sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server \
   libicu-dev cmake g++ libre2-dev libkrb5-dev libsqlite3-dev golang-1.10-go ed \
-  pkg-config graphicsmagick runit
+  pkg-config graphicsmagick runit libimage-exiftool-perl
 ```
 
 Ubuntu 14.04 (Trusty Tahr) doesn't have the `libre2-dev` package available, but
@@ -89,7 +90,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 
 ```
 pacman -S postgresql redis postgresql-libs icu npm ed cmake openssh git go re2 \
-  unzip graphicsmagick runit
+  unzip graphicsmagick runit perl-image-exiftool
 ```
 
 #### Debian
@@ -99,7 +100,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 ```
 sudo apt-get install postgresql postgresql-contrib libpq-dev redis-server \
   libicu-dev cmake g++ libkrb5-dev libre2-dev ed pkg-config graphicsmagick \
-  runit
+  runit libimage-exiftool-perl
 ```
 
 If you are running Debian Experimenal or newer you can install a Go
@@ -127,7 +128,7 @@ sudo dnf module enable postgresql:9.6
 sudo dnf install postgresql libpqxx-devel postgresql-libs redis libicu-devel \
   nodejs git ed cmake rpm-build gcc-c++ krb5-devel go postgresql-server \
   postgresql-contrib re2 GraphicsMagick re2-devel sqlite-devel perl-Digest-SHA \
-  runit
+  runit perl-Image-ExifTool
 ```
 
 You may need to install Redis 2.8 or newer manually.
@@ -143,7 +144,7 @@ sudo yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-6
 sudo yum install https://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 sudo yum install postgresql96-server postgresql96-devel libicu-devel git cmake \
   gcc-c++ redis ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 \
-  libstdc++.so.6 nodejs npm re2 re2-devel GraphicsMagick runit
+  libstdc++.so.6 nodejs npm re2 re2-devel GraphicsMagick runit perl-Image-ExifTool
 
 bundle config build.pg --with-pg-config=/usr/pgsql-9.6/bin/pg_config
 # This example uses Ruby 2.5.3. Substitute with the current version if different.
@@ -176,7 +177,7 @@ sudo zypper dup
 sudo zypper install libxslt-devel  postgresql postgresql-devel libpqxx-devel redis libicu-devel nodejs git ed cmake \
         rpm-build gcc-c++ krb5-devel postgresql-server postgresql-contrib \
         libxml2-devel libxml2-devel-32bit findutils-locate re2 GraphicsMagick \
-        runit
+        runit exiftool
 ```
 
 On leap 42.1 you also need:
@@ -208,7 +209,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 
 ```
 sudo pkg install postgresql93-server postgresql93-contrib postgresql-libpqxx \
-redis go node icu krb5 gmake re2 GraphicsMagick
+redis go node icu krb5 gmake re2 GraphicsMagick p5-Image-ExifTool
 ```
 
 ### **Experimental** Windows 10 using the WSL (Windows Subsystem for Linux)
