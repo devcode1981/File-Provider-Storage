@@ -72,7 +72,7 @@ All the methods should (eventually) create a `gitlab-runner` binary.
 
 ## Setting up the Runner
 
-Run `gitlab-runner register --config <path-to-gdk>/gitlab-runner-config.toml`
+Run `gitlab-runner register --run-untagged --config <path-to-gdk>/gitlab-runner-config.toml`
 (as your normal user), and follow the prompts. Use `http://localhost:3000/`
 for the coordinator URL, and the `Registration token` as the `gitlab-ci token`.
 The Runner will write its configuration file to `gitlab-runner-config.toml`,
