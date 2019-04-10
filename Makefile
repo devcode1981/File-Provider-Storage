@@ -25,17 +25,20 @@ postgres_dir = $(abspath ./postgresql)
 postgres_replica_dir = $(abspath ./postgresql-replica)
 postgres_geo_dir = $(abspath ./postgresql-geo)
 postgres_data_dir = ${postgres_dir}/data
-hostname = $(shell cat hostname 2>/dev/null || echo 'localhost')
-port = $(shell cat port 2>/dev/null || echo '3000')
-https = $(shell cat https_enabled 2>/dev/null || echo 'false')
+auto_devops_enabled = $(shell cat auto_devops_enabled 2>/dev/null || echo 'false')
+auto_devops_gitlab_port = $(shell cat auto_devops_gitlab_port)
+auto_devops_registry_port = $(shell cat auto_devops_registry_port)
+hostname = $(if $(filter true,$(auto_devops_enabled)),"$(auto_devops_gitlab_port).qa-tunnel.gitlab.info",$(shell cat hostname 2>/dev/null || echo 'localhost'))
+port = $(shell (${auto_devops_enabled} && echo '443') || cat port 2>/dev/null || echo '3000')
+https = $(shell (${auto_devops_enabled} && echo 'true') || cat https_enabled 2>/dev/null || echo 'false')
 relative_url_root = $(shell cat relative_url_root 2>/dev/null || echo '')
 username = $(shell whoami)
 sshd_bin = $(shell which sshd)
 git_bin = $(shell which git)
 webpack_port = $(shell cat webpack_port 2>/dev/null || echo '3808')
 registry_enabled = $(shell cat registry_enabled 2>/dev/null || echo 'false')
-registry_host = $(shell cat registry_host 2>/dev/null || echo '127.0.0.1')
-registry_external_port = $(shell cat registry_external_port 2>/dev/null || echo '5000')
+registry_host = $(if $(filter true,$(auto_devops_enabled)),"$(auto_devops_registry_port).qa-tunnel.gitlab.info",$(shell cat registry_host 2>/dev/null || echo '127.0.0.1'))
+registry_external_port = $(if $(filter true,$(auto_devops_enabled)),443,$(shell cat registry_external_port 2>/dev/null || echo '5000'))
 registry_port = $(shell cat registry_port 2>/dev/null || echo '5000')
 gitlab_from_container = $(shell [ "$(shell uname)" = "Linux" ] && echo 'localhost' || echo 'docker.for.mac.localhost')
 postgresql_port = $(shell cat postgresql_port 2>/dev/null || echo '5432')
@@ -80,7 +83,16 @@ gitlab/.git:
 
 gitlab-config: gitlab/config/gitlab.yml gitlab/config/database.yml gitlab/config/unicorn.rb gitlab/config/resque.yml gitlab/public/uploads gitlab/config/puma.rb
 
-gitlab/config/gitlab.yml: gitlab/config/gitlab.yml.example
+auto_devops_enabled:
+	echo 'false' > $@
+
+auto_devops_gitlab_port:
+	awk -v min=20000 -v max=24999 'BEGIN{srand(); print int(min+rand()*(max-min+1))}' > $@
+
+auto_devops_registry_port: auto_devops_gitlab_port
+	expr ${auto_devops_gitlab_port} + 5000 > $@
+
+gitlab/config/gitlab.yml: gitlab/config/gitlab.yml.example auto_devops_enabled auto_devops_gitlab_port auto_devops_registry_port
 	bin/safe-sed "$@" \
 		-e "s|/home/git|${gitlab_development_root}|g"\
 		-e "s|/usr/bin/git|${git_bin}|"\
@@ -304,8 +316,16 @@ support-setup: .ruby-version foreman Procfile redis gitaly-setup jaeger-setup po
 	@echo "*********************************************"
 	cat HELP
 	@echo "*********************************************"
+	@if ${auto_devops_enabled}; then \
+		echo "Tunnel URLs"; \
+		echo ""; \
+		echo "GitLab: https://${hostname}"; \
+		echo "Registry: https://${registry_host}"; \
+		echo "*********************************************"; \
+	fi
 
-Procfile: Procfile.example
+
+Procfile: Procfile.example auto_devops_enabled auto_devops_gitlab_port auto_devops_registry_port
 	bin/safe-sed "$@" \
 		-e "s|/home/git|${gitlab_development_root}|g"\
 		-e "s|/usr/sbin/sshd|${sshd_bin}|"\
@@ -314,6 +334,8 @@ Procfile: Procfile.example
 		-e "s|-listen-http \":3010\" |-listen-http \":${gitlab_pages_port}\" -artifacts-server http://${hostname}:${port}/api/v4 |"\
 		-e "s|jaeger-VERSION|jaeger-${jaeger_version}|" \
 		-e "$(if $(filter false,$(jaeger_server_enabled)),/^jaeger:/s/^/#/,/^#\s*jaeger:/s/^#\s*//)" \
+		-e "$(if $(filter true,$(auto_devops_enabled)),s|#tunnel_gitlab:.*|tunnel_gitlab: ssh -N -R $(auto_devops_gitlab_port):localhost:\$$port qa-tunnel.gitlab.info|g,/^#tunnel_gitlab:/s/^//)" \
+		-e "$(if $(filter true,$(auto_devops_enabled)),s|#tunnel_registry:.*|tunnel_registry: ssh -N -R ${auto_devops_registry_port}:localhost:${registry_port} qa-tunnel.gitlab.info|g,/^#tunnel_registry:/s/^//)" \
 		"$<"
 	if [ -f .vagrant_enabled ]; then \
 		echo "0.0.0.0" > host; \
@@ -547,9 +569,15 @@ registry-setup: registry/storage registry/config.yml localhost.crt
 registry/storage:
 	mkdir -p $@
 
-registry/config.yml:
+registry/config.yml: auto_devops_enabled
 	cp registry/config.yml.example $@
-	gitlab_host=${gitlab_from_container} gitlab_port=${port} registry_port=${registry_port} support/edit-registry-config.yml $@
+	if ${auto_devops_enabled}; then \
+		protocol='https' gitlab_host=${hostname} gitlab_port=${port} registry_port=${registry_port} \
+		support/edit-registry-config.yml $@; \
+	else \
+		gitlab_host=${gitlab_from_container} gitlab_port=${port} registry_port=${registry_port} \
+		support/edit-registry-config.yml $@; \
+	fi
 
 elasticsearch-setup: elasticsearch/bin/elasticsearch
 

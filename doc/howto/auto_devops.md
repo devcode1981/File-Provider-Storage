@@ -52,55 +52,35 @@ IMPORTANT: These steps are currently only applicable to GitLab employees as it
 depends on our infrastructure. For non-GitLab employees you can see
 [Alternatives](#alternatives) below.
 
-Pick two random numbers between 20000 and 29999. These will be used as your
-subdomain for your internet-facing URLs for GitLab and the registry so we
-choose randomly to avoid conflicts. One number for GitLab `<gitlab-number>`
-and another number for registry `<registry-number>`.
+From the GDK directory, run:
 
-Using your chosen numbers, you will need to reconfigure GDK. From the
-GDK directory, run:
-
-```
-echo <gitlab-number>.qa-tunnel.gitlab.info > hostname
-echo 443 > port
-echo true > https_enabled
+```bash
 echo true > registry_enabled
-echo <registry-number>.qa-tunnel.gitlab.info > registry_host
-echo 443 > registry_external_port
+echo true > auto_devops_enabled
 gdk reconfigure
 ```
 
-There are currently two files, `Procfile` and `registry/config.yml` which
-we need to manually edit as we don't have support to automatically
-add the required settings below using `gdk reconfigure`.
+This script will create all necessary configuration for one to run Auto DevOps locally. Including assigning two random ports for GitLab instance and GitLab Registry. It's important that this ports are randomized so we avoid colliding two developers with the same ports.
 
-Firstly, add the following lines to the end of `Procfile`:
+After the script finishes, it will inform you of the `GitLab` and `Registry` URLs.
 
-```yml
-tunnel_gitlab: ssh -N -R <gitlab-number>:localhost:$port qa-tunnel.gitlab.info
-tunnel_registry: ssh -N -R <registry-number>:localhost:5000 qa-tunnel.gitlab.info
+If the ports generated aren't suitable (they collide with someone else's), you can modify `auto_devops_gitlab_port` and `auto_devops_registry_port` directly, or generate a new random pair:
+
+```bash
+rm auto_devops_gitlab_port auto_devops_registry_port # If generating random ports
+gdk reconfigure
 ```
 
-Then edit `registry/config.yml` like so:
+Finally, run the below command to start all the services:
 
-```yml
-  auth:
-    token:
-      realm: https://<gitlab-number>.qa-tunnel.gitlab.info/jwt/auth
-```
-
-Then start with:
-
-```
+```bash
 port=8080 gdk run
 ```
 
-Now you should be able to view your internet accessible application at
-`<gitlab-number>.qa-tunnel.gitlab.info`
 
 Now login as root using the default password and change your password.
 
-IMPORTANT: You should change your root password since it is now internet
+**IMPORTANT**: You should change your root password since it is now internet
 accessible. You should also disable a new users registration feature on
 instance settings page (in the admin panel).
 

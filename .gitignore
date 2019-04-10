@@ -87,5 +87,8 @@ gitlab-development-kit/**
 /gettext.log
 /elasticsearch*
 /env.mk
+/auto_devops_enabled
+/auto_devops_gitlab_port
+/auto_devops_registry_port
 /jaeger-artifacts/
 /jaeger/
