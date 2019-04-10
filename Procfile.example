@@ -45,3 +45,8 @@ jaeger: exec jaeger/jaeger-VERSION/jaeger-all-in-one --memory.max-traces 512
 #sshd: exec /usr/sbin/sshd -e -D -f /home/git/openssh/sshd_config
 #nginx: exec nginx -p /home/git/nginx -c conf/nginx.conf
 #elasticsearch: exec elasticsearch/bin/elasticsearch
+
+# Tunneling
+#
+#tunnel_gitlab: ssh -N -R $auto_devops_gitlab_port:localhost:$port qa-tunnel.gitlab.info
+#tunnel_registry: ssh -N -R $auto_devops_registry_port:localhost:5000 qa-tunnel.gitlab.info

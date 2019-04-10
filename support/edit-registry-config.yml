@@ -5,7 +5,7 @@ ed -s "$1" <<EOF
   addr: :${registry_port:-5000}
 .
 /^    realm:/c
-    realm: http://${gitlab_host:-127.0.0.1}:${gitlab_port:-3000}/jwt/auth
+    realm: ${protocol:-http}://${gitlab_host:-127.0.0.1}:${gitlab_port:-3000}/jwt/auth
 .
 wq
 EOF
