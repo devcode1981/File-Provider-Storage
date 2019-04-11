@@ -33,7 +33,7 @@ def main(argv)
 end
 
 def foreman_exec(svcs = [], exclude: [])
-  args = %w[foreman start]
+  args = %w[ruby lib/daemonizer.rb foreman start]
   unless svcs.empty? && exclude.empty?
     args << '-m'
     svc_string = ['all=0', svcs.map { |svc| svc + '=1' }, exclude.map { |svc| svc + '=0' }].join(',')
