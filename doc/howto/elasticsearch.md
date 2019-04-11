@@ -34,5 +34,5 @@ run db` processes.
 1. Perform a manual update of the Elasticsearch indexes:
 
    ```sh
-   cd gitlab-ee && bundle exec rake gitlab:elastic:index
+   cd gitlab && bundle exec rake gitlab:elastic:index
    ```
