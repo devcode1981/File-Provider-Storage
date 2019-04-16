@@ -31,7 +31,7 @@ production: &base
     ## Web server settings (note: host is the FQDN, do not include http://)
     host: <%= env_or_default('hostname', 'localhost') %>
     port: <%= env_or_default('port', 3000).to_i %>
-    https: <%= !!env_or_default('https', false) %>
+    https: <%= env_or_default('https', false) %>
 
     relative_url_root: <%= env_or_default('relative_url_root', '""') %>
 
