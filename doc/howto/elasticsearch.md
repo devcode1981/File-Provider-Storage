@@ -20,7 +20,7 @@ run db` processes.
 
 ## Setup
 
-1. Go to **Admin > Application Settings** to enable Elasticsearch.
+1. Go to **Admin Area > Settings > Integrations** to enable Elasticsearch.
 
 1. Start Elasticsearch by either running `elasticsearch` in a new terminal, or
    by adding it to your `Procfile`:
