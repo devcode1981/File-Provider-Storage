@@ -48,7 +48,7 @@ def daemonize(args)
 
   # Still in the middle process.
   pipe_write.write(daemon_pid.to_s)
-  pipe_write.close  
+  pipe_write.close
 
   Process.fork do
     # This is our watchdog
