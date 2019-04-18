@@ -287,7 +287,7 @@ production: &base
     enabled: <%= env_or_default('registry_enabled', false) %>
     host: <%= env_or_default('registry_host', '127.0.0.1') %>
     port: <%= env_or_default('registry_external_port', 5000) %>
-    api_url: 127.0.0.1:<%= env_or_default('registry_port', 5000) %>
+    api_url: http://127.0.0.1:<%= env_or_default('registry_port', 5000) %>
     key: ../localhost.key
     path: ../registry/storage/
     issuer: gitlab-issuer
