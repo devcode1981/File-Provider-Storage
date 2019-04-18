@@ -15,7 +15,7 @@ postgresql: exec support/postgresql-signal-wrapper postgres -D /home/git/postgre
 # Geo
 #
 #postgresql-geo: exec support/postgresql-signal-wrapper postgres -D /home/git/postgresql-geo/data -k /home/git/postgresql-geo -h ''
-#geo-cursor: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/exec-cd gitlab/bin ./geo_log_cursor
+#geo-cursor: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/geo-logcursor
 
 # Backend services
 #
