@@ -91,7 +91,7 @@ auto_devops_gitlab_port:
 auto_devops_registry_port: auto_devops_gitlab_port
 	expr ${auto_devops_gitlab_port} + 5000 > $@
 
-gitlab/config/gitlab.yml: gitlab/config/gitlab.yml.example auto_devops_enabled auto_devops_gitlab_port auto_devops_registry_port
+gitlab/config/gitlab.yml: support/templates/gitlab.yml.erb auto_devops_enabled auto_devops_gitlab_port auto_devops_registry_port
 	hostname=${hostname} port=${port} relative_url_root=${relative_url_root}\
 		https=${https}\
 		webpack_port=${webpack_port}\
@@ -639,7 +639,27 @@ clean-config:
 	gitaly/config.toml \
 	nginx/conf/nginx.conf \
 	registry/config.yml \
-	jaeger \
+	jaeger
+
+touch-examples:
+	touch \
+	$(gitaly_clone_dir)/config.toml.example \
+	Procfile.example \
+	database.yml.example \
+	database_geo.yml.example \
+	gitlab-shell/config.yml.example \
+	gitlab-workhorse/config.toml.example \
+	gitlab/config/database.yml.example \
+	gitlab/config/puma.example.development.rb \
+	gitlab/config/unicorn.rb.example.development \
+	grafana/grafana.ini.example \
+	influxdb/influxdb.conf.example \
+	nginx/conf/nginx.conf.example \
+	openssh/sshd_config.example \
+	redis/redis.conf.example \
+	redis/resque.yml.example \
+	registry/config.yml.example
+	support/templates/gitlab.yml.erb \
 
 unlock-dependency-installers:
 	rm -f \
