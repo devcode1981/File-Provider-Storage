@@ -658,8 +658,8 @@ touch-examples:
 	openssh/sshd_config.example \
 	redis/redis.conf.example \
 	redis/resque.yml.example \
-	registry/config.yml.example
-	support/templates/gitlab.yml.erb \
+	registry/config.yml.example \
+	support/templates/gitlab.yml.erb
 
 unlock-dependency-installers:
 	rm -f \
