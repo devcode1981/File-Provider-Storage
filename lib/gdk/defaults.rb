@@ -4,7 +4,7 @@ require_relative 'config_file'
 
 module GDK
   class Defaults < ConfigFile
-    FILE = 'gdk-defaults.yml'
+    FILE = 'gdk-defaults.yml.erb'
 
     def initialize
       super(FILE)

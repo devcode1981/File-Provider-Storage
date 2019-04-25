@@ -10,29 +10,29 @@ repositories:
   gitlab_pages: https://gitlab.com/gitlab-org/gitlab-pages.git
   gitlab_docs: https://gitlab.com/gitlab-com/gitlab-docs.git
 
-gdk_root: <%= `pwd`.chomp %>
-hostname: localhost
-port: 3000
-https: false
-relative_url_root: ''
-username: <%= `whoami`.chomp %>
+gdk_root: <%= cmd!('pwd') %>
+hostname: <%= read!('hostname') || 'localhost' %>
+port: <%= read!('port') || 3000 %>
+https: <%= read!('https_enabled') || false %>
+relative_url_root: <%= read!('relative_url_root') || nil %>
+username: <%= cmd!('whoami') %>
 
 webpack:
-  port: 3808
+  port: <%= read!('webpack_port') || 3808 %>
 
 registry:
-  enabled: false
+  enabled: <%= read!('registry_enabled') || false %>
   host: 127.0.0.1
+  port: <%= read!('registry_port') || 5000 %>
   external_port: 5000
-  port: 5000
 
 object_store:
-  enabled: false
-  port: 9000
+  enabled: <%= read!('object_store_enabled') || false %>
+  port: <%= read!('object_store_port') || 9000 %>
 
 gitlab_pages:
   enabled: true
-  port: 3010
+  port: <%= read!('gitlab_pages_port') || 3010 %>
 
 geo:
   enabled: false
@@ -49,11 +49,11 @@ tracer:
 
 nginx:
   enabled: false
-  bin: <%= `which nginx`.chomp %>
+  bin: <%= cmd!('which nginx') %>
   workhorse_port: 3333
 
 postgresql:
-  bin_dir: <%= `support/pg_bindir`.chomp %>
+  bin_dir: <%= cmd!('support/pg_bindir') %>
   replication_user: gitlab_replication
   dir: <%= config.gdk_root %>/postgresql
   data_dir: <%= config.postgresql.dir %>/data
@@ -64,7 +64,7 @@ gitaly:
   assembly_dir: <%= config.gdk_root %>/gitaly/assembly
 
 sshd:
-  bin: <%= `which sshd`.chomp %>
+  bin: <%= cmd!('which sshd') %>
 
 git:
-  bin: <%= `which git`.chomp %>
+  bin: <%= cmd!('which git') %>

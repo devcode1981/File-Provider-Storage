@@ -322,8 +322,11 @@ support-setup: .ruby-version foreman Procfile redis gitaly-setup jaeger-setup po
 		echo "*********************************************"; \
 	fi
 
-Procfile: Procfile.example auto_devops_enabled auto_devops_gitlab_port auto_devops_registry_port
-	bundle exec rake $@
+gdk.yml:
+	touch $@
+
+Procfile: gdk.yml gdk-defaults.yml.erb auto_devops_enabled auto_devops_gitlab_port auto_devops_registry_port
+	rake $@
 
 redis: redis/redis.conf
 
@@ -632,7 +635,7 @@ clean-config:
 touch-examples:
 	touch \
 	$(gitaly_clone_dir)/config.toml.example \
-	Procfile.example \
+	Procfile.erb \
 	database.yml.example \
 	database_geo.yml.example \
 	gitlab-shell/config.yml.example \

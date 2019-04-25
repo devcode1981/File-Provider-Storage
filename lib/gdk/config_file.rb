@@ -11,6 +11,7 @@ module GDK
     def initialize(file)
       load! File.read(file)
 
+      # Run in a loop for variables that refer other variables
       loop do
         load! ERB.new(data.to_yaml).result(config_binding)
 
@@ -23,6 +24,16 @@ module GDK
       binding.tap do |b|
         b.local_variable_set(:config, config)
       end
+    end
+
+    def cmd!(cmd)
+      `#{cmd}`.chomp
+    end
+
+    def read!(filename)
+      File.read(filename)
+    rescue Errno::ENOENT
+      nil
     end
 
     private

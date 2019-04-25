@@ -15,10 +15,10 @@ def render_erb(source, target)
   IO.write(target, result)
 end
 
-file 'Procfile' => ['Procfile.erb', 'gdk.yml', 'gdk-defaults.yml'] do |t|
+file 'Procfile' => ['Procfile.erb', GDK::Config::FILE, GDK::Defaults::FILE] do |t|
   render_erb(t.source, t.name)
 end
 
-file 'nginx/conf/nginx.conf' => ['nginx/conf/nginx.conf.erb', 'gdk.yml', 'gdk-defaults.yml'] do |t|
+file 'nginx/conf/nginx.conf' => ['nginx/conf/nginx.conf.erb', GDK::Config::FILE, GDK::Defaults::FILE] do |t|
   render_erb(t.source, t.name)
 end
