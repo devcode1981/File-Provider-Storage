@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+require 'open3'
+
 PG_HOST = "#{Dir.pwd}/postgresql".freeze
 PG_PORT_FILE = File.join(Dir.pwd, 'postgresql_port')
 PG_PORT = File.exist?(PG_PORT_FILE) ? File.read(PG_PORT_FILE) : 5432
@@ -10,12 +12,24 @@ def main
 end
 
 def pg_ready?
+  last_error = nil
+
   10.times do
-    if system(*%W[psql -h #{PG_HOST} -d template1 -p #{PG_PORT} -c SELECT\ now()], out: '/dev/null', err: '/dev/null')
+    stdin, stdout, stderr, thread = Open3.popen3(*%W[psql -h #{PG_HOST} -d template1 -p #{PG_PORT} -c SELECT\ now()])
+    stdin.close
+    stdout.readlines
+    stdout.close
+    last_error = stderr.readlines
+    stderr.close
+    exit_status = thread.value.to_i
+
+    if exit_status.zero?
       return true
     end
     sleep 1
   end
+
+  puts last_error
   false
 end
 
