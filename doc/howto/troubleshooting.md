@@ -5,9 +5,21 @@
 There may be times when your local libraries that are used to build some gems'
 native extensions are updated (i.e., `libicu`), thus resulting in errors like:
 
-```
+```shell
 rails-background-jobs.1 | /home/user/.rvm/gems/ruby-2.3.0/gems/activesupport-4.2.5.2/lib/active_support/dependencies.rb:274:in 'require': libicudata.so
 cannot open shared object file: No such file or directory - /home/user/.rvm/gems/ruby-2.3.0/gems/charlock_holmes-0.7.3/lib/charlock_holmes/charlock_holmes.so (LoadError)
+```
+
+```shell
+cd /home/user/gitlab-development-kit/gitlab && bundle exec rake gettext:compile > /home/user/gitlab-development-kit/gettext.log 2>&1
+make: *** [.gettext] Error 1
+```
+
+```shell
+rake aborted!
+LoadError: dlopen(/home/user/.rbenv/versions/2.5.3/lib/ruby/gems/2.5.0/gems/charlock_holmes-0.7.6/lib/charlock_holmes/charlock_holmes.bundle, 9): Library not loaded: /usr/local/opt/icu4c/lib/libicudata.63.1.dylib
+  Referenced from: /home/user/.rbenv/versions/2.5.3/lib/ruby/gems/2.5.0/gems/charlock_holmes-0.7.6/lib/charlock_holmes/charlock_holmes.bundle
+  Reason: image not found - /home/user/.rbenv/versions/2.5.3/lib/ruby/gems/2.5.0/gems/charlock_holmes-0.7.6/lib/charlock_holmes/charlock_holmes.bundle
 ```
 
 In that case, find the offending gem and use `pristine` to rebuild its native
