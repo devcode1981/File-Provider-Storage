@@ -33,7 +33,7 @@ production: &base
     port: <%= env_or_default('port', 3000).to_i %>
     https: <%= env_or_default('https', false) %>
 
-    relative_url_root: <%= env_or_default('relative_url_root', '""') %>
+    relative_url_root: "<%= env_or_default('relative_url_root', '') %>"
 
     # Trusted Proxies
     # Customize if you have GitLab behind a reverse proxy which is running on a different machine.
