@@ -15,7 +15,7 @@ postgresql: exec support/postgresql-signal-wrapper <%= config.postgresql.bin_dir
 # Geo
 #
 <%= '#' unless config.geo.enabled %>postgresql-geo: exec support/postgresql-signal-wrapper <%= config.postgresql.bin_dir %>/postgres -D <%= config.postgresql.geo_dir %>/data -k <%= config.postgresql.geo_dir %> -h ''
-<%= '#' unless config.geo.enabled %>geo-cursor: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/exec-cd gitlab/bin ./geo_log_cursor
+<%= '#' unless config.geo.enabled %>geo-cursor: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/geo-logcursor
 
 # Backend services
 #
@@ -27,7 +27,7 @@ rails-background-jobs: exec /usr/bin/env SIDEKIQ_LOG_ARGUMENTS=1 RAILS_ENV=devel
 #
 webpack: exec /usr/bin/env NODE_ENV=development DEV_SERVER_PORT=<%= config.webpack.port %> DEV_SERVER_HOST=$host support/exec-cd gitlab yarn dev-server
 rails-web: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/exec-cd gitlab bin/web start_foreground
-<%= '#' unless config.gitlab_pages.enabled %>gitlab-pages: exec gitlab-pages/bin/gitlab-pages -listen-http ":<%= config.gitlab_pages.port %>" -artifacts-server http://localhost:443/api/v4 -pages-root <%= config.gdk_root %>/gitlab/shared/pages/ -pages-domain 127.0.0.1.xip.io
+<%= '#' unless config.gitlab_pages.enabled %>gitlab-pages: exec gitlab-pages/bin/gitlab-pages -listen-http ":<%= config.gitlab_pages.port %>" -artifacts-server <%= config.https ? 'https' : 'http' %>://<%= config.hostname %>:<%= config.port %>/api/v4 -pages-root <%= config.gdk_root %>/gitlab/shared/pages/ -pages-domain 127.0.0.1.xip.io
 
 # Docker
 #

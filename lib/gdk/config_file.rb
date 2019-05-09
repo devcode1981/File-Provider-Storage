@@ -12,10 +12,9 @@ module GDK
       load! File.read(file)
 
       # Run in a loop for variables that refer other variables
-      loop do
-        load! ERB.new(data.to_yaml).result(config_binding)
-
-        break unless data.to_yaml =~ /<%=.*%>/
+      # See https://stackoverflow.com/a/7235513/89376
+      while /<%=.*%>/.match(data)
+        load! ERB.new(data).result(config_binding)
       end
     end
 
@@ -31,13 +30,13 @@ module GDK
     end
 
     def read!(filename)
-      File.read(filename)
+      File.read(filename).chomp
     rescue Errno::ENOENT
       nil
     end
 
     def read_or_write!(filename, value)
-      File.read(filename)
+      File.read(filename).chomp
     rescue Errno::ENOENT
       File.write(filename, value)
       value
@@ -48,8 +47,8 @@ module GDK
     attr_reader :data
 
     def load!(data)
-      @data = YAML.safe_load(data)
-      @config = hashes2ostruct(@data)
+      @data = data
+      @config = hashes2ostruct(YAML.safe_load(@data))
     end
 
     # From: https://www.dribin.org/dave/blog/archives/2006/11/17/hashes_to_ostruct/

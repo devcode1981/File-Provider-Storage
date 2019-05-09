@@ -1,5 +1,5 @@
 # This file contains the defaults for GDK
-# It is a YAML file, but it will be parsed by ERB first
+# It is a YAML file, but it will be processed as ERB first
 
 repositories:
   gitlab: https://gitlab.com/gitlab-org/gitlab-ce.git
@@ -11,9 +11,16 @@ repositories:
   gitlab_docs: https://gitlab.com/gitlab-com/gitlab-docs.git
 
 gdk_root: <%= cmd!('pwd') %>
+#<% if config.auto_devops.enabled %>
+hostname: <%= "#{config.auto_devops.gitlab.port}.qa-tunnel.gitlab.info" %>
+port: 443
+https: true
+#<% else %>
 hostname: <%= read!('hostname') || 'localhost' %>
 port: <%= read!('port') || 3000 %>
 https: <%= read!('https_enabled') || false %>
+#<% end %>
+
 relative_url_root: <%= read!('relative_url_root') || nil %>
 username: <%= cmd!('whoami') %>
 
@@ -21,10 +28,17 @@ webpack:
   port: <%= read!('webpack_port') || 3808 %>
 
 registry:
-  enabled: <%= config.auto_devops.enabled || read!('registry_enabled') || false %>
+#<% if config.auto_devops.enabled %>
+  enabled: true
+  host: <%= "#{config.auto_devops.registry.port}.qa-tunnel.gitlab.info" %>
+  port: <%= config.auto_devops.registry.port %>
+  external_port: 443
+#<% else %>
+  enabled: <%= read!('registry_enabled') || false %>
   host: 127.0.0.1
   port: <%= read!('registry_port') || 5000 %>
   external_port: 5000
+#<% end %>
 
 object_store:
   enabled: <%= read!('object_store_enabled') || false %>
@@ -39,7 +53,7 @@ auto_devops:
   gitlab:
     port: <%= read_or_write!('auto_devops_gitlab_port', rand(20000..24999)) %>
   registry:
-    port: <%= config.auto_devops.gitlab.port.to_i + 5000 %>
+    port: <%= read!('auto_devops_registry_port') || (config.auto_devops.gitlab.port.to_i + 5000) %>
 
 geo:
   enabled: false
