@@ -21,7 +21,7 @@ webpack:
   port: <%= read!('webpack_port') || 3808 %>
 
 registry:
-  enabled: <%= read!('registry_enabled') || false %>
+  enabled: <%= config.auto_devops.enabled || read!('registry_enabled') || false %>
   host: 127.0.0.1
   port: <%= read!('registry_port') || 5000 %>
   external_port: 5000
@@ -33,6 +33,13 @@ object_store:
 gitlab_pages:
   enabled: true
   port: <%= read!('gitlab_pages_port') || 3010 %>
+
+auto_devops:
+  enabled: <%= read!('auto_devops_enabled') || false %>
+  gitlab:
+    port: <%= read_or_write!('auto_devops_gitlab_port', rand(20000..24999)) %>
+  registry:
+    port: <%= config.auto_devops.gitlab.port + 5000 %>
 
 geo:
   enabled: false

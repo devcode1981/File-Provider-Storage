@@ -46,3 +46,8 @@ registry: exec support/docker-registry
 #sshd: exec <%= config.sshd.bin %> -e -D -f <%= config.gdk_root %>/openssh/sshd_config
 <%= '#' unless config.nginx.enabled %>nginx: exec <%= config.nginx.bin %> -p <%= config.gdk_root %>/nginx -c conf/nginx.conf
 #elasticsearch: exec elasticsearch/bin/elasticsearch
+
+# Tunneling
+#
+<%= '#' unless config.auto_devops.enabled %>tunnel_gitlab: ssh -N -R $auto_devops_gitlab_port:localhost:$port qa-tunnel.gitlab.info
+<%= '#' unless config.auto_devops.enabled %>tunnel_registry: ssh -N -R $auto_devops_registry_port:localhost:5000 qa-tunnel.gitlab.info

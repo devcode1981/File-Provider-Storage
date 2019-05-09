@@ -36,6 +36,13 @@ module GDK
       nil
     end
 
+    def read_or_write!(filename, value)
+      File.read(filename)
+    rescue Errno::ENOENT
+      File.write(filename, value)
+      value
+    end
+
     private
 
     attr_reader :data
