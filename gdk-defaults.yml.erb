@@ -39,7 +39,7 @@ auto_devops:
   gitlab:
     port: <%= read_or_write!('auto_devops_gitlab_port', rand(20000..24999)) %>
   registry:
-    port: <%= config.auto_devops.gitlab.port + 5000 %>
+    port: <%= config.auto_devops.gitlab.port.to_i + 5000 %>
 
 geo:
   enabled: false

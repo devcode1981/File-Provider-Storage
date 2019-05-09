@@ -2,23 +2,16 @@
 
 $LOAD_PATH.unshift('.')
 
-require 'lib/gdk/config'
+require 'lib/gdk'
 
 def config
   @config ||= GDK::Config.new
 end
 
-def render_erb(source, target)
-  str = File.read(source)
-  result = ERB.new(str).result
-
-  IO.write(target, result)
-end
-
 file 'Procfile' => ['Procfile.erb', GDK::Config::FILE, GDK::Defaults::FILE] do |t|
-  render_erb(t.source, t.name)
+  GDK::ErbRenderer.new(t.source, t.name).safe_render!
 end
 
 file 'nginx/conf/nginx.conf' => ['nginx/conf/nginx.conf.erb', GDK::Config::FILE, GDK::Defaults::FILE] do |t|
-  render_erb(t.source, t.name)
+  GDK::ErbRenderer.new(t.source, t.name).safe_render!
 end
