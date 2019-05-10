@@ -29,6 +29,35 @@ extensions:
 gem pristine charlock_holmes
 ```
 
+## An error occurred while installing mysql2
+
+```shell
+An error occurred while installing mysql2 (0.4.10), and Bundler cannot continue.
+Make sure that `gem install mysql2 -v '0.4.10' --source 'https://rubygems.org/'` succeeds before bundling.
+```
+
+```shell
+Installing mysql2 0.4.10 with native extensions
+Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
+
+    current directory: /home/user/.rbenv/versions/2.6.3/lib/ruby/gems/2.6.0/gems/mysql2-0.4.10/ext/mysql2
+/home/user/.rbenv/versions/2.6.3/bin/ruby -I /home/user/.rbenv/versions/2.6.3/lib/ruby/2.6.0 -r
+./siteconf20190510-96137-15ejlj6.rb extconf.rb --with-ldflags\=-L/usr/local/opt/openssl/lib\
+--with-cppflags\=-I/usr/local/opt/openssl/include
+checking for rb_absint_size()... *** extconf.rb failed ***
+Could not create Makefile due to some reason, probably lack of necessary
+libraries and/or headers.  Check the mkmf.log file for more details.  You may
+need configuration options.
+```
+
+The solution here is:
+
+```shell
+bundle config --global build.mysql2 --with-opt-dir="$(brew --prefix openssl)"
+```
+
+And running `bundle` again will work.
+
 ## `charlock_holmes` `0.7.x` cannot be installed on macOS Sierra
 
 The installation of the `charlock_holmes` gem (`0.7.3` or greater) during
