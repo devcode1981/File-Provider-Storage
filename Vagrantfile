@@ -82,7 +82,7 @@ $user_setup = <<EOT
   echo "$DEV_USER ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/$DEV_USER
   sudo addgroup $DEV_USER rvm
   sudo addgroup $DEV_USER docker
-  sudo -u $DEV_USER -i bash -l -c "rvm install 2.5.3 && rvm use 2.5.3 --default && gem install bundler -v 1.17.3"
+  sudo -u $DEV_USER -i bash -l -c "rvm install 2.6.3 && rvm use 2.6.3 --default && gem install bundler -v 1.17.3"
   sudo chown -R $DEV_USER:$DEV_USER /home/$DEV_USER
   sudo ln -s /vagrant /home/$DEV_USER/gitlab-development-kit
 

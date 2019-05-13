@@ -17,9 +17,9 @@ make: *** [.gettext] Error 1
 
 ```shell
 rake aborted!
-LoadError: dlopen(/home/user/.rbenv/versions/2.5.3/lib/ruby/gems/2.5.0/gems/charlock_holmes-0.7.6/lib/charlock_holmes/charlock_holmes.bundle, 9): Library not loaded: /usr/local/opt/icu4c/lib/libicudata.63.1.dylib
-  Referenced from: /home/user/.rbenv/versions/2.5.3/lib/ruby/gems/2.5.0/gems/charlock_holmes-0.7.6/lib/charlock_holmes/charlock_holmes.bundle
-  Reason: image not found - /home/user/.rbenv/versions/2.5.3/lib/ruby/gems/2.5.0/gems/charlock_holmes-0.7.6/lib/charlock_holmes/charlock_holmes.bundle
+LoadError: dlopen(/home/user/.rbenv/versions/2.6.3/lib/ruby/gems/2.5.0/gems/charlock_holmes-0.7.6/lib/charlock_holmes/charlock_holmes.bundle, 9): Library not loaded: /usr/local/opt/icu4c/lib/libicudata.63.1.dylib
+  Referenced from: /home/user/.rbenv/versions/2.6.3/lib/ruby/gems/2.5.0/gems/charlock_holmes-0.7.6/lib/charlock_holmes/charlock_holmes.bundle
+  Reason: image not found - /home/user/.rbenv/versions/2.6.3/lib/ruby/gems/2.5.0/gems/charlock_holmes-0.7.6/lib/charlock_holmes/charlock_holmes.bundle
 ```
 
 In that case, find the offending gem and use `pristine` to rebuild its native
@@ -391,9 +391,9 @@ On macOS, GitLab may fail to start and fail with an error message about
 
 ```
 LoadError:
-    dlopen(/Users/janedoe/.rbenv/versions/2.5.3/lib/ruby/2.5.0/x86_64-darwin15/readline.bundle, 9): Library not loaded: /usr/local/opt/readline/lib/libreadline.7.dylib
-        Referenced from: /Users/janedoe/.rbenv/versions/2.5.3/lib/ruby/2.5.0/x86_64-darwin15/readline.bundle
-        Reason: image not found - /Users/janedoe/.rbenv/versions/2.5.3/lib/ruby/2.5.0/x86_64-darwin15/readline.bundle
+    dlopen(/Users/janedoe/.rbenv/versions/2.6.3/lib/ruby/2.5.0/x86_64-darwin15/readline.bundle, 9): Library not loaded: /usr/local/opt/readline/lib/libreadline.7.dylib
+        Referenced from: /Users/janedoe/.rbenv/versions/2.6.3/lib/ruby/2.5.0/x86_64-darwin15/readline.bundle
+        Reason: image not found - /Users/janedoe/.rbenv/versions/2.6.3/lib/ruby/2.5.0/x86_64-darwin15/readline.bundle
 ```
 
 This happens because the Ruby interpreter was linked with a version of
@@ -401,8 +401,8 @@ the `readline` library that may have been updated on your system. To fix
 the error, reinstall the Ruby interpreter. For example, for environments
 managed with:
 
-- [rbenv](https://github.com/rbenv/rbenv), run `rbenv install 2.5.3`.
-- [RVM](https://rvm.io), run `rvm reinstall ruby-2.5.3`.
+- [rbenv](https://github.com/rbenv/rbenv), run `rbenv install 2.6.3`.
+- [RVM](https://rvm.io), run `rvm reinstall ruby-2.6.3`.
 
 ## Delete non-existent migrations from the database
 

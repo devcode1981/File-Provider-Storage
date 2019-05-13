@@ -147,9 +147,9 @@ sudo yum install postgresql96-server postgresql96-devel libicu-devel git cmake \
   libstdc++.so.6 nodejs npm re2 re2-devel GraphicsMagick runit perl-Image-ExifTool
 
 bundle config build.pg --with-pg-config=/usr/pgsql-9.6/bin/pg_config
-# This example uses Ruby 2.5.3. Substitute with the current version if different.
-sudo rvm install 2.5.3
-sudo rvm use 2.5.3
+# This example uses Ruby 2.6.3. Substitute with the current version if different.
+sudo rvm install 2.6.3
+sudo rvm use 2.6.3
 #Ensure your user is in rvm group
 sudo usermod -a -G rvm <username>
 #add iptables exceptions, or sudo service stop iptables
@@ -256,9 +256,9 @@ sudo make install
 Install the current `gitlab-ce` Ruby version using [RVM](https://rvm.io/):
 
 ```
-# This example uses Ruby 2.5.3. Substitute with the current version if different.
-rvm install 2.5.3
-rvm use 2.5.3
+# This example uses Ruby 2.6.3. Substitute with the current version if different.
+rvm install 2.6.3
+rvm use 2.6.3
 ```
 
 Install yarn

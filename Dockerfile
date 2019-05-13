@@ -19,7 +19,7 @@ ARG RBENV_REVISION=v1.1.1
 RUN git clone --branch $RBENV_REVISION --depth 1 https://github.com/rbenv/rbenv
 
 FROM fetch AS source-ruby-build
-ARG RUBY_BUILD_REVISION=v20181225
+ARG RUBY_BUILD_REVISION=v20190423
 RUN git clone --branch $RUBY_BUILD_REVISION --depth 1 https://github.com/rbenv/ruby-build
 
 FROM fetch AS go
@@ -44,7 +44,7 @@ RUN echo 'eval "$(rbenv init -)"' >> .bash_profile
 COPY --from=source-rbenv --chown=gdk /rbenv .rbenv
 COPY --from=source-ruby-build --chown=gdk /ruby-build .rbenv/plugins/ruby-build
 USER gdk
-RUN bash -l -c "rbenv install 2.5.3 && rbenv global 2.5.3"
+RUN bash -l -c "rbenv install 2.6.3 && rbenv global 2.6.3"
 
 # build final image
 FROM base AS release
