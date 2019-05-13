@@ -213,13 +213,13 @@ cd /Users/foo/Developer/gdk-geo/gitlab && \
 rake aborted!
 ActiveRecord::StatementInvalid: PG::ReadOnlySqlTransaction: ERROR:  cannot execute DROP DATABASE in a read-only transaction
 : DROP DATABASE IF EXISTS "gitlabhq_test"
-/Users/foo/.rbenv/versions/2.5.3/bin/bundle:23:in `load'
-/Users/foo/.rbenv/versions/2.5.3/bin/bundle:23:in `<main>'
+/Users/foo/.rbenv/versions/2.6.3/bin/bundle:23:in `load'
+/Users/foo/.rbenv/versions/2.6.3/bin/bundle:23:in `<main>'
 
 Caused by:
 PG::ReadOnlySqlTransaction: ERROR:  cannot execute DROP DATABASE in a read-only transaction
-/Users/foo/.rbenv/versions/2.5.3/bin/bundle:23:in `load'
-/Users/foo/.rbenv/versions/2.5.3/bin/bundle:23:in `<main>'
+/Users/foo/.rbenv/versions/2.6.3/bin/bundle:23:in `load'
+/Users/foo/.rbenv/versions/2.6.3/bin/bundle:23:in `<main>'
 Tasks: TOP => db:test:load => db:test:purge
 (See full trace by running task with --trace)
 make: *** [gitlab-update] Error 1
