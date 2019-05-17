@@ -5,8 +5,8 @@
 main() {
   # Try to read the gitlab-workhorse host:port from the environments
   if [ "x${host}" = x ]; then
-    # Try a host file
-    host="$(cat host 2>/dev/null)"
+    # Try a hostname file
+    host="$(cat hostname 2>/dev/null)"
   fi
   if [ "x${port}" = x ]; then
     # Try a port file
