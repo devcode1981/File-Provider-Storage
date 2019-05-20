@@ -627,6 +627,19 @@ a `gdk reconfigure`:
 For more information about Jaeger, visit the [distributed tracing GitLab developer
 documentation](https://docs.gitlab.com/ee/development/distributed_tracing.html).
 
+## Gitaly config.toml: no such file or directory
+
+If you see errors such as:
+
+`07:23:16 gitaly.1                | time="2019-05-17T07:23:16-05:00" level=fatal msg="load config" config_path=<path-to-gdk>/gitaly/config.toml error="open <path-to-gdk>/gitaly/config.toml: no such file or directory"`
+
+Somehow, `gitaly/config.toml` is missing. You can re-create this file by running
+the following in your gdk directory:
+
+```sh
+make gitaly-setup
+```
+
 ## Other problems
 
 Please open an issue on the [GDK issue tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues).
