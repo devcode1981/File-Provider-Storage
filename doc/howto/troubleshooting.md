@@ -644,6 +644,31 @@ the following in your gdk directory:
 make gitaly-setup
 ```
 
+## ElasticSearch
+
+Running a spec locally may give you something like the following:
+
+```sh
+rake aborted!
+Gitlab::TaskFailedError: # pkg-config --cflags  -- icu-i18n icu-i18n
+Package icu-i18n was not found in the pkg-config search path.
+Perhaps you should add the directory containing `icu-i18n.pc'
+to the PKG_CONFIG_PATH environment variable
+No package 'icu-i18n' found
+Package icu-i18n was not found in the pkg-config search path.
+Perhaps you should add the directory containing `icu-i18n.pc'
+to the PKG_CONFIG_PATH environment variable
+No package 'icu-i18n' found
+pkg-config: exit status 1
+make: *** [build] Error 2
+```
+
+Find the directory where `icu-i18n.pc` is. On macOS it is generally in `/usr/local/opt/icu4c/lib/pkgconfig`.
+Set the `PKG_CONFIG_PATH` environment variable to that directory.
+
+Add the following line to `~/.bash_profile`
+`export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"`
+
 ## Other problems
 
 Please open an issue on the [GDK issue tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues).
