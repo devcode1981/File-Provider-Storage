@@ -674,9 +674,7 @@ To fix this now, run the following on the command line:
 export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
 ```
 
-To fix this for the future, add the following line to `~/.bash_profile` (or `~/.zshrc`):
-
-`export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"`
+To fix this for the future, add the line above to `~/.bash_profile` or `~/.zshrc`.
 
 ## Other problems
 
