@@ -644,6 +644,43 @@ the following in your gdk directory:
 make gitaly-setup
 ```
 
+## Elasticsearch
+
+Running a spec locally may give you something like the following:
+
+```sh
+rake aborted!
+Gitlab::TaskFailedError: # pkg-config --cflags  -- icu-i18n icu-i18n
+Package icu-i18n was not found in the pkg-config search path.
+Perhaps you should add the directory containing `icu-i18n.pc'
+to the PKG_CONFIG_PATH environment variable
+No package 'icu-i18n' found
+Package icu-i18n was not found in the pkg-config search path.
+Perhaps you should add the directory containing `icu-i18n.pc'
+to the PKG_CONFIG_PATH environment variable
+No package 'icu-i18n' found
+pkg-config: exit status 1
+make: *** [build] Error 2
+```
+
+This indicates that Go is trying to link (unsuccessfully) to brew's `icu4c`.
+
+Find the directory where `icu-i18n.pc` resides:
+
+- On macOS, using [Homebrew](https://brew.sh/), it is generally in `/usr/local/opt/icu4c/lib/pkgconfig`
+- On Ubuntu/Debian it might be in `/usr/lib/x86_64-linux-gnu/pkgconfig`
+- On Fedora it is expected to be in `/usr/lib64/pkgconfig`
+
+You'll need to add that directory to the `PKG_CONFIG_PATH` environment variable.
+
+To fix this now, run the following on the command line:
+
+```sh
+export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
+```
+
+To fix this for the future, add the line above to `~/.bash_profile` or `~/.zshrc`.
+
 ## Other problems
 
 Please open an issue on the [GDK issue tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues).
