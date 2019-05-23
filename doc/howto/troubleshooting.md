@@ -666,7 +666,8 @@ make: *** [build] Error 2
 Find the directory where `icu-i18n.pc` is. On macOS it is generally in `/usr/local/opt/icu4c/lib/pkgconfig`.
 Set the `PKG_CONFIG_PATH` environment variable to that directory.
 
-Add the following line to `~/.bash_profile`
+Add the following line to `~/.bash_profile`:
+
 `export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"`
 
 ## Other problems
