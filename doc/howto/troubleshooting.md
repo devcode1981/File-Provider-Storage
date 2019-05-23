@@ -644,7 +644,7 @@ the following in your gdk directory:
 make gitaly-setup
 ```
 
-## ElasticSearch
+## Elasticsearch
 
 Running a spec locally may give you something like the following:
 
