@@ -670,6 +670,7 @@ Find the directory where `icu-i18n.pc` resides:
 - On macOS, using [Homebrew](https://brew.sh/), it is generally in `/usr/local/opt/icu4c/lib/pkgconfig`
 - On Ubuntu/Debian it might be in `/usr/lib/x86_64-linux-gnu/pkgconfig`
 - On Fedora it is expected to be in `/usr/lib64/pkgconfig`
+
 You'll need to add that directory to the `PKG_CONFIG_PATH` environment variable.
 
 To fix this now, run the following on the command line:
