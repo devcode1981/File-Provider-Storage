@@ -663,10 +663,18 @@ pkg-config: exit status 1
 make: *** [build] Error 2
 ```
 
-Find the directory where `icu-i18n.pc` is. On macOS it is generally in `/usr/local/opt/icu4c/lib/pkgconfig`.
-Set the `PKG_CONFIG_PATH` environment variable to that directory.
+This indicates that Go is trying to link (unsuccessfully) to brew's `icu4c`.
 
-Add the following line to `~/.bash_profile`:
+Find the directory where `icu-i18n.pc` is. On macOS it is generally in `/usr/local/opt/icu4c/lib/pkgconfig`.
+You'll need to add that directory to the `PKG_CONFIG_PATH` environment variable.
+
+To fix this now, run the following on the command line:
+
+```sh
+export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
+```
+
+To fix this for the future, add the following line to `~/.bash_profile` (or `~/.zshrc`):
 
 `export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"`
 
