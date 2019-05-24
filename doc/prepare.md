@@ -24,7 +24,8 @@ Make sure you follow all the guidelines and resolve all the dependencies listed 
 
 To start preparing the GDK installation, pick your platform of choice:
 
-| [macOS](#macOS) | [Ubuntu](#ubuntu) | [Arch Linux](#arch-linux) | [Debian](#debian) | [Fedora](#fedora) | [CentOS](#centos) | [OpenSUSE](#opensuse) | [FreeBSD](#freebsd) | [Windows 10](#windows-10)
+| [macOS](#macOS) | [Ubuntu](#ubuntu) | [Arch Linux](#arch-linux) | [Debian](#debian) | [Fedora](#fedora) | [CentOS](#centos) | [OpenSUSE](#opensuse) | [FreeBSD](#freebsd) | [Windows 10](#windows-10) |
+|-|-|-|-|-|-|-|-|-|
 
 ### macOS
 
