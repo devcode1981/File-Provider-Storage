@@ -20,8 +20,20 @@ Make sure you follow all the guidelines and resolve all the dependencies listed 
 | GraphicsMagick | GraphicsMagick installation is covered in the instructions below.                                                                                                                                                                                                                                                                                                           |
 | Exiftool       | Exiftool installation is covered in the instructions below.                                                                                                                                                                                                                                                                                                           |
 
+### Platform-specific setup
 
-### OS X 10.9 (Mavericks), 10.10 (Yosemite), 10.11 (El Capitan), macOS 10.12 (Sierra), macOS 10.13 (High Sierra)
+To start preparing the GDK installation, pick your platform of choice:
+
+| [macOS](#macOS) | [Ubuntu](#ubuntu) | [Arch Linux](#arch-linux) | [Debian](#debian) | [Fedora](#fedora) | [CentOS](#centos) | [OpenSUSE](#opensuse) | [FreeBSD](#freebsd) | [Windows 10](#windows-10)
+
+### macOS
+
+Supported versions:
+- OS X 10.9 (Mavericks)
+- OS X 10.10 (Yosemite)
+- OS X 10.11 (El Capitan)
+- macOS 10.12 (Sierra)
+- macOS 10.13 (High Sierra)
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
@@ -65,23 +77,24 @@ source ~/.profile
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
-You can install Node.js 10.x from [nodesource APT servers](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions).
-Install Yarn from [a custom APT server](https://yarnpkg.com/lang/en/docs/install/#debian-stable) as well.
+1. Install **Node.js 10.x** from the [official Node.js binary distribution](https://github.com/nodesource/distributions/blob/master/README.md#debinstall).
+1. Install **Yarn** from the [Yarn Debian package repository](https://yarnpkg.com/lang/en/docs/install/#debian-stable).
+1. Install the rest of the dependencies:
+   ```
+   # Add apt-add-repository helper script
+   sudo apt-get install software-properties-common python-software-properties
+   # This PPA contains an up-to-date version of Go
+   sudo add-apt-repository ppa:longsleep/golang-backports
+   # This PPA contains an up-to-date version of git
+   sudo add-apt-repository ppa:git-core/ppa
+   sudo apt-get update
+   sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server \
+     libicu-dev cmake g++ libre2-dev libkrb5-dev libsqlite3-dev golang-1.10-go ed \
+     pkg-config graphicsmagick runit libimage-exiftool-perl
+   ```
+1. You're all set now. [Go to next steps](#next-steps).
 
-```
-# Add apt-add-repository helper script
-sudo apt-get install software-properties-common python-software-properties
-# This PPA contains an up-to-date version of Go
-sudo add-apt-repository ppa:longsleep/golang-backports
-# This PPA contains an up-to-date version of git
-sudo add-apt-repository ppa:git-core/ppa
-sudo apt-get update
-sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server \
-  libicu-dev cmake g++ libre2-dev libkrb5-dev libsqlite3-dev golang-1.10-go ed \
-  pkg-config graphicsmagick runit libimage-exiftool-perl
-```
-
-Ubuntu 14.04 (Trusty Tahr) doesn't have the `libre2-dev` package available, but
+> ℹ️ Ubuntu 14.04 (Trusty Tahr) doesn't have the `libre2-dev` package available, but
 you can [install re2 manually](https://github.com/google/re2/wiki/Install).
 
 #### Arch Linux
@@ -212,7 +225,9 @@ sudo pkg install postgresql93-server postgresql93-contrib postgresql-libpqxx \
 redis go node icu krb5 gmake re2 GraphicsMagick p5-Image-ExifTool
 ```
 
-### **Experimental** Windows 10 using the WSL (Windows Subsystem for Linux)
+### Windows 10
+
+> 🚨 Support for Windows 10 is **experimental**, via the Windows Subsystem for Linux (WSL).
 
 **Setting up the Windows Subsystem for Linux:**
 
@@ -295,7 +310,7 @@ it here.
 
 ### Next Steps
 
-After you have completed everything here, please proceed to [Set-up GDK](./set-up-gdk.md)
+After you have completed everything here, please proceed to [setting up the GDK](./set-up-gdk.md)
 
 [puias]: https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/install/centos#add-puias-computational-repository
 [docker engine]: https://docs.docker.com/engine/installation/
