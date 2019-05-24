@@ -28,12 +28,7 @@ To start preparing the GDK installation, pick your platform of choice:
 
 ### macOS
 
-Supported versions:
-- OS X 10.9 (Mavericks)
-- OS X 10.10 (Yosemite)
-- OS X 10.11 (El Capitan)
-- macOS 10.12 (Sierra)
-- macOS 10.13 (High Sierra)
+Supported versions: OS X 10.9 (Mavericks) and up.
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
