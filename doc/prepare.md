@@ -284,8 +284,6 @@ Install the remainder of the prerequisites
 ```
 # Add apt-add-repository helper script
 sudo apt-get install software-properties-common python-software-properties
-# This PPA contains an up-to-date version of Go
-sudo apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
 sudo apt-get update
 sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server \
   libicu-dev cmake g++ libkrb5-dev libre2-dev golang ed pkg-config runit
