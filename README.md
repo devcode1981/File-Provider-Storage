@@ -32,8 +32,6 @@ To do a native install:
 1. [Prepare your computer](doc/prepare.md)
 2. [Set-up GDK](doc/set-up-gdk.md)
 
-If you want to use Windows, you can try [our instructions for Windows Subsystem for Linux](doc/prepare.md#experimental-windows-10-using-the-wsl-windows-subsystem-for-linux).
-
 Or if you want to use a slower virtualized installation with [Vagrant](https://www.vagrantup.com/),
 please see the [instructions for using Vagrant with VirtualBox or Docker](doc/vagrant.md).
 
