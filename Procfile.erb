@@ -14,20 +14,20 @@ postgresql: exec support/postgresql-signal-wrapper <%= config.postgresql.bin_dir
 
 # Geo
 #
-<%= '#' unless config.geo.enabled %>postgresql-geo: exec support/postgresql-signal-wrapper <%= config.postgresql.bin_dir %>/postgres -D <%= config.postgresql.geo_dir %>/data -k <%= config.postgresql.geo_dir %> -h ''
-<%= '#' unless config.geo.enabled %>geo-cursor: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/geo-logcursor
+<%= '#' unless config.geo? %>postgresql-geo: exec support/postgresql-signal-wrapper <%= config.postgresql.bin_dir %>/postgres -D <%= config.postgresql.geo_dir %>/data -k <%= config.postgresql.geo_dir %> -h ''
+<%= '#' unless config.geo? %>geo-cursor: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/geo-logcursor
 
 # Backend services
 #
 gitaly: exec gitaly/bin/gitaly <%= config.gdk_root %>/gitaly/config.toml
-gitlab-workhorse: exec /usr/bin/env PATH="<%= config.gdk_root %>/gitlab-workhorse/bin:$PATH" gitlab-workhorse -authSocket <%= config.gdk_root %>/gitlab.socket -listenAddr $host:<%= config.nginx.enabled ? config.nginx.workhorse_port : '$port' %> -documentRoot <%= config.gdk_root %>/gitlab/public -developmentMode -secretPath <%= config.gdk_root %>/gitlab/.gitlab_workhorse_secret -config <%= config.gdk_root %>/gitlab-workhorse/config.toml
+gitlab-workhorse: exec /usr/bin/env PATH="<%= config.gdk_root %>/gitlab-workhorse/bin:$PATH" gitlab-workhorse -authSocket <%= config.gdk_root %>/gitlab.socket -listenAddr $host:<%= config.nginx? ? config.nginx.workhorse_port : '$port' %> -documentRoot <%= config.gdk_root %>/gitlab/public -developmentMode -secretPath <%= config.gdk_root %>/gitlab/.gitlab_workhorse_secret -config <%= config.gdk_root %>/gitlab-workhorse/config.toml
 rails-background-jobs: exec /usr/bin/env SIDEKIQ_LOG_ARGUMENTS=1 RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/exec-cd gitlab bin/background_jobs start_foreground
 
 # Frontend services
 #
 webpack: exec /usr/bin/env NODE_ENV=development DEV_SERVER_PORT=<%= config.webpack.port %> DEV_SERVER_HOST=$host support/exec-cd gitlab yarn dev-server
 rails-web: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/exec-cd gitlab bin/web start_foreground
-<%= '#' unless config.gitlab_pages.enabled %>gitlab-pages: exec gitlab-pages/bin/gitlab-pages -listen-http ":<%= config.gitlab_pages.port %>" -artifacts-server <%= config.https ? 'https' : 'http' %>://<%= config.hostname %>:<%= config.port %>/api/v4 -pages-root <%= config.gdk_root %>/gitlab/shared/pages/ -pages-domain 127.0.0.1.xip.io
+<%= '#' unless config.gitlab_pages? %>gitlab-pages: exec gitlab-pages/bin/gitlab-pages -listen-http ":<%= config.gitlab_pages.port %>" -artifacts-server <%= config.https ? 'https' : 'http' %>://<%= config.hostname %>:<%= config.port %>/api/v4 -pages-root <%= config.gdk_root %>/gitlab/shared/pages/ -pages-domain 127.0.0.1.xip.io
 
 # Docker
 #
@@ -38,16 +38,15 @@ registry: exec support/docker-registry
 #influxdb: exec influxdb/bin/influxd -config influxdb/influxdb.conf
 #grafana: exec support/wait-postgresql-ready support/exec-cd grafana bin/grafana-server -config grafana.ini
 #prometheus: exec docker run --net host -p 9090:9090 -v <%= config.gdk_root %>/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus:v2.8.1
-
-<%= '#' unless config.tracer.jaeger.enabled %>jaeger: exec jaeger/jaeger-<%= config.tracer.jaeger.version %>/jaeger-all-in-one --memory.max-traces 512
+<%= '#' unless config.tracer.jaeger? %>jaeger: exec jaeger/jaeger-<%= config.tracer.jaeger.version %>/jaeger-all-in-one --memory.max-traces 512
 
 # Additional services
 #
 #sshd: exec <%= config.sshd.bin %> -e -D -f <%= config.gdk_root %>/openssh/sshd_config
-<%= '#' unless config.nginx.enabled %>nginx: exec <%= config.nginx.bin %> -p <%= config.gdk_root %>/nginx -c conf/nginx.conf
+<%= '#' unless config.nginx? %>nginx: exec <%= config.nginx.bin %> -p <%= config.gdk_root %>/nginx -c conf/nginx.conf
 #elasticsearch: exec elasticsearch/bin/elasticsearch
 
 # Tunneling
 #
-<%= '#' unless config.auto_devops.enabled %>tunnel_gitlab: ssh -N -R $auto_devops_gitlab_port:localhost:$port qa-tunnel.gitlab.info
-<%= '#' unless config.auto_devops.enabled %>tunnel_registry: ssh -N -R $auto_devops_registry_port:localhost:5000 qa-tunnel.gitlab.info
+<%= '#' unless config.auto_devops? %>tunnel_gitlab: ssh -N -R $auto_devops_gitlab_port:localhost:$port qa-tunnel.gitlab.info
+<%= '#' unless config.auto_devops? %>tunnel_registry: ssh -N -R $auto_devops_registry_port:localhost:5000 qa-tunnel.gitlab.info
