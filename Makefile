@@ -325,7 +325,7 @@ support-setup: .ruby-version foreman Procfile redis gitaly-setup jaeger-setup po
 gdk.yml:
 	touch $@
 
-Procfile: Procfile.erb gdk.yml gdk-defaults.yml.erb auto_devops_enabled auto_devops_gitlab_port auto_devops_registry_port
+Procfile: Procfile.erb gdk.yml auto_devops_enabled auto_devops_gitlab_port auto_devops_registry_port
 	rake $@
 
 redis: redis/redis.conf
