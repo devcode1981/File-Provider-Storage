@@ -37,7 +37,7 @@ registry: exec support/docker-registry
 #
 #influxdb: exec influxdb/bin/influxd -config influxdb/influxdb.conf
 #grafana: exec support/wait-postgresql-ready support/exec-cd grafana bin/grafana-server -config grafana.ini
-#prometheus: exec docker run --net host -p 9090:9090 -v /home/git/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus:v2.0.0
+#prometheus: exec docker run --net host -p 9090:9090 -v /home/git/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus:v2.8.1
 jaeger: exec jaeger/jaeger-VERSION/jaeger-all-in-one --memory.max-traces 512
 
 # Additional services
