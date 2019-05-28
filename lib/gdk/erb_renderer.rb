@@ -38,14 +38,13 @@ module GDK
 
       puts <<~EOF
         -------------------------------------------------------------------------------------------------------------
-        Warning: Your `#{target}` is outdated. Below are the changes GDK wanted to apply.
-         - To automatically update: `rm #{target}`
-           and re-run `gdk update`.
-         - To silence this warning (at your own peril): `touch #{target}`
+        Warning: Your `#{target}` is outdated. These are the changes GDK wanted to apply.
         -------------------------------------------------------------------------------------------------------------
         #{diff}
         -------------------------------------------------------------------------------------------------------------
-        Waiting 5 seconds for previous warning to be noticed...."
+        - To apply these changes run: `rm #{target}` and re-run `gdk update`.
+        - To silence this warning (at your own peril): `touch #{target}`
+        ... Waiting 5 seconds for previous warning to be noticed.
         -------------------------------------------------------------------------------------------------------------
       EOF
       sleep 5
