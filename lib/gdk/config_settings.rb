@@ -21,7 +21,7 @@ module GDK
 
           sub = Class.new(ConfigSettings)
           blk.call(sub)
-          sub.new(parent: self, yaml: yaml[name.to_s])
+          sub.new(parent: self, yaml: yaml.fetch(name.to_s, {}))
         end
       else
         raise SettingUndefined, "Could not find the setting '#{name}'"
@@ -68,9 +68,9 @@ module GDK
     private
 
     def load_yaml!
-      return {} unless defined?(self.class::FILE)
+      return {} unless defined?(self.class::FILE) && File.exist?(self.class::FILE)
 
-      @yaml = YAML.load_file(self.class::FILE)
+      @yaml = YAML.load_file(self.class::FILE) || {}
     end
 
     def from_yaml(key, default: nil)
