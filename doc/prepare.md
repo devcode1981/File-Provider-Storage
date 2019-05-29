@@ -4,9 +4,11 @@
 
 ### Prerequisites for all platforms
 
+_TLDR: see sample `brew` and other package manager commands listed in [Platform-specific setup](#platform-specific-setup) below for quick installation._
+
 Make sure you follow all the guidelines and resolve all the dependencies listed below before installing GDK. Otherwise, you will experience strange errors during installation.
 
-| Requisite      | Description                                                                                                                                                                                                                                                                                                                                                                 |
+| Prerequisite      | Description                                                                                                                                                                                                                                                                                                                                                                 |
 | -------------- | -----------                                                                                                                                                                                                                                                                                                                                                                 |
 | User account   | Use a **non-root** Unix user to install GDK. This can be your normal user, but **DO NOT** run the installation as a root user.                                                                                                                                                                                                                                              |
 | Ruby           | <p>Use a Ruby version manager ([RVM](https://rvm.io/), [rbenv](https://github.com/rbenv/rbenv), [chruby](https://github.com/postmodern/chruby), etc.) to install the current [`gitlab-ce` Ruby version](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/.ruby-version).</p><p>**DO NOT** use the system Ruby.</p>                                                       |
