@@ -6,10 +6,9 @@ environment.
 
 ## Installation
 
-1. Install Java 8 (Elasticsearch dependency)
+1. Install OpenJDK 8 (Elasticsearch dependency)
 
-   If needed, install Java 8 (JRE). For macOS you can download it from
-https://www.java.com.
+   You can get a prebuilt OpenJDK Binary for free from [AdoptOpenJDK](https://adoptopenjdk.net)
 
 1. Uncomment ElasticSearch in your Procfile
 
