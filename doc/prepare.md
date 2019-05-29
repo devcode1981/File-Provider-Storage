@@ -16,7 +16,7 @@ Make sure you follow all the guidelines and resolve all the dependencies listed 
 | Node.js        | <p>Node.js **10.x (LTS)** or 8.x (LTS) and Yarn 1.12 or newer.</p><p>Node.js and Yarn installation is covered in the instructions below. If your package manager does not have Node.js 10.x or yarn available, visit the official websites for [Node](https://nodejs.org/en/download/) and [Yarn](https://yarnpkg.com/en/docs/install/) for installation instructions.</p> |
 | Go             | <p>Go 1.10 or newer.</p><p>Go installation is covered in the instructions below. If your package manager does not have up-to-date versions of Go available, visit the official [Go](https://golang.org/doc/install) website for installation instructions.</p>                                                                                                              |
 | Google Chrome  | [Google Chrome](https://www.google.com/chrome/) 60 or greater with [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) version 2.33 or greater. Visit the Chrome Driver [Getting started](https://sites.google.com/a/chromium.org/chromedriver/getting-started) page for more details.                                                           |
-| PostgreSQL     | <p>PostgreSQL version 9.x, with 9.6 recommended. Using PostgreSQL version 10.x is officially not yet supported.</p><p>PostgreSQL installation is covered in the instructions below.</p>                                                                                                                                                                                     |
+| PostgreSQL     | <p>PostgreSQL version 10.x.</p><p>PostgreSQL installation is covered in the instructions below.</p>                                                                                                                                                                                     |
 | GraphicsMagick | GraphicsMagick installation is covered in the instructions below.                                                                                                                                                                                                                                                                                                           |
 | Exiftool       | Exiftool installation is covered in the instructions below.                                                                                                                                                                                                                                                                                                           |
 
@@ -33,7 +33,7 @@ Supported versions: OS X 10.9 (Mavericks) and up.
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
-We are using PostgreSQL 9.6 in the following example. If you want to use another version, please adjust paths accordingly.
+We are using PostgreSQL 10 in the following example. If you want to use another version, please adjust paths accordingly.
 
 #### Install OS X prerequisites using Homebrew
 
@@ -44,12 +44,12 @@ We are using PostgreSQL 9.6 in the following example. If you want to use another
 | We recommend manual installation of Node.js LTS instead of using Homebrew to avoid breaking your development setup when you run `brew upgrade`. Install Node.js 10.x LTS [manually](https://nodejs.org/en/download/) or use a tool like [NVM](https://github.com/creationix/nvm). If you want to use Homebrew, you can prevent it from upgrading the current Node.js formula by pinning it with `brew pin node@10`. |
 
 ```
-brew install git redis postgresql@9.6 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@10 gpg runit
+brew install git redis postgresql@10 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@10 gpg runit
 brew install yarn --ignore-dependencies
 brew link pkg-config
 brew pin node@10
 bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
-echo 'export PATH="/usr/local/opt/postgresql@9.6/bin:/usr/local/opt/node@10/bin:$PATH"' >> ~/.bash_profile
+echo 'export PATH="/usr/local/opt/postgresql@10/bin:/usr/local/opt/node@10/bin:$PATH"' >> ~/.bash_profile
 source ~/.bash_profile
 brew cask install google-chrome chromedriver
 ```
@@ -59,9 +59,9 @@ brew cask install google-chrome chromedriver
 [MacPorts](https://www.macports.org/) is another package manager for macOS. Visit their website for installation details.
 
 ```
-sudo port install git redis libiconv postgresql96-server icu pkgconfig cmake nodejs10 go openssl npm5 yarn coreutils re2 GraphicsMagick runit exiftool
+sudo port install git redis libiconv postgresql10-server icu pkgconfig cmake nodejs10 go openssl npm5 yarn coreutils re2 GraphicsMagick runit exiftool
 bundle config build.eventmachine --with-cppflags=-I/opt/local/include/openssl
-echo 'export PATH=/opt/local/lib/postgresql96/bin/:$PATH' >> ~/.profile
+echo 'export PATH=/opt/local/lib/postgresql10/bin/:$PATH' >> ~/.profile
 source ~/.profile
 ```
 
@@ -125,12 +125,12 @@ We assume you are using Fedora >= 22.
 
 If you are running Fedora < 27 you'll need to install `go` manually using [go] official installation instructions.
 
->**Note:** Fedora 28+ ships PostgreSQL 10.x in default repositories, you can use `postgresql:9.6` module to install PostgreSQL 9.6.
-But keep in mind that will replace the PostgreSQL 10.x package, so you cannot use both versions at once.
+>**Note:** Fedora 30+ ships PostgreSQL 11.x in default repositories, you can use `postgresql:10` module to install PostgreSQL 10.
+But keep in mind that will replace the PostgreSQL 11.x package, so you cannot use both versions at once.
 
 ```sh
 sudo dnf install fedora-repos-modular
-sudo dnf module enable postgresql:9.6
+sudo dnf module enable postgresql:10
 ```
 
 ```
@@ -149,13 +149,13 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 This is tested on CentOS 6.5:
 
 ```
-sudo yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-6-x86_64/pgdg-centos96-9.6-3.noarch.rpm
+sudo yum install https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-6-x86_64/pgdg-centos10-10-2.noarch.rpm
 sudo yum install https://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-sudo yum install postgresql96-server postgresql96-devel libicu-devel git cmake \
+sudo yum install postgresql10-server postgresql10-devel libicu-devel git cmake \
   gcc-c++ redis ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 \
   libstdc++.so.6 nodejs npm re2 re2-devel GraphicsMagick runit perl-Image-ExifTool
 
-bundle config build.pg --with-pg-config=/usr/pgsql-9.6/bin/pg_config
+bundle config build.pg --with-pg-config=/usr/pgsql-10/bin/pg_config
 # This example uses Ruby 2.6.3. Substitute with the current version if different.
 sudo rvm install 2.6.3
 sudo rvm use 2.6.3
@@ -217,7 +217,7 @@ sudo ln -s /usr/sbin/redis-server /usr/bin/redis-server
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
-sudo pkg install postgresql93-server postgresql93-contrib postgresql-libpqxx \
+sudo pkg install postgresql10-server postgresql10-contrib postgresql-libpqxx \
 redis go node icu krb5 gmake re2 GraphicsMagick p5-Image-ExifTool
 ```
 
