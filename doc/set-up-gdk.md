@@ -141,8 +141,10 @@ You can also override the host name used by the Rails instance (specified by the
  gdk reconfigure
  ```
 
-If you want to work on GitLab CI you will need to install [GitLab Runner](https://gitlab.com/gitlab-org/gitlab-runner).
-
 To enable the OpenLDAP server, see the OpenLDAP instructions in this [README](./howto/ldap.md).
 
 After installation [learn how to use GDK](./howto/README.md).
+
+### Enabling GitLab CI/CD in GDK
+
+If you want to work on GitLab CI/CD, see [Using GitLab Runner with GDK](howto/runner.md).
