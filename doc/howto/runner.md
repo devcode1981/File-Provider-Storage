@@ -12,12 +12,23 @@ Start by [preparing your computer](../prepare.md) and
 
 In some configurations, GitLab Runner needs access to GitLab from inside a
 Docker container, or even another machine, which isn't supported in the default
-configuration. If you intend to just use the "shell" executor (fine for very
-simple jobs), you can use GDK with its default settings and skip the special
-setup below. If GDK is already running, you'll need to restart it after making
+configuration.
+
+### Simple configuration
+
+If you intend to just use the "shell" executor (fine for very
+simple jobs), you can use GDK with its default settings and skip the Advanced
+configuration below. If GDK is already running, you'll need to restart it after making
 these changes.
 
-Otherwise, ensure you have Docker installed, then set up GitLab to bind to all
+With GDK running:
+
+1. Navigate to `http://localhost:3000/admin/runners` (log in as root)
+1. Make note of the `Registration token`.
+
+### Advanced configuration
+
+Ensure you have Docker installed, then set up GitLab to bind to all
 IPs on your machine by following [these instructions](local_network.md)
 (in short: `echo "0.0.0.0" > host` in the GDK root directory). Without this
 step, builds will fail with a 'connection refused' error.
