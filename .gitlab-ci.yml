@@ -125,6 +125,9 @@ test:update:
     - cd /home/gdk
     - gdk init
     - cd gitlab-development-kit
+    - echo $CI_PROJECT_DIR $CI_COMMIT_SHA
+    - git remote add source $CI_PROJECT_DIR
+    - git fetch source $CI_COMMIT_SHA
     - netstat -lpt
     - IGNORE_INSTALL_WARNINGS=true gdk install
     - support/set-gitlab-upstream
