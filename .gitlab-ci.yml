@@ -91,6 +91,7 @@ test:install:
     when: always
   script:
     - source /home/gdk/.bash_profile
+    - apk add -U rsync
     - gem install -N bundler:1.17.3
     - cd gem
     - gem build gitlab-development-kit.gemspec
@@ -120,6 +121,7 @@ test:update:
     when: always
   script:
     - source /home/gdk/.bash_profile
+    - apk add -U rsync
     - gem install -N bundler:1.17.3
     - gem install gitlab-development-kit
     - cd /home/gdk
