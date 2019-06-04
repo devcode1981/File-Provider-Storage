@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 def run(cmd)
-  puts cmd.join(' ')
+  puts "(support/self-update-git-worktree) > #{cmd.join(' ')}"
   system(*cmd)
 end
 
@@ -15,7 +15,7 @@ if ci_project_dir && ci_sha
 end
 
 if ci_sha
-  run(%w[git merge --ff-only origin/master])
-else
   run(%W[git checkout #{ci_sha}])
+else
+  run(%w[git merge --ff-only origin/master])
 end
