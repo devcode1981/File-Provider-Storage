@@ -88,7 +88,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
    sudo apt-get update
    sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server \
      libicu-dev cmake g++ libre2-dev libkrb5-dev libsqlite3-dev golang-1.10-go ed \
-     pkg-config graphicsmagick runit libimage-exiftool-perl
+     pkg-config graphicsmagick runit libimage-exiftool-perl rsync
    ```
 1. You're all set now. [Go to next steps](#next-steps).
 
@@ -101,7 +101,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 
 ```
 pacman -S postgresql redis postgresql-libs icu npm ed cmake openssh git go re2 \
-  unzip graphicsmagick runit perl-image-exiftool
+  unzip graphicsmagick runit perl-image-exiftool rsync
 ```
 
 #### Debian
@@ -111,7 +111,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 ```
 sudo apt-get install postgresql postgresql-contrib libpq-dev redis-server \
   libicu-dev cmake g++ libkrb5-dev libre2-dev ed pkg-config graphicsmagick \
-  runit libimage-exiftool-perl
+  runit libimage-exiftool-perl rsync
 ```
 
 If you are running Debian Experimenal or newer you can install a Go
@@ -139,7 +139,7 @@ sudo dnf module enable postgresql:10
 sudo dnf install postgresql libpqxx-devel postgresql-libs redis libicu-devel \
   nodejs git ed cmake rpm-build gcc-c++ krb5-devel go postgresql-server \
   postgresql-contrib re2 GraphicsMagick re2-devel sqlite-devel perl-Digest-SHA \
-  runit perl-Image-ExifTool
+  runit perl-Image-ExifTool rsync
 ```
 
 You may need to install Redis 2.8 or newer manually.
@@ -155,7 +155,8 @@ sudo yum install https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-6-
 sudo yum install https://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 sudo yum install postgresql10-server postgresql10-devel libicu-devel git cmake \
   gcc-c++ redis ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 \
-  libstdc++.so.6 nodejs npm re2 re2-devel GraphicsMagick runit perl-Image-ExifTool
+  libstdc++.so.6 nodejs npm re2 re2-devel GraphicsMagick runit perl-Image-ExifTool \
+  rsync
 
 bundle config build.pg --with-pg-config=/usr/pgsql-10/bin/pg_config
 # This example uses Ruby 2.6.3. Substitute with the current version if different.
@@ -188,7 +189,7 @@ sudo zypper dup
 sudo zypper install libxslt-devel  postgresql postgresql-devel libpqxx-devel redis libicu-devel nodejs git ed cmake \
         rpm-build gcc-c++ krb5-devel postgresql-server postgresql-contrib \
         libxml2-devel libxml2-devel-32bit findutils-locate re2 GraphicsMagick \
-        runit exiftool
+        runit exiftool rsync
 ```
 
 On leap 42.1 you also need:
