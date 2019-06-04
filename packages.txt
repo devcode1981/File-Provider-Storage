@@ -30,3 +30,4 @@ redis-server
 apt-transport-https
 net-tools
 psmisc
+rsync
