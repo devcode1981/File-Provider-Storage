@@ -1,6 +1,18 @@
 #!/usr/bin/env ruby
 
+def run(cmd)
+  puts cmd.join(' ')
+  system(*cmd)
+end
+
+ci_project_dir = ENV['CI_PROJECT_DIR']
 ci_sha = ENV.fetch('CI_COMMIT_SHA', '')
+
+# We need to retrieve the commit SHA if the source project is a fork
+if ci_project_dir && !ci_sha.empty?
+  run(%W[git remote add source #{ci_project_dir}])
+  run(%W[git fetch source #{ci_sha}])
+end
 
 cmd = if ci_sha.empty?
   %w[git merge --ff-only origin/master]
@@ -8,5 +20,4 @@ else
   %W[git checkout #{ci_sha}]
 end
 
-puts cmd.join(' ')
-exec(*cmd)
+run(cmd)
