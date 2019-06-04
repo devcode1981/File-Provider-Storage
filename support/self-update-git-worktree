@@ -1,12 +1,21 @@
 #!/usr/bin/env ruby
 
-ci_sha = ENV.fetch('CI_COMMIT_SHA', '')
-
-cmd = if ci_sha.empty?
-  %w[git merge --ff-only origin/master]
-else
-  %W[git checkout #{ci_sha}]
+def run(cmd)
+  puts "(support/self-update-git-worktree) > #{cmd.join(' ')}"
+  system(*cmd)
 end
 
-puts cmd.join(' ')
-exec(*cmd)
+ci_project_dir = ENV['CI_PROJECT_DIR']
+ci_sha = ENV['CI_COMMIT_SHA']
+
+# We need to retrieve the commit SHA if the source project is a fork
+if ci_project_dir && ci_sha
+  run(%W[git remote add source #{ci_project_dir}])
+  run(%W[git fetch source #{ci_sha}])
+end
+
+if ci_sha
+  run(%W[git checkout #{ci_sha}])
+else
+  run(%w[git merge --ff-only origin/master])
+end
