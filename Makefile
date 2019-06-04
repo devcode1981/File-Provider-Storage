@@ -164,6 +164,7 @@ symlink-gitlab-shell:
 
 ${gitlab_shell_clone_dir}/.git:
 	git clone ${git_depth_param} ${gitlab_shell_repo} ${gitlab_shell_clone_dir}
+	git -C $(@D) checkout "${gitlab_shell_version}"
 
 gitlab-shell/config.yml: gitlab-shell/config.yml.example
 	bin/safe-sed "$@" \
@@ -186,6 +187,7 @@ gitaly-setup: gitaly/bin/gitaly gitaly/config.toml ${gitaly_proto_clone_dir}/.gi
 
 ${gitaly_clone_dir}/.git:
 	git clone ${git_depth_param} --quiet ${gitaly_repo} ${gitaly_clone_dir}
+	git -C $(@D) checkout "${gitaly_version}"
 
 ${gitaly_proto_clone_dir}/.git:
 	git clone ${git_depth_param} --quiet ${gitaly_proto_repo} ${gitaly_proto_clone_dir}
@@ -472,6 +474,7 @@ gitlab-workhorse/bin/gitlab-workhorse: check-go-version ${gitlab_workhorse_clone
 
 ${gitlab_workhorse_clone_dir}/.git:
 	git clone ${git_depth_param} ${gitlab_workhorse_repo} ${gitlab_workhorse_clone_dir}
+	git -C $(@D) checkout "${workhorse_version}"
 
 gitlab-workhorse/.git/pull:
 	cd ${gitlab_workhorse_clone_dir} && \
@@ -492,6 +495,7 @@ gitlab-pages/bin/gitlab-pages: check-go-version ${gitlab_pages_clone_dir}/.git
 
 ${gitlab_pages_clone_dir}/.git:
 	git clone ${git_depth_param} ${gitlab_pages_repo} ${gitlab_pages_clone_dir}
+	git -C $(@D) checkout "${pages_version}"
 
 gitlab-pages/.git/pull:
 	cd ${gitlab_pages_clone_dir} && \
