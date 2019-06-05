@@ -200,6 +200,8 @@ gitaly/config.toml: $(gitaly_clone_dir)/config.toml.example
 		-e "s|# prometheus_listen_addr|prometheus_listen_addr|" \
 		-e "s|# \[logging\]|\[logging\]|" \
 		-e "s|# level = \"warn\"|level = \"warn\"|" \
+		-e "s|^#[^[]*\[git\].*|\[git\]|" \
+		-e "s|^# catfile_cache_size.*|catfile_cache_size = 5|" \
 		"$<"
 
 prom-setup:
