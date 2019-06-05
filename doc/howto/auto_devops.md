@@ -191,15 +191,6 @@ test](https://gitlab.com/gitlab-org/gitlab-ce/blob/eb146e9abe08c3991b5a54237c24d
 does teardown the K8s cluster at the end so after the test finishes it won't be
 possible to run the pipeline again unless you comment this out.
 
-## Tips, Troubleshooting and Useful Commands
-
-Be sure to check out:
-
-- [Auto DevOps - Tips and Troubleshooting](doc/howto/auto_devops/tips_and_troubleshooting.md)
-- [Auto DevOps - Useful Commands](doc/howto/auto_devops/useful_commands.md)
-
-They might save you a lot of time time during work.
-
 ## Technical Details and Alternatives
 
 There are many ways to test out Auto DevOps and we have outlined hopefully one
@@ -508,3 +499,12 @@ created by these automated tests. The disk name will start with
 `gke-qa-cluster-`. Also note there will likely be many such disks here as our
 automated tests do not clean these up after each run. It is a good idea to
 clean them up yourself while you're on this page.
+
+## Tips, Troubleshooting and Useful Commands
+
+Be sure to check out:
+
+- [Auto DevOps - Tips and Troubleshooting](doc/howto/auto_devops/tips_and_troubleshooting.md)
+- [Auto DevOps - Useful Commands](doc/howto/auto_devops/useful_commands.md)
+
+They might save you a lot of time time during work.
