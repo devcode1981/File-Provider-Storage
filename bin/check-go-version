@@ -4,14 +4,14 @@ def version_to_a(v)
   v.split('.').map(&:to_i)
 end
 
-MINIMAL_VERSION = "1.10"
+MINIMAL_VERSION = "1.12"
 
 version_output = ""
 
 begin
   version_output = `go version`
 rescue Errno::ENOENT
-  abort "Go is not installed, please install Go #{MINIAL_VERSION} or higher"
+  abort "Go is not installed, please install Go #{MINIMAL_VERSION} or higher"
 end
 
 abort 'Could not determine version of Go' unless $?.success?
