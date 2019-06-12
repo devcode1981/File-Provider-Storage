@@ -172,6 +172,7 @@ gitlab-shell/config.yml: gitlab-shell/config.yml.example
 		-e "s|^gitlab_url:.*|gitlab_url: http+unix://$(subst /,%2F,${gitlab_development_root}/gitlab.socket)|" \
 		-e "s|/usr/bin/redis-cli|$(shell which redis-cli)|" \
 		-e "s|^  socket: .*|  socket: ${gitlab_development_root}/redis/redis.socket|" \
+		-e "s|^# migration|migration|" \
 		"$<"
 
 .gitlab-shell-bundle:
