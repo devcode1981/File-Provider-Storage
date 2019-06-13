@@ -8,8 +8,12 @@ environment.
 
 1. Install OpenJDK 8 (Elasticsearch dependency)
 
-   You can get a prebuilt OpenJDK Binary for free from [AdoptOpenJDK](https://adoptopenjdk.net)
-    - AdoptOpenJDK also supports Homebrew [https://github.com/AdoptOpenJDK/homebrew-openjdk](https://github.com/AdoptOpenJDK/homebrew-openjdk)
+    - You can get a prebuilt OpenJDK Binary for free from [AdoptOpenJDK](https://adoptopenjdk.net)
+    - You can also install OpenJDK using [Homebrew](https://github.com/AdoptOpenJDK/homebrew-openjdk)
+    ```
+    brew tap AdoptOpenJDK/openjdk
+    brew cask install adoptopenjdk8
+    ```
 
 1. Uncomment ElasticSearch in your Procfile
 
