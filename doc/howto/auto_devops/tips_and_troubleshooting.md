@@ -117,7 +117,11 @@ ResponseError: code=403, message=Insufficient regional quota to satisfy request:
 this would indicate you have reached your limit of persistent disks. See [how
 to clean up unused persistent disks above](../auto_devops.md#unused-persistent-disks).
 
-### SSH requires a passphrase
+### 502 Bad Gateway
+
+There are two known reasons for which you may receive a 502 Bad Gateway response when opening the application using the tunnel URL:
+
+#### SSH requires a passphrase
 
 For GDK to run, it needs to be able to SSH into `qa-tunnel.gitlab.info` without user input. The following steps will allow you to authenticate without entering your passphrase on future logins:
 
@@ -125,3 +129,17 @@ For GDK to run, it needs to be able to SSH into `qa-tunnel.gitlab.info` without 
 1. Enter your passphrase.
 
 If not set up correctly, expect `502 Bad Gateway` responses when navigating to `<gitlab-number>.qa-tunnel.gitlab.info` and the string `Enter passphrase for key '/Users/username/.ssh/id_rsa'` to pepper the GDK logs.
+
+
+#### Procfile was not updated properly
+
+After following the steps indicated in the [autodevops guide](../auto_devops.md), the Procfile located in the root of the GDK installation won’t have the tunnel configuration. If the Procfile is correct, you should find these lines:
+
+```bash
+# Tunneling
+#
+tunnel_gitlab: ssh -N -R [PORT]:localhost:$port qa-tunnel.gitlab.info
+tunnel_registry: ssh -N -R [PORT]:localhost:5000 qa-tunnel.gitlab.info
+```
+
+The `tunnel_gitlab` and `tunnel_registry` lines may be commented out. If that’s the case, you can either delete the Procfile file and run `gdk reconfigure` or uncomment those lines and replace `[PORT]` with the ports specified in the `auto_devops_gitlab_port` and `auto_devops_registry_port` files.

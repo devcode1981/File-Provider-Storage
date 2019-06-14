@@ -62,7 +62,16 @@ gdk reconfigure
 
 This script will create all necessary configuration for one to run Auto DevOps locally. Including assigning two random ports for GitLab instance and GitLab Registry. It's important that this ports are randomized so we avoid colliding two developers with the same ports.
 
-After the script finishes, it will inform you of the `GitLab` and `Registry` URLs.
+After the script finishes, it will inform you of the `GitLab` and `Registry` URLs. For example:
+
+```bash
+*********************************************
+Tunnel URLs
+
+GitLab: https://[PORT].qa-tunnel.gitlab.info
+Registry: https://[PORT].qa-tunnel.gitlab.info
+*********************************************
+```
 
 If the ports generated aren't suitable (they collide with someone else's), you can modify `auto_devops_gitlab_port` and `auto_devops_registry_port` directly, or generate a new random pair:
 
@@ -77,8 +86,7 @@ Finally, run the below command to start all the services:
 port=8080 gdk run
 ```
 
-
-Now login as root using the default password and change your password.
+Now login as root using the Gitlab tunnel URL (`https://[PORT].qa-tunnel.gitlab.info`) and the default password. Once you are logged in, change the default password.
 
 **IMPORTANT**: You should change your root password since it is now internet
 accessible. You should also disable a new users registration feature on
