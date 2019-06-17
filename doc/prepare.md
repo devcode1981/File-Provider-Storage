@@ -15,7 +15,7 @@ Make sure you follow all the guidelines and resolve all the dependencies listed 
 | Terminal       | <p>Make sure to close and reopen the Terminal after installing a Ruby version manager to make sure it is activated.</p><p>You can check the active version with the command `ruby --version`.</p>                                                                                                                                                                           |
 | Bundler        | <p>Install the version of Bundler specified in [Gemfile.lock](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/Gemfile.lock). You will find it at the very bottom, right below the text `BUNDLED WITH`.</p><p> Use the command `gem install bundler -v <version>`, replacing `<version>` with the number you found above.</p>                                            |
 | Git            | <p>We recommend using Git version 2.21 or higher.</p><p>git installation is covered in the instructions below</p>                                                                                                                                                                                                                                                           |
-| Node.js        | <p>Node.js **10.x (LTS)** or 8.x (LTS) and Yarn 1.12 or newer.</p><p>Node.js and Yarn installation is covered in the instructions below. If your package manager does not have Node.js 10.x or yarn available, visit the official websites for [Node](https://nodejs.org/en/download/) and [Yarn](https://yarnpkg.com/en/docs/install/) for installation instructions.</p> |
+| Node.js        | <p>Node.js **12.x** or 10.x (LTS) or 8.x (LTS) and Yarn 1.12 or newer.</p><p>Node.js and Yarn installation is covered in the instructions below. If your package manager does not have Node.js 12.x or yarn available, visit the official websites for [Node](https://nodejs.org/en/download/) and [Yarn](https://yarnpkg.com/en/docs/install/) for installation instructions.</p> |
 | Go             | <p>Go 1.12 or newer.</p><p>Go installation is covered in the instructions below. If your package manager does not have up-to-date versions of Go available, visit the official [Go](https://golang.org/doc/install) website for installation instructions.</p>                                                                                                              |
 | Google Chrome  | [Google Chrome](https://www.google.com/chrome/) 60 or greater with [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) version 2.33 or greater. Visit the Chrome Driver [Getting started](https://sites.google.com/a/chromium.org/chromedriver/getting-started) page for more details.                                                           |
 | PostgreSQL     | <p>PostgreSQL version 10.x.</p><p>PostgreSQL installation is covered in the instructions below.</p>                                                                                                                                                                                     |
@@ -43,15 +43,15 @@ We are using PostgreSQL 10 in the following example. If you want to use another 
 
 | **Note on Node.js** |
 | ------------------- |
-| We recommend manual installation of Node.js LTS instead of using Homebrew to avoid breaking your development setup when you run `brew upgrade`. Install Node.js 10.x LTS [manually](https://nodejs.org/en/download/) or use a tool like [NVM](https://github.com/creationix/nvm). If you want to use Homebrew, you can prevent it from upgrading the current Node.js formula by pinning it with `brew pin node@10`. |
+| We recommend manual installation of Node.js LTS instead of using Homebrew to avoid breaking your development setup when you run `brew upgrade`. Install Node.js 12.x [manually](https://nodejs.org/en/download/) or use a tool like [NVM](https://github.com/creationix/nvm). If you want to use Homebrew, you can prevent it from upgrading the current Node.js formula by pinning it with `brew pin node@12`. |
 
 ```
-brew install git redis postgresql@10 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@10 gpg runit
+brew install git redis postgresql@10 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@12 gpg runit
 brew install yarn --ignore-dependencies
 brew link pkg-config
-brew pin node@10
+brew pin node@12
 bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
-echo 'export PATH="/usr/local/opt/postgresql@10/bin:/usr/local/opt/node@10/bin:$PATH"' >> ~/.bash_profile
+echo 'export PATH="/usr/local/opt/postgresql@10/bin:/usr/local/opt/node@12/bin:$PATH"' >> ~/.bash_profile
 source ~/.bash_profile
 brew cask install google-chrome chromedriver
 ```
@@ -61,7 +61,7 @@ brew cask install google-chrome chromedriver
 [MacPorts](https://www.macports.org/) is another package manager for macOS. Visit their website for installation details.
 
 ```
-sudo port install git redis libiconv postgresql10-server icu pkgconfig cmake nodejs10 go openssl npm5 yarn coreutils re2 GraphicsMagick runit exiftool
+sudo port install git redis libiconv postgresql10-server icu pkgconfig cmake nodejs12 go openssl npm5 yarn coreutils re2 GraphicsMagick runit exiftool
 bundle config build.eventmachine --with-cppflags=-I/opt/local/include/openssl
 echo 'export PATH=/opt/local/lib/postgresql10/bin/:$PATH' >> ~/.profile
 source ~/.profile
@@ -75,7 +75,7 @@ source ~/.profile
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
-1. Install **Node.js 10.x** from the [official Node.js binary distribution](https://github.com/nodesource/distributions/blob/master/README.md#debinstall).
+1. Install **Node.js 12.x** from the [official Node.js binary distribution](https://github.com/nodesource/distributions/blob/master/README.md#debinstall).
 1. Install **Yarn** from the [Yarn Debian package repository](https://yarnpkg.com/lang/en/docs/install/#debian-stable).
 1. Install the rest of the dependencies:
    ```
@@ -253,9 +253,9 @@ Return to the prerequisite installation steps.
 Install Node.js from source:
 
 ```sh
-curl -O https://nodejs.org/dist/v10.15.0/node-v10.15.0.tar.gz
-tar -zxf node-v10.15.0.tar.gz
-cd node-v10.15.0
+curl -O https://nodejs.org/dist/v12.4.0/node-v12.4.0.tar.gz
+tar -zxf node-v12.4.0.tar.gz
+cd node-v12.4.0
 ```
 
 Build the Node.js library. The following instructions are copied from the Node.js BUILDING.md document:

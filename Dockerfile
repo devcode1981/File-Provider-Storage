@@ -29,7 +29,7 @@ RUN curl --silent --location --output go.tar.gz https://dl.google.com/go/go$GO_V
 RUN echo "$GO_SHA256  go.tar.gz" | sha256sum -c -
 RUN tar -C /usr/local -xzf go.tar.gz
 
-FROM node:10-jessie AS nodejs
+FROM node:12-stretch AS nodejs
 # contains nodejs and yarn in /usr/local
 # https://github.com/nodejs/docker-node/blob/77f1baaa55acc71c9eda1866f0c162b434a63be5/10/jessie/Dockerfile
 WORKDIR /stage
