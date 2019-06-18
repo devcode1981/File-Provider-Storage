@@ -473,7 +473,7 @@ gitlab-workhorse-clean-bin:
 
 .PHONY: gitlab-workhorse/bin/gitlab-workhorse
 gitlab-workhorse/bin/gitlab-workhorse: check-go-version ${gitlab_workhorse_clone_dir}/.git
-	GOPATH=${gitlab_development_root}/gitlab-workhorse GOBIN=${gitlab_development_root}/gitlab-workhorse/bin go install -tags "${tracer_build_tags}" gitlab.com/gitlab-org/gitlab-workhorse/...
+	GOPATH=${gitlab_development_root}/gitlab-workhorse GOBIN=${gitlab_development_root}/gitlab-workhorse/bin GO111MODULE=off go install -tags "${tracer_build_tags}" gitlab.com/gitlab-org/gitlab-workhorse/...
 
 ${gitlab_workhorse_clone_dir}/.git:
 	git clone ${git_depth_param} ${gitlab_workhorse_repo} ${gitlab_workhorse_clone_dir}
@@ -494,7 +494,7 @@ gitlab-pages-clean-bin:
 
 .PHONY: gitlab-pages/bin/gitlab-pages
 gitlab-pages/bin/gitlab-pages: check-go-version ${gitlab_pages_clone_dir}/.git
-	GOPATH=${gitlab_development_root}/gitlab-pages GOBIN=${gitlab_development_root}/gitlab-pages/bin go install gitlab.com/gitlab-org/gitlab-pages
+	GOPATH=${gitlab_development_root}/gitlab-pages GOBIN=${gitlab_development_root}/gitlab-pages/bin GO111MODULE=off go install gitlab.com/gitlab-org/gitlab-pages
 
 ${gitlab_pages_clone_dir}/.git:
 	git clone ${git_depth_param} ${gitlab_pages_repo} ${gitlab_pages_clone_dir}
