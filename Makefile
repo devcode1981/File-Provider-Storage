@@ -163,8 +163,7 @@ symlink-gitlab-shell:
 	support/symlink gitlab-shell ${gitlab_shell_clone_dir}
 
 ${gitlab_shell_clone_dir}/.git:
-	git clone ${git_depth_param} ${gitlab_shell_repo} ${gitlab_shell_clone_dir}
-	git -C $(@D) checkout "${gitlab_shell_version}"
+	git clone --quiet --branch "${gitlab_shell_version}" ${git_depth_param} ${gitlab_shell_repo} ${gitlab_shell_clone_dir}
 
 gitlab-shell/config.yml: gitlab-shell/config.yml.example
 	bin/safe-sed "$@" \
@@ -187,8 +186,7 @@ gitlab-shell/.gitlab_shell_secret:
 gitaly-setup: gitaly/bin/gitaly gitaly/config.toml ${gitaly_proto_clone_dir}/.git
 
 ${gitaly_clone_dir}/.git:
-	git clone ${git_depth_param} --quiet ${gitaly_repo} ${gitaly_clone_dir}
-	git -C $(@D) checkout "${gitaly_version}"
+	git clone --quiet --branch "${gitaly_version}" ${git_depth_param} ${gitaly_repo} ${gitaly_clone_dir}
 
 ${gitaly_proto_clone_dir}/.git:
 	git clone ${git_depth_param} --quiet ${gitaly_proto_repo} ${gitaly_proto_clone_dir}
@@ -476,8 +474,7 @@ gitlab-workhorse/bin/gitlab-workhorse: check-go-version ${gitlab_workhorse_clone
 	GOPATH=${gitlab_development_root}/gitlab-workhorse GOBIN=${gitlab_development_root}/gitlab-workhorse/bin go install -tags "${tracer_build_tags}" gitlab.com/gitlab-org/gitlab-workhorse/...
 
 ${gitlab_workhorse_clone_dir}/.git:
-	git clone ${git_depth_param} ${gitlab_workhorse_repo} ${gitlab_workhorse_clone_dir}
-	git -C $(@D) checkout "${workhorse_version}"
+	git clone --quiet --branch "${workhorse_version}" ${git_depth_param} ${gitlab_workhorse_repo} ${gitlab_workhorse_clone_dir}
 
 gitlab-workhorse/.git/pull:
 	cd ${gitlab_workhorse_clone_dir} && \
@@ -497,8 +494,7 @@ gitlab-pages/bin/gitlab-pages: check-go-version ${gitlab_pages_clone_dir}/.git
 	GOPATH=${gitlab_development_root}/gitlab-pages GOBIN=${gitlab_development_root}/gitlab-pages/bin go install gitlab.com/gitlab-org/gitlab-pages
 
 ${gitlab_pages_clone_dir}/.git:
-	git clone ${git_depth_param} ${gitlab_pages_repo} ${gitlab_pages_clone_dir}
-	git -C $(@D) checkout "${pages_version}"
+	git clone --quiet --branch "${pages_version}" ${git_depth_param} ${gitlab_pages_repo} ${gitlab_pages_clone_dir}
 
 gitlab-pages/.git/pull:
 	cd ${gitlab_pages_clone_dir} && \
