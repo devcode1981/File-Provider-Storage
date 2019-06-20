@@ -1,18 +1,33 @@
 #!/usr/bin/env ruby
 
+require 'pathname'
+
 require_relative '../lib/shellout.rb'
 
 POSTGRESQL_VERSION = '9.6'.freeze
+POSTGRESQL_DAEMON_BINARY = "/usr/local/opt/postgresql@#{POSTGRESQL_VERSION}/bin/postgres".freeze
 
-brew_cellar_pg = Shellout.new(%W[brew --cellar postgresql@#{POSTGRESQL_VERSION}]).try_run
+def original_pg_bin_dir_discover
+  brew_cellar_pg = Shellout.new(%W[brew --cellar postgresql@#{POSTGRESQL_VERSION}]).try_run
 
-unless brew_cellar_pg.empty?
-  brew_cellar_pg_bin = Dir.glob(File.join(brew_cellar_pg, '/*/bin'))
+  unless brew_cellar_pg.empty?
+    brew_cellar_pg_bin = Dir.glob(File.join(brew_cellar_pg, '/*/bin'))
 
-  if brew_cellar_pg_bin.any?
-    puts brew_cellar_pg_bin.last
-    exit
+    if brew_cellar_pg_bin.any?
+      return brew_cellar_pg_bin.last
+    end
   end
+
+  Shellout.new(%w[pg_config --bindir]).run
 end
 
-puts Shellout.new(%w[pg_config --bindir]).run
+def robust_pg_bin_dir_discover
+  postgresql_daemon_binary = Pathname.new(POSTGRESQL_DAEMON_BINARY)
+
+  return nil unless postgresql_daemon_binary.exist?
+
+  postgresql_daemon_binary.dirname
+end
+
+puts (robust_pg_bin_dir_discover || original_pg_bin_dir_discover)
+
