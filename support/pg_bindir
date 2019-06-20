@@ -2,13 +2,15 @@
 
 require_relative '../lib/shellout.rb'
 
-brew_cellar_pg96 = Shellout.new(%w[brew --cellar postgresql@9.6]).try_run
+POSTGRESQL_VERSION = '9.6'.freeze
 
-unless brew_cellar_pg96.empty?
-  brew_cellar_pg96_bin = Dir.glob(File.join(brew_cellar_pg96, '/*/bin'))
+brew_cellar_pg = Shellout.new(%W[brew --cellar postgresql@#{POSTGRESQL_VERSION}]).try_run
 
-  if brew_cellar_pg96_bin.any?
-    puts brew_cellar_pg96_bin.last
+unless brew_cellar_pg.empty?
+  brew_cellar_pg_bin = Dir.glob(File.join(brew_cellar_pg, '/*/bin'))
+
+  if brew_cellar_pg_bin.any?
+    puts brew_cellar_pg_bin.last
     exit
   end
 end
