@@ -4,30 +4,52 @@ require 'pathname'
 
 require_relative '../lib/shellout.rb'
 
-POSTGRESQL_VERSION = '9.6'.freeze
-POSTGRESQL_DAEMON_BINARY = "/usr/local/opt/postgresql@#{POSTGRESQL_VERSION}/bin/postgres".freeze
+POSTGRESQL_VERSIONS = [ 10, 9.6 ].freeze
 
-def original_pg_bin_dir_discover
-  brew_cellar_pg = Shellout.new(%W[brew --cellar postgresql@#{POSTGRESQL_VERSION}]).try_run
+def brew_linked_discover
+  dirname_if_exists_for('/usr/local/bin/postgres')
+end
 
-  unless brew_cellar_pg.empty?
-    brew_cellar_pg_bin = Dir.glob(File.join(brew_cellar_pg, '/*/bin'))
+def brew_symlink_discover
+  POSTGRESQL_VERSIONS.each do |version|
+    pg_bin_dir = dirname_if_exists_for("/usr/local/opt/postgresql@#{version}/bin/postgres")
 
-    if brew_cellar_pg_bin.any?
-      return brew_cellar_pg_bin.last
-    end
+    return pg_bin_dir if pg_bin_dir
   end
 
+  nil
+end
+
+def brew_cellar_discover
+  POSTGRESQL_VERSIONS.each do |version|
+    brew_cellar_pg = Shellout.new(%W[brew --cellar postgresql@#{version}]).try_run
+
+    next if brew_cellar_pg.empty?
+
+    brew_cellar_pg_bin = Dir.glob(File.join(brew_cellar_pg, '/*/bin'))
+    return brew_cellar_pg_bin.last if brew_cellar_pg_bin.any?
+  end
+
+  nil
+end
+
+def pg_config_discover
   Shellout.new(%w[pg_config --bindir]).run
+rescue Errno::ENOENT
+  return nil
 end
 
-def robust_pg_bin_dir_discover
-  postgresql_daemon_binary = Pathname.new(POSTGRESQL_DAEMON_BINARY)
+def dirname_if_exists_for(path)
+  path = Pathname.new(path)
 
-  return nil unless postgresql_daemon_binary.exist?
+  return unless path.exist?
 
-  postgresql_daemon_binary.dirname
+  path.dirname
 end
 
-puts (robust_pg_bin_dir_discover || original_pg_bin_dir_discover)
+dir = (brew_linked_discover || brew_symlink_discover || brew_cellar_discover || pg_config_discover)
+
+fail('ERROR: Unable to determine PostgreSQL bin directory') unless dir
+
+puts dir
 
