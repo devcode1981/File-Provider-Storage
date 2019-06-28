@@ -26,7 +26,10 @@ if [[ -f "$dest_file" ]]; then
     echo "   and re-run \`gdk update\`."
     echo " - To silence this warning (at your own peril): \`touch ${dest_file}\`"
     echo "-------------------------------------------------------------------------------------------------------------"
-    git --no-pager diff --no-index --color -u "${dest_file}" "${dest_new_content_temp_file}" || true
+
+    [[ $(tput colors) -ge 8 ]] && color_arg="--color" || color_arg=""
+    git --no-pager diff --no-index ${color_arg} -u "${dest_file}" "${dest_new_content_temp_file}" || true
+
     echo "-------------------------------------------------------------------------------------------------------------"
     echo "Waiting 5 seconds for previous warning to be noticed...."
     echo "-------------------------------------------------------------------------------------------------------------"
