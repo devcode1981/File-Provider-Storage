@@ -29,13 +29,16 @@ module GDK
     end
 
     # Provide a shorter form for `config.setting.enabled` as `config.setting?`
-    def method_missing(name, *args, &blk)
-      return super unless name.to_s.end_with?('?')
-      setting = name.to_s.chop.to_sym
+    def method_missing(method_name, *args, &blk)
+      enabled = enabled_value(method_name)
 
-      return super unless respond_to?(setting) && public_send(setting).respond_to?(:enabled)
+      return super if enabled.nil?
 
-      public_send(setting).enabled
+      enabled
+    end
+
+    def respond_to_missing?(method_name, include_private = false)
+      !enabled_value(method_name).nil? || super
     end
 
     def cmd!(cmd)
@@ -66,6 +69,15 @@ module GDK
     alias_method :config, :root
 
     private
+
+    def enabled_value(method_name)
+      chopped_name = method_name.to_s.chop.to_sym
+
+      return public_send(chopped_name).enabled if method_name.to_s.end_with?('?') &&
+                                                  respond_to?(chopped_name) &&
+                                                  public_send(chopped_name).respond_to?(:enabled)
+      nil
+    end
 
     def load_yaml!
       return {} unless defined?(self.class::FILE) && File.exist?(self.class::FILE)
