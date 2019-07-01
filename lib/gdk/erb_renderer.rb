@@ -34,7 +34,7 @@ module GDK
     private
 
     def warn!(temp_file)
-      diff = `git --no-pager diff --no-index --color -u "#{target}" "#{temp_file.path}"`
+      diff = `git --no-pager diff --no-index #{colors_arg} -u "#{target}" "#{temp_file.path}"`
 
       puts <<~EOF
         -------------------------------------------------------------------------------------------------------------
@@ -48,6 +48,14 @@ module GDK
         -------------------------------------------------------------------------------------------------------------
       EOF
       sleep 5
+    end
+
+    def colors?
+      @colors_supported ||= (`tput colors`.chomp.to_i >= 8)
+    end
+
+    def colors_arg
+      '--color' if colors?
     end
   end
 end
