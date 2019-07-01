@@ -6,7 +6,7 @@ module GDK
   class ConfigSettings
     SettingUndefined = Class.new(StandardError)
 
-    attr_accessor :parent, :yaml
+    attr_reader :parent, :yaml, :key
 
     def self.method_missing(name, *args, &blk)
       if !args.empty?
@@ -21,24 +21,35 @@ module GDK
 
           sub = Class.new(ConfigSettings)
           blk.call(sub)
-          sub.new(parent: self, yaml: yaml.fetch(name.to_s, {}))
+          sub.new(parent: self, yaml: yaml.fetch(name.to_s, {}), key: [key, name].compact.join('.'))
         end
       else
         raise SettingUndefined, "Could not find the setting '#{name}'"
       end
     end
 
-    # Provide a shorter form for `config.setting.enabled` as `config.setting?`
-    def method_missing(method_name, *args, &blk)
-      enabled = enabled_value(method_name)
-
-      return super if enabled.nil?
-
-      enabled
+    def initialize(parent: nil, yaml: nil, key: nil)
+      @parent = parent
+      @key = key
+      @yaml = yaml || load_yaml!
     end
 
-    def respond_to_missing?(method_name, include_private = false)
-      !enabled_value(method_name).nil? || super
+    def dump!(file = nil)
+      base_methods = ConfigSettings.new.methods
+
+      yaml = (methods - base_methods).inject({}) do |hash, method|
+        value = public_send(method)
+        if value.is_a?(ConfigSettings)
+          hash[method.to_s] = value.dump!
+        else
+          hash[method.to_s] = value
+        end
+        hash
+      end
+
+      file.puts(yaml.to_yaml) if file
+
+      yaml
     end
 
     def cmd!(cmd)
@@ -58,15 +69,27 @@ module GDK
       value
     end
 
-    def initialize(parent: nil, yaml: nil)
-      @parent = parent
-      @yaml = yaml || load_yaml!
-    end
-
     def root
       parent&.root || self
     end
     alias_method :config, :root
+
+    def inspect
+      "#<GDK::ConfigSettings key:#{key}>"
+    end
+
+    # Provide a shorter form for `config.setting.enabled` as `config.setting?`
+    def method_missing(method_name, *args, &blk)
+      enabled = enabled_value(method_name)
+
+      return super if enabled.nil?
+
+      enabled
+    end
+
+    def respond_to_missing?(method_name, include_private = false)
+      !enabled_value(method_name).nil? || super
+    end
 
     private
 
