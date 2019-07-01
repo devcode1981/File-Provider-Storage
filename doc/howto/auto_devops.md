@@ -95,8 +95,19 @@ instance settings page (in the admin panel).
 ## Google OAuth2
 
 To be able to create a new GKE Cluster via GitLab, you need to configure
-Gitlab to be able to authenticate with Google. See the [Google Oauth2
-howto](/doc/howto/google-oauth2.md) for instructions.
+Gitlab to be able to authenticate with Google. To get an OAuth token
+that works with your server add your redirect URLs for the generated
+GitLab tunnel URL to [the shared OAuth
+client](https://console.cloud.google.com/apis/credentials/oauthclient/696404988091-a80933t1dpfu38khu8o4mfrt32pad0ij.apps.googleusercontent.com?project=gitlab-internal-153318).
+You need to add the following 2 URLs under "Authorized redirect URIs" on
+the GCP console:
+
+- `https://[PORT].qa-tunnel.gitlab.info/users/auth/google_oauth2/callback`
+- `https://[PORT].qa-tunnel.gitlab.info/-/google_api/auth/callback`
+
+Then copy the Client ID and Client secret from that page and use those
+to reconfigure GDK using the instructions at [Google Oauth2
+howto](/doc/howto/google-oauth2.md#gdk-setup).
 
 ## Conclusion
 

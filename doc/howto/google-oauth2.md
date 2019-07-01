@@ -14,18 +14,17 @@
 
 ## GDK Setup
 
-1. Configure gitlab/config/gitlab.yml
+1. Update the configuration in `gitlab/config/gitlab.yml` as follows:
 
-    ```yml
-    development:
-    <<: *base
-    omniauth:
-        providers:
-        - { name: 'google_oauth2',
-            app_id: 'Here is your Client ID',
-            app_secret: 'Here is your Client secret',
-            args: { access_type: 'offline', approval_prompt: '' } }
+```diff
+  development:
+  <<: *base
++ omniauth:
++   providers:
++   - { name: 'google_oauth2',
++       app_id: 'Here is your Client ID',
++       app_secret: 'Here is your Client secret',
++       args: { access_type: 'offline', approval_prompt: '' } }
+```
 
-    ```
-
-1. Run GDK
+1. Restart the GDK
