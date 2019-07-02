@@ -52,7 +52,7 @@ brew link pkg-config
 brew pin node@12 icu4c readline
 bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
 echo 'export PATH="/usr/local/opt/postgresql@10/bin:/usr/local/opt/node@12/bin:$PATH"' >> ~/.bash_profile
-echo 'export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig"' >> ~/.bash_profile
+echo 'export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bash_profile
 source ~/.bash_profile
 brew cask install google-chrome chromedriver
 ```
