@@ -37,12 +37,12 @@ http {
       ''      close;
   }
 
-<% if config.https %>
+<% if config.https? %>
   server {
     listen <%= config.hostname %>:<%= config.port %> ssl;
 
-    ssl_certificate <%= config.gdk_root %>/<%= config.hostname %>+3.pem;
-    ssl_certificate_key <%= config.gdk_root %>/<%= config.hostname %>+3-key.pem;
+    ssl_certificate <%= config.gdk_root %>/<%= config.nginx.ssl.certificate %>;
+    ssl_certificate_key <%= config.gdk_root %>/<%= config.nginx.ssl.key %>;
 
     location / {
         proxy_set_header    Host                $http_host;
@@ -58,10 +58,12 @@ http {
     }
   }
 
+<%   if config.nginx.http? %>
   server {
-    listen <%= config.hostname %>:80;
+    listen <%= config.hostname %>:<%= config.nginx.http.port %>;
 
     return 301 https://$host$request_uri;
   }
+<%   end %>
 <% end %>
 }

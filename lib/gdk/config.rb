@@ -28,10 +28,14 @@ module GDK
       read!('port') || 3000
     end
 
-    https do
-      next true if config.auto_devops.enabled
-      read!('https_enabled') || false
+    https do |h|
+      h.enabled do
+        next true if config.auto_devops.enabled
+        read!('https_enabled') || false
+      end
     end
+
+    protocol { config.https? ? 'https' : 'http' }
 
     relative_url_root { read!('relative_url_root') || nil }
     username { cmd!('whoami') }
@@ -101,8 +105,16 @@ module GDK
 
     nginx do |n|
       n.enabled false
-      n.bin { cmd!('which nginx') }
+      n.bin { find_executable!('nginx') || '/usr/sbin/nginx' }
       n.workhorse_port 3333
+      n.ssl do |s|
+        s.certificate 'localhost.crt'
+        s.key 'localhost.key'
+      end
+      n.http do |h|
+        h.enabled false
+        h.port 80
+      end
     end
 
     postgresql do |p|
