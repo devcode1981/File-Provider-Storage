@@ -37,7 +37,7 @@ module GDK
     def dump!(file = nil)
       base_methods = ConfigSettings.new.methods
 
-      yaml = (methods - base_methods).inject({}) do |hash, method|
+      yaml = (methods - base_methods).sort.inject({}) do |hash, method|
         value = public_send(method)
         if value.is_a?(ConfigSettings)
           hash[method.to_s] = value.dump!
@@ -54,6 +54,11 @@ module GDK
 
     def cmd!(cmd)
       `#{cmd}`.chomp
+    end
+
+    def find_executable!(bin)
+      result = cmd!("which #{bin}")
+      result.empty? ? nil : result
     end
 
     def read!(filename)

@@ -16,7 +16,7 @@ module GDK
       r.gitlab_docs 'https://gitlab.com/gitlab-com/gitlab-docs.git'
     end
 
-    gdk_root { cmd!('pwd') }
+    gdk_root { ENV['PWD'] }
 
     hostname do
       next "#{config.auto_devops.gitlab.port}.qa-tunnel.gitlab.info" if config.auto_devops.enabled
@@ -38,7 +38,7 @@ module GDK
     protocol { config.https? ? 'https' : 'http' }
 
     relative_url_root { read!('relative_url_root') || nil }
-    username { cmd!('whoami') }
+    username { ENV['USERNAME'] }
 
     webpack do |w|
       w.port { read!('webpack_port') || 3808 }
@@ -131,11 +131,11 @@ module GDK
     end
 
     sshd do |s|
-      s.bin { cmd!('which sshd') }
+      s.bin { find_executable!('sshd') || '/usr/sbin/sshd' }
     end
 
     git do |g|
-      g.bin { cmd!('which git') }
+      g.bin { find_executable!('git') }
     end
   end
 end

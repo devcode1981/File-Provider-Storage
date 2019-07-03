@@ -3,6 +3,8 @@
 $LOAD_PATH.unshift('.')
 
 require 'lib/gdk'
+require 'rake/clean'
+CLOBBER.include 'gdk.example.yml', 'Procfile', 'nginx/conf/nginx.conf'
 
 def config
   @config ||= GDK::Config.new
@@ -14,7 +16,7 @@ task 'dump_config' do
 end
 
 desc 'Generate an example config file with all the defaults'
-file 'gdk.example.yml' do |t|
+file 'gdk.example.yml' => 'clobber:gdk.example.yml' do |t|
   File.open(t.name, File::CREAT|File::TRUNC|File::WRONLY) do |file|
     config = Class.new(GDK::Config)
     config.define_method(:gdk_root) { '/home/git/gdk' }
@@ -23,6 +25,10 @@ file 'gdk.example.yml' do |t|
 
     config.new(yaml: {}).dump!(file)
   end
+end
+
+task 'clobber:gdk.example.yml' do |t|
+  Rake::Cleaner.cleanup_files([t.name])
 end
 
 desc 'Generate Procfile for Foreman'
