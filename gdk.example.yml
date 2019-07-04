@@ -1,0 +1,68 @@
+---
+auto_devops:
+  enabled: false
+  gitlab:
+    port: 20000
+  registry:
+    port: 25000
+elasticsearch:
+  checksum: 5903e1913a7c96aad96a8227517c40490825f672
+  version: 6.5.1
+gdk_root: "/home/git/gdk"
+geo:
+  enabled: false
+git:
+  bin: "/usr/bin/git"
+gitaly:
+  assembly_dir: "/home/git/gdk/gitaly/assembly"
+gitlab_pages:
+  enabled: true
+  port: 3034
+hostname: localhost
+https:
+  enabled: true
+nginx:
+  bin: "/usr/sbin/nginx"
+  enabled: false
+  http:
+    enabled: false
+    port: 80
+  ssl:
+    certificate: localhost.crt
+  workhorse_port: 3333
+object_store:
+  enabled: false
+  port: 9000
+port: 3000
+postgresql:
+  bin_dir: "/usr/lib/postgresql/9.6/bin"
+  data_dir: "/home/git/gdk/postgresql/data"
+  dir: "/home/git/gdk/postgresql"
+  geo_dir: "/home/git/gdk/postgresql-geo"
+  replica_dir: "/home/git/gdk/postgresql-replica"
+  replication_user: gitlab_replication
+protocol: https
+registry:
+  enabled: false
+  external_port: 5000
+  host: 127.0.0.1
+  port: 5000
+relative_url_root:
+repositories:
+  gitaly: https://gitlab.com/gitlab-org/gitaly.git
+  gitaly_proto: https://gitlab.com/gitlab-org/gitaly-proto.git
+  gitlab: https://gitlab.com/gitlab-org/gitlab-ce.git
+  gitlab_docs: https://gitlab.com/gitlab-com/gitlab-docs.git
+  gitlab_pages: https://gitlab.com/gitlab-org/gitlab-pages.git
+  gitlab_shell: https://gitlab.com/gitlab-org/gitlab-shell.git
+  gitlab_workhorse: https://gitlab.com/gitlab-org/gitlab-workhorse.git
+sshd:
+  bin: "/usr/sbin/sshd"
+tracer:
+  build_tags: tracer_static tracer_static_jaeger
+  jaeger:
+    enabled: true
+    version: 1.10.1
+username: git
+webpack:
+  port: 3806

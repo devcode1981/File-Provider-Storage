@@ -4,6 +4,8 @@
 # part of the gitlab-development-kit gem so that we can iterate faster.
 
 require_relative 'gdk/env'
+require_relative 'gdk/config'
+require_relative 'gdk/erb_renderer'
 
 module GDK
   PROGNAME = 'gdk'.freeze
