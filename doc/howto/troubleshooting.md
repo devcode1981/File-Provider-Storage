@@ -587,7 +587,7 @@ brew install postgresql@9.6
 brew link --force postgresql@9.6
 ```
 
-## Unicorn timeout
+## Puma/Unicorn timeout
 
 Browser shows `EOF`. Logs show a timeout:
 
@@ -595,12 +595,20 @@ Browser shows `EOF`. Logs show a timeout:
 error: GET "/users/sign_in": badgateway: failed after 62s: EOF
 ```
 
-Depending on the performance of your development environment, Unicorn may
+Depending on the performance of your development environment, Puma/Unicorn may
 time out. Increase the timeout as a workaround.
 
-Edit `gitlab/config/unicorn.rb`:
+For Puma: you can use environment variables to override the default timeout:
 
-```
+Variable | Type | Description
+-------- | ---- | -----------
+`GITLAB_RAILS_RACK_TIMEOUT` | integer | Sets `service_timeout`
+`GITLAB_RAILS_WAIT_TIMEOUT` | integer | Sets `wait_timeout`
+
+
+For Unicorn: edit `gitlab/config/unicorn.rb`:
+
+```ruby
 timeout 3600
 ```
 
