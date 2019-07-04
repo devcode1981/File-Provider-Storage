@@ -58,7 +58,7 @@ http {
     }
   }
 
-<%   if config.nginx.http? %>
+<% if config.nginx.http? %>
   server {
     listen <%= config.hostname %>:<%= config.nginx.http.port %>;
 
