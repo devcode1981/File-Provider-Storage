@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'erb'
+require 'fileutils'
 require 'tempfile'
 
 module GDK
@@ -24,7 +25,7 @@ module GDK
 
       render!(temp_file.path)
 
-      return File.rename(temp_file.path, target) unless File.exist?(target)
+      return FileUtils.mv(temp_file.path, target) unless File.exist?(target)
 
       warn!(temp_file) unless FileUtils.identical?(target, temp_file.path)
     ensure
