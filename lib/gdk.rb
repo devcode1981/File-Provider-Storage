@@ -45,6 +45,7 @@ module GDK
         gitlab/config/gitlab.yml
         gitlab/config/database.yml
         gitlab/config/unicorn.rb
+        gitlab/config/puma.rb
         gitlab/config/resque.yml
         gitlab-shell/config.yml
         gitlab-shell/.gitlab_shell_secret
