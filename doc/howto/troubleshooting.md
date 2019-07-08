@@ -29,6 +29,12 @@ extensions:
 gem pristine charlock_holmes
 ```
 
+## An error occured while installing gpgme on macOS
+
+Check if you have `gawk` installed >= 5.0.0 and uninstall it.
+
+Re-run the `gdk install` again and follow any on-screen instructions related to instaling `gpgme`.
+
 ## An error occurred while installing mysql2
 
 ```shell
