@@ -92,14 +92,7 @@ auto_devops_registry_port: auto_devops_gitlab_port
 	expr ${auto_devops_gitlab_port} + 5000 > $@
 
 gitlab/config/gitlab.yml: support/templates/gitlab.yml.erb auto_devops_enabled auto_devops_gitlab_port auto_devops_registry_port
-	hostname=${hostname} port=${port} relative_url_root=${relative_url_root}\
-		https=${https}\
-		webpack_port=${webpack_port}\
-		registry_host=${registry_host} registry_external_port=${registry_external_port}\
-		registry_enabled=${registry_enabled} registry_port=${registry_port}\
-		object_store_enabled=${object_store_enabled} object_store_port=${object_store_port}\
-		gitlab_pages_port=${gitlab_pages_port}\
-		support/edit-gitlab-yml gitlab/config/gitlab.yml
+	rake gitlab/config/gitlab.yml
 
 gitlab/config/database.yml: database.yml.example
 	bin/safe-sed "$@" \
@@ -183,7 +176,7 @@ gitlab-shell/.gitlab_shell_secret:
 
 # Set up gitaly
 
-gitaly-setup: gitaly/bin/gitaly gitaly/config.toml ${gitaly_proto_clone_dir}/.git
+gitaly-setup: gitaly/bin/gitaly gitaly/gitaly.config.toml ${gitaly_proto_clone_dir}/.git
 
 ${gitaly_clone_dir}/.git:
 	git clone --quiet --branch "${gitaly_version}" ${git_depth_param} ${gitaly_repo} ${gitaly_clone_dir}
@@ -191,17 +184,8 @@ ${gitaly_clone_dir}/.git:
 ${gitaly_proto_clone_dir}/.git:
 	git clone ${git_depth_param} --quiet ${gitaly_proto_repo} ${gitaly_proto_clone_dir}
 
-gitaly/config.toml: $(gitaly_clone_dir)/config.toml.example
-	bin/safe-sed "$@" \
-		-e "s|/home/git|${gitlab_development_root}|g" \
-		-e "s|^socket_path.*|socket_path = \"${gitlab_development_root}/gitaly.socket\"|" \
-		-e "s|^bin_dir.*|bin_dir = \"${gitlab_development_root}/gitaly/bin\"|" \
-		-e "s|# prometheus_listen_addr|prometheus_listen_addr|" \
-		-e "s|# \[logging\]|\[logging\]|" \
-		-e "s|# level = \"warn\"|level = \"warn\"|" \
-		-e "s|^#[^[]*\[git\].*|\[git\]|" \
-		-e "s|^# catfile_cache_size.*|catfile_cache_size = 5|" \
-		"$<"
+gitaly/gitaly.config.toml: support/templates/gitaly.config.toml.erb
+	rake gitaly/gitaly.config.toml
 
 prom-setup:
 	if [ "$(uname -s)" = "Linux" ]; then \
@@ -627,14 +611,13 @@ clean-config:
 	.ruby-version \
 	Procfile \
 	gitlab-workhorse/config.toml \
-	gitaly/config.toml \
+	gitaly/gitaly.config.toml \
 	nginx/conf/nginx.conf \
 	registry/config.yml \
 	jaeger
 
 touch-examples:
 	touch \
-	$(gitaly_clone_dir)/config.toml.example \
 	Procfile.erb \
 	database.yml.example \
 	database_geo.yml.example \
@@ -650,6 +633,8 @@ touch-examples:
 	redis/redis.conf.example \
 	redis/resque.yml.example \
 	registry/config.yml.example \
+	support/templates/gitaly.toml.erb \
+	support/templates/praefect.toml.erb \
 	support/templates/gitlab.yml.erb
 
 unlock-dependency-installers:

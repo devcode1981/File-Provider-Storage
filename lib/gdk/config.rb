@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'etc'
 require_relative 'config_settings'
 
 module GDK
@@ -16,7 +17,7 @@ module GDK
       r.gitlab_docs 'https://gitlab.com/gitlab-com/gitlab-docs.git'
     end
 
-    gdk_root { ENV['PWD'] }
+    gdk_root { Dir.pwd }
 
     hostname do
       next "#{config.auto_devops.gitlab.port}.qa-tunnel.gitlab.info" if config.auto_devops.enabled
@@ -38,7 +39,7 @@ module GDK
     protocol { config.https? ? 'https' : 'http' }
 
     relative_url_root { read!('relative_url_root') || nil }
-    username { ENV['USERNAME'] }
+    username { Etc.getlogin }
 
     webpack do |w|
       w.port { read!('webpack_port') || 3808 }
@@ -128,6 +129,17 @@ module GDK
 
     gitaly do |g|
       g.assembly_dir { "#{config.gdk_root}/gitaly/assembly" }
+      g.address do
+        if config.praefect?
+          File.join(config.gdk_root, 'praefect.socket')
+        else
+          File.join(config.gdk_root, 'gitaly.socket')
+        end
+      end
+    end
+
+    praefect do |p|
+      p.enabled { read!('praefect_enabled') || false }
     end
 
     sshd do |s|
