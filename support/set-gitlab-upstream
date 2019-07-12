@@ -1,16 +1,39 @@
 #!/bin/sh
 set -e # exit on uncaught failure
+gitlab_base_url="https://gitlab.com"
+gitlab_ce="gitlab-ce"
+gitlab_ee="gitlab-ee"
+gitlab_org="gitlab-org"
 remote_name="upstream"
 
 cd ./gitlab
 
-if git remote | grep -q '^upstream$'; then
+git_remote_add_upstream() {
+  echo "Remote origin is ${1}, adding remote ${remote_name} to ${1}"
+  git remote add "${remote_name}" "${gitlab_base_url}/${gitlab_org}/${1}.git"
+}
+
+grep_git_remote() {
+  git remote -v | grep -q "${1}\.git.*$"
+}
+
+if git remote | grep -q "^${remote_name}$"; then
   echo "Remote ${remote_name} already exists in $(pwd). Exiting."
   exit 0
 fi
 
-git remote add "${remote_name}" "${gitlab_upstream:-https://gitlab.com/gitlab-org/gitlab-ce.git}"
+# Try to determine if remote should be ee or ce
+if grep_git_remote ${gitlab_ee}; then
+  git_remote_add_upstream ${gitlab_ee}
+elif grep_git_remote ${gitlab_ce}; then
+  git_remote_add_upstream ${gitlab_ce}
+else
+  echo "Remote origin is ambigious. Please set the upstream remote yourself. Exiting."
+  exit 1
+fi
+
 git remote set-url --push "${remote_name}" none # make 'upstream' fetch-only
+echo "Fetching master from ${remote_name}..."
 git fetch "${remote_name}" master
 
 # check if the 'master' branch already exists
