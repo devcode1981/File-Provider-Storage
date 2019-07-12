@@ -28,6 +28,10 @@ to save yourself from setting up a full working Auto DevOps project.
 
 - One can run manual Helm commands from your local machine and communicate to our remote Tiller running on GKE. Check our [Useful Commands - Talking to Tiller](./useful_commands.md#talking-to-tiller) to know how to achieve it.
 
+###Configuration for Auto DevOps base domain
+
+Please refer to the [Auto DevOps Base Domain](https://docs.gitlab.com/ee/topics/autodevops/#auto-devops-base-domain) to learn more about it.
+
 ## Development using localhost instead
 
 Consider not using the internet-facing URL for non Auto DevOps flows,
