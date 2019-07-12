@@ -3,6 +3,7 @@
 gdk run            # Start everything
 gdk run db         # Start enough to run tests
 gdk run geo_db     # Start Geo tracking database
+gdk run db geo_db  # Start enough to run tests, including Geo tracking database
 gdk run gitaly     # Start gitaly (git backend service)
 gdk run jobs       # Start GitLab background jobs
 gdk run grafana    # Start Grafana in a separate port
