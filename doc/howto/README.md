@@ -39,3 +39,4 @@ to learn how to develop GitLab CE.
 - [Preview and test the docs site locally](gitlab_docs.md)
 - [Auto DevOps](auto_devops.md)
 - [Google OAuth2](google-oauth2.md)
+- [Unicorn](unicorn.md)

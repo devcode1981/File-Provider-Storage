@@ -20,7 +20,7 @@ service they are related to:
 
 | Port filename         | Service name                                  |
 | --------------------- | --------------------------------------------- |
-| `port`                | unicorn (rails)                               |
+| `port`                | puma/unicorn (rails)                          |
 | `webpack_port`        | webpack-dev-server                            |
 | `postgresql_port`     | main postgresql server                        |
 | `postgresql_geo_port` | postgresql server for tracking database (Geo) |

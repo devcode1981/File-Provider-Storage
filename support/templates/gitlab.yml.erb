@@ -715,6 +715,8 @@ production: &base
   ## Monitoring
   # Built in monitoring settings
   monitoring:
+    # Time between sampling of Puma metrics, in seconds
+    # puma_sampler_interval: 5
     # Time between sampling of unicorn socket metrics, in seconds
     # unicorn_sampler_interval: 10
     # IP whitelist to access monitoring endpoints
