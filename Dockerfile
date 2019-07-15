@@ -8,6 +8,7 @@ RUN useradd --user-group --create-home gdk
 ENV DEBIAN_FRONTEND=noninteractive
 COPY packages.txt /
 RUN apt-get update && apt-get install -y $(sed -e 's/#.*//' /packages.txt)
+RUN add-apt-repository ppa:git-core/ppa -y && apt-get update && apt-get install -y git
 
 # stages for fetching remote content
 # highly cacheable
