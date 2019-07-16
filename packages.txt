@@ -5,7 +5,6 @@
 build-essential
 curl
 git
-software-properties-common
 sudo
 wget
 

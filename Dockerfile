@@ -7,8 +7,9 @@ LABEL authors.maintainer "GDK contributors: https://gitlab.com/gitlab-org/gitlab
 RUN useradd --user-group --create-home gdk
 ENV DEBIAN_FRONTEND=noninteractive
 COPY packages.txt /
-RUN apt-get update && apt-get install -y $(sed -e 's/#.*//' /packages.txt)
-RUN add-apt-repository ppa:git-core/ppa -y && apt-get update && apt-get install -y git
+RUN apt-get update && apt-get install -y software-properties-common \
+    && add-apt-repository ppa:git-core/ppa -y \
+    && apt-get install -y $(sed -e 's/#.*//' /packages.txt)
 
 # stages for fetching remote content
 # highly cacheable
