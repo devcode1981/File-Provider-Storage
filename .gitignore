@@ -70,6 +70,7 @@ gitlab-development-kit/**
 /.gdk-install-root
 /builds
 /gitaly/
+praefect_enabled
 /gitlab-workhorse/config.toml
 /gitlab-workhorse/.cache
 /go-gitlab-shell

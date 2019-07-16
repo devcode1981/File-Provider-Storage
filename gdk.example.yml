@@ -42,6 +42,8 @@ postgresql:
   replica_dir: "/home/git/gdk/postgresql-replica"
   replication_user: gitlab_replication
 protocol: https
+praefect:
+  enabled: false
 registry:
   enabled: false
   external_port: 5000

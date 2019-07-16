@@ -5,7 +5,7 @@ def main(argv)
   when 'geo_db'
     foreman_exec(%w[postgresql-geo])
   when 'app'
-    svcs = %w[gitlab-workhorse nginx grafana sshd gitaly storage-check gitlab-pages]
+    svcs = %w[gitlab-workhorse nginx grafana sshd gitaly storage-check gitlab-pages praefect]
 
     foreman_exec(svcs + %w[rails-web rails-background-jobs])
   when 'grafana'
