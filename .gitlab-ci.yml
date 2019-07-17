@@ -109,7 +109,7 @@ test:install:
     - killall node || true
     - gdk run &
     - sleep 30
-    - curl -f --retry 60 --retry-delay 5 http://127.0.0.1:3000/
+    - curl -f --retry 60 --retry-delay 5 http://127.0.0.1:3000/users/sign_in
 
 test:update:
   image: $TEST_IMAGE
@@ -133,5 +133,5 @@ test:update:
     - killall node || true
     - gdk run &
     - sleep 30
-    - curl -f --retry 60 --retry-delay 5 http://127.0.0.1:3000/
+    - curl -f --retry 60 --retry-delay 5 http://127.0.0.1:3000/users/sign_in
     - IGNORE_INSTALL_WARNINGS=true gdk update
