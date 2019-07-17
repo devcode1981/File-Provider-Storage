@@ -22,7 +22,7 @@ install() {
   cd ${GDK_CHECKOUT_PATH}
   netstat -lpt
   echo "> Installing GDK.."
-  IGNORE_INSTALL_WARNINGS=true gdk install
+  IGNORE_INSTALL_WARNINGS=true gdk install shallow_clone=true
   support/set-gitlab-upstream
 }
 
