@@ -106,13 +106,19 @@ Start GitLab and all required services:
 gdk run
 ```
 
-To start only the databases use:
+To start only the database services, use:
 
 ```sh
 gdk run db
 ```
 
-To start only the app (assuming the DBs are already running):
+To start database services and gitaly, use:
+
+```sh
+gdk run db gitaly
+```
+
+To start only the app (assuming the database services are already running), use:
 
 ```sh
 gdk run app

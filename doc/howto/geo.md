@@ -105,7 +105,7 @@ to operate *as* a primary except in tests where the current Geo node has been
 stubbed.
 
 To ensure the tracking database is started, restart GDK. You will need to use
-`gdk run`, rather than `gdk run db`, to run the tests.
+`gdk run db geo_db` (at a minimum) or `gdk run` to be able to run the tests.
 
 ## Copy database encryption key
 
