@@ -10,8 +10,33 @@ variables:
   DOCKER_DRIVER: overlay
   TEST_IMAGE: registry.gitlab.com/gitlab-org/gitlab-development-kit:latest
 
+# Use eclint to check that the .editorconfig rulesets are being adhered to
+verify:
+  stage: build
+  image: registry.gitlab.com/gitlab-org/gitlab-build-images:node-10
+  script:
+    - npm config set unsafe-perm true # enable run npm as root
+    - make verify
+
+build:image:
+  image: docker:git
+  stage: build
+  script:
+    # taken from https://gitlab.com/gitlab-org/gitlab-qa/blob/master/.gitlab-ci.yml
+    - ./bin/docker load
+    - ./bin/docker build
+    - ./bin/docker store
+    - test -n "$CI_BUILD_TOKEN" || exit 0
+    - ./bin/docker publish
+  when: manual
+  cache:
+      key: "docker-build-cache"
+      paths:
+        - ./latest_image.tar
+
 code_quality:
   image: docker:stable
+  stage: test
   variables:
     DOCKER_DRIVER: overlay2
   allow_failure: true
@@ -30,6 +55,7 @@ code_quality:
 
 container_scanning:
   image: docker:stable
+  stage: test
   allow_failure: true
   before_script: []
   cache: {}
@@ -56,80 +82,24 @@ container_scanning:
     paths:
       - gl-sast-container-report.json
 
-# Use eclint to check that the .editorconfig rulesets are being adhered to
-verify:
-  stage: build
-  image: registry.gitlab.com/gitlab-org/gitlab-build-images:node-10
-  script:
-    - npm config set unsafe-perm true # enable run npm as root
-    - make verify
-
-build:image:
-  image: docker:git
-  stage: build
-  script:
-    # taken from https://gitlab.com/gitlab-org/gitlab-qa/blob/master/.gitlab-ci.yml
-    - ./bin/docker load
-    - ./bin/docker build
-    - ./bin/docker store
-    - test -n "$CI_BUILD_TOKEN" || exit 0
-    - ./bin/docker publish
-  when: manual
-  cache:
-      key: "docker-build-cache"
-      paths:
-        - ./latest_image.tar
-
 test:install:
   image: $TEST_IMAGE
   stage: test
   artifacts:
     paths:
-      - ./*.log
-      - ./gitlab/log/*.log
+      - ./gitlab-development-kit/gitlab/log/*.log
     expire_in: 2 days
     when: always
   script:
-    - source /home/gdk/.bash_profile
-    - gem install -N bundler:1.17.3
-    - cd gem
-    - gem build gitlab-development-kit.gemspec
-    - gem install gitlab-development-kit-*.gem
-    - cd /home/gdk
-    - gdk init
-    - cd gitlab-development-kit
-    - git remote set-url origin $CI_REPOSITORY_URL
-    - git fetch
-    - git checkout $CI_COMMIT_SHA
-    - netstat -lpt
-    - IGNORE_INSTALL_WARNINGS=true gdk install
-    - support/set-gitlab-upstream
-    - killall node || true
-    - gdk run &
-    - sleep 30
-    - curl -f --retry 60 --retry-delay 5 http://127.0.0.1:3000/
+    - support/ci/test_install
 
 test:update:
   image: $TEST_IMAGE
   stage: test
   artifacts:
     paths:
-      - ./*.log
-      - ./gitlab/log/*.log
+      - ./gitlab-development-kit/gitlab/log/*.log
     expire_in: 2 days
     when: always
   script:
-    - source /home/gdk/.bash_profile
-    - gem install -N bundler:1.17.3
-    - gem install gitlab-development-kit
-    - cd /home/gdk
-    - gdk init
-    - cd gitlab-development-kit
-    - netstat -lpt
-    - IGNORE_INSTALL_WARNINGS=true gdk install
-    - support/set-gitlab-upstream
-    - killall node || true
-    - gdk run &
-    - sleep 30
-    - curl -f --retry 60 --retry-delay 5 http://127.0.0.1:3000/
-    - IGNORE_INSTALL_WARNINGS=true gdk update
+    - support/ci/test_update
