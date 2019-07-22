@@ -118,7 +118,7 @@ module GDK
     end
 
     postgresql do |p|
-      p.bin_dir { cmd!('support/pg_bindir') }
+      p.bin_dir { cmd!(%w[support/pg_bindir]) }
       p.replication_user 'gitlab_replication'
       p.dir { "#{config.gdk_root}/postgresql" }
       p.data_dir { "#{config.postgresql.dir}/data" }
