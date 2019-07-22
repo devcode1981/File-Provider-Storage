@@ -57,7 +57,6 @@ module GDK
       end
 
       r.port do
-        next config.auto_devops.registry.port if config.auto_devops.enabled
         read!('registry_port') || 5000
       end
 
