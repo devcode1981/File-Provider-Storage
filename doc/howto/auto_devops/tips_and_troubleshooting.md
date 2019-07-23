@@ -142,8 +142,8 @@ After following the steps indicated in the [autodevops guide](../auto_devops.md)
 ```bash
 # Tunneling
 #
-tunnel_gitlab: ssh -N -R [PORT]:localhost:$port qa-tunnel.gitlab.info
-tunnel_registry: ssh -N -R [PORT]:localhost:5000 qa-tunnel.gitlab.info
+tunnel_gitlab: ssh -N -R [PORT]:localhost:$port -o ControlPath=none -o ControlMaster=no qa-tunnel.gitlab.info
+tunnel_registry: ssh -N -R [PORT]:localhost:5000 -o ControlPath=none -o ControlMaster=no qa-tunnel.gitlab.info
 ```
 
 The `tunnel_gitlab` and `tunnel_registry` lines may be commented out. If that’s the case, you can either delete the Procfile file and run `gdk reconfigure` or uncomment those lines and replace `[PORT]` with the ports specified in the `auto_devops_gitlab_port` and `auto_devops_registry_port` files.
