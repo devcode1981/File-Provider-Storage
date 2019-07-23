@@ -10,21 +10,14 @@
  - http://localhost:3000/users/auth/google_oauth2/callback # For Oauth2 Login
  - http://localhost:3000/-/google_api/auth/callback  # For GKE Cluster Integration
 1. Click "Create" button
-1. Visit the entry. Copy Client ID and Client secret to 'gitlab.yml' as described below
+1. Visit the entry. Copy Client ID and Client secret as described below
 
 ## GDK Setup
 
-1. Update the configuration in `gitlab/config/gitlab.yml` as follows:
+From the GDK root directory, run:
 
-```diff
-  development:
-  <<: *base
-+ omniauth:
-+   providers:
-+   - { name: 'google_oauth2',
-+       app_id: 'Here is your Client ID',
-+       app_secret: 'Here is your Client secret',
-+       args: { access_type: 'offline', approval_prompt: '' } }
+```bash
+echo "<google-client-id>" > google_oauth_client_id
+echo "<google-client-secret>" > google_oauth_client_secret
+gdk reconfigure
 ```
-
-1. Restart the GDK

@@ -760,6 +760,14 @@ production: &base
 
 development:
   <<: *base
+  omniauth:
+    providers:
+    <%- if config.omniauth.google_oauth2.enabled -%>
+    - { name: 'google_oauth2',
+        app_id: '<%= config.omniauth.google_oauth2.client_id %>',
+        app_secret: '<%= config.omniauth.google_oauth2.client_secret %>',
+        args: { access_type: 'offline', approval_prompt: '' } }
+    <%- end -%>
 
 test:
   <<: *base

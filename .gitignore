@@ -94,6 +94,8 @@ praefect_enabled
 /auto_devops_enabled
 /auto_devops_gitlab_port
 /auto_devops_registry_port
+/google_oauth_client_id
+/google_oauth_client_secret
 /jaeger-artifacts/
 /jaeger/
 /gdk.yml
