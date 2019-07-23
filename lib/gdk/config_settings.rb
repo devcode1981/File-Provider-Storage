@@ -53,11 +53,15 @@ module GDK
     end
 
     def cmd!(cmd)
-      `#{cmd}`.chomp
+      # Passing an array to IO.popen guards against sh -c.
+      # https://gitlab.com/gitlab-org/gitlab-ce/blob/master/doc/development/shell_commands.md#bypass-the-shell-by-splitting-commands-into-separate-tokens
+      raise 'command must be an array' unless cmd.is_a?(Array)
+
+      IO.popen(cmd, &:read).chomp
     end
 
     def find_executable!(bin)
-      result = cmd!("which #{bin}")
+      result = cmd!(%W[which #{bin}])
       result.empty? ? nil : result
     end
 
