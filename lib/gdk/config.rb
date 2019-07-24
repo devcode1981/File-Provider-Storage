@@ -86,6 +86,14 @@ module GDK
       end
     end
 
+    omniauth do |o|
+      o.google_oauth2 do |g|
+        g.enabled { !!read!('google_oauth_client_secret') }
+        g.client_id { read!('google_oauth_client_id') }
+        g.client_secret { read!('google_oauth_client_secret') }
+      end
+    end
+
     geo do |g|
       g.enabled false
     end

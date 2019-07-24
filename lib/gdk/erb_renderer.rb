@@ -15,7 +15,8 @@ module GDK
 
     def render!(target = @target)
       str = File.read(source)
-      result = ERB.new(str).result
+      # A trim_mode of '-' allows omitting empty lines with <%- -%>
+      result = ERB.new(str, trim_mode: '-').result
 
       File.write(target, result)
     end
