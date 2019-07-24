@@ -695,6 +695,25 @@ export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 To fix this for the future, add the line above to `~/.bash_profile` or `~/.zshrc`.
 
+## Failures when generating Karma fixtures
+
+In some cases, running `bin/rake karma:fixtures` might fail to generate some fixtures, you'll see this kind of errors in the console:
+
+```
+Failed examples:
+
+rspec ./spec/javascripts/fixtures/blob.rb:25 # Projects::BlobController (JavaScript fixtures) blob/show.html
+rspec ./spec/javascripts/fixtures/branches.rb:24 # Projects::BranchesController (JavaScript fixtures) branches/new_branch.html
+rspec ./spec/javascripts/fixtures/commit.rb:22 # Projects::CommitController (JavaScript fixtures) commit/show.html
+```
+
+To fix this, remove `tmp/tests/` in the `gitlab/` directory and regenerate the fixtures:
+
+```sh
+rm -rf tmp/tests/ && bin/rake karma:fixtures
+```
+
+
 ## Other problems
 
 Please open an issue on the [GDK issue tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues).
