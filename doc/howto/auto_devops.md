@@ -178,7 +178,7 @@ You should now be ready to run the test. Execute the following command
 in the `qa/` directory:
 
 ```bash
-GITLAB_PASSWORD=<root-user-password> GCLOUD_ZONE=us-central1-a CHROME_HEADLESS=false bin/qa Test::Integration::Kubernetes https://<gitlab-number>.qa-tunnel.gitlab.info/
+GITLAB_PASSWORD=<root-user-password> GCLOUD_REGION=us-central1 CHROME_HEADLESS=false bundle exec bin/qa Test::Integration::Kubernetes https://<gitlab-number>.qa-tunnel.gitlab.info/
 ```
 
 You can also run single tests with RSpec line number arguments. As the
@@ -186,7 +186,7 @@ You can also run single tests with RSpec line number arguments. As the
 `--tag ` argument to override the exclusion:
 
 ```bash
-GITLAB_PASSWORD=<root-user-password> GCLOUD_ZONE=us-central1-a CHROME_HEADLESS=false bin/qa Test::Instance::All https://<gitlab-number>.qa-tunnel.gitlab.info/ --tag orchestrated qa/specs/features/browser_ui/7_configure/auto_devops/create_project_with_auto_devops_spec.rb:71
+GITLAB_PASSWORD=<root-user-password> GCLOUD_REGION=us-central1 CHROME_HEADLESS=false bundle exec bin/qa Test::Instance::All https://<gitlab-number>.qa-tunnel.gitlab.info/ --tag orchestrated qa/specs/features/browser_ui/7_configure/auto_devops/create_project_with_auto_devops_spec.rb:71
 ```
 
 More information about running QA tests can be found in
