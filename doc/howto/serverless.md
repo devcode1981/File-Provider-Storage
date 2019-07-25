@@ -11,6 +11,10 @@ DevOps](./auto_devops.md) before following any steps in here.
 
 ## Minimal getting started guide
 
+1. Since Serverless builds with Kaniko, follow workaround instructions
+   in
+   https://gitlab.com/gitlab-org/gitlab-development-kit/issues/547#workaround
+   until this problem is solved
 1. Create a new project
 1. Add a cluster to the project
 1. Install Tiller and Knative on the cluster
