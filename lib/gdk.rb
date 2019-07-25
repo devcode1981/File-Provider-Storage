@@ -107,6 +107,6 @@ module GDK
   def self.assert_supervisor_runit!
     return if SUPERVISOR == :runit
 
-    abort "this subcommand is unavailable when using runit"
+    abort "this subcommand is only available when using runit"
   end
 end
