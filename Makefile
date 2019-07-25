@@ -60,6 +60,8 @@ ifeq ($(shallow_clone),true)
 git_depth_param = --depth=1
 endif
 
+export GDK_RUNIT=0 # Several scripts in support/ still depend on 'gdk run'
+
 all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup gitlab-pages-setup support-setup gitaly-setup prom-setup object-storage-setup
 
 # Set up the GitLab Rails app

@@ -21,12 +21,12 @@ module GDK
 
     hostname do
       next "#{config.auto_devops.gitlab.port}.qa-tunnel.gitlab.info" if config.auto_devops.enabled
-      read!('hostname') || 'localhost'
+      env!('host') || read!('hostname') || read!('host') || 'localhost'
     end
 
     port do
       next 443 if config.auto_devops.enabled
-      read!('port') || 3000
+      env!('port') || read!('port') || 3000
     end
 
     https do |h|
@@ -38,7 +38,10 @@ module GDK
 
     protocol { config.https? ? 'https' : 'http' }
 
-    relative_url_root { read!('relative_url_root') || nil }
+    relative_url_root do
+      env!('relative_url_root') || read!('relative_url_root') || '/'
+    end
+
     username { Etc.getlogin }
 
     webpack do |w|

@@ -99,3 +99,6 @@ praefect_enabled
 /jaeger-artifacts/
 /jaeger/
 /gdk.yml
+/services/
+/sv/
+/log/
