@@ -6,10 +6,12 @@
 require_relative 'gdk/env'
 require_relative 'gdk/config'
 require_relative 'gdk/erb_renderer'
+require_relative 'runit'
 
 module GDK
   PROGNAME = 'gdk'.freeze
   MAKE = RUBY_PLATFORM =~ /bsd/ ? 'gmake' : 'make'
+  SUPERVISOR = ENV['GDK_RUNIT'] == '1' ? :runit : :foreman
 
   # This function is called from bin/gdk. It must return true/false or
   # an exit code.
@@ -26,7 +28,7 @@ module GDK
     pg_port_file = File.join($gdk_root, 'postgresql_port')
     pg_port = File.exist?(pg_port_file) ? File.read(pg_port_file) : 5432
 
-    case ARGV.shift
+    case subcommand = ARGV.shift
     when 'run'
       exec('./run', *ARGV, chdir: $gdk_root)
     when 'install'
@@ -79,6 +81,12 @@ module GDK
       exec('redis-cli', '-s', File.join($gdk_root, 'redis/redis.socket'), *ARGV, chdir: $gdk_root)
     when 'env'
       GDK::Env.exec(ARGV)
+    when 'start', 'stop', 'restart', 'status'
+      assert_supervisor_runit!
+      Runit.sv(subcommand, ARGV)
+    when 'tail'
+      assert_supervisor_runit!
+      Runit.tail(ARGV)
     when 'help'
       puts File.read(File.join($gdk_root, 'HELP'))
       true
@@ -94,5 +102,11 @@ module GDK
   rescue => ex
     warn ex
     false
+  end
+
+  def self.assert_supervisor_runit!
+    return if SUPERVISOR == :runit
+
+    abort "this subcommand is unavailable when using runit"
   end
 end

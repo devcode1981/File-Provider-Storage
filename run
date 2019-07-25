@@ -29,4 +29,9 @@ main() {
   exec ruby lib/run.rb "$@"
 }
 
+if [ "x$GDK_RUNIT" = "x1" ]; then
+  echo "$0 is disabled while using runit"
+  exit 1
+fi
+
 main "$@"
