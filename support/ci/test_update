@@ -1,15 +1,17 @@
 #!/bin/bash -e
 
-source support/ci/functions
+parent_path=$(dirname $0)
+
+source ${parent_path}/functions
 
 init
 checkout "master"
 install
 run &
-echo "> Waiting 90 secs to give GDK a change to boot up.."
+echo "> Waiting 90 secs to give GDK a chance to boot up.."
 sleep 90
 checkout ${CI_COMMIT_SHA}
 update
-echo "> Waiting 90 secs to give GDK a change to boot up.."
+echo "> Waiting 90 secs to give GDK a chance to boot up.."
 sleep 90
-test_url
+${parent_path}/test_url

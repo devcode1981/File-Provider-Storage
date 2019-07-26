@@ -40,8 +40,3 @@ run() {
   echo "> Starting up GDK.."
   gdk run
 }
-
-test_url() {
-  echo "> Testing GDK.."
-  curl -f --retry 60 --retry-delay 5 http://127.0.0.1:3000/users/sign_in
-}
