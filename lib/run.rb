@@ -1,6 +1,6 @@
 def main(argv)
   applications = applications_from(argv)
-  print_url if applications.include?('gitlab-workhorse')
+  print_url if print_url?(applications)
   foreman_exec(applications)
 end
 
@@ -93,6 +93,10 @@ def print_url
   puts "Starting GitLab in #{Dir.pwd} on http://#{ENV['host']}:#{ENV['port']}#{ENV['relative_url_root']}"
   puts
   puts
+end
+
+def print_url?(applications)
+  (applications & ['gitlab-workhorse', 'all']).any?
 end
 
 main(ARGV)
