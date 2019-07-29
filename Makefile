@@ -17,6 +17,7 @@ gitaly_proto_clone_dir = ${gitaly_gopath}/src/gitlab.com/gitlab-org/gitaly-proto
 gitlab_pages_repo = https://gitlab.com/gitlab-org/gitlab-pages.git
 gitlab_pages_clone_dir = gitlab-pages/src/gitlab.com/gitlab-org/gitlab-pages
 gitlab_docs_repo = https://gitlab.com/gitlab-com/gitlab-docs.git
+gitlab_elasticsearch_indexer_repo = https://gitlab.com/gitlab-org/gitlab-elasticsearch-indexer.git
 gitlab_development_root = $(shell pwd)
 gitaly_assembly_dir = ${gitlab_development_root}/gitaly/assembly
 postgres_bin_dir ?= $(shell ruby support/pg_bindir)
@@ -53,6 +54,7 @@ workhorse_version = $(shell bin/resolve-dependency-commitish "${gitlab_developme
 gitlab_shell_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_SHELL_VERSION")
 gitaly_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITALY_SERVER_VERSION")
 pages_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_PAGES_VERSION")
+gitlab_elasticsearch_indexer_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_ELASTICSEARCH_INDEXER_VERSION")
 tracer_build_tags = tracer_static tracer_static_jaeger
 jaeger_server_enabled ?= true
 jaeger_version = 1.10.1
@@ -62,7 +64,7 @@ endif
 
 export GDK_RUNIT=0 # Several scripts in support/ still depend on 'gdk run'
 
-all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup gitlab-pages-setup support-setup gitaly-setup prom-setup object-storage-setup
+all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup gitlab-pages-setup support-setup gitaly-setup prom-setup object-storage-setup gitlab-elasticsearch-indexer-setup
 
 # Set up the GitLab Rails app
 
@@ -240,7 +242,7 @@ self-update: unlock-dependency-installers
 
 # Update gitlab, gitlab-shell, gitlab-workhorse, gitlab-pages and gitaly
 # Pull gitlab directory first since dependencies are linked from there.
-update: ensure-postgres-running unlock-dependency-installers gitlab/.git/pull gitlab-shell-update gitlab-workhorse-update gitlab-pages-update gitaly-update gitlab-update
+update: ensure-postgres-running unlock-dependency-installers gitlab/.git/pull gitlab-shell-update gitlab-workhorse-update gitlab-pages-update gitaly-update gitlab-update gitlab-elasticsearch-indexer-update
 
 ensure-postgres-running:
 	@test -f ${postgres_data_dir}/postmaster.pid || \
@@ -563,6 +565,27 @@ elasticsearch-${elasticsearch_version}.tar.gz:
 	curl -L -o $@.tmp https://artifacts.elastic.co/downloads/elasticsearch/$@
 	echo "${elasticsearch_tar_gz_sha1}  $@.tmp" | shasum -a1 -c -
 	mv $@.tmp $@
+
+gitlab-elasticsearch-indexer-setup: gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer
+
+gitlab-elasticsearch-indexer-update: gitlab-elasticsearch-indexer/.git/pull gitlab-elasticsearch-indexer-clean-bin gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer
+
+gitlab-elasticsearch-indexer-clean-bin:
+	rm -rf gitlab-elasticsearch-indexer/bin
+
+gitlab-elasticsearch-indexer/.git:
+	git clone --quiet --branch "${gitlab_elasticsearch_indexer_version}" ${git_depth_param} ${gitlab_elasticsearch_indexer_repo} gitlab-elasticsearch-indexer
+
+.PHONY: gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer
+gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer: check-go-version gitlab-elasticsearch-indexer/.git
+	$(MAKE) -C gitlab-elasticsearch-indexer build
+
+.PHONY: gitlab-elasticsearch-indexer/.git/pull
+gitlab-elasticsearch-indexer/.git/pull: gitlab-elasticsearch-indexer/.git
+	cd gitlab-elasticsearch-indexer && \
+		git stash &&\
+		git fetch --all --tags --prune && \
+		git checkout "${gitlab_elasticsearch_indexer_version}"
 
 object-storage-setup: minio/data/lfs-objects minio/data/artifacts minio/data/uploads minio/data/packages
 

@@ -769,6 +769,9 @@ development:
         args: { access_type: 'offline', approval_prompt: '' } }
     <%- end -%>
 
+  elasticsearch:
+    indexer_path: <%= config.gdk_root %>/gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer
+
 test:
   <<: *base
   gravatar:

@@ -102,3 +102,4 @@ praefect_enabled
 /services/
 /sv/
 /log/
+/gitlab-elasticsearch-indexer
