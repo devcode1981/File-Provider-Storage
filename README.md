@@ -49,6 +49,11 @@ If you have an old installation [update your existing GDK installation](doc/upda
 - GitLab Development Kit itself does not run `sudo` commands
 - It is OK to leave some things to the user (e.g. installing Ruby)
 
+## Components included
+
+A list of which components are included in the GDK, and configuration instructions if needed,
+is available on the [architecture components list](https://docs.gitlab.com/ee/development/architecture.html#component-list).
+
 ## Differences with production
 
 - gitlab-workhorse does not serve static files
