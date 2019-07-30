@@ -55,16 +55,18 @@ module Runit
         [service, command]
       end.compact
 
+      max_service_length = services.map { |svc| svc.first.size }.max
+
       services.each_with_index do |(service, command), i|
-        create_runit_service(service, command, i)
+        create_runit_service(service, command)
+        create_runit_log_service(service, max_service_length, i)
+        enable_runit_service(service)
       end
     end
 
     private
 
-    def create_runit_service(service, command, index)
-      dir = File.join(sv_dir, service)
-
+    def create_runit_service(service, command)
       run_template = <<~TEMPLATE
         #!/bin/sh
         set -e
@@ -79,9 +81,15 @@ module Runit
         <%= command %>
       TEMPLATE
 
-      run_path = File.join(dir, 'run')
+      run_path = File.join(dir(service), 'run')
       write_file(run_path, ERB.new(run_template).result(binding), 0o755)
 
+      # Create a 'down' file so that runsvdir won't boot this service until
+      # you request it with `sv start`.
+      write_file(File.join(dir(service), 'down'), '', 0o644)
+    end
+
+    def create_runit_log_service(service, max_service_length, index)
       service_log_dir = File.join(log_dir, service)
       FileUtils.mkdir_p(service_log_dir)
 
@@ -92,31 +100,35 @@ module Runit
         # svlogd is a long-running daemon so it should run from /
         cd /
 
-        exec svlogd <%= service_log_dir %>
+        exec svlogd -tt <%= service_log_dir %>
       TEMPLATE
 
-      log_run_path = File.join(dir, 'log/run')
+      log_run_path = File.join(dir(service), 'log/run')
       write_file(log_run_path, ERB.new(log_run_template).result(binding), 0o755)
+
+      log_label = sprintf("%-#{max_service_length}s : ", service)
 
       # See http://smarden.org/runit/svlogd.8.html#sect6 for documentation of the svlogd config file
       log_config_template = <<~TEMPLATE
         # zip old log files
         !gzip
         # custom log prefix for <%= service %>
-        p<%= ansi(color(index)) + service + ansi(0) + ': ' %>
+        p<%= ansi(color(index)) + log_label + ansi(0) %>
         # keep at most 1 old log file
         n1
       TEMPLATE
 
       log_config_path = File.join(service_log_dir, 'config')
       write_file(log_config_path, ERB.new(log_config_template).result(binding), 0o644)
+    end
 
-      # Create a 'down' file so that runsvdir won't boot this service until
-      # you request it with `sv start`.
-      write_file(File.join(dir, 'down'), '', 0o644)
-
+    def enable_runit_service(service)
       # If the user removes this symlink, runit will stop managing this service.
-      FileUtils.ln_sf(dir, File.join(services_dir, service))
+      FileUtils.ln_sf(dir(service), File.join(services_dir, service))
+    end
+
+    def dir(service)
+      File.join(sv_dir, service)
     end
 
     def write_file(path, content, perm)
