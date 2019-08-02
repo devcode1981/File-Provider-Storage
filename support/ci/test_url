@@ -1,0 +1,17 @@
+#!/bin/bash
+
+MAX_ATTEMPTS=90
+SLEEP_BETWEEN_ATTEMPTS=5
+
+for i in $(seq 1 ${MAX_ATTEMPTS})
+do
+  echo "> Testing GDK attempt #${i}.."
+  if curl --head --show-error --silent --fail http://127.0.0.1:3000/users/sign_in; then
+    exit 0
+  fi
+
+  echo
+  sleep ${SLEEP_BETWEEN_ATTEMPTS}
+done
+
+exit 1
