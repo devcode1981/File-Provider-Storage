@@ -40,3 +40,4 @@ to learn how to develop GitLab CE.
 - [Auto DevOps](auto_devops.md)
 - [Google OAuth2](google-oauth2.md)
 - [Unicorn](unicorn.md)
+- [Debugging with Pry](pry.md)
