@@ -1,3 +1,5 @@
+require_relative 'gdk/config'
+
 def main(argv)
   applications = applications_from(argv)
   print_url if print_url?(applications)
@@ -22,6 +24,13 @@ def exec_thin!
   )
 end
 
+def praefect_services
+  @config ||= GDK::Config.new
+  services = %w[praefect]
+  @config.praefect.nodes.each_with_index {|praefect_node, index| services.push("praefect-gitaly-#{index}") }
+  services
+end
+
 def applications_for(command)
   case command
   when 'db'
@@ -29,11 +38,13 @@ def applications_for(command)
   when 'geo_db'
     %w[postgresql-geo]
   when 'app'
-    %w[gitlab-workhorse nginx grafana sshd gitaly storage-check gitlab-pages praefect rails-web rails-background-jobs]
+    %w[gitlab-workhorse nginx grafana sshd gitaly storage-check gitlab-pages rails-web rails-background-jobs]
   when 'grafana'
     %w[grafana]
   when 'gitaly'
     %w[gitaly]
+  when 'praefect'
+    praefect_services
   when 'jobs'
     %w[rails-background-jobs]
   else

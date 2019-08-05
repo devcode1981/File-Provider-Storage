@@ -652,8 +652,14 @@ production: &base
     # real path not the symlink.
     storages: # You must have at least a `default` storage path.
       default:
-        path: <%= File.join(config.gdk_root, "repositories") %>
+        path: <%= File.join(config.gdk_root, "repositories", "default") %>
         gitaly_address: unix:<%= config.gitaly.address %>
+      <% if config.praefect? %>
+      praefect:
+        path: /
+        gitaly_address: unix:<%= config.praefect.address %>
+      <% end %>
+
 
   ## Backup settings
   backup:
