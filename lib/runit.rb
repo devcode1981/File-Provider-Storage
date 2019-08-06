@@ -55,6 +55,8 @@ module Runit
   end
 
   def self.wait_runsv!(dir)
+    abort "unknown runit service: #{dir}" unless File.directory?(dir)
+
     50.times do
       open(File.join(dir, 'supervise/ok'), File::WRONLY|File::NONBLOCK).close
       return
