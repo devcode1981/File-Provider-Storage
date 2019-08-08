@@ -21,8 +21,10 @@ echo 3002 > port
 echo 3807 > webpack_port
 # Assuming your primary GDK instance lives in parallel folders:
 gdk install gitlab_repo=../gdk-ee/gitlab
-# You can cancel (Ctrl-C) seeding when it gets to that point since we will delete the data anyway
+# Cancel (Ctrl-C) seeding when it starts since we will delete the data anyway
 gdk run db
+
+# In another terminal window
 make geo-setup
 ```
 
@@ -97,6 +99,9 @@ You can add the tracking database to the primary node by running:
 
 ```bash
 # From the gdk-ee folder:
+gdk run db
+
+# In another terminal window
 make geo-setup
 ```
 
@@ -125,19 +130,36 @@ to set up [SSH](ssh.md), including [SSH key lookup from database](ssh.md#ssh-key
 
 ### Add primary node
 
-1. Visit the **primary** node's **Admin Area ➔ Geo Nodes** (`/admin/geo/nodes`)
-   in your browser.
-1. Fill in the full URL of the primary, e.g. `http://localhost:3001/`
-1. Check the box 'This is a primary node'.
-1. Click the **Add node** button.
+There is a rake task that can add the primary node:
+
+```bash
+cd gdk-ee/gitlab
+
+bundle exec rake geo:set_primary_node
+```
 
 ### Add secondary node
 
+There isn't a convenient rake task to add the secondary node because the command
+must be run on the secondary, but written on the primary. So we must get the
+name and manually add the node. Open a terminal window on the secondary node.
+This will output the secondary node's name.
+
+```bash
+cd gdk-geo/gitlab
+
+bundle exec rails runner 'puts GeoNode.current_node_name'
+```
+
 1. Visit the **primary** node's **Admin Area ➔ Geo Nodes** (`/admin/geo/nodes`)
    in your browser.
-1. Fill in the full URL of the secondary, e.g. `http://localhost:3002/`
+1. Click the **New node** button.
+1. Using the *exact* output from the `puts GeoNode.current_node_name` command,
+   fill in the **Name** and **URL** fields for the **secondary** node.
 1. **Do not** check the box 'This is a primary node'.
 1. Click the **Add node** button.
+
+![Adding a secondary node](img/adding_a_secondary_node.png)
 
 ## Useful aliases
 
