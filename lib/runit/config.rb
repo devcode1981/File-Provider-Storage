@@ -21,6 +21,10 @@ module Runit
       bright_cyan: '36;1'
     }.freeze
 
+    TERM_SIGNAL = {
+      'webpack' => 'KILL'
+    }.freeze
+
     def initialize(gdk_root)
       @gdk_root = gdk_root
     end
@@ -52,6 +56,8 @@ module Runit
         service, command = line.split(': ', 2)
         next unless service && command
 
+        delete_exec_prefix!(service, command)
+
         [service, command]
       end.compact
 
@@ -59,12 +65,22 @@ module Runit
 
       services.each_with_index do |(service, command), i|
         create_runit_service(service, command)
+        create_runit_control_t(service)
         create_runit_log_service(service, max_service_length, i)
         enable_runit_service(service)
       end
     end
 
     private
+
+    def delete_exec_prefix!(service, command)
+      exec_prefix = 'exec '
+      unless command.start_with?(exec_prefix)
+        abort "fatal: Procfile command for service #{service} does not start with 'exec'"
+      end
+
+      command.delete_prefix!(exec_prefix)
+    end
 
     def create_runit_service(service, command)
       run_template = <<~TEMPLATE
@@ -78,7 +94,8 @@ module Runit
 
         test -f env.runit && . env.runit
 
-        <%= command %>
+        # Use chpst -P to run the command in its own process group
+        exec chpst -P <%= command %>
       TEMPLATE
 
       run_path = File.join(dir(service), 'run')
@@ -87,6 +104,23 @@ module Runit
       # Create a 'down' file so that runsvdir won't boot this service until
       # you request it with `sv start`.
       write_file(File.join(dir(service), 'down'), '', 0o644)
+    end
+
+    def create_runit_control_t(service)
+      term_signal = TERM_SIGNAL.fetch(service, 'TERM')
+      control_t_template = <<~'TEMPLATE'
+        #!/usr/bin/env ruby
+
+        signal = '<%= term_signal %>'
+        pid = Integer(File.read('<%= File.join(dir(service), 'supervise/pid') %>'))
+
+        # Use - to signal the process group, not just a single PID.
+        pid_destination = -pid
+        puts "runit control/t: sending #{signal} to #{pid_destination}"
+        Process.kill(signal, pid_destination)
+      TEMPLATE
+      control_t_path = File.join(dir(service), 'control/t')
+      write_file(control_t_path, ERB.new(control_t_template).result(binding), 0o755)
     end
 
     def create_runit_log_service(service, max_service_length, index)
