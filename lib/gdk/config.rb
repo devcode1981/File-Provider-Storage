@@ -140,16 +140,20 @@ module GDK
     gitaly do |g|
       g.assembly_dir { "#{config.gdk_root}/gitaly/assembly" }
       g.address do
-        if config.praefect?
-          File.join(config.gdk_root, 'praefect.socket')
-        else
-          File.join(config.gdk_root, 'gitaly.socket')
-        end
+        File.join(config.gdk_root, 'gitaly.socket')
       end
     end
 
     praefect do |p|
       p.enabled { read!('praefect_enabled') || false }
+      p.config_file { File.join(config.gdk_root, "gitaly", "praefect.config.toml") }
+      p.address { File.join(config.gdk_root, 'praefect.socket') }
+      p.nodes do
+        gitaly_nodes = (ENV["PRAEFECT_GITALY_NODES"] || "3").to_i
+        (0..gitaly_nodes-1).map do |i|
+          { storage: "praefect-internal-#{i}", address: File.join(config.gdk_root, "gitaly-praefect-#{i}.socket") }
+        end
+      end
     end
 
     sshd do |s|

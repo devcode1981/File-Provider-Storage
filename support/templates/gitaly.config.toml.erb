@@ -1,6 +1,6 @@
 # Example Gitaly configuration file
 
-socket_path = "<%= File.join(config.gdk_root, 'gitaly.socket') %>"
+socket_path = "<%= socket_path %>"
 
 # The directory where Gitaly's executables are stored
 bin_dir = "<%= File.join(config.gdk_root, 'gitaly', 'bin') %>"
@@ -27,8 +27,14 @@ bin_path = "<%= config.git.bin %>"
 catfile_cache_size = 10
 
 [[storage]]
-name = "default"
-path = "<%= File.join(config.gdk_root, 'repositories') %>"
+name = "<%= storage %>"
+path = "<%= File.join(config.gdk_root, 'repositories', storage) %>"
+
+<% if config.praefect? %>
+[[storage]]
+name = "praefect"
+path = "<%= File.join(config.gdk_root, 'repositories', storage) %>"
+<% end %>
 
 # # You can optionally configure more storages for this Gitaly instance to serve up
 #

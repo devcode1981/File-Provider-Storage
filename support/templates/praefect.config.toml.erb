@@ -6,7 +6,6 @@
 # # Praefect can listen on a socket when placed on the same machine as all clients
 socket_path = "<%= File.join(config.gdk_root, 'praefect.socket') %>"
 # # Praefect will only replicate whitelisted repositories
-# whitelist = ["@hashed/3f/db/3fdba35f04dc8c462986c992bcf875546257113072a909c162f7e470e581e278.git"]
 # # Optional: export metrics via Prometheus
 # prometheus_listen_addr = "127.0.01:10101"
 
@@ -23,14 +22,8 @@ socket_path = "<%= File.join(config.gdk_root, 'praefect.socket') %>"
 # as shard. listen_addr should be unique for all nodes.
 # Requires the protocol to be defined, e.g. tcp://host.tld:1234
 
-[primary_server]
-  name = "default"
-  listen_addr = "unix:<%= config.gitaly.address %>"
-
-# [[secondary_server]]
-#  name = "default"
-#  listen_addr = "tcp://gitaly-backup1.example.com"
-
-# [[secondary_server]]
-#   name = "backup"
-#  listen_addr = "tcp://gitaly-backup2.example.com"
+<% config.praefect.nodes.each do |praefect_node| %>
+[[node]]
+  storage = "<%= praefect_node[:storage] %>"
+  address = "unix:<%= praefect_node[:address] %>"
+<% end %>

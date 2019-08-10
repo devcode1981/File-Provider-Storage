@@ -8,15 +8,16 @@ module GDK
   class ErbRenderer
     attr_reader :source, :target
 
-    def initialize(source, target)
+    def initialize(source, target, args = {})
       @source = source
       @target = target
+      @args = args
     end
 
     def render!(target = @target)
       str = File.read(source)
       # A trim_mode of '-' allows omitting empty lines with <%- -%>
-      result = ERB.new(str, trim_mode: '-').result
+      result = ERB.new(str, trim_mode: '-').result_with_hash(@args)
 
       File.write(target, result)
     end
