@@ -55,5 +55,5 @@ registry: exec support/docker-registry
 
 # Tunneling
 #
-<%= '#' unless config.auto_devops? %>tunnel_gitlab: ssh -N -o ControlPath=none -o ControlMaster=no -R <%= config.auto_devops.gitlab.port %>:localhost:$port qa-tunnel.gitlab.info
-<%= '#' unless config.auto_devops? %>tunnel_registry: ssh -N -o ControlPath=none -o ControlMaster=no -R <%= config.auto_devops.registry.port %>:localhost:5000 qa-tunnel.gitlab.info
+<%= '#' unless config.auto_devops? %>tunnel_gitlab: exec ssh -N -o ControlPath=none -o ControlMaster=no -R <%= config.auto_devops.gitlab.port %>:localhost:$port qa-tunnel.gitlab.info
+<%= '#' unless config.auto_devops? %>tunnel_registry: exec ssh -N -o ControlPath=none -o ControlMaster=no -R <%= config.auto_devops.registry.port %>:localhost:5000 qa-tunnel.gitlab.info
