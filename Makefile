@@ -2,9 +2,9 @@
 
 -include env.mk
 
+gitlab_clone_dir = gitlab
 gitlab_repo = https://gitlab.com/gitlab-org/gitlab-ce.git
-gitlab_repo_base = $(basename ${gitlab_repo})
-gitlab_repo_ruby_version = $(shell curl -s "${gitlab_repo_base}/raw/master/.ruby-version")
+gitlab_repo_ruby_version = $(shell cat "./${gitlab_clone_dir}/.ruby-version")
 gitlab_shell_repo = https://gitlab.com/gitlab-org/gitlab-shell.git
 gitlab_shell_clone_dir = go-gitlab-shell/src/gitlab.com/gitlab-org/gitlab-shell
 gitlab_workhorse_repo = https://gitlab.com/gitlab-org/gitlab-workhorse.git
@@ -79,10 +79,10 @@ check-ruby-version:
 check-go-version:
 	bin/$@
 
-gitlab-setup: check-ruby-version gitlab/.git gitlab-config bundler .gitlab-bundle yarn .gitlab-yarn .gettext
+gitlab-setup: gitlab/.git check-ruby-version gitlab-config bundler .gitlab-bundle yarn .gitlab-yarn .gettext
 
 gitlab/.git:
-	git clone ${git_depth_param} ${gitlab_repo} gitlab
+	git clone ${git_depth_param} ${gitlab_repo} ${gitlab_clone_dir}
 
 gitlab-config: gitlab/config/gitlab.yml gitlab/config/database.yml gitlab/config/unicorn.rb gitlab/config/resque.yml gitlab/public/uploads gitlab/config/puma.rb
 
