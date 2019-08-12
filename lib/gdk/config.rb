@@ -5,8 +5,6 @@ require_relative 'config_settings'
 
 module GDK
   class Config < ConfigSettings
-    FILE = 'gdk.yml'
-
     repositories do |r|
       r.gitlab 'https://gitlab.com/gitlab-org/gitlab-ce.git'
       r.gitlab_shell 'https://gitlab.com/gitlab-org/gitlab-shell.git'
