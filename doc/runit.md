@@ -11,7 +11,9 @@ Webpack, Rails etc.), with
 To replace Foreman with Runit:
 
 - set `GDK_RUNIT=1` in your shell
-- install Runit: `brew install runit`
+- install Runit:
+  - macOS: `brew install runit`
+  - Arch Linux: From user repositories: https://aur.archlinux.org/packages/runit-systemd
 
 This will disable `gdk run`. Instead of it, you use `gdk start`, `gdk stop`,
 and `gdk tail`.
