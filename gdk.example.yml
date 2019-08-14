@@ -67,4 +67,6 @@ tracer:
     version: 1.10.1
 username: git
 webpack:
-  port: 3806
+  port: 3808
+workhorse:
+  port: 3333

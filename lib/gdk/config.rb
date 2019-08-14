@@ -50,6 +50,16 @@ module GDK
       w.port { read!('webpack_port') || 3808 }
     end
 
+    workhorse do |w|
+      w.port do
+        if config.auto_devops?
+          config.auto_devops.workhorse_port
+        elsif config.nginx?
+          config.nginx.workhorse_port
+        end
+      end
+    end
+
     registry do |r|
       r.enabled do
         next true if config.auto_devops.enabled
@@ -89,6 +99,7 @@ module GDK
       a.registry do |r|
         r.port { read!('auto_devops_registry_port') || (config.auto_devops.gitlab.port + 5000) }
       end
+      a.workhorse_port 3333
     end
 
     omniauth do |o|
