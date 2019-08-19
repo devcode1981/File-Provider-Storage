@@ -49,7 +49,7 @@ We are using PostgreSQL 10 in the following example. If you want to use another 
 brew install git redis postgresql@10 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@12 gpg runit icu4c exiftool
 brew install yarn --ignore-dependencies
 brew link pkg-config
-brew pin node@12
+brew pin node@12 icu4c readline
 bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
 echo 'export PATH="/usr/local/opt/postgresql@10/bin:/usr/local/opt/node@12/bin:$PATH"' >> ~/.bash_profile
 echo 'export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bash_profile
