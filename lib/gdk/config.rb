@@ -28,6 +28,7 @@ module GDK
 
     port do
       next 443 if config.auto_devops.enabled
+
       env!('port') || read!('port') || 3000
     end
 
@@ -56,6 +57,10 @@ module GDK
           config.auto_devops.workhorse_port
         elsif config.nginx?
           config.nginx.workhorse_port
+        else
+          # For normal installations, the gitlab port is the same as the
+          # workhose port
+          config.port
         end
       end
     end
