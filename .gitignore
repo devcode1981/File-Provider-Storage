@@ -1,4 +1,5 @@
 .DS_Store
+.idea
 gdk-ce/**
 gdk-ee/**
 gitlab-development-kit/**
