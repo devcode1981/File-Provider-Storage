@@ -19,6 +19,8 @@ module GDK
 
     gdk_root { Dir.pwd }
 
+    repositories_root { File.join(config.gdk_root, 'repositories') }
+
     hostname do
       next "#{config.auto_devops.gitlab.port}.qa-tunnel.gitlab.info" if config.auto_devops.enabled
       env!('host') || read!('hostname') || read!('host') || 'localhost'

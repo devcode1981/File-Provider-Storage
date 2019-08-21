@@ -28,12 +28,12 @@ catfile_cache_size = 10
 
 [[storage]]
 name = "<%= storage %>"
-path = "<%= File.join(config.gdk_root, 'repositories', storage) %>"
+path = "<%= path %>"
 
 <% if config.praefect? %>
 [[storage]]
 name = "praefect"
-path = "<%= File.join(config.gdk_root, 'repositories', storage) %>"
+path = "<%= path %>"
 <% end %>
 
 # # You can optionally configure more storages for this Gitaly instance to serve up
