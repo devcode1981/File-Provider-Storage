@@ -14,4 +14,3 @@ To access the database using an external SQL editor, pass in the datafile path, 
 
 ![Postgres connect example](img/postgres_connect_example.png)
 
-Example for PSequel.
