@@ -63,6 +63,18 @@ Alternatively, you can clone all components from their official source.
 gdk install
 ```
 
+### Cloning via SSH
+
+By default the GitLab Rails repository will be cloned using HTTPS. If a developer would prefer to have the repos cloned via SSH this is possible. For example, to clone both **gitlab-ce** and **gitlab-ee** using SSH, the full sequence would be:
+
+```bash
+gem install gitlab-development-kit
+gdk init gdk-ce
+gdk init gdk-ee
+cd gdk-ce && gdk install gitlab_repo=git@gitlab.com:gitlab-org/gitlab-ce.git
+cd ../gdk-ee && gdk install gitlab_repo=git@gitlab.com:gitlab-org/gitlab-ee.git
+```
+
 ### Common errors during installation and troubleshooting
 
 During `gdk install` process, you may encounter some dependencies related errors. Please refer to the [Troubleshooting page](./howto/troubleshooting.md) or [open an issue on GDK tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues) if you get stuck.
