@@ -25,6 +25,7 @@ to learn how to develop GitLab CE.
 ## Special topics
 
 - [Simulate slow or broken repository storage](simulate_storage.md)
+- [PostgreSQL](postgresql.md)
 - [MySQL](mysql.md)
 - [GitLab Geo](geo.md)
 - [LDAP](ldap.md)
