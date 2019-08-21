@@ -77,7 +77,7 @@ config.praefect.nodes.each_with_index do |node, index|
     GDK::ErbRenderer.new(
       t.source,
       t.name,
-      path: File.join(config.gdk_repositories_root, node[:storage]),
+      path: File.join(config.repositories_root, node[:storage]),
       storage: node[:storage],
       socket_path: node[:address]).render!
   end
