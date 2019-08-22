@@ -447,7 +447,7 @@ gitlab-workhorse-clean-bin:
 
 .PHONY: gitlab-workhorse/bin/gitlab-workhorse
 gitlab-workhorse/bin/gitlab-workhorse: check-go-version ${gitlab_workhorse_clone_dir}/.git
-	GOPATH=${gitlab_development_root}/gitlab-workhorse GOBIN=${gitlab_development_root}/gitlab-workhorse/bin GO111MODULE=off go install -tags "${tracer_build_tags}" gitlab.com/gitlab-org/gitlab-workhorse/...
+	$(MAKE) -C ${gitlab_workhorse_clone_dir} install PREFIX=${gitlab_development_root}/gitlab-workhorse
 
 ${gitlab_workhorse_clone_dir}/.git:
 	git clone --quiet --branch "${workhorse_version}" ${git_depth_param} ${gitlab_workhorse_repo} ${gitlab_workhorse_clone_dir}
