@@ -81,7 +81,8 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 1. Install the rest of the dependencies:
    ```
    # Add apt-add-repository helper script
-   sudo apt-get install software-properties-common python-software-properties
+   sudo apt-get install software-properties-common
+   [[ $(lsb_release -sr) < "18.04" ]] && sudo apt-get install python-software-properties
    # This PPA contains an up-to-date version of Go
    sudo add-apt-repository ppa:longsleep/golang-backports
    # This PPA contains an up-to-date version of git
@@ -91,6 +92,9 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
      libicu-dev cmake g++ libre2-dev libkrb5-dev libsqlite3-dev golang-1.12-go ed \
      pkg-config graphicsmagick runit libimage-exiftool-perl rsync
    ```
+
+   > ℹ️ Ubuntu 18.04 and beyond doesn't have python-software-properties as a separate package.
+
 1. You're all set now. [Go to next steps](#next-steps).
 
 > ℹ️ Ubuntu 14.04 (Trusty Tahr) doesn't have the `libre2-dev` package available, but
