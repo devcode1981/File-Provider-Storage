@@ -713,6 +713,24 @@ To fix this, remove `tmp/tests/` in the `gitlab/` directory and regenerate the f
 rm -rf tmp/tests/ && bin/rake karma:fixtures
 ```
 
+## yarn: error: no such option: --pure-lockfile
+
+The full error you might be getting is:
+
+```
+Makefile:134: recipe for target '.gitlab-yarn' failed
+make: *** [.gitlab-yarn] Error 2
+
+```
+
+This is likely to happen if you installed `yarn` using `apt install cmdtest`.
+
+To fix this, install yarn using npm instead:
+
+```
+npm install --global yarn`
+```
+
 
 ## Other problems
 
