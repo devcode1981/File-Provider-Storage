@@ -88,9 +88,22 @@ port=8080 gdk run
 
 Now login as root using the Gitlab tunnel URL (`https://[PORT].qa-tunnel.gitlab.info`) and the default password. Once you are logged in, change the default password.
 
-**IMPORTANT**: You should change your root password since it is now internet
-accessible. You should also disable a new users registration feature on
-instance settings page (in the admin panel).
+### Secure your GitLab instance
+
+Since your GitLab instance is now internet accessible, you should secure it by completing the following actions:
+
+- Change the root user's password
+
+- Disable new user registration (Admin Area > Settings > General > Sign-up restrictions > Sign-up enabled)
+
+- Change the password of all seeded users (run the following code in a Rails console):
+
+    ```ruby
+    User.where.not(username: 'root').all.each do |user|
+      user.password = user.password_confirmation = SecureRandom.hex(16)
+      user.save!
+    end
+    ```
 
 ## Google OAuth2
 
