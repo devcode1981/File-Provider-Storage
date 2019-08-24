@@ -85,6 +85,8 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
    [[ $(lsb_release -sr) < "18.04" ]] && sudo apt-get install python-software-properties
    # This PPA contains an up-to-date version of Go
    sudo add-apt-repository ppa:longsleep/golang-backports
+   # Setup path for Go
+   export PATH="/usr/lib/go-1.12/bin:$PATH"
    # This PPA contains an up-to-date version of git
    sudo add-apt-repository ppa:git-core/ppa
    sudo apt-get update
