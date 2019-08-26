@@ -81,6 +81,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 1. Install the rest of the dependencies:
    ```
    # Add apt-add-repository helper script
+   sudo apt-get update
    sudo apt-get install software-properties-common
    [[ $(lsb_release -sr) < "18.04" ]] && sudo apt-get install python-software-properties
    # This PPA contains an up-to-date version of Go
@@ -89,18 +90,17 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
    export PATH="/usr/lib/go-1.12/bin:$PATH"
    # This PPA contains an up-to-date version of git
    sudo add-apt-repository ppa:git-core/ppa
-   sudo apt-get update
    sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server \
      libicu-dev cmake g++ libre2-dev libkrb5-dev libsqlite3-dev golang-1.12-go ed \
      pkg-config graphicsmagick runit libimage-exiftool-perl rsync
    ```
 
-   > ℹ️ Ubuntu 18.04 and beyond doesn't have python-software-properties as a separate package.
+   > ℹ️ Ubuntu 18.04 (Bionic Beaver) and beyond doesn't have python-software-properties as a separate package.
+
+   > ℹ️ Ubuntu 14.04 (Trusty Tahr) doesn't have the `libre2-dev` package available, but
+you can [install re2 manually](https://github.com/google/re2/wiki/Install).
 
 1. You're all set now. [Go to next steps](#next-steps).
-
-> ℹ️ Ubuntu 14.04 (Trusty Tahr) doesn't have the `libre2-dev` package available, but
-you can [install re2 manually](https://github.com/google/re2/wiki/Install).
 
 #### Arch Linux
 
