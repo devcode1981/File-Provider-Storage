@@ -1,6 +1,9 @@
 ## Accessing Postgres
 
-The GDK uses the Postges binaries installed on your system (see install section), but keeps the Postgres datafiles within the GDK directory structure, under `gdk-ce/postgresql/data` , which means that the databases cannot be seen with `psql -l`.
+GDK uses the Postgres binaries installed on your system
+(see [install](../prepare.md) section), but keeps the Postgres
+datafiles within the GDK directory structure, under `<gdk directory>/postgresql/data`.
+This means that the databases cannot be seen with `psql -l`.
 
 To access the database using `psql`, use the Rails dbconsole command. This can be prefixed to access the test environment.
 
