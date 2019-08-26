@@ -65,7 +65,9 @@ gdk install
 
 ### Cloning via SSH
 
-By default the GitLab Rails repository will be cloned using HTTPS. If a developer would prefer to have the repos cloned via SSH this is possible. For example, to clone both **gitlab-ce** and **gitlab-ee** using SSH, the full sequence would be:
+By default, the GitLab CE and EE repositories are cloned using HTTPS but they can be
+cloned using SSH. If you want to clone `gitlab-ce` and `gitlab-ee` projects using SSH,
+you can run the following commands:
 
 ```bash
 gem install gitlab-development-kit
