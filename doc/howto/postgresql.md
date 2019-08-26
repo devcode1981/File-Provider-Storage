@@ -5,7 +5,8 @@ GDK uses the Postgres binaries installed on your system
 datafiles within the GDK directory structure, under `<gdk directory>/postgresql/data`.
 This means that the databases cannot be seen with `psql -l`.
 
-To access the database using `psql`, use the Rails dbconsole command. This can be prefixed to access the test environment.
+To access the database using `psql`, use the Rails `dbconsole` command.
+Use `$RAILS_ENV` to access the test environment. For example:
 
 ```bash
 cd gitlab-cd/gitlab
