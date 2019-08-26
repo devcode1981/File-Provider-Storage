@@ -87,11 +87,12 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
    # This PPA contains an up-to-date version of Go
    sudo add-apt-repository ppa:longsleep/golang-backports
    # Setup path for Go
-   export PATH="/usr/lib/go-1.12/bin:$PATH"
+   export GDK_GO_VERSION="1.12"
+   export PATH="/usr/lib/go-${GDK_GO_VERSION}/bin:$PATH"
    # This PPA contains an up-to-date version of git
    sudo add-apt-repository ppa:git-core/ppa
    sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server \
-     libicu-dev cmake g++ libre2-dev libkrb5-dev libsqlite3-dev golang-1.12-go ed \
+     libicu-dev cmake g++ libre2-dev libkrb5-dev libsqlite3-dev golang-${GDK_GO_VERSION}-go ed \
      pkg-config graphicsmagick runit libimage-exiftool-perl rsync
    ```
 
