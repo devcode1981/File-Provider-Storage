@@ -63,6 +63,20 @@ Alternatively, you can clone all components from their official source.
 gdk install
 ```
 
+### Cloning via SSH
+
+By default, the GitLab CE and EE repositories are cloned using HTTPS but they can be
+cloned using SSH. If you want to clone `gitlab-ce` and `gitlab-ee` projects using SSH,
+you can run the following commands:
+
+```bash
+gem install gitlab-development-kit
+gdk init gdk-ce
+gdk init gdk-ee
+cd gdk-ce && gdk install gitlab_repo=git@gitlab.com:gitlab-org/gitlab-ce.git
+cd ../gdk-ee && gdk install gitlab_repo=git@gitlab.com:gitlab-org/gitlab-ee.git
+```
+
 ### Common errors during installation and troubleshooting
 
 During `gdk install` process, you may encounter some dependencies related errors. Please refer to the [Troubleshooting page](./howto/troubleshooting.md) or [open an issue on GDK tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues) if you get stuck.
