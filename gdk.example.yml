@@ -68,5 +68,4 @@ username: git
 webpack:
   port: 3808
 workhorse:
-  _port: 3333
   configured_port: 3333
