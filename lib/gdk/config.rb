@@ -52,14 +52,14 @@ module GDK
     end
 
     workhorse do |w|
-      w.port do
-        if config.auto_devops?
-          config.auto_devops.workhorse_port
-        elsif config.nginx?
-          config.nginx.workhorse_port
+      w.configured_port 3333
+
+      w.__active_port do
+        if config.auto_devops? || config.nginx?
+          config.workhorse.configured_port
         else
-          # For normal installations, the gitlab port is the same as the
-          # workhose port
+          # Workhorse is the user-facing entry point whenever neither nginx nor
+          # AutoDevOps is used, so in that situation use the configured GDK port.
           config.port
         end
       end
@@ -104,7 +104,6 @@ module GDK
       a.registry do |r|
         r.port { read!('auto_devops_registry_port') || (config.auto_devops.gitlab.port + 5000) }
       end
-      a.workhorse_port 3333
     end
 
     omniauth do |o|
@@ -135,7 +134,6 @@ module GDK
     nginx do |n|
       n.enabled false
       n.bin { find_executable!('nginx') || '/usr/sbin/nginx' }
-      n.workhorse_port 3333
       n.ssl do |s|
         s.certificate 'localhost.crt'
         s.key 'localhost.key'

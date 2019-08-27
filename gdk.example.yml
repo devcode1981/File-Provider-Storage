@@ -29,7 +29,6 @@ nginx:
     port: 80
   ssl:
     certificate: localhost.crt
-  workhorse_port: 3333
 object_store:
   enabled: false
   port: 9000
@@ -69,4 +68,5 @@ username: git
 webpack:
   port: 3808
 workhorse:
-  port: 3333
+  _port: 3333
+  configured_port: 3333

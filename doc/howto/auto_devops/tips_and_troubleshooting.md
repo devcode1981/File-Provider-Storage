@@ -142,7 +142,7 @@ After following the steps indicated in the [autodevops guide](../auto_devops.md)
 ```bash
 # Tunneling
 #
-tunnel_gitlab: ssh -N -R [PORT]:localhost:$port -o ControlPath=none -o ControlMaster=no qa-tunnel.gitlab.info
+tunnel_gitlab: ssh -N -R [PORT]:localhost:3333 -o ControlPath=none -o ControlMaster=no qa-tunnel.gitlab.info
 tunnel_registry: ssh -N -R [PORT]:localhost:5000 -o ControlPath=none -o ControlMaster=no qa-tunnel.gitlab.info
 ```
 

@@ -20,7 +20,7 @@ postgresql: exec support/postgresql-signal-wrapper <%= config.postgresql.bin_dir
 # Backend services
 #
 gitaly: exec gitaly/bin/gitaly <%= config.gdk_root %>/gitaly/gitaly.config.toml
-gitlab-workhorse: exec /usr/bin/env PATH="<%= config.gdk_root %>/gitlab-workhorse/bin:$PATH" gitlab-workhorse -authSocket <%= config.gdk_root %>/gitlab.socket -listenAddr $host:<%= config.workhorse.port  %> -documentRoot <%= config.gdk_root %>/gitlab/public -developmentMode -secretPath <%= config.gdk_root %>/gitlab/.gitlab_workhorse_secret -config <%= config.gdk_root %>/gitlab-workhorse/config.toml
+gitlab-workhorse: exec /usr/bin/env PATH="<%= config.gdk_root %>/gitlab-workhorse/bin:$PATH" gitlab-workhorse -authSocket <%= config.gdk_root %>/gitlab.socket -listenAddr $host:<%= config.workhorse.__active_port %> -documentRoot <%= config.gdk_root %>/gitlab/public -developmentMode -secretPath <%= config.gdk_root %>/gitlab/.gitlab_workhorse_secret -config <%= config.gdk_root %>/gitlab-workhorse/config.toml
 rails-background-jobs: exec /usr/bin/env SIDEKIQ_LOG_ARGUMENTS=1 RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/exec-cd gitlab bin/background_jobs start_foreground
 
 <% if config.praefect? %>
@@ -55,5 +55,5 @@ registry: exec support/docker-registry
 
 # Tunneling
 #
-<%= '#' unless config.auto_devops? %>tunnel_gitlab: exec ssh -N -o ControlPath=none -o ControlMaster=no -R <%= config.auto_devops.gitlab.port %>:localhost:<%= config.workhorse.port || '$port' %> qa-tunnel.gitlab.info
+<%= '#' unless config.auto_devops? %>tunnel_gitlab: exec ssh -N -o ControlPath=none -o ControlMaster=no -R <%= config.auto_devops.gitlab.port %>:localhost:<%= config.workhorse.__active_port %> qa-tunnel.gitlab.info
 <%= '#' unless config.auto_devops? %>tunnel_registry: exec ssh -N -o ControlPath=none -o ControlMaster=no -R <%= config.auto_devops.registry.port %>:localhost:5000 qa-tunnel.gitlab.info
