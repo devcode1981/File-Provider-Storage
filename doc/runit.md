@@ -14,6 +14,7 @@ To replace Foreman with Runit:
 - install Runit:
   - macOS: `brew install runit`
   - Arch Linux: From user repositories: https://aur.archlinux.org/packages/runit-systemd
+  - Ubuntu/Debian: `sudo apt-get install runit`
 
 This will disable `gdk run`. Instead of it, you use `gdk start`, `gdk stop`,
 and `gdk tail`.
