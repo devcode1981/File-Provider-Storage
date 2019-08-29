@@ -38,6 +38,10 @@ module GDK
       base_methods = ConfigSettings.new.methods
 
       yaml = (methods - base_methods).sort.inject({}) do |hash, method|
+        # If a config starts with a double underscore,
+        # it's an internal config so don't dump it out
+        next hash if method.to_s.start_with?('__')
+
         value = public_send(method)
         if value.is_a?(ConfigSettings)
           hash[method.to_s] = value.dump!

@@ -28,6 +28,7 @@ module GDK
 
     port do
       next 443 if config.auto_devops.enabled
+
       env!('port') || read!('port') || 3000
     end
 
@@ -48,6 +49,20 @@ module GDK
 
     webpack do |w|
       w.port { read!('webpack_port') || 3808 }
+    end
+
+    workhorse do |w|
+      w.configured_port 3333
+
+      w.__active_port do
+        if config.auto_devops? || config.nginx?
+          config.workhorse.configured_port
+        else
+          # Workhorse is the user-facing entry point whenever neither nginx nor
+          # AutoDevOps is used, so in that situation use the configured GDK port.
+          config.port
+        end
+      end
     end
 
     registry do |r|
@@ -119,7 +134,6 @@ module GDK
     nginx do |n|
       n.enabled false
       n.bin { find_executable!('nginx') || '/usr/sbin/nginx' }
-      n.workhorse_port 3333
       n.ssl do |s|
         s.certificate 'localhost.crt'
         s.key 'localhost.key'

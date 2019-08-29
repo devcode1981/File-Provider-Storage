@@ -83,7 +83,7 @@ gdk reconfigure
 Finally, run the below command to start all the services:
 
 ```bash
-port=8080 gdk run
+gdk run
 ```
 
 Now login as root using the Gitlab tunnel URL (`https://[PORT].qa-tunnel.gitlab.info`) and the default password. Once you are logged in, change the default password.

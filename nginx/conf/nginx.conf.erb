@@ -29,7 +29,7 @@ http {
   client_max_body_size 0;
 
   upstream gitlab-workhorse {
-    server <%= config.hostname %>:<%= config.nginx.workhorse_port %> fail_timeout=0;
+    server <%= config.hostname %>:<%= config.workhorse.__active_port  %> fail_timeout=0;
   }
 
   map $http_upgrade $connection_upgrade {
