@@ -58,10 +58,13 @@ module Runit
     abort "unknown runit service: #{dir}" unless File.directory?(dir)
 
     50.times do
-      open(File.join(dir, 'supervise/ok'), File::WRONLY|File::NONBLOCK).close
+      begin
+        open(File.join(dir, 'supervise/ok'), File::WRONLY|File::NONBLOCK).close
+      rescue
+        sleep 0.1
+        next
+      end
       return
-    rescue
-      sleep 0.1
     end
 
     abort "timeout waiting for runsv in #{dir}"
