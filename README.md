@@ -40,9 +40,9 @@ please see the [instructions for using Vagrant with VirtualBox or Docker](doc/va
 You can also install GDK on [Minikube](https://github.com/kubernetes/minikube),
 see [kubernetes docs](doc/kubernetes.md).
 
-After installation [learn how to use GDK](doc/howto/README.md)
+After installation, [learn how to use GDK](doc/howto/README.md).
 
-If you have an old installation [update your existing GDK installation](doc/update-gdk.md)
+If you have an old installation, [update your existing GDK installation](doc/update-gdk.md).
 
 ## Design goals
 
@@ -63,9 +63,9 @@ If you have an old installation [update your existing GDK installation](doc/upda
   loaded
 - No unified configuration management for GitLab and gitlab-shell
   (handled by Omnibus)
-- No privilege separation between Ruby, Postgres and Redis
+- No privilege separation between Ruby, Postgres, and Redis
 - No easy upgrades
-- Need to download and compile new gems ('bundle install') on each upgrade
+- Need to download and compile new gems (`bundle install`) on each upgrade
 
 ## License
 
