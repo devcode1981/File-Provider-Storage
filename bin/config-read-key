@@ -2,12 +2,11 @@
 
 require_relative '../lib/gdk/config'
 
-def read_key
-  return ARGV[0] unless ARGV.empty?
+def key_name
+  return ARGV unless ARGV.empty?
 
   STDERR.print '> Please enter a key name: ' if $stdin.tty?
   STDIN.gets.chomp
 end
 
-config = GDK::Config.new
-puts config.read_key(read_key).to_s
+puts GDK::Config.new.dig(*key_name).to_s

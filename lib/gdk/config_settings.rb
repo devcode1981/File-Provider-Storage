@@ -7,7 +7,6 @@ module GDK
     SettingUndefined = Class.new(StandardError)
 
     FILE = 'gdk.yml'
-    EXAMPLE_FILE = 'gdk.example.yml'
 
     attr_reader :parent, :yaml, :key
 
@@ -45,7 +44,7 @@ module GDK
         # it's an internal config so don't dump it out
         next hash if method.to_s.start_with?('__')
 
-        value = public_send(method)
+        value = fetch(method)
         if value.is_a?(ConfigSettings)
           hash[method.to_s] = value.dump!
         else
@@ -98,15 +97,26 @@ module GDK
       value
     end
 
-    def read_key(key, lookup_default: true)
-      # Let's load these late, just in case we don't need them.
-      @gdk_yaml ||= flatten_hash(@yaml)
-      @gdk_example_yaml ||= flatten_hash(load_yaml!(EXAMPLE_FILE))
-      value = @gdk_yaml[key]
+    def fetch(key, default_value = (default_omitted = true))
+      return public_send(key) if respond_to?(key)
 
-      return value unless lookup_default
+      raise(SettingUndefined, "Could not fetch the setting '#{key}' in '#{self.key}'") if default_omitted
 
-      value || @gdk_example_yaml[key]
+      default_value
+    end
+
+    def [](key)
+      fetch(key, nil)
+    end
+
+    def dig(*keys)
+      keys = keys.first.to_s.split('.') if keys.one?
+
+      value = fetch(keys.shift)
+
+      return value if keys.empty?
+
+      value.dig(*keys)
     end
 
     def root
@@ -133,23 +143,12 @@ module GDK
 
     private
 
-    def flatten_hash(hash)
-      hash.each_with_object({}) do |(k, v), h|
-        next h[k] = v unless v.is_a? Hash
-
-        flatten_hash(v).map do |h_k, h_v|
-          h["#{k}_#{h_k}"] = h_v
-        end
-      end
-    end
-
     def enabled_value(method_name)
       chopped_name = method_name.to_s.chop.to_sym
 
-      return public_send(chopped_name).enabled if method_name.to_s.end_with?('?') &&
-                                                  respond_to?(chopped_name) &&
-                                                  public_send(chopped_name).respond_to?(:enabled)
-      nil
+      return nil unless method_name.to_s.end_with?('?')
+
+      fetch(chopped_name, nil)&.fetch(:enabled, nil)
     end
 
     def load_yaml!(file)
