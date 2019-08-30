@@ -17,7 +17,7 @@ RAILS_ENV=test bundle exec rails dbconsole
 To access the database using an external SQL editor, pass in the:
 
 - Datafile path.
-- Database port.
+- Database port - e.g. `5432`
 - Database name.
 
 ![Postgres connect example](img/postgres_connect_example.png)
