@@ -16,7 +16,7 @@ RAILS_ENV=test bundle exec rails dbconsole
 
 To access the database using an external SQL editor, pass in the:
 
-- Datafile path.
+- Datafile path - e.g. `/home/janedoe/projects/gitlab-development-kit/gitlab/postgresl`
 - Database port - e.g. `5432`
 - Database name - e.g. `gitlabhq_development` or `gitlabhq_test`
 
