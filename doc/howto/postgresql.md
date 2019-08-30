@@ -18,7 +18,7 @@ To access the database using an external SQL editor, pass in the:
 
 - Datafile path.
 - Database port - e.g. `5432`
-- Database name.
+- Database name - e.g. `gitlabhq_development` or `gitlabhq_test`
 
 ![Postgres connect example](img/postgres_connect_example.png)
 
