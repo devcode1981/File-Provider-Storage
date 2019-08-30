@@ -11,7 +11,7 @@ Use `$RAILS_ENV` to access the test environment. For example:
 ```bash
 cd gitlab-cd/gitlab
 rails dbconsole
-RAILS_ENV=test rails dbconsole
+RAILS_ENV=test bundle exec rails dbconsole
 ```
 
 To access the database using an external SQL editor, pass in the:
