@@ -48,6 +48,7 @@ module GDK
     username { Etc.getlogin }
 
     webpack do |w|
+      w.host { read!('webpack_host') || '0.0.0.0' }
       w.port { read!('webpack_port') || 3808 }
     end
 
