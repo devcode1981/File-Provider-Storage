@@ -715,7 +715,7 @@ production: &base
   webpack:
     dev_server:
       enabled: true
-      host: localhost
+      host: <%= config.webpack.host %>
       port: <%= config.webpack.port %>
 
   ## Monitoring
