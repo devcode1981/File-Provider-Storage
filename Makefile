@@ -35,7 +35,6 @@ https = $(shell (${auto_devops_enabled} && echo 'true') || cat https_enabled 2>/
 relative_url_root = $(shell cat relative_url_root 2>/dev/null || echo '')
 username = $(shell whoami)
 sshd_bin = $(shell which sshd)
-webpack_port = $(shell cat webpack_port 2>/dev/null || echo '3808')
 registry_enabled = $(shell cat registry_enabled 2>/dev/null || echo 'false')
 registry_host = $(if $(filter true,$(auto_devops_enabled)),"$(auto_devops_registry_port).qa-tunnel.gitlab.info",$(shell cat registry_host 2>/dev/null || echo '127.0.0.1'))
 registry_external_port = $(if $(filter true,$(auto_devops_enabled)),443,$(shell cat registry_external_port 2>/dev/null || echo '5000'))
