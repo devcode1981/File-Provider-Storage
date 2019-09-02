@@ -26,7 +26,7 @@ module GDK
           sub.new(parent: self, yaml: yaml.fetch(name.to_s, {}), key: [key, name].compact.join('.'))
         end
       else
-        raise SettingUndefined, "Could not find the setting '#{name}'"
+        raise SettingUndefined.new(%Q[Could not find the setting '#{name}'])
       end
     end
 
@@ -74,7 +74,7 @@ module GDK
     def cmd!(cmd)
       # Passing an array to IO.popen guards against sh -c.
       # https://gitlab.com/gitlab-org/gitlab-ce/blob/master/doc/development/shell_commands.md#bypass-the-shell-by-splitting-commands-into-separate-tokens
-      raise 'command must be an array' unless cmd.is_a?(Array)
+      raise ::ArgumentError.new('Command must be an array') unless cmd.is_a?(Array)
 
       IO.popen(cmd, &:read).chomp
     end
@@ -97,12 +97,14 @@ module GDK
       value
     end
 
-    def fetch(key, default_value = (default_omitted = true))
+    def fetch(key, *args)
+      raise ::ArgumentError.new(%Q[Wrong number of arguments (#{args.count + 1} for 1..2)]) if args.count > 1
+
       return public_send(key) if respond_to?(key)
 
-      raise(SettingUndefined, "Could not fetch the setting '#{key}' in '#{self.key}'") if default_omitted
+      raise SettingUndefined.new(%Q[Could not fetch the setting '#{key}' in '#{self.key || '<root>'}']) if args.empty?
 
-      default_value
+      args.first
     end
 
     def [](key)
