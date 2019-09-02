@@ -6,6 +6,8 @@ module GDK
   class ConfigSettings
     SettingUndefined = Class.new(StandardError)
 
+    FILE = 'gdk.yml'
+
     attr_reader :parent, :yaml, :key
 
     def self.method_missing(name, *args, &blk)
@@ -24,14 +26,14 @@ module GDK
           sub.new(parent: self, yaml: yaml.fetch(name.to_s, {}), key: [key, name].compact.join('.'))
         end
       else
-        raise SettingUndefined, "Could not find the setting '#{name}'"
+        raise SettingUndefined.new(%Q[Could not find the setting '#{name}'])
       end
     end
 
     def initialize(parent: nil, yaml: nil, key: nil)
       @parent = parent
       @key = key
-      @yaml = yaml || load_yaml!
+      @yaml = yaml || load_yaml!(FILE)
     end
 
     def dump!(file = nil)
@@ -42,7 +44,7 @@ module GDK
         # it's an internal config so don't dump it out
         next hash if method.to_s.start_with?('__')
 
-        value = public_send(method)
+        value = fetch(method)
         if value.is_a?(ConfigSettings)
           hash[method.to_s] = value.dump!
         else
@@ -72,7 +74,7 @@ module GDK
     def cmd!(cmd)
       # Passing an array to IO.popen guards against sh -c.
       # https://gitlab.com/gitlab-org/gitlab-ce/blob/master/doc/development/shell_commands.md#bypass-the-shell-by-splitting-commands-into-separate-tokens
-      raise 'command must be an array' unless cmd.is_a?(Array)
+      raise ::ArgumentError.new('Command must be an array') unless cmd.is_a?(Array)
 
       IO.popen(cmd, &:read).chomp
     end
@@ -93,6 +95,30 @@ module GDK
     rescue Errno::ENOENT
       File.write(filename, value)
       value
+    end
+
+    def fetch(key, *args)
+      raise ::ArgumentError.new(%Q[Wrong number of arguments (#{args.count + 1} for 1..2)]) if args.count > 1
+
+      return public_send(key) if respond_to?(key)
+
+      raise SettingUndefined.new(%Q[Could not fetch the setting '#{key}' in '#{self.key || '<root>'}']) if args.empty?
+
+      args.first
+    end
+
+    def [](key)
+      fetch(key, nil)
+    end
+
+    def dig(*keys)
+      keys = keys.first.to_s.split('.') if keys.one?
+
+      value = fetch(keys.shift)
+
+      return value if keys.empty?
+
+      value.dig(*keys)
     end
 
     def root
@@ -122,16 +148,15 @@ module GDK
     def enabled_value(method_name)
       chopped_name = method_name.to_s.chop.to_sym
 
-      return public_send(chopped_name).enabled if method_name.to_s.end_with?('?') &&
-                                                  respond_to?(chopped_name) &&
-                                                  public_send(chopped_name).respond_to?(:enabled)
-      nil
+      return nil unless method_name.to_s.end_with?('?')
+
+      fetch(chopped_name, nil)&.fetch(:enabled, nil)
     end
 
-    def load_yaml!
-      return {} unless defined?(self.class::FILE) && File.exist?(self.class::FILE)
+    def load_yaml!(file)
+      return {} unless defined?(file) && File.exist?(file)
 
-      @yaml = YAML.load_file(self.class::FILE) || {}
+      YAML.load_file(file) || {}
     end
 
     def from_yaml(key, default: nil)
@@ -139,8 +164,10 @@ module GDK
     end
 
     def sanitized_read!(filename)
-      value = File.read(filename).chomp
+      sanitize_value(File.read(filename).chomp)
+    end
 
+    def sanitize_value(value)
       return true if value == "true"
       return false if value == "false"
       return value.to_i if value == value.to_i.to_s

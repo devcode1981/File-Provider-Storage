@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/gdk/config'
+
+def key_name
+  return ARGV unless ARGV.empty?
+
+  STDERR.print '> Please enter a key name: ' if $stdin.tty?
+  STDIN.gets.chomp
+end
+
+puts GDK::Config.new.dig(*key_name).to_s
