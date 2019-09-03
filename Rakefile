@@ -4,6 +4,7 @@ $LOAD_PATH.unshift('.')
 
 require 'fileutils'
 require 'lib/gdk'
+require 'lib/git/configure'
 require 'rake/clean'
 
 CONFIGS = FileList['Procfile', 'nginx/conf/nginx.conf', 'gitlab/config/gitlab.yml']
@@ -43,6 +44,15 @@ end
 desc 'Generate Procfile for Foreman'
 file 'Procfile' => ['Procfile.erb', GDK::Config::FILE] do |t|
   GDK::ErbRenderer.new(t.source, t.name).safe_render!
+end
+
+namespace :git do
+  desc 'Configure your Git with recommended settings'
+  task :configure, :global do |_t, args|
+    global = args[:global] == "true"
+
+    Git::Configure.new(global: global).run!
+  end
 end
 
 desc 'Generate nginx configuration'
