@@ -17,6 +17,14 @@ module GDK
       r.gitlab_docs 'https://gitlab.com/gitlab-com/gitlab-docs.git'
     end
 
+    git_repositories do
+      # This list in not exhaustive yet, as some git repositories are based on
+      # a fake GOPATH inside a projects sub directory
+      %w[. gitlab]
+        .map { |d| File.join(gdk_root, d) }
+        .select { |d| Dir.exist?(d) }
+    end
+
     gdk_root { Dir.pwd }
 
     repositories_root { File.join(config.gdk_root, 'repositories') }

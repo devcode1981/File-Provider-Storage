@@ -2,6 +2,15 @@
 
 This document describes how you can configure your GDK environment.
 
+## Git configuratin
+
+Git has features which are disabled by default, and would be great to enable to
+be more effective with Git. Run `rake git:configure` to set the recommendations
+for some repositories within the GDK.
+
+To set the configuration globally, run `rake git:configure[true]`. When using
+`zsh`, don't forget to escape the square brackets: `rake git:configure\[true\]`.
+
 ## Custom ports
 
 You may want to customize the ports used by the services, so they can
