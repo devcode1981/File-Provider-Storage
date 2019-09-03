@@ -9,7 +9,7 @@ redis: exec redis-server <%= config.gdk_root.join('redis', 'redis.conf') %>
 minio: exec support/object-store
 postgresql: exec support/postgresql-signal-wrapper <%= config.postgresql.bin_dir %>/postgres -D <%= config.postgresql.data_dir %> -k <%= config.postgresql.dir %> -h ''
 #postgresql-replica: exec support/postgresql-signal-wrapper <%= config.postgresql.bin_dir %>/postgres -D <%= config.postgresql.replica_dir %>/data -k <%= config.postgresql.replica_dir %> -h ''
-#openldap: exec support/exec-cd gitlab-openldap libexec/slapd -F slapd.d -d2 -h "ldap://$host:3890"
+#openldap: exec support/exec-cd gitlab-openldap libexec/slapd -F slapd.d -d2 -h "ldap://<%= config.hostname %>:3890"
 #storage-check: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/exec-cd gitlab bin/storage_check -t unix://<%= config.gdk_root.join('gitlab.socket') %>
 
 # Geo
@@ -35,7 +35,7 @@ gitaly: exec gitaly/bin/gitaly <%= config.gitaly.config_file %>
 #
 webpack: exec /usr/bin/env NODE_ENV=development DEV_SERVER_PORT=<%= config.webpack.port %> DEV_SERVER_HOST=<%= config.webpack.host %> support/exec-cd gitlab yarn dev-server
 rails-web: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/exec-cd gitlab bin/web start_foreground
-<%= '#' unless config.gitlab_pages? %>gitlab-pages: exec gitlab-pages/bin/gitlab-pages -listen-http ":<%= config.gitlab_pages.port %>" -artifacts-server <%= config.protocol %>://<%= config.hostname %>:<%= config.port %>/api/v4 -pages-root <%= config.gdk_root %>/gitlab/shared/pages/ -pages-domain 127.0.0.1.xip.io
+<%= '#' unless config.gitlab_pages? %>gitlab-pages: exec gitlab-pages/bin/gitlab-pages -listen-http ":<%= config.gitlab_pages.port %>" -artifacts-server <%= config.__uri %>/api/v4 -pages-root <%= config.gdk_root %>/gitlab/shared/pages/ -pages-domain 127.0.0.1.xip.io
 
 # Docker
 #
