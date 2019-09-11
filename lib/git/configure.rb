@@ -44,7 +44,8 @@ module Git
         Recommendation.new(
           'tag.sort',
           '-v:refname',
-          'Reverse sort the tags by name, meaning that v1.1 is listed before v1.0'
+          'Reverse sort the tags by name, meaning that v1.1 is listed before v1.0',
+          %w{-v:refname v:refname}
         )
       ]
     end
