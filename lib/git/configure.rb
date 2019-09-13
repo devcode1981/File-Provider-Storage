@@ -33,8 +33,9 @@ module Git
         ),
         Recommendation.new(
           'help.autocorrect',
-          false,
-          'Let git auto correct commands, e.g. git branhc <something> will be executed as if you typed git branch'
+          -1,
+          'Let git auto correct commands after some deciseconds, e.g. git branhc <something> will be executed as if you typed git branch',
+          (-1..)
         ),
         Recommendation.new(
           'fetch.prune',
@@ -71,10 +72,6 @@ module Git
       else
         system(*cmd)
       end
-    end
-
-    def gdk_repositories
-      GDK::Config.new.git_repositories
     end
   end
 
