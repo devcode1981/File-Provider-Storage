@@ -23,7 +23,7 @@ We currently recommend using [cactus/go-camo](https://github.com/cactus/go-camo#
 1. Make sure your instance of GitLab is running, and that you have a private API token created.
    Then issue this from the command line, changing the values as needed:
 
-    ```
+    ```shell
     curl --request "PUT" "http://localhost:3000/api/v4/application/settings?\
     asset_proxy_enabled=true&\
     asset_proxy_url=http://localhost:8080&\
