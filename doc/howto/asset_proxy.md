@@ -16,7 +16,7 @@ We currently recommend using [cactus/go-camo](https://github.com/cactus/go-camo#
    ./go-camo -k "somekey" --allow-content-video -H "Content-Security-Policy: media-src 'self'"
    ```
 
-   and get something like
+   `go-camo` will return something like:
 
    ```shell
    time="2019-07-24T14:31:29.988355000-05:00" level="I" msg="Starting server on: 0.0.0.0:8080"
