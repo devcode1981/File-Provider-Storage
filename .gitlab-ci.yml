@@ -10,18 +10,8 @@ variables:
   DOCKER_DRIVER: overlay
   TEST_IMAGE: registry.gitlab.com/gitlab-org/gitlab-development-kit:latest
 
-.no-docs:
-  only:
-    changes:
-      - "*.md"
-  except:
-    refs:
-      - /(^docs[\/-].+|.+-docs$)/
-
 # Use eclint to check that the .editorconfig rulesets are being adhered to
 verify:
-  extends:
-    - .no-docs
   stage: build
   image: registry.gitlab.com/gitlab-org/gitlab-build-images:node-10
   script:
@@ -29,8 +19,6 @@ verify:
     - make verify
 
 build:image:
-  extends:
-    - .no-docs
   image: docker:git
   stage: build
   script:
@@ -47,8 +35,6 @@ build:image:
         - ./latest_image.tar
 
 code_quality:
-  extends:
-    - .no-docs
   image: docker:stable
   stage: test
   variables:
@@ -68,8 +54,6 @@ code_quality:
       codequality: [gl-code-quality-report.json]
 
 container_scanning:
-  extends:
-    - .no-docs
   image: docker:stable
   stage: test
   allow_failure: true
@@ -99,8 +83,6 @@ container_scanning:
       - gl-sast-container-report.json
 
 test:install:
-  extends:
-    - .no-docs
   image: $TEST_IMAGE
   stage: test
   artifacts:
@@ -112,8 +94,6 @@ test:install:
     - support/ci/test_install
 
 test:update:
-  extends:
-    - .no-docs
   image: $TEST_IMAGE
   stage: test
   artifacts:
