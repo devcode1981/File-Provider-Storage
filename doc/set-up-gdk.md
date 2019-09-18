@@ -9,7 +9,7 @@ contain 'problematic' characters such as ` ` and `(`. For example,
 `/home/janedoe/projects` is OK, but `/home/janedoe/my projects` will
 cause problems.
 
-Execute the following with the Ruby version manager of your choice (`rvm`, `rbenv`, `chruby`, etc.) with the current [`gitlab-ce` Ruby version](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/.ruby-version):
+Execute the following with the Ruby version manager of your choice (`rvm`, `rbenv`, `chruby`, etc.) with the current [`gitlab` Ruby version](https://gitlab.com/gitlab-org/gitlab/blob/master/.ruby-version):
 
 ```
 gem install gitlab-development-kit
@@ -18,36 +18,29 @@ gdk init
 
 The GDK is now cloned into `./gitlab-development-kit`. Enter that directory. Note that this is the default instantiation directory for the `gdk init` command.
 
-If you plan to work with **CE** and **EE** versions side by side, it is recommended that you name the GDK instance during `init` and not use the default directory name. Pick a good naming convention that will allow you to differentiate and switch between the two versions easily.
-
-For example:
-```
-gdk init gdk-ce
-```
-
 ## Install GDK
 
-The `gdk install` command clones the repositories, installs the Gem bundles, and sets up basic configuration files. The command must be run within the directory GDK was initialized into. For example, if you ran `gdk init gdk-ce`, you would run `cd ./gdk-ce && gdk install`.
+The `gdk install` command clones the repositories, installs the Gem bundles, and sets up basic configuration files. The command must be run within the directory GDK was initialized into. For example, if you ran `gdk init gdk-foss`, you would run `cd ./gdk-foss && gdk install`.
 
 Use `gdk install shallow_clone=true` for faster clone and lesser disk-space. Clone will be done using [`git clone --depth=1`](https://www.git-scm.com/docs/git-clone#Documentation/git-clone.txt---depthltdepthgt).
 
 Pick one of the installation methods below. If you don't have write access to the upstream repositories, you should use the 'Develop in a fork'
 method.
 
-In either case, use your Ruby version manager to run `gdk install` with the `gitlab-ce` Ruby version. The `gdk install` command will install from `https://gitlab.com/gitlab-org/gitlab-ce.git` by default.
+In either case, use your Ruby version manager to run `gdk install` with the `gitlab` Ruby version. The `gdk install` command will install from `https://gitlab.com/gitlab-org/gitlab.git` by default.
 
 ### Option 1: Develop in a fork
 
 ```
-# Set up GDK with 'origin' pointing to your gitlab-ce fork.
+# Set up GDK with 'origin' pointing to your gitlab fork.
 # Replace MY-FORK with your namespace
-gdk install gitlab_repo=https://gitlab.com/MY-FORK/gitlab-ce.git
+gdk install gitlab_repo=https://gitlab.com/MY-FORK/gitlab.git
 support/set-gitlab-upstream
 ```
 
 The `set-gitlab-upstream` script creates a remote named `upstream` for
-[the canonical GitLab CE
-repository](https://gitlab.com/gitlab-org/gitlab-ce). It also modifies
+[the canonical GitLab
+repository](https://gitlab.com/gitlab-org/gitlab). It also modifies
 `gdk update` (See [Update gitlab and gitlab-shell
 repositories](./howto/gdk_commands.md#update-gitlab-and-gitlab-shell-repositories))
 to pull down from the upstream repository instead of your fork, making it
@@ -65,43 +58,21 @@ gdk install
 
 ### Cloning via SSH
 
-By default, the GitLab CE and EE repositories are cloned using HTTPS but they can be
-cloned using SSH. If you want to clone `gitlab-ce` and `gitlab-ee` projects using SSH,
+By default, the GitLab repository is cloned using HTTPS but it can be
+cloned using SSH. If you want to clone the `gitlab` project using SSH,
 you can run the following commands:
 
 ```bash
 gem install gitlab-development-kit
-gdk init gdk-ce
-gdk init gdk-ee
-cd gdk-ce && gdk install gitlab_repo=git@gitlab.com:gitlab-org/gitlab-ce.git
-cd ../gdk-ee && gdk install gitlab_repo=git@gitlab.com:gitlab-org/gitlab-ee.git
+gdk init gdk
+cd gdk && gdk install gitlab_repo=git@gitlab.com:gitlab-org/gitlab.git
 ```
 
 ### Common errors during installation and troubleshooting
 
 During `gdk install` process, you may encounter some dependencies related errors. Please refer to the [Troubleshooting page](./howto/troubleshooting.md) or [open an issue on GDK tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues) if you get stuck.
 
-## GitLab Enterprise Edition
-
-The recommended way to do development on GitLab Enterprise Edition is
-to create a separate GDK directory for it. Below we call that
-directory `gdk-ee` following the naming convention from above. We will configure GDK to start GitLab on port 3001
-instead of 3000 so that you can run GDK EE next to CE without port
-conflicts.
-
-```
-gem install gitlab-development-kit
-gdk init gdk-ee
-cd gdk-ee
-echo 3001 > port
-echo 3809 > webpack_port
-echo 3011 > gitlab_pages_port
-gdk install gitlab_repo=https://gitlab.com/gitlab-org/gitlab-ee.git
-```
-
-Now you can start GitLab EE with `gdk run` in the `gdk-ee` directory and you
-will not have port conflicts with a separate GDK instance for CE that
-might still be running.
+## GitLab Enterprise Features
 
 Instructions to generate a developer license can be found in the
 onboarding document: https://about.gitlab.com/handbook/developer-onboarding/#working-on-gitlab-ee

@@ -3,7 +3,7 @@
 -include env.mk
 
 gitlab_clone_dir = gitlab
-gitlab_repo = https://gitlab.com/gitlab-org/gitlab-ce.git
+gitlab_repo = https://gitlab.com/gitlab-org/gitlab.git
 gitlab_repo_ruby_version = $(shell cat "./${gitlab_clone_dir}/.ruby-version")
 gitlab_shell_repo = https://gitlab.com/gitlab-org/gitlab-shell.git
 gitlab_shell_clone_dir = go-gitlab-shell/src/gitlab.com/gitlab-org/gitlab-shell

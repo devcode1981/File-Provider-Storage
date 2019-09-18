@@ -6,7 +6,7 @@ require_relative 'config_settings'
 module GDK
   class Config < ConfigSettings
     repositories do |r|
-      r.gitlab 'https://gitlab.com/gitlab-org/gitlab-ce.git'
+      r.gitlab 'https://gitlab.com/gitlab-org/gitlab.git'
       r.gitlab_shell 'https://gitlab.com/gitlab-org/gitlab-shell.git'
       r.gitlab_workhorse 'https://gitlab.com/gitlab-org/gitlab-workhorse.git'
       r.gitaly 'https://gitlab.com/gitlab-org/gitaly.git'

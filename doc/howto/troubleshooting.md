@@ -197,7 +197,6 @@ completely.
 
 ## Rails cannot connect to Postgres
 
-- Until [gitlab-ce#54718](https://gitlab.com/gitlab-org/gitlab-ce/issues/54718) is fixed, [comment out](https://gitlab.com/gitlab-org/gitlab-development-kit/issues/420#note_121439593) Sidekiq's reliable fetch initialization.
 - Check if foreman is running in the gitlab-development-kit directory.
 - Check for custom Postgres connection settings defined via the environment; we
   assume none such variables are set. Look for them with `set | grep '^PG'`.
@@ -224,7 +223,7 @@ In case you use the same database for both CE and EE development, sometimes you
 can get stuck in a situation when the migration is up in `rake db:migrate:status`,
 but in reality the database doesn't have it.
 
-For example, https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/3186
+For example, https://gitlab.com/gitlab-org/gitlab-foss/merge_requests/3186
 introduced some changes when a few EE migrations were added to CE. If you were
 using the same db for CE and EE you would get hit by the following error:
 

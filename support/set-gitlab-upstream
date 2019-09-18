@@ -1,8 +1,7 @@
 #!/bin/sh
 set -e # exit on uncaught failure
 gitlab_base_url="https://gitlab.com"
-gitlab_ce="gitlab-ce"
-gitlab_ee="gitlab-ee"
+gitlab="gitlab"
 gitlab_org="gitlab-org"
 remote_name="upstream"
 
@@ -23,14 +22,8 @@ if git remote | grep -q "^${remote_name}$"; then
 fi
 
 # Try to determine if remote should be ee or ce
-if grep_git_remote ${gitlab_ee}; then
-  git_remote_add_upstream ${gitlab_ee}
-elif grep_git_remote ${gitlab_ce}; then
-  git_remote_add_upstream ${gitlab_ce}
-else
-  echo "Remote origin is ambigious. Please set the upstream remote yourself. Exiting."
-  exit 1
-fi
+
+git_remote_add_upstream ${gitlab}
 
 git remote set-url --push "${remote_name}" none # make 'upstream' fetch-only
 echo "Fetching master from ${remote_name}..."
