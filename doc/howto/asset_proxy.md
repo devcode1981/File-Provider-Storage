@@ -6,8 +6,8 @@ GitLab can be configured to use an [asset proxy server](https://docs.gitlab.com/
 
 We currently recommend using [cactus/go-camo](https://github.com/cactus/go-camo#how-it-works) as it supports proxying video and is more configurable.
 
-1. Follow the build and installation instructions at 
-   [building cactus/go-camo](https://github.com/cactus/go-camo#building). To check it's 
+1. Follow the build and installation instructions at
+   [building cactus/go-camo](https://github.com/cactus/go-camo#building). To check it's
    working, run the following from the `go-camo` directory:
    `go-camo` directory, you should be able to
 
