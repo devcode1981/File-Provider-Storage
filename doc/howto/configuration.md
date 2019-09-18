@@ -2,7 +2,7 @@
 
 This document describes how you can configure your GDK environment.
 
-## Git configuratin
+## Git configuration
 
 Git has features which are disabled by default, and would be great to enable to
 be more effective with Git. Run `rake git:configure` to set the recommendations
