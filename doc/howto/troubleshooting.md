@@ -353,7 +353,6 @@ git checkout -b can-I-commit
 git commit --allow-empty -m 'I can commit'
 ```
 
-
 ## 'gem install nokogiri' fails
 
 Make sure that Xcode Command Line Tools installed on your development machine. For the discussion see this [issue](https://gitlab.com/gitlab-org/gitlab-development-kit/issues/124)
@@ -388,6 +387,90 @@ If building `gpgme` gem fails with an `Undefined symbols for architecture x86_64
     ```
 
 You can now run `gdk install` or `bundle` again.
+
+## `gem install nokogumbo` fails
+
+If you see the following error installing the `nokogumbo` gem via `gdk install`:
+
+```sh
+
+Running 'configure' for libxml2 2.9.9... OK
+Running 'compile' for libxml2 2.9.9... ERROR, review
+...
+sed -e
+'s?\@XML_LIBDIR\@?-L/Users/erick/Development/gitlab-development-kit/gitlab/-?/gems/nokogiri-1.10.4/ports/x86_64-apple-darwin18.7.0/libxml2/2.9.9/lib?g'
+\
+-e
+'s?\@XML_INCLUDEDIR\@?-I/Users/erick/Development/gitlab-development-kit/gitlab/-?/gems/nokogiri-1.10.4/ports/x86_64-apple-darwin18.7.0/libxml2/2.9.9/include/libxml2?g'
+\
+        -e 's?\@VERSION\@?2.9.9?g' \
+        -e 's?\@XML_LIBS\@?-lxml2 -lz -L/usr/local/Cellar/xz/5.2.4/lib -llzma -lpthread  -liconv  -lm ?g' \
+           < ./xml2Conf.sh.in > xml2Conf.tmp \
+    && mv xml2Conf.tmp xml2Conf.sh
+sed: 1: "s?\@XML_LIBDIR\@?-L/Use ...": bad flag in substitute command: '/'
+make[3]: *** [xml2Conf.sh] Error 1
+make[2]: *** [all-recursive] Error 1
+make[1]: *** [all] Error 2
+...
+An error occurred while installing nokogumbo (1.5.0), and Bundler cannot continue.
+Make sure that `gem install nokogumbo -v '1.5.0' --source 'https://rubygems.org/'` succeeds before bundling.
+
+In Gemfile:
+  sanitize was resolved to 4.6.6, which depends on
+    nokogumbo
+make: *** [.gitlab-bundle] Error 5
+```
+
+A solution is to:
+
+1. Instruct Bundler to use the system libraries when building `nokogumbo`:
+
+    ```sh
+    bundle config build.nokogumbo --use-system-libraries
+    ```
+
+2. Re-run `gdk install`
+
+## `gem install ffi` fails
+
+If you see the following error installing the `ffi` gem via `gdk install`:
+
+```sh
+Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
+...
+sed: 1: "s?\@XML_LIBDIR\@?-L/Use ...": bad flag in substitute command: '/'
+...
+*** extconf.rb failed ***
+Could not create Makefile due to some reason, probably lack of necessary
+libraries and/or headers.  Check the mkmf.log file for more details.  You may
+need configuration options.
+...
+An error occurred while installing nokogiri (1.10.4), and Bundler cannot continue.
+Make sure that `gem install nokogiri -v '1.10.4' --source 'https://rubygems.org/'` succeeds before bundling.
+...
+compiling AbstractMemory.c
+In file included from AbstractMemory.c:47:
+In file included from ./AbstractMemory.h:42:
+./Types.h:78:10: fatal error: 'ffi.h' file not found
+#include <ffi.h>
+        ^~~~~~~
+1 error generated.
+make[1]: *** [AbstractMemory.o] Error 1
+...
+An error occurred while installing ffi (1.11.1), and Bundler cannot continue.
+Make sure that `gem install ffi -v '1.11.1' --source 'https://rubygems.org/'` succeeds before bundling.
+```
+
+A solution on macOS is to:
+
+1. Ensure the `PKG_CONFIG_PATH` and `LDFLAGS` environment variables are correctly set:
+
+    ```sh
+    export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$(brew --prefix)/opt/libffi/lib/pkgconfig"
+    export LDFLAGS="$LDFLAGS:-L$(brew --prefix)/opt/libffi/lib"
+    ```
+
+2. Re-run `gdk install`
 
 ## LoadError due to readline
 
