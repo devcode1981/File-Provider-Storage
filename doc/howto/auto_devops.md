@@ -134,7 +134,7 @@ flow.
 Since you may want to save yourself the hassle of manually setting up a whole
 project for Auto DevOps and validating everything works every time you make a
 change you can just run [the QA
-spec](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/qa/qa/specs/features/browser_ui/7_configure/auto_devops/create_project_with_auto_devops_spec.rb).
+spec](https://gitlab.com/gitlab-org/gitlab/blob/master/qa/qa/specs/features/browser_ui/7_configure/auto_devops/create_project_with_auto_devops_spec.rb).
 
 ### Install gcloud and kubectl
 
@@ -203,7 +203,7 @@ GITLAB_PASSWORD=<root-user-password> GCLOUD_REGION=us-central1 CHROME_HEADLESS=f
 ```
 
 More information about running QA tests can be found in
-[qa/README.md](https://gitlab.com/gitlab-org/gitlab-ee/blob/master/qa/README.md#how-can-i-use-it).
+[qa/README.md](https://gitlab.com/gitlab-org/gitlab/blob/master/qa/README.md#how-can-i-use-it).
 There are also other ways of running the QA specs that are documented in the
 [gitlab-qa project](https://gitlab.com/gitlab-org/gitlab-qa) but using the
 above approach is recommended as it will allow you to debug and iterate on the
@@ -219,7 +219,7 @@ NOTE: The GCP account you are using for `gcloud` will require the
 succeed.
 
 NOTE: [This
-test](https://gitlab.com/gitlab-org/gitlab-ce/blob/eb146e9abe08c3991b5a54237c24d15312c70ee8/qa/qa/specs/features/browser_ui/7_configure/auto_devops/create_project_with_auto_devops_spec.rb#L9)
+test](https://gitlab.com/gitlab-org/gitlab/blob/a0d3691c8660c90a1db1bac3115f8c17a968f148/qa/qa/specs/features/browser_ui/7_configure/auto_devops/create_project_with_auto_devops_spec.rb#L65)
 does teardown the K8s cluster at the end so after the test finishes it won't be
 possible to run the pipeline again unless you comment this out.
 
@@ -262,7 +262,7 @@ network.
 #### Massive bandwidth used by Auto DevOps
 
 Running [the Auto DevOps
-pipeline](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/vendor/gitlab-ci-yml/Auto-DevOps.gitlab-ci.yml)
+pipeline](https://gitlab.com/gitlab-org/gitlab/blob/a0d3691c8660c90a1db1bac3115f8c17a968f148/lib%2Fgitlab%2Fci%2Ftemplates%2FAuto-DevOps.gitlab-ci.yml)
 uses a lot of bandwidth doing the following with docker images:
 
 - Runner downloads images from docker hub

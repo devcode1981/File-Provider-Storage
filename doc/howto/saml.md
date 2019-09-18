@@ -7,7 +7,7 @@ docker image, both to test instance-wide SAML and the multi-tenant Group SAML us
 
 ### GitLab configuration
 
-Group SAML requires [HTTPS](https.md) to be set up for GitLab and you'll also need to enable Group SAML in [gitlab/config/gitlab.yml](https://gitlab.com/gitlab-org/gitlab-ee/blob/d8ef45c25ef3f08e5fcda703185f36203bfecd6b/config/gitlab.yml.example#L693):
+Group SAML requires [HTTPS](https.md) to be set up for GitLab and you'll also need to enable Group SAML in [gitlab/config/gitlab.yml](https://gitlab.com/gitlab-org/gitlab/blob/d8ef45c25ef3f08e5fcda703185f36203bfecd6b/config/gitlab.yml.example#L693):
 
 ```yaml
 omniauth:
