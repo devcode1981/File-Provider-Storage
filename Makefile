@@ -466,7 +466,9 @@ gitlab-pages-clean-bin:
 
 .PHONY: gitlab-pages/bin/gitlab-pages
 gitlab-pages/bin/gitlab-pages: check-go-version ${gitlab_pages_clone_dir}/.git
-	GOPATH=${gitlab_development_root}/gitlab-pages GOBIN=${gitlab_development_root}/gitlab-pages/bin GO111MODULE=off go install gitlab.com/gitlab-org/gitlab-pages
+	mkdir -p gitlab-pages/bin
+	$(MAKE) -C ${gitlab_pages_clone_dir}
+	install -m755 ${gitlab_pages_clone_dir}/gitlab-pages gitlab-pages/bin
 
 ${gitlab_pages_clone_dir}/.git:
 	git clone --quiet --branch "${pages_version}" ${git_depth_param} ${gitlab_pages_repo} ${gitlab_pages_clone_dir}
