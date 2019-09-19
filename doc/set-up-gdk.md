@@ -77,7 +77,7 @@ During `gdk install` process, you may encounter some dependencies related errors
 Instructions to generate a developer license can be found in the
 onboarding document: https://about.gitlab.com/handbook/developer-onboarding/#working-on-gitlab-ee
 
-The license key generator is only available for GitLab employees, who should use the "Sign in with GitLab" link using their dev.gitlab.com account.
+The license key generator is only available for GitLab employees, who should use the "Sign in with GitLab" link using their dev.gitlab.org account.
 
 ### GitLab Geo
 
