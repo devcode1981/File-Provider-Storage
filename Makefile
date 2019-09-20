@@ -10,10 +10,8 @@ gitlab_shell_clone_dir = go-gitlab-shell/src/gitlab.com/gitlab-org/gitlab-shell
 gitlab_workhorse_repo = https://gitlab.com/gitlab-org/gitlab-workhorse.git
 gitlab_workhorse_clone_dir = gitlab-workhorse/src/gitlab.com/gitlab-org/gitlab-workhorse
 gitaly_repo = https://gitlab.com/gitlab-org/gitaly.git
-gitaly_proto_repo = https://gitlab.com/gitlab-org/gitaly-proto.git
 gitaly_gopath = $(abspath ./gitaly)
 gitaly_clone_dir = ${gitaly_gopath}/src/gitlab.com/gitlab-org/gitaly
-gitaly_proto_clone_dir = ${gitaly_gopath}/src/gitlab.com/gitlab-org/gitaly-proto
 gitlab_pages_repo = https://gitlab.com/gitlab-org/gitlab-pages.git
 gitlab_pages_clone_dir = gitlab-pages/src/gitlab.com/gitlab-org/gitlab-pages
 gitlab_docs_repo = https://gitlab.com/gitlab-com/gitlab-docs.git
@@ -179,13 +177,10 @@ gitlab-shell/.gitlab_shell_secret:
 
 # Set up gitaly
 
-gitaly-setup: gitaly/bin/gitaly gitaly/gitaly.config.toml ${gitaly_proto_clone_dir}/.git
+gitaly-setup: gitaly/bin/gitaly gitaly/gitaly.config.toml
 
 ${gitaly_clone_dir}/.git:
 	git clone --quiet --branch "${gitaly_version}" ${git_depth_param} ${gitaly_repo} ${gitaly_clone_dir}
-
-${gitaly_proto_clone_dir}/.git:
-	git clone ${git_depth_param} --quiet ${gitaly_proto_repo} ${gitaly_proto_clone_dir}
 
 gitaly/gitaly.config.toml: support/templates/gitaly.config.toml.erb
 	rake gitaly/gitaly.config.toml
@@ -270,15 +265,11 @@ gitlab-shell/.git/pull:
 gitaly-update: gitaly/.git/pull gitaly-clean gitaly/bin/gitaly
 
 .PHONY: gitaly/.git/pull
-gitaly/.git/pull: ${gitaly_clone_dir}/.git ${gitaly_proto_clone_dir}/.git
+gitaly/.git/pull: ${gitaly_clone_dir}/.git
 	cd ${gitaly_clone_dir} && \
 		git stash && \
 		git fetch --all --tags --prune && \
 		git checkout "${gitaly_version}"
-	cd ${gitaly_proto_clone_dir} && \
-		git stash && \
-		git checkout master && \
-		git pull --ff-only
 
 gitaly-clean:
 	rm -rf ${gitaly_assembly_dir}

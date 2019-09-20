@@ -51,7 +51,6 @@ registry:
 relative_url_root:
 repositories:
   gitaly: https://gitlab.com/gitlab-org/gitaly.git
-  gitaly_proto: https://gitlab.com/gitlab-org/gitaly-proto.git
   gitlab: https://gitlab.com/gitlab-org/gitlab.git
   gitlab_docs: https://gitlab.com/gitlab-com/gitlab-docs.git
   gitlab_pages: https://gitlab.com/gitlab-org/gitlab-pages.git
