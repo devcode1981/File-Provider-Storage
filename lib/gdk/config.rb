@@ -10,7 +10,6 @@ module GDK
       r.gitlab_shell 'https://gitlab.com/gitlab-org/gitlab-shell.git'
       r.gitlab_workhorse 'https://gitlab.com/gitlab-org/gitlab-workhorse.git'
       r.gitaly 'https://gitlab.com/gitlab-org/gitaly.git'
-      r.gitaly_proto 'https://gitlab.com/gitlab-org/gitaly-proto.git'
       r.gitlab_pages 'https://gitlab.com/gitlab-org/gitlab-pages.git'
       r.gitlab_docs 'https://gitlab.com/gitlab-com/gitlab-docs.git'
     end
