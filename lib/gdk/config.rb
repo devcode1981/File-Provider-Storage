@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'etc'
+require 'pathname'
 require_relative 'config_settings'
 
 module GDK
@@ -23,9 +24,9 @@ module GDK
         .select { |d| Dir.exist?(d) }
     end
 
-    gdk_root { Dir.pwd }
+    gdk_root { Pathname.pwd }
 
-    repositories_root { File.join(config.gdk_root, 'repositories') }
+    repositories_root { config.gdk_root.join('repositories') }
 
     hostname do
       next "#{config.auto_devops.gitlab.port}.qa-tunnel.gitlab.info" if config.auto_devops.enabled
@@ -154,29 +155,27 @@ module GDK
     postgresql do |p|
       p.bin_dir { cmd!(%w[support/pg_bindir]) }
       p.replication_user 'gitlab_replication'
-      p.dir { "#{config.gdk_root}/postgresql" }
-      p.data_dir { "#{config.postgresql.dir}/data" }
-      p.replica_dir { "#{config.gdk_root}/postgresql-replica" }
-      p.geo_dir { "#{config.gdk_root}/postgresql-geo" }
+      p.dir { config.gdk_root.join("postgresql") }
+      p.data_dir { config.postgresql.dir.join("data") }
+      p.replica_dir { config.gdk_root.join("postgresql-replica") }
+      p.geo_dir { config.gdk_root.join("postgresql-geo") }
     end
 
     gitaly do |g|
-      g.assembly_dir { "#{config.gdk_root}/gitaly/assembly" }
-      g.address do
-        File.join(config.gdk_root, 'gitaly.socket')
-      end
+      g.assembly_dir { config.gdk_root.join('gitaly', 'assembly') }
+      g.address { config.gdk_root.join('gitaly.socket') }
     end
 
     praefect do |p|
       p.enabled { read!('praefect_enabled') || false }
-      p.config_file { File.join(config.gdk_root, "gitaly", "praefect.config.toml") }
-      p.address { File.join(config.gdk_root, 'praefect.socket') }
+      p.config_file { config.gdk_root.join("gitaly", "praefect.config.toml") }
+      p.address { config.gdk_root.join('praefect.socket') }
       p.nodes do
         gitaly_nodes = (ENV["PRAEFECT_GITALY_NODES"] || "3").to_i
         (0..gitaly_nodes-1).map do |i|
           {
             storage: "praefect-internal-#{i}",
-            address: File.join(config.gdk_root, "gitaly-praefect-#{i}.socket"),
+            address: config.gdk_root.join("gitaly-praefect-#{i}.socket"),
             primary: i == 0
           }
         end

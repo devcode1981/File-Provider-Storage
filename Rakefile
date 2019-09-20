@@ -23,7 +23,7 @@ desc 'Generate an example config file with all the defaults'
 file 'gdk.example.yml' => 'clobber:gdk.example.yml' do |t|
   File.open(t.name, File::CREAT|File::TRUNC|File::WRONLY) do |file|
     config = Class.new(GDK::Config)
-    config.define_method(:gdk_root) { '/home/git/gdk' }
+    config.define_method(:gdk_root) { Pathname.new('/home/git/gdk') }
     config.define_method(:username) { 'git' }
     config.define_method(:read!) { |_| nil }
 
