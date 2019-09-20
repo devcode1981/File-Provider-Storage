@@ -174,7 +174,11 @@ module GDK
       p.nodes do
         gitaly_nodes = (ENV["PRAEFECT_GITALY_NODES"] || "3").to_i
         (0..gitaly_nodes-1).map do |i|
-          { storage: "praefect-internal-#{i}", address: File.join(config.gdk_root, "gitaly-praefect-#{i}.socket") }
+          {
+            storage: "praefect-internal-#{i}",
+            address: File.join(config.gdk_root, "gitaly-praefect-#{i}.socket"),
+            primary: i == 0
+          }
         end
       end
     end

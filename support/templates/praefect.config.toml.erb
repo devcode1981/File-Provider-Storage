@@ -26,4 +26,5 @@ socket_path = "<%= File.join(config.gdk_root, 'praefect.socket') %>"
 [[node]]
   storage = "<%= praefect_node[:storage] %>"
   address = "unix:<%= praefect_node[:address] %>"
+  primary = <%= praefect_node[:primary] %>
 <% end %>
