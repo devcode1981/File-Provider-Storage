@@ -84,8 +84,25 @@ All the methods should (eventually) create a `gitlab-runner` binary.
 ## Setting up the Runner
 
 Run `gitlab-runner register --run-untagged --config <path-to-gdk>/gitlab-runner-config.toml`
-(as your normal user), and follow the prompts. Use `http://localhost:3000/`
-for the coordinator URL, and the `Registration token` as the `gitlab-ci token`.
+(as your normal user), and follow the prompts. Use:
+
+- **coordinator URL**
+
+  Use either:
+
+  - `http://localhost:3000/`
+  - `http://<custom_IP_address>:3000/`, if you customized your IP address using
+    [Advanced Configuration](#advanced-configuration).
+- **gitlab-ci token**
+
+  `Registration token` (copied from `admin/runners`)
+- **gitlab-ci description** (optional)
+
+  A description of the Runner. Defaults to the hostname of the machine.
+- **gitlab-ci tags** (optional)
+
+  Comma-separated tags. Jobs can be set up to use only Runners with specific tags.
+
 The Runner will write its configuration file to `gitlab-runner-config.toml`,
 which is in GDK's `.gitignore` file.
 
