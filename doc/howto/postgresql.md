@@ -2,7 +2,7 @@
 
 GDK uses the Postgres binaries installed on your system
 (see [install](../prepare.md) section), but keeps the PostgreSQL
-datafiles within the GDK directory structure, under `<path to GDK>/gitlab-development-kit/gitlab/postgresql/data`.
+datafiles within the GDK directory structure, under `<path to GDK>/gitlab-development-kit/postgresql/data`.
 This means that the databases cannot be seen with `psql -l`.
 
 To access the development database using `psql`, use the Rails `dbconsole` command from your GDK root:
