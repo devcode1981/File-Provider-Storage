@@ -81,7 +81,13 @@ module GDK
       exec('redis-cli', '-s', File.join($gdk_root, 'redis/redis.socket'), *ARGV, chdir: $gdk_root)
     when 'env'
       GDK::Env.exec(ARGV)
-    when 'start', 'stop', 'restart', 'status'
+    when 'start', 'status'
+      assert_supervisor_runit!
+      Runit.sv(subcommand, ARGV)
+    when 'stop', 'restart'
+      if ENV['GDK_RUNIT_FORCE_STOP'] == '1'
+        subcommand = 'force-' + subcommand
+      end
       assert_supervisor_runit!
       Runit.sv(subcommand, ARGV)
     when 'tail'
