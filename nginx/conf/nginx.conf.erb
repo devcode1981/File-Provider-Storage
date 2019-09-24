@@ -41,8 +41,8 @@ http {
   server {
     listen <%= config.hostname %>:<%= config.port %> ssl;
 
-    ssl_certificate <%= config.gdk_root %>/<%= config.nginx.ssl.certificate %>;
-    ssl_certificate_key <%= config.gdk_root %>/<%= config.nginx.ssl.key %>;
+    ssl_certificate <%= config.gdk_root.join(config.nginx.ssl.certificate) %>;
+    ssl_certificate_key <%= config.gdk_root.join(config.nginx.ssl.key) %>;
 
     location / {
         proxy_set_header    Host                $http_host;
