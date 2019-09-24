@@ -107,7 +107,7 @@ The clone will be done using [`git clone --depth=1`](https://www.git-scm.com/doc
 
   ```sh
   # Replace <YOUR-NAMESPACE> with your namespace
-  gdk install gitlab_repo=git@gitlab.com:<YOUR-NAMESPACE>/gitlab-foss.git
+  gdk install gitlab_repo=git@gitlab.com:<YOUR-NAMESPACE>/gitlab.git
   support/set-gitlab-upstream
   ```
 
