@@ -92,7 +92,7 @@ module Runit
 
         <%= run_env %>
 
-        test -f env.runit && . env.runit
+        test -f env.runit && . ./env.runit
 
         # Use chpst -P to run the command in its own process group
         exec chpst -P <%= command %>
