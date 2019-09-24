@@ -30,3 +30,4 @@ apt-transport-https
 net-tools
 psmisc
 rsync
+runit
