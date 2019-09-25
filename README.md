@@ -11,7 +11,7 @@ Read on for installation instructions or skip to
 GitLab Development Kit (GDK) provides a collection of scripts and
 other resources to install and manage a GitLab installation for
 development purposes. The source code of GitLab is spread over
-multiple repositories and it requires Ruby, Go, Postgres/MySQL, Redis
+multiple repositories and it requires Ruby, Go, Postgres, Redis
 and more to run. GDK helps you install and configure all these
 different components, and start/stop them when you work on GitLab.
 
