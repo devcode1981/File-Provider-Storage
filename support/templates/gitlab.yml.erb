@@ -634,7 +634,7 @@ production: &base
   # Gitaly settings
   gitaly:
     # Path to the directory containing Gitaly client executables.
-    client_path: <%= File.join(config.gdk_root, "gitaly", "bin") %>
+    client_path: <%= config.gdk_root.join("gitaly", "bin") %>
     # Default Gitaly authentication token. Can be overridden per storage. Can
     # be left blank when Gitaly is running locally on a Unix socket, which
     # is the normal way to deploy Gitaly.
@@ -690,8 +690,8 @@ production: &base
 
   ## GitLab Shell settings
   gitlab_shell:
-    path: <%= File.join(config.gdk_root, "gitlab-shell") %>
-    authorized_keys_file: <%= File.join(config.gdk_root, ".ssh", "authorized_keys") %>
+    path: <%= config.gdk_root.join("gitlab-shell") %>
+    authorized_keys_file: <%= config.gdk_root.join(".ssh", "authorized_keys") %>
 
     # Git over HTTP
     upload_pack: true

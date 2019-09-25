@@ -8,13 +8,17 @@ auto_devops:
 elasticsearch:
   checksum: 5903e1913a7c96aad96a8227517c40490825f672
   version: 6.5.1
-gdk_root: "/home/git/gdk"
+gdk_root: !ruby/object:Pathname
+  path: "/home/git/gdk"
 geo:
   enabled: false
 git:
   bin: "/usr/bin/git"
 gitaly:
-  assembly_dir: "/home/git/gdk/gitaly/assembly"
+  address: !ruby/object:Pathname
+    path: "/home/git/gdk/gitaly.socket"
+  assembly_dir: !ruby/object:Pathname
+    path: "/home/git/gdk/gitaly/assembly"
 gitlab_pages:
   enabled: true
   port: 3034
@@ -34,15 +38,37 @@ object_store:
   port: 9000
 port: 3000
 postgresql:
-  bin_dir: "/usr/lib/postgresql/9.6/bin"
-  data_dir: "/home/git/gdk/postgresql/data"
-  dir: "/home/git/gdk/postgresql"
-  geo_dir: "/home/git/gdk/postgresql-geo"
-  replica_dir: "/home/git/gdk/postgresql-replica"
+  bin_dir: "/usr/bin"
+  data_dir: !ruby/object:Pathname
+    path: "/home/git/gdk/postgresql/data"
+  dir: !ruby/object:Pathname
+    path: "/home/git/gdk/postgresql"
+  geo_dir: !ruby/object:Pathname
+    path: "/home/git/gdk/postgresql-geo"
+  replica_dir: !ruby/object:Pathname
+    path: "/home/git/gdk/postgresql-replica"
   replication_user: gitlab_replication
 protocol: https
 praefect:
-  enabled: false
+  address: !ruby/object:Pathname
+    path: "/home/git/gdk/praefect.socket"
+  config_file: !ruby/object:Pathname
+    path: "/home/git/gdk/gitaly/praefect.config.toml"
+  enabled: true
+  nodes:
+  - :storage: praefect-internal-0
+    :address: !ruby/object:Pathname
+      path: "/home/git/gdk/gitaly-praefect-0.socket"
+    :primary: true
+  - :storage: praefect-internal-1
+    :address: !ruby/object:Pathname
+      path: "/home/git/gdk/gitaly-praefect-1.socket"
+    :primary: false
+  - :storage: praefect-internal-2
+    :address: !ruby/object:Pathname
+      path: "/home/git/gdk/gitaly-praefect-2.socket"
+    :primary: false
+protocol: http
 registry:
   enabled: false
   external_port: 5000
@@ -56,6 +82,8 @@ repositories:
   gitlab_pages: https://gitlab.com/gitlab-org/gitlab-pages.git
   gitlab_shell: https://gitlab.com/gitlab-org/gitlab-shell.git
   gitlab_workhorse: https://gitlab.com/gitlab-org/gitlab-workhorse.git
+repositories_root: !ruby/object:Pathname
+  path: "/home/git/gdk/repositories"
 sshd:
   bin: "/usr/sbin/sshd"
 tracer:

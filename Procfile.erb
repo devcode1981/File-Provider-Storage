@@ -5,12 +5,12 @@
 
 # Datasources
 #
-redis: exec redis-server <%= config.gdk_root %>/redis/redis.conf
+redis: exec redis-server <%= config.gdk_root.join('redis', 'redis.conf') %>
 minio: exec support/object-store
 postgresql: exec support/postgresql-signal-wrapper <%= config.postgresql.bin_dir %>/postgres -D <%= config.postgresql.data_dir %> -k <%= config.postgresql.dir %> -h ''
 #postgresql-replica: exec support/postgresql-signal-wrapper <%= config.postgresql.bin_dir %>/postgres -D <%= config.postgresql.replica_dir %>/data -k <%= config.postgresql.replica_dir %> -h ''
 #openldap: exec support/exec-cd gitlab-openldap libexec/slapd -F slapd.d -d2 -h "ldap://$host:3890"
-#storage-check: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/exec-cd gitlab bin/storage_check -t unix://<%= config.gdk_root %>/gitlab.socket
+#storage-check: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/exec-cd gitlab bin/storage_check -t unix://<%= config.gdk_root.join('gitlab.socket') %>
 
 # Geo
 #
@@ -19,14 +19,14 @@ postgresql: exec support/postgresql-signal-wrapper <%= config.postgresql.bin_dir
 
 # Backend services
 #
-gitaly: exec gitaly/bin/gitaly <%= config.gdk_root %>/gitaly/gitaly.config.toml
-gitlab-workhorse: exec /usr/bin/env PATH="<%= config.gdk_root %>/gitlab-workhorse/bin:$PATH" gitlab-workhorse -authSocket <%= config.gdk_root %>/gitlab.socket -listenAddr $host:<%= config.workhorse.__active_port %> -documentRoot <%= config.gdk_root %>/gitlab/public -developmentMode -secretPath <%= config.gdk_root %>/gitlab/.gitlab_workhorse_secret -config <%= config.gdk_root %>/gitlab-workhorse/config.toml
+gitaly: exec gitaly/bin/gitaly <%= config.gdk_root.join('gitaly', 'gitaly.config.toml') %>
+gitlab-workhorse: exec /usr/bin/env PATH="<%= config.gdk_root.join('gitlab-workhorse', 'bin') %>:$PATH" gitlab-workhorse -authSocket <%= config.gdk_root.join('gitlab.socket') %> -listenAddr $host:<%= config.workhorse.__active_port %> -documentRoot <%= config.gdk_root.join('gitlab', 'public') %> -developmentMode -secretPath <%= config.gdk_root.join('gitlab', '.gitlab_workhorse_secret') %> -config <%= config.gdk_root.join('gitlab-workhorse', 'config.toml') %>
 rails-background-jobs: exec /usr/bin/env SIDEKIQ_LOG_ARGUMENTS=1 RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/exec-cd gitlab bin/background_jobs start_foreground
 
 <%- if config.praefect? -%>
-praefect: exec gitaly/bin/praefect -config <%= config.gdk_root %>/gitaly/praefect.config.toml
+praefect: exec gitaly/bin/praefect -config <%= config.gdk_root.join('gitaly', 'praefect.config.toml') %>
 <% config.praefect.nodes.each_with_index do |praefect_node, index| %>
-praefect-gitaly-<%=index%>: exec gitaly/bin/gitaly <%=config.gdk_root %>/gitaly/gitaly-<%=index%>.praefect.toml
+praefect-gitaly-<%=index%>: exec gitaly/bin/gitaly <%=config.gdk_root.join('gitaly', "gitaly-#{index}.praefect.config.toml") %>
 <%- end -%>
 <%- end -%>
 
@@ -44,13 +44,13 @@ registry: exec support/docker-registry
 #
 #influxdb: exec influxdb/bin/influxd -config influxdb/influxdb.conf
 #grafana: exec support/wait-postgresql-ready support/exec-cd grafana bin/grafana-server -config grafana.ini
-#prometheus: exec docker run --net host -p 9090:9090 -v <%= config.gdk_root %>/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus:v2.8.1
+#prometheus: exec docker run --net host -p 9090:9090 -v <%= config.gdk_root.join('prometheus', 'prometheus.yml') %>:/etc/prometheus/prometheus.yml prom/prometheus:v2.8.1
 <%= '#' unless config.tracer.jaeger? %>jaeger: exec jaeger/jaeger-<%= config.tracer.jaeger.version %>/jaeger-all-in-one --memory.max-traces 512
 
 # Additional services
 #
-#sshd: exec <%= config.sshd.bin %> -e -D -f <%= config.gdk_root %>/openssh/sshd_config
-<%= '#' unless config.nginx? %>nginx: exec <%= config.nginx.bin %> -p <%= config.gdk_root %>/nginx -c conf/nginx.conf
+#sshd: exec <%= config.sshd.bin %> -e -D -f <%= config.gdk_root.join('openssh', 'sshd_config') %>
+<%= '#' unless config.nginx? %>nginx: exec <%= config.nginx.bin %> -p <%= config.gdk_root.join('nginx') %> -c conf/nginx.conf
 #elasticsearch: exec elasticsearch/bin/elasticsearch
 
 # Tunneling
