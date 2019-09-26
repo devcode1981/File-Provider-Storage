@@ -10,16 +10,13 @@ depends on our infrastructure. For non-GitLab employees you can see
 [Alternatives](#alternatives) below.
 
 1. Request GCP permission and SSH tunnel by
-  [creating an access request](https://gitlab.com/gitlab-com/access-requests/issues/new).
-  You can use
-  [this issue](https://gitlab.com/gitlab-com/access-requests/issues/382) as an
-  example.
+  [creating an access request](https://gitlab.com/gitlab-com/access-requests/issues/new?issuable_template=Single%20Person%20Access%20Request).
+
 
   You need to request:
 
-  - IAM permission on GCP for `roles/container.admin` role for.
-  `gitlab-internal-153318` GCP project
-  - server access for `qa-tunnel.gitlab.info` and provide
+   - GCP Project: IAM permission on `gitlab-internal-153318`, `roles/container.admin` role
+   - server access for `qa-tunnel.gitlab.info` and provide
   them with your SSH public key.
 
 1. Once your account has been created, configure your SSH config `~/.ssh/config` to set the correct username.
