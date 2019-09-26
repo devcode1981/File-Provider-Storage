@@ -11,7 +11,7 @@ require_relative 'runit'
 module GDK
   PROGNAME = 'gdk'.freeze
   MAKE = RUBY_PLATFORM =~ /bsd/ ? 'gmake' : 'make'
-  SUPERVISOR = ENV['GDK_RUNIT'] == '1' ? :runit : :foreman
+  SUPERVISOR = Runit.enabled? ? :runit : :foreman
 
   # This function is called from bin/gdk. It must return true/false or
   # an exit code.

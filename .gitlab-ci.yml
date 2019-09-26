@@ -13,6 +13,7 @@ variables:
 # Use eclint to check that the .editorconfig rulesets are being adhered to
 verify:
   stage: build
+  services: []
   image: registry.gitlab.com/gitlab-org/gitlab-build-images:node-10
   script:
     - npm config set unsafe-perm true # enable run npm as root
@@ -103,3 +104,12 @@ test:update:
     when: always
   script:
     - support/ci/test_update
+
+test:rspec:
+  services: []
+  image: ruby:2.6
+  stage: test
+  script:
+    - gem install bundler
+    - bundle
+    - rspec

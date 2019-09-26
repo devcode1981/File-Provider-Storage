@@ -44,6 +44,15 @@ indent_style = unset
 [**/*.md]
 indent_size = unset
 
+[Gemfile.lock]
+indent_style = unset
+indent_size = unset
+tab_width = unset
+end_of_line = unset
+max_line_length = unset
+trim_trailing_whitespace = unset
+insert_final_newline = unset
+
 # ----------------------------------------------------------------------
 # This rule should always stay at the bottom for greatest precendence
 # ----------------------------------------------------------------------
