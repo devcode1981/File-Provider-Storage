@@ -46,8 +46,11 @@ module Runit
     return Dir['./services/*'].sort if services.empty?
 
     services.flat_map do |svc|
-      if svc == 'rails'
+      case svc
+      when 'rails'
         Dir['./services/rails-*'].sort
+      when 'tunnel'
+        Dir['./services/tunnel_*'].sort
       else
         File.join('./services', svc)
       end
@@ -96,8 +99,11 @@ module Runit
     return Dir['log/*/current'] if services.empty?
 
     services.flat_map do |svc|
-      if svc == 'rails'
+      case svc
+      when 'rails'
         Dir['./log/rails-*/current']
+      when 'tunnel'
+        Dir['./log/tunnel_*/current']
       else
         File.join('log', svc, 'current')
       end
