@@ -85,9 +85,10 @@ module GDK
       assert_supervisor_runit!
       Runit.sv(subcommand, ARGV)
     when 'stop', 'restart'
-      if ENV['GDK_RUNIT_FORCE_STOP'] == '1'
-        subcommand = 'force-' + subcommand
-      end
+      # runit stop/restart leave processes hanging if they fail to stop gracefully
+      # the force-* counterparts kill at the end of the grace period
+      # gdk users would just kill these hanging processes anyway, best just do it for them
+      subcommand = 'force-' + subcommand
       assert_supervisor_runit!
       Runit.sv(subcommand, ARGV)
     when 'tail'
