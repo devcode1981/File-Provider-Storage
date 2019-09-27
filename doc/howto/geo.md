@@ -274,3 +274,7 @@ make postgresql/geo-fdw/development/rebuild
 ```
 
 Also see [Useful aliases](#useful-aliases) above.
+
+## Enabling Docker Registry replication
+
+Check the [Docker Registry replication](geo-docker-registry-replication.md).
