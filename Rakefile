@@ -43,6 +43,10 @@ task 'clobber:gdk.example.yml' do |t|
   Rake::Cleaner.cleanup_files([t.name])
 end
 
+file GDK::Config::FILE do |t|
+  FileUtils.touch(t.name)
+end
+
 desc 'Generate Procfile for Foreman'
 file 'Procfile' => ['Procfile.erb', GDK::Config::FILE] do |t|
   GDK::ErbRenderer.new(t.source, t.name).safe_render!
