@@ -3,6 +3,10 @@ require_relative 'shellout'
 require_relative 'runit/config'
 
 module Runit
+  def self.enabled?
+    ENV['GDK_RUNIT'] == '1'
+  end
+
   def self.start_runsvdir
     Dir.chdir($gdk_root)
 
