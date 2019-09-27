@@ -7,6 +7,7 @@ gitlab-development-kit/**
 /gitlab-shell
 /.ssh/
 /.env
+/.bak/
 /repositories
 !/repositories/.gitkeep
 /gitlab/

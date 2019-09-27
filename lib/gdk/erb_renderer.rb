@@ -6,6 +6,8 @@ require 'tempfile'
 
 module GDK
   class ErbRenderer
+    BACKUP_DIR = '.bak'
+
     attr_reader :source, :target
 
     def initialize(source, target, args = {})
@@ -27,30 +29,40 @@ module GDK
 
       render!(temp_file.path)
 
-      return FileUtils.mv(temp_file.path, target) unless File.exist?(target)
+      has_changes = File.exist?(target) && !FileUtils.identical?(target, temp_file.path)
 
-      warn!(temp_file) unless FileUtils.identical?(target, temp_file.path)
+      backup! if has_changes
+
+      FileUtils.mv(temp_file.path, target)
+
+      warn_changes! if has_changes
     ensure
       temp_file.close!
     end
 
     private
 
-    def warn!(temp_file)
-      diff = `git --no-pager diff --no-index #{colors_arg} -u "#{target}" "#{temp_file.path}"`
+    def warn_changes!
+      diff = `git --no-pager diff --no-index #{colors_arg} -u "#{backup_file}" "#{target}"`
 
       puts <<~EOF
         -------------------------------------------------------------------------------------------------------------
-        Warning: Your `#{target}` is outdated. These are the changes GDK wanted to apply.
+        Warning: Your '#{target}' is overwritten. These are the changes GDK has made.
         -------------------------------------------------------------------------------------------------------------
         #{diff}
         -------------------------------------------------------------------------------------------------------------
-        - To apply these changes run: `rm #{target}` and re-run `gdk update`.
-        - To silence this warning (at your own peril): `touch #{target}`
+        To recover the old file run:
+          cp -f '#{backup_file}' '#{target}'
         ... Waiting 5 seconds for previous warning to be noticed.
         -------------------------------------------------------------------------------------------------------------
       EOF
+
       sleep 5
+    end
+
+    def backup!
+      FileUtils.mkdir_p(BACKUP_DIR)
+      FileUtils.mv(target, backup_file)
     end
 
     def colors?
@@ -59,6 +71,12 @@ module GDK
 
     def colors_arg
       '--color' if colors?
+    end
+
+    def backup_file
+      @backup_file ||=
+        File.join(BACKUP_DIR,
+                  target.gsub('/', '__').concat('.', Time.now.strftime('%Y%m%d%H%M%S')))
     end
   end
 end
