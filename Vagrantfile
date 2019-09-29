@@ -32,7 +32,7 @@ if Vagrant::Util::Platform.windows? && !running_in_admin_mode?
   raise Vagrant::Errors::VagrantError.new, "You must run the GitLab Vagrant from an elevated command prompt"
 end
 
-required_plugins = %w[vagrant-share]
+required_plugins = %w[vagrant-share vagrant-disksize]
 required_plugins_non_windows = %w[facter]
 required_plugins_windows = %w[] # %w(vagrant-winnfsd) if https://github.com/GM-Alex/vagrant-winnfsd/issues/50 gets fixed
 
