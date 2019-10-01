@@ -2,6 +2,12 @@
 
 This document will instruct you to set up GitLab Geo using GDK.
 
+Geo allows you to replicate a whole GitLab instance. Customers use this for
+Disaster Recovery, as well as to offload read-only requests to secondary
+instances. For more, see
+[GitLab Geo](https://about.gitlab.com/solutions/geo/) or
+[Replication (Geo)](https://docs.gitlab.com/ee/administration/geo/replication/).
+
 ## Prerequisites
 
 Development on GitLab Geo requires two Enterprise Edition GDK
