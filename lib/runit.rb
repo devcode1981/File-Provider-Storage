@@ -1,14 +1,19 @@
-#!/usr/bin/env ruby
+# frozen_string_literal: true
+
 require_relative 'shellout'
 require_relative 'runit/config'
 
 module Runit
+  IGNORE_FOREMAN_FILE = '.ignore-foreman'
+
   def self.enabled?
     ENV['GDK_RUNIT'] == '1'
   end
 
   def self.start_runsvdir
     Dir.chdir($gdk_root)
+
+    no_foreman_running!
 
     Runit::Config.new($gdk_root).render
 
@@ -17,6 +22,8 @@ module Runit
     # installations on the same machine.
     args = ['runsvdir', '-P', File.join($gdk_root, 'services')]
     return if runsvdir_running?(args.join(' '))
+
+    runit_installed!
 
     Process.fork do
       Dir.chdir('/')
@@ -28,6 +35,21 @@ module Runit
     end
   end
 
+  def self.no_foreman_running!
+    return if File.exist?(IGNORE_FOREMAN_FILE)
+    return if Shellout.new(%w[pgrep foreman]).run.empty?
+
+    abort <<~MESSAGE
+
+      ERROR: It looks like 'gdk run' is running somewhere. You cannot
+      use 'gdk start' and 'gdk run' at the same time.
+
+      Please stop 'gdk run' with Ctrl-C.
+
+      (If this is a false alarm, run 'touch #{IGNORE_FOREMAN_FILE}' and try again.)
+    MESSAGE
+  end
+
   def self.runsvdir_running?(cmd)
     pgrep = Shellout.new(%w[pgrep runsvdir]).run
     return if pgrep.empty?
@@ -35,6 +57,31 @@ module Runit
     pids = pgrep.split("\n").map { |str| Integer(str) }
     pids.any? do |pid|
       Shellout.new(%W[ps -o args= -p #{pid}]).run.start_with?(cmd + ' ')
+    end
+  end
+
+  def self.runit_installed!
+    return unless Shellout.new(%w[which runsvdir]).run.empty?
+
+    abort <<~MESSAGE
+
+      ERROR: gitlab-development-kit requires Runit to be installed.
+      You can install Runit with:
+
+        #{runit_instructions}
+
+    MESSAGE
+  end
+
+  def self.runit_instructions
+    if File.executable?('/usr/local/bin/brew') # Homebrew
+      'brew install runit'
+    elsif File.executable?('/opt/local/bin/port') # MacPorts
+      'sudo port install runit'
+    elsif File.executable?('/usr/bin/apt') # Debian / Ubuntu
+      'sudo apt install runit'
+    else
+      '(no copy-paste Runit installation snippet available for your OS)'
     end
   end
 

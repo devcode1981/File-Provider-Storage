@@ -104,3 +104,4 @@ praefect_enabled
 /sv/
 /log/
 /gitlab-elasticsearch-indexer
+/.ignore-foreman
