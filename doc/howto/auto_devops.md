@@ -15,7 +15,7 @@ depends on our infrastructure. For non-GitLab employees you can see
 
   You need to request:
 
-   - GCP Project: IAM permission on `gitlab-internal-153318`, `roles/container.admin` role
+   - GCP Project `gitlab-internal-153318`. Create an access request to be added to the Google group `gcp-sandbox-gitlab-internal-kubernetes-admin-sg@gitlab.com` for the correct access to work with GKE. This access is part of baseline entitlements but if you do not have it, include it in your access request.
    - server access for `qa-tunnel.gitlab.info` and provide
   them with your SSH public key.
 
