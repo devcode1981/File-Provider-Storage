@@ -43,7 +43,7 @@ module GDK
         value = fetch(method)
         if value.is_a?(ConfigSettings)
           hash[method.to_s] = value.dump!
-        elsif value.is_a?(Array)
+        elsif value.is_a?(Enumerable) && value.first.is_a?(ConfigSettings)
           hash[method.to_s] = value.map(&:dump!)
         else
           hash[method.to_s] = value

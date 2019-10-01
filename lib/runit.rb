@@ -4,8 +4,6 @@ require_relative 'shellout'
 require_relative 'runit/config'
 
 module Runit
-  IGNORE_FOREMAN_FILE = '.ignore-foreman'
-
   def self.start_runsvdir
     Dir.chdir($gdk_root)
 
@@ -31,7 +29,7 @@ module Runit
   end
 
   def self.no_foreman_running!
-    return if File.exist?(IGNORE_FOREMAN_FILE)
+    return if ::GDK::Config.new.gdk.ignore_foreman
     return if Shellout.new(%w[pgrep foreman]).run.empty?
 
     abort <<~MESSAGE
@@ -41,7 +39,7 @@ module Runit
 
       Please stop 'gdk run' with Ctrl-C.
 
-      (If this is a false alarm, run 'touch #{IGNORE_FOREMAN_FILE}' and try again.)
+      (If this is a false alarm, set 'gdk.ignore_foreman: true' in gdk.yml and try again.)
     MESSAGE
   end
 

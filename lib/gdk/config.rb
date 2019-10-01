@@ -29,13 +29,14 @@ module GDK
 
     gdk do |g|
       g.overwrite_changes false
+      g.ignore_foreman { read!('.ignore-foreman') || false }
     end
 
     repositories_root { config.gdk_root.join('repositories') }
 
     hostname do
       next "#{config.auto_devops.gitlab.port}.qa-tunnel.gitlab.info" if config.auto_devops.enabled
-      env!('host') || read!('hostname') || read!('host') || 'localhost'
+      env!('host') || read!('hostname') || read!('host') || '0.0.0.0'
     end
 
     port do
@@ -168,12 +169,16 @@ module GDK
     end
 
     postgresql do |p|
+      p.port { read!('postgresql_port') || 5432 }
       p.bin_dir { cmd!(%w[support/pg_bindir]) }
       p.replication_user 'gitlab_replication'
-      p.dir { config.gdk_root.join("postgresql") }
-      p.data_dir { config.postgresql.dir.join("data") }
-      p.replica_dir { config.gdk_root.join("postgresql-replica") }
-      p.geo_dir { config.gdk_root.join("postgresql-geo") }
+      p.dir { config.gdk_root.join('postgresql') }
+      p.data_dir { config.postgresql.dir.join('data') }
+      p.replica_dir { config.gdk_root.join('postgresql-replica') }
+      p.geo do |g|
+        g.port { read!('postgresql_geo_port') || 5432 }
+        g.dir { config.gdk_root.join('postgresql-geo') }
+      end
     end
 
     gitaly do |g|

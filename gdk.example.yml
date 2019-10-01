@@ -9,6 +9,7 @@ elasticsearch:
   checksum: 5903e1913a7c96aad96a8227517c40490825f672
   version: 6.5.1
 gdk:
+  ignore_foreman: false
   overwrite_changes: false
 gdk_root: !ruby/object:Pathname
   path: "/home/git/gdk"
@@ -16,6 +17,8 @@ geo:
   enabled: false
 git:
   bin: "/usr/bin/git"
+git_repositories:
+- "/home/git/gdk/."
 gitaly:
   address: !ruby/object:Pathname
     path: "/home/git/gdk/gitaly.socket"
@@ -26,7 +29,7 @@ gitaly:
 gitlab_pages:
   enabled: true
   port: 3010
-hostname: localhost
+hostname: 0.0.0.0
 https:
   enabled: false
 nginx:
@@ -47,13 +50,16 @@ omniauth:
     enabled: false
 port: 3000
 postgresql:
-  bin_dir: "/usr/lib/postgresql/11/bin"
+  bin_dir: "/usr/bin"
   data_dir: !ruby/object:Pathname
     path: "/home/git/gdk/postgresql/data"
   dir: !ruby/object:Pathname
     path: "/home/git/gdk/postgresql"
-  geo_dir: !ruby/object:Pathname
-    path: "/home/git/gdk/postgresql-geo"
+  geo:
+    dir: !ruby/object:Pathname
+      path: "/home/git/gdk/postgresql-geo"
+    port: 5432
+  port: 5432
   replica_dir: !ruby/object:Pathname
     path: "/home/git/gdk/postgresql-replica"
   replication_user: gitlab_replication

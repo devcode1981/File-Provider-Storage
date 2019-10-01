@@ -1,23 +1,85 @@
 # HTTPS
 
-If you want to access GitLab via HTTPS in development you can use
-NGINX. On macOS you can install NGINX with `brew install nginx`.
+## Install dependencies
 
-First generate a key and certificate for localhost:
+You'll need to install `nginx`:
 
+```sh
+# on macOS
+brew install nginx
+
+# on Debian/Ubuntu
+apt install nginx
+
+# on Fedora
+yum install nginx
 ```
-make localhost.crt
+
+This guide is also using [`mkcert`](https://github.com/FiloSottile/mkcert).
+Check out their [installation instructions](https://github.com/FiloSottile/mkcert#installation)
+for all the different platforms, but on macOS you can just run:
+
+```sh
+brew install mkcert
 ```
 
-On macOS you can add this certificate to the trust store with:
-`security add-trusted-cert localhost.crt`.
+## Add entry to /etc/hosts
 
-Next make sure that HTTPS is enabled in gitlab/config/gitlab.yml: look
-for the `https:` and `port:` settings.
+To be able to use a hostname instead of IP address, add a line to
+`/etc/hosts`.
 
-Uncomment the `nginx` line in your Procfile. Now `gdk start nginx`
-(and `gdk start`) will start NGINX listening on https://localhost:3443.
+```sh
+echo '127.0.0.1 gdk.localhost' | sudo tee --append /etc/hosts
+```
 
-If you are using a port other than localhost:3000 for
-gitlab-workhorse, or if you want to use a port other than
-localhost:3443 for NGINX, please edit `nginx/conf/nginx.conf`.
+### Configuring a loopback device (optionally)
+
+If you like an isolated network space for all the services of your
+GDK, you can add a lookback network interface:
+
+```sh
+# on macOS
+sudo ifconfig lo1 alias 127.1.1.1
+
+# on GNU/Linux
+sudo ifconfig lo:1 127.1.1.1
+```
+
+And add that address to `/etc/hosts`:
+
+```sh
+echo '127.1.1.1 gdk.localhost' | sudo tee --append /etc/hosts
+```
+
+## Generate certificate
+
+Using `mkcert` you can generate a self-signed certificate. It also
+ensures your browser and OS trust the certificate.
+
+```sh
+mkcert gdk.localhost 127.1.1.1
+```
+
+## Configure GDK
+
+Place the following settings in your `gdk.yml`:
+
+```yaml
+---
+hostname: gdk.localhost
+port: 3443
+https:
+  enabled: true
+nginx:
+  enabled: true
+  ssl:
+    certificate: gdk.localhost+1.pem
+    key: gdk.localhost+1-key.pem
+```
+
+Run `gdk reconfigure` to apply these changes.
+
+## Run
+
+Everything is now configured and `gdk start` will make your
+GitLab available on [`gdk.localhost:3443`](https://gdk.localhost:3443).
