@@ -25,8 +25,7 @@ module GDK
     end
 
     def safe_render!
-      temp_file = Tempfile.new(target)
-
+      temp_file = Tempfile.open(target)
       render!(temp_file.path)
 
       if File.exist?(target)
@@ -49,7 +48,7 @@ module GDK
 
       FileUtils.mv(temp_file.path, target)
     ensure
-      temp_file.close!
+      temp_file.close
     end
 
     private
@@ -110,6 +109,10 @@ module GDK
       @backup_file ||=
         File.join(BACKUP_DIR,
                   target.gsub('/', '__').concat('.', Time.now.strftime('%Y%m%d%H%M%S')))
+    end
+
+    def config
+      @args[:config] || raise(::ArgumentError, "'args' argument should have ':config' key")
     end
   end
 end

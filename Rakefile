@@ -49,7 +49,7 @@ end
 
 desc 'Generate Procfile for Foreman'
 file 'Procfile' => ['Procfile.erb', GDK::Config::FILE] do |t|
-  GDK::ErbRenderer.new(t.source, t.name).safe_render!
+  GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
 end
 
 namespace :git do
@@ -63,12 +63,12 @@ end
 
 desc 'Generate nginx configuration'
 file 'nginx/conf/nginx.conf' => ['nginx/conf/nginx.conf.erb', GDK::Config::FILE] do |t|
-  GDK::ErbRenderer.new(t.source, t.name).safe_render!
+  GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
 end
 
 desc 'Generate the gitlab.yml config file'
 file 'gitlab/config/gitlab.yml' => ['support/templates/gitlab.yml.erb'] do |t|
-  GDK::ErbRenderer.new(t.source, t.name).render!
+  GDK::ErbRenderer.new(t.source, t.name, config: config).render!
 end
 
 desc "Generate gitaly config toml"
@@ -76,15 +76,16 @@ file "gitaly/gitaly.config.toml" => ['support/templates/gitaly.config.toml.erb']
   GDK::ErbRenderer.new(
     t.source,
     t.name,
+    config: config,
     path: config.repositories_root,
     storage: 'default',
-    socket_path: config.gitaly.address
+    socket_path: config.gitaly.address,
   ).render!
   FileUtils.mkdir_p(config.repositories_root)
 end
 
 file 'gitaly/praefect.config.toml' => ['support/templates/praefect.config.toml.erb'] do |t|
-  GDK::ErbRenderer.new(t.source, t.name).render!
+  GDK::ErbRenderer.new(t.source, t.name, config: config).render!
 end
 
 config.praefect.nodes.each_with_index do |node, index|
@@ -93,6 +94,7 @@ config.praefect.nodes.each_with_index do |node, index|
     GDK::ErbRenderer.new(
       t.source,
       t.name,
+      config: config,
       path: File.join(config.repositories_root, node[:storage]),
       storage: node[:storage],
       socket_path: node[:address]).render!
