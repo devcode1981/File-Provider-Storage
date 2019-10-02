@@ -76,7 +76,7 @@ check-ruby-version:
 check-go-version:
 	bin/$@
 
-gitlab-setup: gitlab/.git check-ruby-version gitlab-config bundler .gitlab-bundle yarn .gitlab-yarn .gettext
+gitlab-setup: gitlab/.git .ruby-version check-ruby-version gitlab-config bundler .gitlab-bundle yarn .gitlab-yarn .gettext
 
 gitlab/.git:
 	git clone ${git_depth_param} ${gitlab_repo} ${gitlab_clone_dir}
@@ -285,7 +285,7 @@ gitaly/bin/gitaly: check-go-version ${gitaly_clone_dir}/.git
 
 # Set up supporting services
 
-support-setup: .ruby-version foreman Procfile redis gitaly-setup jaeger-setup postgresql openssh-setup nginx-setup registry-setup elasticsearch-setup
+support-setup: foreman Procfile redis gitaly-setup jaeger-setup postgresql openssh-setup nginx-setup registry-setup elasticsearch-setup
 	@echo ""
 	@echo "*********************************************"
 	@echo "************** Setup finished! **************"
