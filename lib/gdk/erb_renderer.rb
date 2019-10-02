@@ -29,32 +29,65 @@ module GDK
 
       render!(temp_file.path)
 
-      has_changes = File.exist?(target) && !FileUtils.identical?(target, temp_file.path)
+      if File.exist?(target)
+        return if FileUtils.identical?(target, temp_file.path)
 
-      backup! if has_changes
+        warn_changes!(temp_file.path)
+
+        if config.gdk.overwrite_changes
+          backup!
+
+          warn_overwritten!
+          wait!
+        else
+          warn_not_applied!
+          wait!
+
+          return
+        end
+      end
 
       FileUtils.mv(temp_file.path, target)
-
-      warn_changes! if has_changes
     ensure
       temp_file.close!
     end
 
     private
 
-    def warn_changes!
-      diff = `git --no-pager diff --no-index #{colors_arg} -u "#{backup_file}" "#{target}"`
+    def warn_changes!(temp_file)
+      diff = `git --no-pager diff --no-index #{colors_arg} -u "#{temp_file}" "#{target}"`
 
       puts <<~EOF
         -------------------------------------------------------------------------------------------------------------
-        Warning: Your '#{target}' is overwritten. These are the changes GDK has made.
+        Warning: Your '#{target}' contains changes. Here is the diff.
         -------------------------------------------------------------------------------------------------------------
         #{diff}
         -------------------------------------------------------------------------------------------------------------
-        To recover the old file run:
-          cp -f '#{backup_file}' '#{target}'
-        ... Waiting 5 seconds for previous warning to be noticed.
+      EOF
+    end
+
+    def warn_not_applied!
+      puts <<~EOF
+        These changes are not applied.
+        - To apply these changes:
+          rm #{target} && make #{target}
+        - To silence this warning (at your own peril):
+          touch #{target}
         -------------------------------------------------------------------------------------------------------------
+      EOF
+    end
+
+    def warn_overwritten!
+      puts <<~EOF
+        The file is overwritten. To recover the previous version:
+          cp -f '#{backup_file}' '#{target}'
+        -------------------------------------------------------------------------------------------------------------
+      EOF
+    end
+
+    def wait!
+      puts <<~EOF
+        ... Waiting 5 seconds for previous warning to be noticed.
       EOF
 
       sleep 5

@@ -25,6 +25,10 @@ module GDK
 
     gdk_root { Pathname.pwd }
 
+    gdk do |g|
+      g.overwrite_changes false
+    end
+
     repositories_root { config.gdk_root.join('repositories') }
 
     hostname do
