@@ -42,3 +42,4 @@ to learn how to develop GitLab CE.
 - [Unicorn](unicorn.md)
 - [Debugging with Pry](pry.md)
 - [Asset Proxy / Camo Server](asset_proxy.md)
+- [Email](email.md)
