@@ -1,9 +1,5 @@
 #!/usr/bin/env ruby
 
-def version_to_a(v)
-  v.split('.').map(&:to_i)
-end
-
 MINIMAL_VERSION = "1.12"
 
 version_output = ""
@@ -16,8 +12,8 @@ end
 
 abort 'Could not determine version of Go' unless $?.success?
 
-expected = version_to_a(MINIMAL_VERSION)
-actual = version_to_a(version_output[/go(\d+\.\d+)/, 1])
+expected = Gem::Version.new(MINIMAL_VERSION)
+actual = Gem::Version.new(version_output[/go(\d+\.\d+)/, 1])
 
 case actual <=> expected
 when -1

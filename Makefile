@@ -66,12 +66,7 @@ all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup gitlab-pages-setup s
 # Set up the GitLab Rails app
 
 check-ruby-version:
-	@if [ "${gitlab_repo_ruby_version}" != "${ruby_version}" ]; then \
-		echo "WARNING: You're using Ruby version ${ruby_version}."; \
-		echo "WARNING: However we recommend using Ruby version ${gitlab_repo_ruby_version} for this repository."; \
-		test "${IGNORE_INSTALL_WARNINGS}" = "true" || \
-		(echo "WARNING: Press <ENTER> to continue installation or <CTRL-C> to abort" && read v;) \
-	fi
+	bin/$@
 
 check-go-version:
 	bin/$@
