@@ -12,7 +12,8 @@ image from primary node.
 Docker Registry replication can be configured in GDK.
 
 Follow steps below to enable it on your local machine. These instructions assume
-that you have two Geo nodes (a primary and a secondary) on your local machine. If not, follow [GitLab Geo](geo.md) instructions to set them up.
+you have two Geo nodes (a primary and a secondary) on your local machine. If not, follow the
+[GitLab Geo](geo.md) instructions to set them up.
 
 ### Enable Docker Registry on both nodes
 
@@ -22,7 +23,7 @@ To enable Docker Registry on both nodes, follow [Docker Registry](registry.md).
 
 Add the following lines to `registry/config.yml` of your primary node:
 
-```
+```yaml
 notifications:
   endpoints:
     - name: geo_event
@@ -32,15 +33,15 @@ notifications:
       timeout: 500ms
       threshold: 5
       backoff: 1s
-
 ```
 
-where `secret` is a secret word that will be used for communication between Registry and
-the primary node.
+In this example:
 
-This assumes that your primary node is running on `3001` port of your localhost.
-We also assume that you use Mac OS, if you use Linux, instead of `docker.for.mac.localhost`,
-use `host.docker.internal`.
+- `secret` is a secret word that will be used for communication between Registry and the primary
+  node.
+- The primary node is running on port `3001` of your localhost.
+- The host name is for macOS. If you use Linux, use `host.docker.internal` instead of
+  `docker.for.mac.localhost`,
 
 ### Configure the primary node
 

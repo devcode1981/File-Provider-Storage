@@ -277,4 +277,5 @@ Also see [Useful aliases](#useful-aliases) above.
 
 ## Enabling Docker Registry replication
 
-Check the [Docker Registry replication](geo-docker-registry-replication.md).
+For information on enabling Docker Registry replication in GDK, see
+[Docker Registry replication](geo-docker-registry-replication.md).
