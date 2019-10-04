@@ -70,16 +70,18 @@ as minikube needs to download multiple ISO's to operate correctly.
 The following command will start minikube, running the first few containers
 with Kubernetes components.
 
+**Compatibility Note:** We are not yet supporting Kubernetes 1.16, please use 1.15 the following until https://gitlab.com/gitlab-org/gitlab/issues/32721 is resolved.
+
 For MacOS:
 
 ```
-minikube start --vm-driver hyperkit --disk-size=20g
+minikube start --vm-driver hyperkit --disk-size=20g --kubernetes-version=v1.15.4
 ```
 
 For Linux:
 
 ```
-minikube start --vm-driver kvm2 --disk-size=20g
+minikube start --vm-driver kvm2 --disk-size=20g --kubernetes-version=v1.15.4
 ```
 
 ### Open the Kubernetes Dashboard
