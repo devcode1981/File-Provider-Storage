@@ -7,7 +7,7 @@ require 'lib/gdk'
 require 'lib/git/configure'
 require 'rake/clean'
 
-Dir.glob('lib/tasks/**/*.rake') { |task| import task }
+Rake.add_rakelib 'lib/tasks'
 
 CONFIGS = FileList['Procfile', 'nginx/conf/nginx.conf', 'gitlab/config/gitlab.yml']
 CLOBBER.include *CONFIGS, 'gdk.example.yml'
