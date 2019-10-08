@@ -17,7 +17,7 @@ actual = Gem::Version.new(version_output[/go(\d+\.\d+)/, 1])
 
 case actual <=> expected
 when -1
-  abort "Please install Go version #{MINIMAL_VERSION} or higher"
+  abort "We've detected that you are using Go version #{actual}.\n Please install Go version #{MINIMAL_VERSION} or higher"
 when nil
   abort "Unable to determine version of Go"
 end
