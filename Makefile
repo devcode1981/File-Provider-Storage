@@ -151,7 +151,7 @@ yarn:
 # Set up gitlab-shell
 
 gitlab-shell-setup: symlink-gitlab-shell ${gitlab_shell_clone_dir}/.git gitlab-shell/config.yml bundler .gitlab-shell-bundle gitlab-shell/.gitlab_shell_secret
-	if [ -x gitlab-shell/bin/compile ] ; then gitlab-shell/bin/compile; fi
+	make -C gitlab-shell build
 
 symlink-gitlab-shell:
 	support/symlink gitlab-shell ${gitlab_shell_clone_dir}
