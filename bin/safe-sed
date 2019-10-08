@@ -23,7 +23,7 @@ if [[ -f "$dest_file" ]]; then
   # If the target file exists and differs from what we want to see in it...
   if ! cmp --silent "${dest_file}" "${temp_file}"; then
     echo "-------------------------------------------------------------------------------------------------------------"
-    echo "Warning: Your '${dest_file}' contains changes. Here is the diff."
+    echo "Warning: Your '${dest_file}' contains changes. Here is the diff:"
     echo "-------------------------------------------------------------------------------------------------------------"
 
     [[ $(tput colors) -ge 8 ]] && color_arg="--color" || color_arg=""
@@ -36,11 +36,11 @@ if [[ -f "$dest_file" ]]; then
       mv "${dest_file}" "${backup_file}"
       mv "${temp_file}" "${dest_file}"
 
-      echo "The file is overwritten. To recover the previous version, run:"
+      echo "'${dest_file}' bas been overwritten. To recover the previous version, run:"
       echo "  cp -f '${backup_file}' '${dest_file}'"
     else
-      echo "These changes are not applied."
-      echo " - To apply these changes, run"
+      echo "The changes have not been applied."
+      echo " - To apply these changes, run:"
       echo "   rm ${dest_file} && make ${dest_file}"
       echo " - To silence this warning (at your own peril):"
       echo "   touch ${dest_file}"

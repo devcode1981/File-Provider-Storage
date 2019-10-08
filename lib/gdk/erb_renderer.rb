@@ -58,7 +58,7 @@ module GDK
 
       puts <<~EOF
         -------------------------------------------------------------------------------------------------------------
-        Warning: Your '#{target}' contains changes. Here is the diff.
+        Warning: Your '#{target}' contains changes. Here is the diff:
         -------------------------------------------------------------------------------------------------------------
         #{diff}
         -------------------------------------------------------------------------------------------------------------
@@ -67,8 +67,8 @@ module GDK
 
     def warn_not_applied!
       puts <<~EOF
-        These changes are not applied.
-        - To apply these changes:
+        The changes have not been applied.
+        - To apply these changes, run:
           rm #{target} && make #{target}
         - To silence this warning (at your own peril):
           touch #{target}
@@ -78,7 +78,7 @@ module GDK
 
     def warn_overwritten!
       puts <<~EOF
-        The file is overwritten. To recover the previous version:
+        '#{target}' bas been overwritten. To recover the previous version, run:
           cp -f '#{backup_file}' '#{target}'
         -------------------------------------------------------------------------------------------------------------
       EOF
