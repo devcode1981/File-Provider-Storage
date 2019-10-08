@@ -6,7 +6,7 @@ require 'tempfile'
 
 module GDK
   class ErbRenderer
-    BACKUP_DIR = '.bak'
+    BACKUP_DIR = '.backups'
 
     attr_reader :source, :target
 

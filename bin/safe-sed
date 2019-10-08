@@ -2,7 +2,7 @@
 
 set -euo pipefail
 IFS=$'\n\t'
-BACKUP_DIR=.bak
+BACKUP_DIR=.backups
 OVERWRITE=$(ruby bin/config-read-key gdk.overwrite_changes)
 
 # Usage: safe-sed [dest-file-name] [sed-params]...
