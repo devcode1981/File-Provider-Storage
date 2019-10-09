@@ -2,6 +2,8 @@
 
 set -euo pipefail
 IFS=$'\n\t'
+BACKUP_DIR=.backups
+OVERWRITE=$(ruby bin/config-read-key gdk.overwrite_changes)
 
 # Usage: safe-sed [dest-file-name] [sed-params]...
 # The first parameter is the destination file
@@ -9,32 +11,44 @@ IFS=$'\n\t'
 dest_file=$1
 shift
 
-dest_new_content_temp_file=$(mktemp)
+temp_file=$(mktemp)
 function finish {
-  rm -f "${dest_new_content_temp_file}"
+  rm -f "${temp_file}"
 }
 trap finish EXIT
 
-sed "$@" > "${dest_new_content_temp_file}"
+sed "$@" > "${temp_file}"
 
 if [[ -f "$dest_file" ]]; then
   # If the target file exists and differs from what we want to see in it...
-  if ! cmp --silent "${dest_file}" "${dest_new_content_temp_file}"; then
+  if ! cmp --silent "${dest_file}" "${temp_file}"; then
     echo "-------------------------------------------------------------------------------------------------------------"
-    echo "Warning: Your \`${dest_file}\` is outdated. Below are the changes GDK wanted to apply."
-    echo " - To automatically update: \`rm ${dest_file}\`"
-    echo "   and re-run \`gdk update\`."
-    echo " - To silence this warning (at your own peril): \`touch ${dest_file}\`"
+    echo "Warning: Your '${dest_file}' contains changes. Here is the diff:"
     echo "-------------------------------------------------------------------------------------------------------------"
 
     [[ $(tput colors) -ge 8 ]] && color_arg="--color" || color_arg=""
-    git --no-pager diff --no-index ${color_arg} -u "${dest_file}" "${dest_new_content_temp_file}" || true
+    git --no-pager diff --no-index ${color_arg} -u "${dest_file}" "${temp_file}" || true
 
     echo "-------------------------------------------------------------------------------------------------------------"
-    echo "Waiting 5 seconds for previous warning to be noticed...."
+    if $OVERWRITE; then
+      mkdir -p ${BACKUP_DIR}
+      backup_file=${BACKUP_DIR}/${dest_file//\//__}.$(date +'%Y%m%d%H%M%S')
+      mv "${dest_file}" "${backup_file}"
+      mv "${temp_file}" "${dest_file}"
+
+      echo "'${dest_file}' bas been overwritten. To recover the previous version, run:"
+      echo "  cp -f '${backup_file}' '${dest_file}'"
+    else
+      echo "The changes have not been applied."
+      echo " - To apply these changes, run:"
+      echo "   rm ${dest_file} && make ${dest_file}"
+      echo " - To silence this warning (at your own peril):"
+      echo "   touch ${dest_file}"
+    fi
     echo "-------------------------------------------------------------------------------------------------------------"
+    echo "... Waiting 5 seconds for previous warning to be noticed."
     sleep 5
   fi
 else
-  mv "${dest_new_content_temp_file}" "${dest_file}"
+  mv "${temp_file}" "${dest_file}"
 fi

@@ -6,8 +6,6 @@ module GDK
   class ConfigSettings
     SettingUndefined = Class.new(StandardError)
 
-    FILE = 'gdk.yml'
-
     attr_reader :parent, :yaml, :key
 
     def self.method_missing(name, *args, &blk)
@@ -33,7 +31,7 @@ module GDK
     def initialize(parent: nil, yaml: nil, key: nil)
       @parent = parent
       @key = key
-      @yaml = yaml || load_yaml!(FILE)
+      @yaml = yaml || load_yaml!
     end
 
     def dump!(file = nil)
@@ -153,10 +151,10 @@ module GDK
       fetch(chopped_name, nil)&.fetch(:enabled, nil)
     end
 
-    def load_yaml!(file)
-      return {} unless defined?(file) && File.exist?(file)
+    def load_yaml!
+      return {} unless defined?(self.class::FILE) && File.exist?(self.class::FILE)
 
-      YAML.load_file(file) || {}
+      YAML.load_file(self.class::FILE) || {}
     end
 
     def from_yaml(key, default: nil)
