@@ -37,4 +37,28 @@ describe GDK::Config do
       end
     end
   end
+
+  describe '#__active_port' do
+    context 'when AutoDevOps and nginx are not enabled' do
+      it 'returns 3000' do
+        expect(config.workhorse.__active_port).to eq(3000)
+      end
+    end
+
+    context 'when AutoDevOps is enabled' do
+      let(:auto_devops_enabled) { true }
+
+      it 'returns 3333' do
+        expect(config.workhorse.__active_port).to eq(3333)
+      end
+    end
+
+    context 'when nginx is enabled' do
+      let(:nginx_enabled) { true }
+
+      it 'returns 3333' do
+        expect(config.workhorse.__active_port).to eq(3333)
+      end
+    end
+  end
 end
