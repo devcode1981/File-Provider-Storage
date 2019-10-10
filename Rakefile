@@ -89,6 +89,12 @@ end
 
 file 'gitaly/praefect.config.toml' => ['support/templates/praefect.config.toml.erb'] do |t|
   GDK::ErbRenderer.new(t.source, t.name, config: config).render!
+
+  config.praefect.nodes.each_with_index do |node, index|
+    Rake::Task[node['config_file']].invoke
+  end
+
+  FileUtils.mkdir_p(config.praefect.internal_socket_dir)
 end
 
 config.praefect.nodes.each do |node|
@@ -101,7 +107,8 @@ config.praefect.nodes.each do |node|
       path: node['storage_dir'],
       storage: node['storage'],
       log_dir: node['log_dir'],
-      socket_path: node['address']
+      socket_path: node['address'],
+      internal_socket_dir: config.praefect.internal_socket_dir
     ).render!
     FileUtils.mkdir_p(node['storage_dir'])
     FileUtils.mkdir_p(node['log_dir'])
