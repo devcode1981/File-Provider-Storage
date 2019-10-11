@@ -13,6 +13,9 @@ text_extensions: [ 'adoc', 'asciidoc', 'atom', 'coffee', 'css', 'erb', 'haml', '
 # relative to the site directory.
 output_dir: public
 
+# The path where the content files reside.
+content_dir: content
+
 # A list of index filenames, i.e. names of files that will be served by a web
 # server when a directory is requested. Usually, index files are named
 # “index.html”, but depending on the web server, this may be something else,
@@ -23,6 +26,8 @@ index_filenames: [ 'index.html' ]
 # site. The diff will contain the differences between the compiled content
 # before and after the last site compilation.
 enable_output_diff: false
+
+domain: docs.gitlab.com
 
 base_url: https://docs.gitlab.com
 
@@ -72,18 +77,41 @@ checks:
   internal_links:
     # A list of patterns, specified as regular expressions, to exclude from the check.
     # If an internal link matches this pattern, the validity check will be skipped.
-    # E.g.:
-    #   exclude: ['^/server_status']
-    exclude: []
+    exclude:
+      # Exclude major.minor versions that are used under /archives
+      - '^/\d{1,2}\.\d{1,2}/'
+      # The versions dropdown for the archives is incorrect. Remove this
+      # when fixed.
+      - '\/archives.html'
+      # Exclude the extra links listed in the home page
+      - '\/ee\/user\/project\/import\/'
+      - '\/ee\/ci\/yaml\/'
+      - '\/ee\/api\/'
+      - '\/ee\/ssh\/'
+      - '\/ee\/user\/gitlab_com\/'
 
   # Configuration for the “external_links” checker, which checks whether all
   # external links are valid.
   external_links:
     # A list of patterns, specified as regular expressions, to exclude from the check.
     # If an external link matches this pattern, the validity check will be skipped.
-    # E.g.:
-    #   exclude: ['^http://example.com$']
-    exclude: ['http:\/\/127\.0\.0\.1:3000.*', 'http:\/\/www\.amazon\.com\/.*', 'http:\/\/www\.amazon\.co\.uk\/.*', 'http:\/\/192\.168\.59\.103']
+    exclude:
+      # Valid links incorrectly reported as broken
+      - 'https:\/\/www\.linkedin\.com\/company\/gitlab-com'
+      - 'https:\/\/auth0\.com\/auth\/login'
+      - 'https:\/\/gitlab-org\.gitlab\.io\/gitlab-svgs'
+      - 'https:\/\/dl\.acm\.org\/citation\.cfm\?id=361591'
+      - 'https:\/\/pgp\.mit\.edu\/pks\/lookup\?op=vindex\&search=.*'
+      - 'https:\/\/www\.amazon\.com\/.*'
+      - 'https:\/\/contributors\.gitlab\.com\/'
+      - 'https:\/\/downloads\.raspberrypi\.org\/raspbian\/images\/'
+      - 'https:\/\/wiki\.jenkins\.io\/display\/JENKINS\/'
+      # Redirected links to ignore
+      - 'https:\/\/www\.jaegertracing\.io\/docs\/latest\/'
+      # Don't check links matching the following patterns
+      - 'https?:\/\/\w*\.example\.com.*'
+      - 'https?:\/\/localhost.*'
+      - 'https?:\/\/127.0.0.1.*'
 
     # A list of file patterns, specified as regular expressions, to exclude from the check.
     # If a file matches this pattern, the links from this file will not be checked.
@@ -99,10 +127,16 @@ breadcrumbs: true
 debug: false
 
 products:
-  docs:
-    full_name: 'GitLab Docs'
-    short_name: 'GitLab Docs'
-    slug: 'docs'
+  ee:
+    full_name: 'GitLab'
+    short_name: 'GitLab'
+    slug: 'ee'
     index_file: 'README.*'
-    description: 'Browse user and administration documentation and guides for GitLab Community Edition.'
+    img: '/assets/images/docs-gitlab.svg'
+    description: 'Usage and administration of GitLab self-managed and GitLab.com.'
+    repo: 'https://gitlab.com/gitlab-org/gitlab.git'
+    dirs:
+      temp_dir: 'tmp/ee/'
+      dest_dir: 'content/ee'
+      doc_dir:  'doc'
     expose: true

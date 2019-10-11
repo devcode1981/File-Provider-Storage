@@ -209,7 +209,7 @@ gitlab-docs-bundle:
 	cd ${gitlab_development_root}/gitlab-docs && bundle install --jobs 4
 
 symlink-gitlab-docs:
-	support/symlink ${gitlab_development_root}/gitlab-docs/content/docs ${gitlab_development_root}/gitlab/doc
+	support/symlink ${gitlab_development_root}/gitlab-docs/content/ee ${gitlab_development_root}/gitlab/doc
 
 gitlab-docs-update: gitlab-docs/.git/pull gitlab-docs-bundle gitlab-docs/nanoc.yaml
 
