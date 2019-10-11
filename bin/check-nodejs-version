@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+MINIMAL_VERSION = '12.x'
+
+version_output = ""
+
+begin
+  version_output = `node --version`
+rescue Errno::ENOENT
+  abort "Node.js is not installed, please install Node.js #{MINIMAL_VERSION} or higher"
+end
+
+abort 'Could not determine version of Node.js' unless $?.success?
+
+
+expected = Gem::Version.new(MINIMAL_VERSION)
+actual = Gem::Version.new(version_output[/v(\d+\.\d+\.\d+)/, 1])
+
+if actual < expected
+  abort "We've detected that you are using Node.js version #{actual}.\nPlease install Node.js version #{MINIMAL_VERSION} or higher"
+end
