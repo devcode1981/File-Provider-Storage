@@ -61,7 +61,7 @@ export GDK_RUNIT=0 # Several scripts in support/ still depend on 'gdk run'
 
 all: preflight-checks gitlab-setup gitlab-shell-setup gitlab-workhorse-setup gitlab-pages-setup support-setup gitaly-setup prom-setup object-storage-setup gitlab-elasticsearch-indexer-setup
 
-preflight-checks: check-git-version check-bundler-version check-nodejs-version check-yarn-version
+preflight-checks: check-git-version check-ruby-version check-bundler-version check-nodejs-version check-yarn-version
 
 check-git-version:
 	bin/$@
@@ -83,7 +83,7 @@ check-yarn-version:
 
 # Set up the GitLab Rails app
 
-gitlab-setup: gitlab/.git .ruby-version check-ruby-version gitlab-config .gitlab-bundle .gitlab-yarn .gettext
+gitlab-setup: gitlab/.git .ruby-version gitlab-config .gitlab-bundle .gitlab-yarn .gettext
 
 gitlab/.git:
 	git clone ${git_depth_param} ${gitlab_repo} ${gitlab_clone_dir}

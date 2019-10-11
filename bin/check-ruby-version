@@ -1,6 +1,9 @@
 #!/usr/bin/env ruby
 
-gitlab_repo_ruby_version = IO.read('.ruby-version').strip
+require 'net/http'
+
+gitlab_repo_ruby_version_uri = URI('https://gitlab.com/gitlab-org/gitlab/raw/master/.ruby-version')
+gitlab_repo_ruby_version = Net::HTTP.get(gitlab_repo_ruby_version_uri).strip
 
 expected = Gem::Version.new(gitlab_repo_ruby_version)
 actual = Gem::Version.new(RUBY_VERSION)
