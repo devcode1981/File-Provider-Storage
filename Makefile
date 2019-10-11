@@ -80,7 +80,7 @@ check-yarn-version:
 
 # Set up the GitLab Rails app
 
-gitlab-setup: gitlab/.git .ruby-version check-ruby-version gitlab-config bundler .gitlab-bundle yarn .gitlab-yarn .gettext
+gitlab-setup: gitlab/.git .ruby-version check-ruby-version gitlab-config bundler .gitlab-bundle .gitlab-yarn .gettext
 
 gitlab/.git:
 	git clone ${git_depth_param} ${gitlab_repo} ${gitlab_clone_dir}
@@ -143,14 +143,6 @@ gitlab/public/uploads:
 .PHONY: bundler
 bundler:
 	command -v $@ > /dev/null || gem install $@ -v 1.17.3
-
-.PHONY: yarn
-yarn:
-	@command -v $@ > /dev/null || {\
-		echo "Error: Yarn executable was not detected in the system.";\
-		echo "Download Yarn at https://yarnpkg.com/en/docs/install";\
-		exit 1;\
-	}
 
 # Set up gitlab-shell
 
