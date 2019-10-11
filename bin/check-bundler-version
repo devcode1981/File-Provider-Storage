@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+gemfile_bundler_version = IO.read('Gemfile.lock')[/BUNDLED WITH\n +(\d+.\d+.\d+)/, 1]
+
+version_output = ""
+
+begin
+  version_output = `bundler --version`
+rescue Errno::ENOENT
+  abort "Bundler is not installed, please install Bundler #{gemfile_bundler_version}"
+end
+
+abort 'Could not determine version of Bundler' unless $?.success?
+
+expected = Gem::Version.new(gemfile_bundler_version)
+actual = Gem::Version.new(version_output[/(\d+.\d+.\d+)/, 1])
+
+if actual != expected
+  abort "We've detected that you are using Bundler version #{actual}.\nPlease install Bundler version #{gemfile_bundler_version}"
+end

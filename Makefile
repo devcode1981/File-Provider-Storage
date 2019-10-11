@@ -61,12 +61,15 @@ export GDK_RUNIT=0 # Several scripts in support/ still depend on 'gdk run'
 
 all: preflight-checks gitlab-setup gitlab-shell-setup gitlab-workhorse-setup gitlab-pages-setup support-setup gitaly-setup prom-setup object-storage-setup gitlab-elasticsearch-indexer-setup
 
-preflight-checks: check-git-version check-nodejs-version check-yarn-version
+preflight-checks: check-git-version check-bundler-version check-nodejs-version check-yarn-version
 
 check-git-version:
 	bin/$@
 
 check-ruby-version:
+	bin/$@
+
+check-bundler-version:
 	bin/$@
 
 check-go-version:
@@ -80,7 +83,7 @@ check-yarn-version:
 
 # Set up the GitLab Rails app
 
-gitlab-setup: gitlab/.git .ruby-version check-ruby-version gitlab-config bundler .gitlab-bundle .gitlab-yarn .gettext
+gitlab-setup: gitlab/.git .ruby-version check-ruby-version gitlab-config .gitlab-bundle .gitlab-yarn .gettext
 
 gitlab/.git:
 	git clone ${git_depth_param} ${gitlab_repo} ${gitlab_clone_dir}
@@ -140,13 +143,9 @@ gitlab/public/uploads:
 	git -C ${gitlab_development_root}/gitlab checkout locale/*/gitlab.po
 	touch $@
 
-.PHONY: bundler
-bundler:
-	command -v $@ > /dev/null || gem install $@ -v 1.17.3
-
 # Set up gitlab-shell
 
-gitlab-shell-setup: symlink-gitlab-shell ${gitlab_shell_clone_dir}/.git gitlab-shell/config.yml bundler .gitlab-shell-bundle gitlab-shell/.gitlab_shell_secret
+gitlab-shell-setup: symlink-gitlab-shell ${gitlab_shell_clone_dir}/.git gitlab-shell/config.yml .gitlab-shell-bundle gitlab-shell/.gitlab_shell_secret
 	make -C gitlab-shell build
 
 symlink-gitlab-shell:
