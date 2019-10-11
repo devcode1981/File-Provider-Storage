@@ -59,15 +59,20 @@ endif
 
 export GDK_RUNIT=0 # Several scripts in support/ still depend on 'gdk run'
 
-all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup gitlab-pages-setup support-setup gitaly-setup prom-setup object-storage-setup gitlab-elasticsearch-indexer-setup
+all: preflight-checks gitlab-setup gitlab-shell-setup gitlab-workhorse-setup gitlab-pages-setup support-setup gitaly-setup prom-setup object-storage-setup gitlab-elasticsearch-indexer-setup
 
-# Set up the GitLab Rails app
+preflight-checks: check-git-version
+
+check-git-version:
+	bin/$@
 
 check-ruby-version:
 	bin/$@
 
 check-go-version:
 	bin/$@
+
+# Set up the GitLab Rails app
 
 gitlab-setup: gitlab/.git .ruby-version check-ruby-version gitlab-config bundler .gitlab-bundle yarn .gitlab-yarn .gettext
 
