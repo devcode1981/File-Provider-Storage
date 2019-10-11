@@ -13,7 +13,7 @@ end
 abort 'Could not determine version of Go' unless $?.success?
 
 expected = Gem::Version.new(MINIMAL_VERSION)
-actual = Gem::Version.new(version_output[/go(\d+\.\d+)/, 1])
+actual = Gem::Version.new(version_output[/go((\d+.\d+)(.\d+)?)/, 1])
 
 case actual <=> expected
 when -1
