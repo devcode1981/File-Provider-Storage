@@ -23,7 +23,7 @@ end
 
 desc 'Generate an example config file with all the defaults'
 file 'gdk.example.yml' => 'clobber:gdk.example.yml' do |t|
-  File.open(t.name, File::CREAT|File::TRUNC|File::WRONLY) do |file|
+  File.open(t.name, File::CREAT | File::TRUNC | File::WRONLY) do |file|
     config = Class.new(GDK::Config)
     config.define_method(:gdk_root) { Pathname.new('/home/git/gdk') }
     config.define_method(:username) { 'git' }
@@ -100,4 +100,15 @@ config.praefect.nodes.each_with_index do |node, index|
       socket_path: node[:address]).render!
   end
   FileUtils.mkdir_p(File.join(config.repositories_root, "praefect-internal-#{index}"))
+end
+
+desc 'Preflight checks for dependencies'
+task 'preflight-checks' do
+  checker = GDK::Dependencies::Checker.new
+  checker.check
+
+  if !checker.error_messages.empty?
+    warn checker.error_messages
+    exit 1
+  end
 end
