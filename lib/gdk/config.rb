@@ -67,6 +67,16 @@ module GDK
     workhorse do |w|
       w.configured_port 3333
 
+      w.__active_host do
+        if config.auto_devops? || config.nginx?
+          '0.0.0.0'
+        else
+          # Workhorse is the user-facing entry point whenever neither nginx nor
+          # AutoDevOps is used, so in that situation use the configured GDK hostname.
+          config.hostname
+        end
+      end
+
       w.__active_port do
         if config.auto_devops? || config.nginx?
           config.workhorse.configured_port
