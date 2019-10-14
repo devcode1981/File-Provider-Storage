@@ -50,7 +50,6 @@ postgresql:
   replica_dir: !ruby/object:Pathname
     path: "/home/git/gdk/postgresql-replica"
   replication_user: gitlab_replication
-protocol: https
 praefect:
   address: !ruby/object:Pathname
     path: "/home/git/gdk/praefect.socket"
