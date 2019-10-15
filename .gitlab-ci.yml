@@ -43,7 +43,7 @@ test:rspec:
     - bundle
     - rspec
 
-code_quality:
+test:code_quality:
   image: docker:stable
   stage: test
   variables:
@@ -62,7 +62,7 @@ code_quality:
     reports:
       codequality: [gl-code-quality-report.json]
 
-container_scanning:
+test:container_scanning:
   image: docker:stable
   stage: test
   allow_failure: true
