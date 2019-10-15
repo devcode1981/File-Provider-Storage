@@ -25,7 +25,7 @@ LoadError: dlopen(/home/user/.rbenv/versions/2.6.3/lib/ruby/gems/2.5.0/gems/char
 In that case, find the offending gem and use `pristine` to rebuild its native
 extensions:
 
-```bash
+```sh
 gem pristine charlock_holmes
 ```
 
@@ -145,7 +145,7 @@ are installing GDK for the first time this is handled automatically from the
 database schema. In case you are updating your GDK and you experience this
 error, make sure you pull the latest changes from the GDK repository and run:
 
-```bash
+```sh
 ./support/enable-postgres-extensions
 ```
 
@@ -199,7 +199,7 @@ For example, https://gitlab.com/gitlab-org/gitlab-foss/merge_requests/3186
 introduced some changes when a few EE migrations were added to CE. If you were
 using the same db for CE and EE you would get hit by the following error:
 
-```bash
+```sh
 undefined method `share_with_group_lock' for #<Group
 ```
 
@@ -214,7 +214,7 @@ which fails if column does not exist or can cause data loss if column exists.
 
 A quick solution is to remove the database data and then recreate it:
 
-```bash
+```sh
 rm -rf postgresql/data ; make
 ```
 
@@ -223,7 +223,7 @@ rm -rf postgresql/data ; make
 If you don't want to nuke the database, you can perform the migrations manually.
 Open a terminal and start the rails console:
 
-```bash
+```sh
 rails console
 ```
 
