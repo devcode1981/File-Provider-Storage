@@ -2,10 +2,30 @@ require 'net/http'
 
 module GDK
   module Dependencies
-    GITLAB_RUBY_VERSION_URL = 'https://gitlab.com/gitlab-org/gitlab/raw/master/.ruby-version'
+    def self.local_ruby_version
+      if File.exist?('.ruby-version')
+        IO.read('.ruby-version').strip
+      end
+    end
+
+    def self.remote_ruby_version
+      gitlab_ruby_version_uri = URI('https://gitlab.com/gitlab-org/gitlab/raw/master/.ruby-version')
+      Net::HTTP.get(gitlab_ruby_version_uri).strip
+    rescue SocketError
+      abort 'Internet connection is required to set up GDK, please ensure you have an internet connection'
+    end
+
+    def self.gitlab_repo_ruby_version
+      local_ruby_version || remote_ruby_version
+    end
+
+    def self.gdk_bundler_version
+      IO.read('Gemfile.lock')[/BUNDLED WITH\n +(\d+.\d+.\d+)/, 1]
+    end
+
     GIT_VERSION = '2.22'
-    GITLAB_RUBY_VERSION = Net::HTTP.get(URI(GITLAB_RUBY_VERSION_URL)).strip.freeze
-    BUNDLER_VERSION = IO.read('Gemfile.lock')[/BUNDLED WITH\n +(\d+.\d+.\d+)/, 1].freeze
+    GITLAB_RUBY_VERSION = gitlab_repo_ruby_version.freeze
+    BUNDLER_VERSION = gdk_bundler_version.freeze
     GO_VERSION = '1.12'
     YARN_VERSION = '1.12'
     NODEJS_VERSION = '12.x'
