@@ -17,7 +17,7 @@ module GDK
         @error_messages = []
       end
 
-      def check
+      def check_all
         check_git_version
         check_ruby_version
         check_bundler_version
