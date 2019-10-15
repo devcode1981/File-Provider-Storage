@@ -654,11 +654,11 @@ unlock-dependency-installers:
 	.gitlab-yarn \
 	.gettext \
 
-.PHONY: verify
-verify: verify-editorconfig
+.PHONY:
+static-analysis: static-analysis-editorconfig
 
-.PHONY: verify-editorconfig
-verify-editorconfig: install-eclint
+.PHONY: static-analysis-editorconfig
+static-analysis-editorconfig: install-eclint
 	eclint check $$(git ls-files) || (echo "editorconfig check failed. Please run \`make correct\`" && exit 1)
 
 .PHONY: correct

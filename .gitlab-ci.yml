@@ -1,23 +1,14 @@
 services:
 - docker:dind
 
-stages:
-- static
-- build
-- test
-
 variables:
   DOCKER_DRIVER: overlay
   TEST_IMAGE: registry.gitlab.com/gitlab-org/gitlab-development-kit:latest
 
-# Use eclint to check that the .editorconfig rulesets are being adhered to
-verify:
-  stage: build
-  services: []
-  image: registry.gitlab.com/gitlab-org/gitlab-build-images:node-10
-  script:
-    - npm config set unsafe-perm true # enable run npm as root
-    - make verify
+stages:
+- build
+- test
+- verify
 
 build:image:
   image: docker:git
@@ -34,6 +25,23 @@ build:image:
       key: "docker-build-cache"
       paths:
         - ./latest_image.tar
+
+test:static-analysis:
+  stage: test
+  services: []
+  image: registry.gitlab.com/gitlab-org/gitlab-build-images:node-10
+  script:
+    - npm config set unsafe-perm true # enable run npm as root
+    - make static-analysis
+
+test:rspec:
+  services: []
+  image: ruby:2.6
+  stage: test
+  script:
+    - gem install bundler
+    - bundle
+    - rspec
 
 code_quality:
   image: docker:stable
@@ -83,9 +91,9 @@ container_scanning:
     paths:
       - gl-sast-container-report.json
 
-test:install:
+verify:install:
   image: $TEST_IMAGE
-  stage: test
+  stage: verify
   artifacts:
     paths:
       - ./gitlab-development-kit/gitlab/log/*.log
@@ -94,9 +102,9 @@ test:install:
   script:
     - support/ci/test_install
 
-test:update:
+verify:update:
   image: $TEST_IMAGE
-  stage: test
+  stage: verify
   artifacts:
     paths:
       - ./gitlab-development-kit/gitlab/log/*.log
@@ -104,12 +112,3 @@ test:update:
     when: always
   script:
     - support/ci/test_update
-
-test:rspec:
-  services: []
-  image: ruby:2.6
-  stage: test
-  script:
-    - gem install bundler
-    - bundle
-    - rspec
