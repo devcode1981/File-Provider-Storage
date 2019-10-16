@@ -23,12 +23,12 @@ module GDK
       IO.read('Gemfile.lock')[/BUNDLED WITH\n +(\d+.\d+.\d+)/, 1]
     end
 
-    GIT_VERSION = '2.22'
-    GITLAB_RUBY_VERSION = gitlab_repo_ruby_version.freeze
-    BUNDLER_VERSION = gdk_bundler_version.freeze
-    GO_VERSION = '1.12'
-    YARN_VERSION = '1.12'
-    NODEJS_VERSION = '12.x'
+    EXPECTED_GIT_VERSION = '2.22'
+    EXPECTED_RUBY_VERSION = gitlab_repo_ruby_version.freeze
+    EXPECTED_BUNDLER_VERSION = gdk_bundler_version.freeze
+    EXPECTED_GO_VERSION = '1.12'
+    EXPECTED_YARN_VERSION = '1.12'
+    EXPECTED_NODEJS_VERSION = '12.x'
 
     class Checker
       attr_reader :error_messages
@@ -50,24 +50,24 @@ module GDK
         current_git_version = `git version`[/git version (\d+\.\d+.\d+)/, 1]
 
         actual = Gem::Version.new(current_git_version)
-        expected = Gem::Version.new(GIT_VERSION)
+        expected = Gem::Version.new(EXPECTED_GIT_VERSION)
 
         if actual < expected
           @error_messages << <<~GIT_VERSION_NOT_MET
             We've detected that you are using Git version #{actual}.
-            Please install Git version #{GIT_VERSION} or higher.
+            Please install Git version #{EXPECTED_GIT_VERSION} or higher.
           GIT_VERSION_NOT_MET
         end
       end
 
       def check_ruby_version
         actual = Gem::Version.new(RUBY_VERSION)
-        expected = Gem::Version.new(GITLAB_RUBY_VERSION)
+        expected = Gem::Version.new(EXPECTED_RUBY_VERSION)
 
         if actual < expected
           @error_messages << <<~RUBY_VERSION_NOT_MET
             We've detected that you are using Ruby version #{actual}.
-            Please install Ruby version #{GITLAB_RUBY_VERSION} or higher.
+            Please install Ruby version #{EXPECTED_RUBY_VERSION} or higher.
           RUBY_VERSION_NOT_MET
         end
       end
@@ -76,17 +76,17 @@ module GDK
         current_version = `bundler --version`[/(\d+.\d+.\d+)/, 1]
 
         actual = Gem::Version.new(current_version)
-        expected = Gem::Version.new(BUNDLER_VERSION)
+        expected = Gem::Version.new(EXPECTED_BUNDLER_VERSION)
 
         if actual != expected
           @error_messages << <<~BUNDLER_VERSION_NOT_MET
             We've detected that you are using Bundler version #{actual}.
-            Please install Bundler version #{BUNDLER_VERSION}.
+            Please install Bundler version #{EXPECTED_BUNDLER_VERSION}.
           BUNDLER_VERSION_NOT_MET
         end
       rescue Errno::ENOENT
         @error_messages << <<~MISSING_BUNDLER
-          Bundler is not installed, please install Bundler #{BUNDLER_VERSION}.
+          Bundler is not installed, please install Bundler #{EXPECTED_BUNDLER_VERSION}.
         MISSING_BUNDLER
       end
 
@@ -94,17 +94,17 @@ module GDK
         current_version = `go version`[/go((\d+.\d+)(.\d+)?)/, 1]
 
         actual = Gem::Version.new(current_version)
-        expected = Gem::Version.new(GO_VERSION)
+        expected = Gem::Version.new(EXPECTED_GO_VERSION)
         if actual < expected
           @error_messages << <<~GO_VERSION_NOT_MET
             We've detected that you are using Go version #{actual}.
-            Please install Go version #{GO_VERSION} or higher.
+            Please install Go version #{EXPECTED_GO_VERSION} or higher.
           GO_VERSION_NOT_MET
         end
 
       rescue Errno::ENOENT
         @error_messages << <<~MISSING_GO
-          Go is not installed, please install Go #{GO_VERSION} or higher.
+          Go is not installed, please install Go #{EXPECTED_GO_VERSION} or higher.
         MISSING_GO
       end
 
@@ -112,18 +112,18 @@ module GDK
         current_version = `node --version`[/v(\d+\.\d+\.\d+)/, 1]
 
         actual = Gem::Version.new(current_version)
-        expected = Gem::Version.new(NODEJS_VERSION)
+        expected = Gem::Version.new(EXPECTED_NODEJS_VERSION)
 
         if actual < expected
           @error_messages << <<~NODEJS_VERSION_NOT_MET
             We've detected that you are using Node.js version #{actual}.
-            Please install Node.js version #{NODEJS_VERSION} or higher.
+            Please install Node.js version #{EXPECTED_NODEJS_VERSION} or higher.
           NODEJS_VERSION_NOT_MET
         end
 
       rescue Errno::ENOENT
         @error_messages << <<~MISSING_NODEJS
-          Node.js is not installed, please install Node.js #{NODEJS_VERSION} or higher.
+          Node.js is not installed, please install Node.js #{EXPECTED_NODEJS_VERSION} or higher.
         MISSING_NODEJS
       end
 
@@ -131,18 +131,18 @@ module GDK
         current_version = `yarn --version`
 
         actual = Gem::Version.new(current_version)
-        expected = Gem::Version.new(YARN_VERSION)
+        expected = Gem::Version.new(EXPECTED_YARN_VERSION)
 
         if actual < expected
           @error_messages << <<~YARN_VERSION_NOT_MET
             We've detected that you are using Yarn version #{actual}.
-            Please install Yarn version #{YARN_VERSION} or higher.
+            Please install Yarn version #{EXPECTED_YARN_VERSION} or higher.
           YARN_VERSION_NOT_MET
         end
 
       rescue Errno::ENOENT
         @error_messages << <<~MISSING_YARN
-          Yarn is not installed, please install Yarn #{YARN_VERSION} or higher.
+          Yarn is not installed, please install Yarn #{EXPECTED_YARN_VERSION} or higher.
         MISSING_YARN
       end
     end
