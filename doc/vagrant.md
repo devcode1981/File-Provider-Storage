@@ -50,7 +50,9 @@ OSes like Windows/OSX you will have to run the entire Docker hypervisor in a VM
 (which will be almost the same like Vagrant Virtualbox provider).
 
 1. Install [Vagrant].
-1. Install [Docker Engine]. Don't forget to add your user to the docker group
+1. Install [VirtualBox]. Vagrant requires the `VBoxManage` binary included with
+  VirtualBox, even for non-VirtualBox providers.
+1. Install [Docker Engine]. Don't forget to [add your user to the docker group](https://docs.docker.com/install/linux/linux-postinstall/)
   and re-login.
 1. Run `vagrant up --provider=docker --provision` in this directory. Vagrant will build a
   docker image and start the container.
@@ -88,6 +90,8 @@ OSes like Windows/OSX you will have to run the entire Docker hypervisor in a VM
 - If `gdk run` fails due to webpack failing because the port is already in use
   (after `gdk install` succeeds in a vagrant box), make sure you terminated all
   running node processed (spawned from `gdk install`) with `killall node`.
+  `vagrant halt` followed by `vagrant up` accomplishes the same result if
+  `killall` is unavailable (for example in minimal Linux versions).
 
 [Vagrant]: https://www.vagrantup.com
 [VirtualBox]: https://www.virtualbox.org
