@@ -582,7 +582,7 @@ If you still encounter some errors, see the troubleshooting FAQ below:
     ...
     ```
 
-    This means you have not run `npm install` since updating your gitlab CE/EE
+    This means you have not run `yarn install` since updating your gitlab/gitlab-foss
     repository.  The `gdk update` command should have done this for you, but you
     can do so manually as well.
 
