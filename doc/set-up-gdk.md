@@ -161,7 +161,7 @@ To start only the app (assuming the database services are already running), use:
 gdk run app
 ```
 
-To access GitLab you may now go to http://localhost:3000 in your browser. The development login credentials are `root` and `5iveL!fe`. If you followed the GitLab Enterprise Edition instructions above, you will need to access http://localhost:3001 in your browser.
+To access GitLab you may now go to http://localhost:3000 in your browser. The development login credentials are `root` and `5iveL!fe`.
 
 If you like, you can override the port, host, or relative URL root by adding the appropriate file to the GDK root. You'll need to reconfigure and restart the GDK for these changes to take effect.
 
@@ -187,6 +187,16 @@ You can also override the host name used by the Rails instance (specified by the
 To enable the OpenLDAP server, see the OpenLDAP instructions in this [README](./howto/ldap.md).
 
 After installation [learn how to use GDK](./howto/README.md).
+
+### Running GitLab and GitLab FOSS concurrently
+
+To run GitLab and GitLab FOSS concurrently, initialize each into a separate GDK folder. To then run both projects at the same time on the same machine, you need to override the port on one of the installations.
+
+To set a GDK to listen on port `3001`, run:
+
+```sh
+echo 3001 > port
+```
 
 ### Enabling GitLab CI/CD in GDK
 
