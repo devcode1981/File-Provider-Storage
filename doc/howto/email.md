@@ -2,9 +2,6 @@
 
 ## Sending notification emails via SMTP
 
-gdk is by default not prepared to actually send emails via SMTP, that only
-applies to production mode. In development mode, gdk uses `letter_opener_web`
-to show sent messages in a web interface under
 GDK is by default not prepared to actually send emails via SMTP; this only
 applies to production mode. In development mode, GDK uses `letter_opener_web`
 to show sent messages in a web interface under
@@ -46,7 +43,7 @@ In order to enable SMTP delivery:
 
    ```ruby
    config.action_mailer.raise_delivery_errors = true
-```
+   ```
 
 1. Then test the configuration is correctly loaded and try to deliver a message:
 
