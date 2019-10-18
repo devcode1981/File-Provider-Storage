@@ -5,6 +5,7 @@
 
 require_relative 'gdk/env'
 require_relative 'gdk/config'
+require_relative 'gdk/dependencies'
 require_relative 'gdk/erb_renderer'
 require_relative 'runit'
 

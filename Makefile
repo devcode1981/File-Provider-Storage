@@ -59,17 +59,15 @@ endif
 
 export GDK_RUNIT=0 # Several scripts in support/ still depend on 'gdk run'
 
-all: gitlab-setup gitlab-shell-setup gitlab-workhorse-setup gitlab-pages-setup support-setup gitaly-setup prom-setup object-storage-setup gitlab-elasticsearch-indexer-setup
+all: preflight-checks gitlab-setup gitlab-shell-setup gitlab-workhorse-setup gitlab-pages-setup support-setup gitaly-setup prom-setup object-storage-setup gitlab-elasticsearch-indexer-setup
+
+.PHONY: preflight-checks
+preflight-checks:
+	rake $@
 
 # Set up the GitLab Rails app
 
-check-ruby-version:
-	bin/$@
-
-check-go-version:
-	bin/$@
-
-gitlab-setup: gitlab/.git .ruby-version check-ruby-version gitlab-config bundler .gitlab-bundle yarn .gitlab-yarn .gettext
+gitlab-setup: gitlab/.git .ruby-version gitlab-config .gitlab-bundle .gitlab-yarn .gettext
 
 gitlab/.git:
 	git clone ${git_depth_param} ${gitlab_repo} ${gitlab_clone_dir}
@@ -129,21 +127,9 @@ gitlab/public/uploads:
 	git -C ${gitlab_development_root}/gitlab checkout locale/*/gitlab.po
 	touch $@
 
-.PHONY: bundler
-bundler:
-	command -v $@ > /dev/null || gem install $@ -v 1.17.3
-
-.PHONY: yarn
-yarn:
-	@command -v $@ > /dev/null || {\
-		echo "Error: Yarn executable was not detected in the system.";\
-		echo "Download Yarn at https://yarnpkg.com/en/docs/install";\
-		exit 1;\
-	}
-
 # Set up gitlab-shell
 
-gitlab-shell-setup: symlink-gitlab-shell ${gitlab_shell_clone_dir}/.git gitlab-shell/config.yml bundler .gitlab-shell-bundle gitlab-shell/.gitlab_shell_secret
+gitlab-shell-setup: symlink-gitlab-shell ${gitlab_shell_clone_dir}/.git gitlab-shell/config.yml .gitlab-shell-bundle gitlab-shell/.gitlab_shell_secret
 	make -C gitlab-shell build
 
 symlink-gitlab-shell:
@@ -269,7 +255,7 @@ gitaly-clean:
 	rm -rf gitlab/tmp/tests/gitaly
 
 .PHONY: gitaly/bin/gitaly
-gitaly/bin/gitaly: check-go-version ${gitaly_clone_dir}/.git
+gitaly/bin/gitaly: ${gitaly_clone_dir}/.git
 	$(MAKE) -C ${gitaly_clone_dir} assemble ASSEMBLY_ROOT=${gitaly_assembly_dir} BUNDLE_FLAGS=--no-deployment BUILD_TAGS="${tracer_build_tags}"
 	mkdir -p ${gitlab_development_root}/gitaly/bin
 	ln -sf ${gitaly_assembly_dir}/bin/* ${gitlab_development_root}/gitaly/bin
@@ -429,7 +415,7 @@ gitlab-workhorse-clean-bin:
 	rm -rf gitlab-workhorse/bin
 
 .PHONY: gitlab-workhorse/bin/gitlab-workhorse
-gitlab-workhorse/bin/gitlab-workhorse: check-go-version ${gitlab_workhorse_clone_dir}/.git
+gitlab-workhorse/bin/gitlab-workhorse: ${gitlab_workhorse_clone_dir}/.git
 	$(MAKE) -C ${gitlab_workhorse_clone_dir} install PREFIX=${gitlab_development_root}/gitlab-workhorse
 
 ${gitlab_workhorse_clone_dir}/.git:
@@ -449,7 +435,7 @@ gitlab-pages-clean-bin:
 	rm -rf gitlab-pages/bin
 
 .PHONY: gitlab-pages/bin/gitlab-pages
-gitlab-pages/bin/gitlab-pages: check-go-version ${gitlab_pages_clone_dir}/.git
+gitlab-pages/bin/gitlab-pages: ${gitlab_pages_clone_dir}/.git
 	mkdir -p gitlab-pages/bin
 	$(MAKE) -C ${gitlab_pages_clone_dir}
 	install -m755 ${gitlab_pages_clone_dir}/gitlab-pages gitlab-pages/bin
@@ -562,7 +548,7 @@ gitlab-elasticsearch-indexer/.git:
 	git clone --quiet --branch "${gitlab_elasticsearch_indexer_version}" ${git_depth_param} ${gitlab_elasticsearch_indexer_repo} gitlab-elasticsearch-indexer
 
 .PHONY: gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer
-gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer: check-go-version gitlab-elasticsearch-indexer/.git
+gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer: gitlab-elasticsearch-indexer/.git
 	$(MAKE) -C gitlab-elasticsearch-indexer build
 
 .PHONY: gitlab-elasticsearch-indexer/.git/pull
