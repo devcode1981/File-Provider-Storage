@@ -56,6 +56,7 @@ $apt_reqs = <<EOT
   apt-add-repository -y ppa:rael-gc/rvm
   apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
   add-apt-repository -y ppa:longsleep/golang-backports
+  add-apt-repository -y ppa:git-core/ppa
   wget -qO- https://deb.nodesource.com/setup_12.x | bash -
   wget -qO- https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
   echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
