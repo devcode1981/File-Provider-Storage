@@ -17,7 +17,7 @@ def wait_for_socket(host, port)
 end
 
 def main(host, port)
-  foreman_pid = spawn('./run', 'db')
+  system(*%w[gdk start influxdb])
 
   abort "#{$PROGRAM_NAME}: could not connect to InfluxDB at #{host}:#{port}" unless wait_for_socket(host, port)
 
@@ -37,9 +37,6 @@ def main(host, port)
   unless system(env, *%w[bundle exec rake], chdir: 'influxdb/influxdb-management')
     abort "#{$PROGRAM_NAME}: failed to run influxdb-managemant Rake script"
   end
-ensure
-  Process.kill('TERM', foreman_pid)
-  Process.waitpid(foreman_pid)
 end
 
 abort "Usage: #{$PROGRAM_NAME} INFLUXDB_HTTP_PORT" if ARGV.count != 1

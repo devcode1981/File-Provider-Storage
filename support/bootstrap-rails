@@ -10,10 +10,7 @@ def main
     FileUtils.rm_f(LOG_FILE)
 
     log_options = { out: [LOG_FILE, 'a'], err: %i[child out] }
-    foreman_pids = [
-      spawn('./run', 'db', log_options),
-      spawn('./run', 'gitaly', log_options)
-    ]
+    system(*%w[gdk start redis postgresql gitaly])
 
     try_connect_gitaly!
 
@@ -23,11 +20,7 @@ def main
     ].each do |cmd|
       success &&= system({ 'force' => 'yes', 'BOOTSTRAP' => '1' }, *cmd)
     end
-  ensure
-    foreman_pids.each { |pid| Process.kill('TERM', pid) }
   end
-
-  foreman_pids.each { |pid| Process.wait(pid) }
 
   exit true if success
 

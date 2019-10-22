@@ -57,8 +57,6 @@ ifeq ($(shallow_clone),true)
 git_depth_param = --depth=1
 endif
 
-export GDK_RUNIT=0 # Several scripts in support/ still depend on 'gdk run'
-
 all: preflight-checks gitlab-setup gitlab-shell-setup gitlab-workhorse-setup gitlab-pages-setup support-setup gitaly-setup prom-setup object-storage-setup gitlab-elasticsearch-indexer-setup
 
 .PHONY: preflight-checks
@@ -215,12 +213,13 @@ self-update: unlock-dependency-installers
 
 # Update gitlab, gitlab-shell, gitlab-workhorse, gitlab-pages and gitaly
 # Pull gitlab directory first since dependencies are linked from there.
-update: ensure-postgres-running unlock-dependency-installers gitlab/.git/pull gitlab-shell-update gitlab-workhorse-update gitlab-pages-update gitaly-update gitlab-update gitlab-elasticsearch-indexer-update
+update: stop-foreman ensure-postgres-running unlock-dependency-installers gitlab/.git/pull gitlab-shell-update gitlab-workhorse-update gitlab-pages-update gitaly-update gitlab-update gitlab-elasticsearch-indexer-update
+
+stop-foreman:
+	@pkill foreman || true
 
 ensure-postgres-running:
-	@test -f ${postgres_data_dir}/postmaster.pid || \
-	test "${IGNORE_INSTALL_WARNINGS}" = "true" || \
-	(echo "WARNING: Postgres is not running. Run 'gdk run db' or 'gdk run' in another shell." && echo "WARNING: Hit <ENTER> to ignore or <CTRL-C> to quit." && read v;)
+	@gdk start postgresql
 
 gitlab-update: ensure-postgres-running gitlab/.git/pull gitlab-setup
 	cd ${gitlab_development_root}/gitlab && \
@@ -562,17 +561,6 @@ object-storage-setup: minio/data/lfs-objects minio/data/artifacts minio/data/upl
 
 minio/data/%:
 	mkdir -p $@
-
-pry:
-	grep '^#rails-web:' Procfile || (printf ',s/^rails-web/#rails-web/\nwq\n' | ed -s Procfile)
-	@echo ""
-	@echo "Commented out 'rails-web' line in the Procfile. Use 'make pry-off' to reverse."
-	@echo "You can now use Pry for debugging by using 'gdk run' in one terminal, and 'gdk run thin' in another."
-
-pry-off:
-	grep '^rails-web:' Procfile || (printf ',s/^#rails-web/rails-web/\nwq\n' | ed -s Procfile)
-	@echo ""
-	@echo "Re-enabled 'rails-web' in the Procfile. Debugging with Pry will no longer work."
 
 ifeq ($(jaeger_server_enabled),true)
 .PHONY: jaeger-setup

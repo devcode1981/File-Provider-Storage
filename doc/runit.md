@@ -1,44 +1,24 @@
 # Runit process supervision
 
-We are doing an experiment to replace
-[Foreman](https://github.com/ddollar/foreman), the utility that
-currently supervises GitLab Development Kit processes (Postgres, Redis,
-Webpack, Rails etc.), with
-[Runit](http://smarden.org/runit/).
+We have replaced
+[Foreman](https://github.com/ddollar/foreman) with [Runit](http://smarden.org/runit/).
 
-## Enabling Runit
-
-To replace Foreman with Runit:
-
-- set `GDK_RUNIT=1` in your shell
-- install Runit:
-  - macOS: `brew install runit`
-  - Arch Linux: From user repositories: https://aur.archlinux.org/packages/runit-systemd
-  - Ubuntu/Debian: `sudo apt-get install runit`
-
-This will disable `gdk run`. Instead of it, you use `gdk start`, `gdk stop`,
+`gdk run` is no longer available. Instead, use `gdk start`, `gdk stop`,
 and `gdk tail`.
 
 ## Disabling Runit
 
-- unset `GDK_RUNIT`, or set it to any other value than `1`
-- run `GDK_RUNIT=1 gdk stop`
-
-Now you can use `gdk run` again. It's important that you run `gdk stop`
-because otherwise Foreman will try to boot duplicate GDK services, which
-won't work.
-
-There will still be an empty Runit supervision tree running (`runsvdir`
-and children) but this does no harm. The intended use of GDK Runit
-integration is to leave this tree running all the time: it only uses
-about 10MB of memory.
+After `gdk stop`, there will still be an empty Runit supervision tree
+running (`runsvdir` and children) but this does no harm. The intended
+use of GDK Runit integration is to leave this tree running all the time:
+it only uses about 10MB of memory.
 
 If you do want to shut down `runsvdir`, first use `gdk stop`, then run
 `pkill -HUP runsvdir`.
 
 ## Why replace Foreman
 
-Foreman is the tool behind `gdk run`; it is configured via the
+Foreman was the tool behind `gdk run`; it was configured via the
 `Procfile`. While Foreman is easy to get started with, we find it has a
 number of drawbacks in GDK:
 

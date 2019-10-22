@@ -55,7 +55,7 @@ The right one to use depends on your network, and may change from time to time,
 but an address like `10.x.x.x`, `172.16.x.x` or `192.168.x.x` is normally the
 right one.
 
-Now run GDK: `gdk run`. Navigate to `http://<ip>:3000/gitlab-org/gitlab-test`.
+Now run GDK: `gdk start`. Navigate to `http://<ip>:3000/gitlab-org/gitlab-test`.
 If the URL doesn't work, repeat the last step and pick a different IP.
 
 Once there, ensure that the HTTP clone URL is `http://<ip>:3000/gitlab-org/gitlab-test.git`.

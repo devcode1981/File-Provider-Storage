@@ -19,8 +19,7 @@ environment.
 
    ElasticSearch 6.5.1 should already be installed into your GDK root
 under /elasticsearch. Uncomment the `#elasticsearch:` line in your
-Procfile to make ElasticSearch run as part of your `gdk run` or `gdk
-run db` processes.
+Procfile to make ElasticSearch run as part of `gdk start`.
 
 ## Setup
 

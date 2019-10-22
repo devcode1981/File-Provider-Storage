@@ -2,7 +2,7 @@
 
 success = true
 begin
-  foreman_pid = spawn('./run', 'geo_db')
+  system(*%w[gdk start postgresql-geo])
 
   [
     %w[bundle exec rake geo:db:create],
@@ -16,11 +16,7 @@ begin
   ].each do |cmd|
     success &&= system({ 'force' => 'yes', 'BOOTSTRAP' => '1' }, *cmd)
   end
-ensure
-  Process.kill('TERM', foreman_pid)
 end
-
-Process.wait(foreman_pid)
 
 exit true if success
 

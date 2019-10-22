@@ -7,18 +7,12 @@ def main
   host = '127.0.0.1'
   port = '9999'
 
-  db_pid = spawn('./run', 'db')
-  grafana_pid = spawn('./run', 'grafana')
+  system(*%w[gdk start influxdb grafana postgresql])
 
   abort "#{$PROGRAM_NAME}: could not connect to Grafana at #{host}:#{port}" unless wait_socket(host, port)
 
   create_data_source(host, port, name: 'InfluxDB', database: 'gitlab', isDefault: true)
   create_data_source(host, port, name: 'InfluxDB Internal', database: '_internal')
-ensure
-  [grafana_pid, db_pid].each do |pid|
-    Process.kill('TERM', pid)
-    Process.wait(pid)
-  end
 end
 
 def create_data_source(host, port, options)

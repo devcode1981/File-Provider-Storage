@@ -6,12 +6,12 @@ application then run:
 
 ```
 echo 0.0.0.0 > host
-gdk run
+gdk restart
 ```
 
 If you would like to revert back to the `localhost` network then run:
 
 ```
 rm host
-gdk run
+gdk restart
 ```

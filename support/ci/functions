@@ -32,11 +32,12 @@ update() {
   echo "> Updating GDK.."
   IGNORE_INSTALL_WARNINGS=true gdk update
   support/set-gitlab-upstream
+  gdk restart
 }
 
 run() {
   cd ${GDK_CHECKOUT_PATH}
   killall node || true
   echo "> Starting up GDK.."
-  gdk run
+  gdk start
 }
