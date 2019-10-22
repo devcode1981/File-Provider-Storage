@@ -21,12 +21,14 @@ gitaly:
     path: "/home/git/gdk/gitaly.socket"
   assembly_dir: !ruby/object:Pathname
     path: "/home/git/gdk/gitaly/assembly"
+  log_dir: !ruby/object:Pathname
+    path: "/home/git/gdk/log/gitaly"
 gitlab_pages:
   enabled: true
-  port: 3034
+  port: 3010
 hostname: localhost
 https:
-  enabled: true
+  enabled: false
 nginx:
   bin: "/usr/sbin/nginx"
   enabled: false
@@ -38,9 +40,14 @@ nginx:
 object_store:
   enabled: false
   port: 9000
+omniauth:
+  google_oauth2:
+    client_id:
+    client_secret:
+    enabled: false
 port: 3000
 postgresql:
-  bin_dir: "/usr/bin"
+  bin_dir: "/usr/lib/postgresql/11/bin"
   data_dir: !ruby/object:Pathname
     path: "/home/git/gdk/postgresql/data"
   dir: !ruby/object:Pathname
@@ -55,27 +62,40 @@ praefect:
     path: "/home/git/gdk/praefect.socket"
   config_file: !ruby/object:Pathname
     path: "/home/git/gdk/gitaly/praefect.config.toml"
-  enabled: true
+  enabled: false
+  node_count: 3
   nodes:
-  - :storage: praefect-internal-0
-    :address: !ruby/object:Pathname
+  - address: !ruby/object:Pathname
       path: "/home/git/gdk/gitaly-praefect-0.socket"
-    :primary: true
-  - :storage: praefect-internal-1
-    :address: !ruby/object:Pathname
+    config_file: gitaly/gitaly-0.praefect.toml
+    log_dir: !ruby/object:Pathname
+      path: "/home/git/gdk/log/praefect-gitaly-0"
+    primary: true
+    storage: praefect-internal-0
+    storage_dir: "/home/git/gdk/repositories/praefect-internal-0"
+  - address: !ruby/object:Pathname
       path: "/home/git/gdk/gitaly-praefect-1.socket"
-    :primary: false
-  - :storage: praefect-internal-2
-    :address: !ruby/object:Pathname
+    config_file: gitaly/gitaly-1.praefect.toml
+    log_dir: !ruby/object:Pathname
+      path: "/home/git/gdk/log/praefect-gitaly-1"
+    primary: false
+    storage: praefect-internal-1
+    storage_dir: "/home/git/gdk/repositories/praefect-internal-1"
+  - address: !ruby/object:Pathname
       path: "/home/git/gdk/gitaly-praefect-2.socket"
-    :primary: false
+    config_file: gitaly/gitaly-2.praefect.toml
+    log_dir: !ruby/object:Pathname
+      path: "/home/git/gdk/log/praefect-gitaly-2"
+    primary: false
+    storage: praefect-internal-2
+    storage_dir: "/home/git/gdk/repositories/praefect-internal-2"
 protocol: http
 registry:
   enabled: false
   external_port: 5000
   host: 127.0.0.1
   port: 5000
-relative_url_root:
+relative_url_root: "/"
 repositories:
   gitaly: https://gitlab.com/gitlab-org/gitaly.git
   gitlab: https://gitlab.com/gitlab-org/gitlab.git
@@ -94,6 +114,7 @@ tracer:
     version: 1.10.1
 username: git
 webpack:
+  host: 0.0.0.0
   port: 3808
 workhorse:
   configured_port: 3333

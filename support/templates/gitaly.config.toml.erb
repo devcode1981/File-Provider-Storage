@@ -45,11 +45,12 @@ path = "<%= path %>"
 
 # # You can optionally configure Gitaly to output JSON-formatted log messages to stdout
 # [logging]
-# format = "json"
 # # Optional: Set log level to only log entries with that severity or above
 # # One of, in order: debug, info, warn, errror, fatal, panic
 # # Defaults to "info"
-level = "warn"
+level = "info"
+format = "json"
+dir = "<%= log_dir %>"
 
 # # Additionally exceptions from the Go server can be reported to Sentry
 # sentry_dsn = "https://<key>:<secret>@sentry.io/<project>"

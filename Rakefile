@@ -80,26 +80,31 @@ file "gitaly/gitaly.config.toml" => ['support/templates/gitaly.config.toml.erb']
     path: config.repositories_root,
     storage: 'default',
     socket_path: config.gitaly.address,
+    log_dir: config.gitaly.log_dir
   ).render!
   FileUtils.mkdir_p(config.repositories_root)
+  FileUtils.mkdir_p(config.gitaly.log_dir)
 end
 
 file 'gitaly/praefect.config.toml' => ['support/templates/praefect.config.toml.erb'] do |t|
   GDK::ErbRenderer.new(t.source, t.name, config: config).render!
 end
 
-config.praefect.nodes.each_with_index do |node, index|
-  desc "Generate gitaly config #{index} toml"
-  file "gitaly/gitaly-#{index}.praefect.toml" => ['support/templates/gitaly.config.toml.erb'] do |t|
+config.praefect.nodes.each do |node|
+  desc "Generate gitaly config for #{node.storage}"
+  file node.config_file => ['support/templates/gitaly.config.toml.erb'] do |t|
     GDK::ErbRenderer.new(
       t.source,
       t.name,
       config: config,
-      path: File.join(config.repositories_root, node[:storage]),
-      storage: node[:storage],
-      socket_path: node[:address]).render!
+      path: node.storage_dir,
+      storage: node.storage,
+      log_dir: node.log_dir,
+      socket_path: node.address
+    ).render!
+    FileUtils.mkdir_p(node.storage_dir)
+    FileUtils.mkdir_p(node.log_dir)
   end
-  FileUtils.mkdir_p(File.join(config.repositories_root, "praefect-internal-#{index}"))
 end
 
 desc 'Preflight checks for dependencies'
