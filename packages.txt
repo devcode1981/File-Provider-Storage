@@ -12,7 +12,6 @@ wget
 cmake
 ed
 g++
-git
 libicu-dev
 libkrb5-dev
 libpq-dev
