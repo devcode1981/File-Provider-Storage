@@ -5,22 +5,30 @@
 To start up the GDK with all default enabled services, run:
 
 ```sh
-gdk run
+gdk start
 ```
+
+To see logs, run:
+
+```sh
+gdk tail
+```
+
+When you are not using GDK you may want to shut it down to free up
+memory on your computer.
+
+```sh
+gdk stop
+```
+
 
 If you'd like to run a specific group of services, you can do so by providing
-the service group names as arguments.  Multiple arguments are supported:
+the service names as arguments. Multiple arguments are supported.
 
-### Run just DB services
-
-```sh
-gdk run db
-```
-
-### Run DB and Geo DB services
+### Run just Postgres and Redis
 
 ```sh
-gdk run db geo_db
+gdk start postgresql redis
 ```
 
 ## Update gitlab and gitlab-shell repositories

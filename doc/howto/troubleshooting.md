@@ -105,10 +105,11 @@ gem install charlock_holmes -v '0.7.5' -- --with-cppflags=-DU_USING_ICU_NAMESPAC
 
 0.7.6 fixes this issue. See [this issue](https://github.com/brianmario/charlock_holmes/issues/126) for more details.
 
-## Unable to build and install pg gem on gdk run
+## Unable to build and install pg gem on gdk install
 
 After installing PostgreSQL with brew you will have to set the proper path to PostgreSQL.
-You may run into the following errors on running `gdk run`
+You may run into the following errors on running `gdk install`
+
 ```
 Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
 
@@ -135,7 +136,7 @@ If you need to have this software first in your PATH run:
   echo 'export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"' >> ~/.bash_profile
 ```
 
-Once this is set, run the `gdk run` command again.
+Once this is set, run the `gdk install` command again.
 
 ## Error in database migrations when pg_trgm extension is missing
 
@@ -548,12 +549,11 @@ If you still encounter some errors, see the troubleshooting FAQ below:
 
     This probably means that the webpack dev server isn't running or that your
     gitlab.yml isn't properly configured. Ensure that you have run
-    `gdk reconfigure` **AND** that you have stopped and restarted any instance
-    of `gdk run` or `gdk run xxx` that was running prior to the reconfigure step
+    `gdk reconfigure` **AND** `gdk restart webpack`.
 
     ---
 
-* I'm getting the following error when I try to run `gdk run` or `gdk run db`:
+* I see the following error when run `gdk tail` or `gdk tail webpack`:
 
     ```
     09:46:05 webpack.1               | npm ERR! argv "/usr/local/bin/node" "/usr/local/bin/npm" "run" "dev-server"
@@ -571,7 +571,7 @@ If you still encounter some errors, see the troubleshooting FAQ below:
 
     ---
 
-* I'm getting the following error when I try to run `gdk run` or `gdk run db`:
+* I see the following error when run `gdk tail` or `gdk tail webpack`:
 
     ```
     09:54:15 webpack.1               | > @ dev-server /Users/mike/Projects/gitlab-development-kit/gitlab
@@ -586,7 +586,7 @@ If you still encounter some errors, see the troubleshooting FAQ below:
     repository.  The `gdk update` command should have done this for you, but you
     can do so manually as well.
 
-* I'm getting the following error when I try to run `gdk run`:
+* I see the following error when run `gdk tail` or `gdk tail webpack`:
 
     ```
     14:52:22 webpack.1               | [nodemon] starting `node ./node_modules/.bin/webpack-dev-server --config config/webpack.config.js`

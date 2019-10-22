@@ -140,25 +140,13 @@ Check the [GitLab Geo instructions](./howto/geo.md).
 Start GitLab and all required services:
 
 ```sh
-gdk run
+gdk start
 ```
 
-To start only the database services, use:
+To stop the Rails app, which saves memory (useful when running tests):
 
 ```sh
-gdk run db
-```
-
-To start database services and gitaly, use:
-
-```sh
-gdk run db gitaly
-```
-
-To start only the app (assuming the database services are already running), use:
-
-```sh
-gdk run app
+gdk stop rails
 ```
 
 To access GitLab you may now go to http://localhost:3000 in your browser. The development login credentials are `root` and `5iveL!fe`.

@@ -1,16 +1,13 @@
 # GitLab-Workhorse in GitLab Development Kit
 
-Use `gdk install` if you want to recompile gitlab-workhorse for `gdk run`.
+To recompile and restart workhorse in GDK, run:
+
+```
+make gitlab-workhorse-setup && gdk restart gitlab-workhorse
+```
 
 In GDK, gitlab-workhorse is installed inside its own GOPATH rooted
 here.
-
-To set GOPATH in your current shell for working on gitlab-workhorse
-run the following command:
-
-```
-. env.sh
-```
 
 The gitlab-workhorse repository is cloned into:
 

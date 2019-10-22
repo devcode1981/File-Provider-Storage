@@ -1,11 +1,6 @@
 #!/usr/bin/env ruby
 
-begin
-  foreman_pid = spawn('./run', 'db')
-  system(*%W[support/wait-postgresql-ready createdb -h #{Dir.pwd}/postgresql grafana])
-  status = $?
-ensure
-  Process.kill('TERM', foreman_pid)
-end
+system(*%w[gdk start postgresql])
 
-exit status.success?
+createdb_status = system(*%W[support/wait-postgresql-ready createdb -h #{Dir.pwd}/postgresql grafana])
+exit createdb_status

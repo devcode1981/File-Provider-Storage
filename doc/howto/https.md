@@ -15,8 +15,8 @@ On macOS you can add this certificate to the trust store with:
 Next make sure that HTTPS is enabled in gitlab/config/gitlab.yml: look
 for the `https:` and `port:` settings.
 
-Uncomment the `nginx` line in your Procfile. Now `gdk run app`
-(and `gdk run`) will start NGINX listening on https://localhost:3443.
+Uncomment the `nginx` line in your Procfile. Now `gdk start nginx`
+(and `gdk start`) will start NGINX listening on https://localhost:3443.
 
 If you are using a port other than localhost:3000 for
 gitlab-workhorse, or if you want to use a port other than

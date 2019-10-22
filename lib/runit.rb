@@ -6,14 +6,11 @@ require_relative 'runit/config'
 module Runit
   IGNORE_FOREMAN_FILE = '.ignore-foreman'
 
-  def self.enabled?
-    ENV['GDK_RUNIT'] == '1'
-  end
-
   def self.start_runsvdir
     Dir.chdir($gdk_root)
 
     no_foreman_running!
+    runit_installed!
 
     Runit::Config.new($gdk_root).render
 
@@ -22,8 +19,6 @@ module Runit
     # installations on the same machine.
     args = ['runsvdir', '-P', File.join($gdk_root, 'services')]
     return if runsvdir_running?(args.join(' '))
-
-    runit_installed!
 
     Process.fork do
       Dir.chdir('/')

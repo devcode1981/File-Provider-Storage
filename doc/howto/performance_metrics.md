@@ -22,7 +22,7 @@ Next, go to http://localhost:3000/admin/application_settings/metrics_and_profili
 the 'Metrics' section, and select 'Enable InfluxDB metrics'. InfluxDB is
 using the default host and port (localhost:8089).
 
-After that, you have to restart `gdk run` to start sending metrics to
+After that, you have to run `gdk restart` to start sending metrics to
 InfluxDB.
 
 You can access Grafana at http://localhost:9999 using the credentials

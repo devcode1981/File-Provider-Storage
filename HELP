@@ -1,16 +1,17 @@
 # GitLab Development Kit cheat sheet
 
-gdk run            # Start everything
-gdk run db         # Start enough to run tests
-gdk run geo_db     # Start Geo tracking database
-gdk run db geo_db  # Start enough to run tests, including Geo tracking database
-gdk run gitaly     # Start gitaly (git backend service)
-gdk run jobs       # Start GitLab background jobs
-gdk run grafana    # Start Grafana in a separate port
+gdk start                     # Start everything
+gdk start redis postgresql    # Start specifc services
+gdk stop                      # Stop everything
+gdk stop redis postgresql     # Stop specific service
+gdk status                    # See status of all services
+gdk restart                   # Restart everything
+gdk restart redis postgresql  # Restart specific services
 
-# Application Server (needs `gdk run db`):
-gdk run app        # Start GitLab rails and frontend servers
-gdk run thin       # Run only rails with thin
+gdk tail                   # Tail all logs
+gdk tail redis postgresql  # Tail specific logs
+
+gdk thin           # Run rails web server with thin in foreground
 
 gdk install gitlab_repo=https://my-fork   # Install everything
 gdk update                                # Pull application changes from Git

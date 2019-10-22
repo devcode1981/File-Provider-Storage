@@ -21,6 +21,7 @@ Make sure you follow all the guidelines and resolve all the dependencies listed 
 | PostgreSQL     | <p>PostgreSQL version 10.x.</p><p>PostgreSQL installation is covered in the instructions below.</p>                                                                                                                                                                                     |
 | GraphicsMagick | GraphicsMagick installation is covered in the instructions below.                                                                                                                                                                                                                                                                                                           |
 | Exiftool       | Exiftool installation is covered in the instructions below.                                                                                                                                                                                                                                                                                                           |
+| Runit          | Runit installation is covered in the instructions below.                                                                                                                                                                                                                                                                                                           |
 
 ### Platform-specific setup
 
