@@ -19,12 +19,10 @@ module GDK
           # otherwise return an instance of the sub ConfigSettings
           return yaml.fetch(name.to_s, instance_eval(&blk)) if blk.arity.zero?
 
-          sub = Class.new(ConfigSettings)
-          blk.call(sub)
-          sub.new(parent: self, yaml: yaml.fetch(name.to_s, {}), key: [key, name].compact.join('.'))
+          subconfig!(name, &blk)
         end
       else
-        raise SettingUndefined.new(%Q[Could not find the setting '#{name}'])
+        super
       end
     end
 
@@ -45,6 +43,8 @@ module GDK
         value = fetch(method)
         if value.is_a?(ConfigSettings)
           hash[method.to_s] = value.dump!
+        elsif value.is_a?(Array)
+          hash[method.to_s] = value.map(&:dump!)
         else
           hash[method.to_s] = value
         end
@@ -93,6 +93,15 @@ module GDK
     rescue Errno::ENOENT
       File.write(filename, value)
       value
+    end
+
+    # Create an array of configs with self as parent
+    #
+    # @param count [Integer] the number of configs in the array
+    def config_array!(count, &blk)
+      count.times.map do |i|
+        subconfig!(i, &blk)
+      end
     end
 
     def fetch(key, *args)
@@ -149,6 +158,12 @@ module GDK
       return nil unless method_name.to_s.end_with?('?')
 
       fetch(chopped_name, nil)&.fetch(:enabled, nil)
+    end
+
+    def subconfig!(name, &blk)
+      sub = Class.new(ConfigSettings)
+      blk.call(sub, name)
+      sub.new(parent: self, yaml: yaml.fetch(name.to_s, {}), key: [key, name].compact.join('.'))
     end
 
     def load_yaml!
