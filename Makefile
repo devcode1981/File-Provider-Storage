@@ -213,15 +213,15 @@ self-update: unlock-dependency-installers
 
 # Update gitlab, gitlab-shell, gitlab-workhorse, gitlab-pages and gitaly
 # Pull gitlab directory first since dependencies are linked from there.
-update: stop-foreman ensure-postgres-running unlock-dependency-installers gitlab/.git/pull gitlab-shell-update gitlab-workhorse-update gitlab-pages-update gitaly-update gitlab-update gitlab-elasticsearch-indexer-update
+update: stop-foreman ensure-databases-running unlock-dependency-installers gitlab/.git/pull gitlab-shell-update gitlab-workhorse-update gitlab-pages-update gitaly-update gitlab-update gitlab-elasticsearch-indexer-update
 
 stop-foreman:
 	@pkill foreman || true
 
-ensure-postgres-running:
-	@gdk start postgresql
+ensure-databases-running:
+	@gdk start postgresql redis gitaly
 
-gitlab-update: ensure-postgres-running gitlab/.git/pull gitlab-setup
+gitlab-update: ensure-databases-running gitlab/.git/pull gitlab-setup
 	cd ${gitlab_development_root}/gitlab && \
 		bundle exec rake db:migrate db:test:prepare
 
