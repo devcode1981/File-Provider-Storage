@@ -73,7 +73,7 @@ module GDK
       end
 
       def check_bundler_version
-        current_version = `bundler --version`[/(\d+.\d+.\d+)/, 1]
+        current_version = `bundle --version`[/(\d+.\d+.\d+)/, 1]
 
         actual = Gem::Version.new(current_version)
         expected = Gem::Version.new(EXPECTED_BUNDLER_VERSION)
