@@ -12,8 +12,7 @@ depends on our infrastructure. For non-GitLab employees you can see
 1. Request GCP permission and SSH tunnel by
   [creating an access request](https://gitlab.com/gitlab-com/access-requests/issues/new?issuable_template=Single%20Person%20Access%20Request).
 
-
-  You need to request:
+   You need to request:
 
    - GCP Project `gitlab-internal-153318`. Create an access request to be added to the Google group `gcp-sandbox-gitlab-internal-kubernetes-admin-sg@gitlab.com` for the correct access to work with GKE. This access is part of baseline entitlements but if you do not have it, include it in your access request.
    - server access for `qa-tunnel.gitlab.info` and provide
@@ -33,7 +32,7 @@ depends on our infrastructure. For non-GitLab employees you can see
     > Welcome to Ubuntu 16.04.4 LTS (GNU/Linux 4.13.0-1019-gcp x86_64)
     ```
 
-  If you're able to log in [without entering your passphrase](doc/howto/auto_devops/tips_and_troubleshooting.md#ssh-requires-a-passphrase), it means you can move on to the next step.
+   If you're able to log in [without entering your passphrase](doc/howto/auto_devops/tips_and_troubleshooting.md#ssh-requires-a-passphrase), it means you can move on to the next step.
 
 1. Set up the GDK for your workstation following [the preparation
   instructions](../prepare.md) and [setup instructions](../set-up-gdk.md)
