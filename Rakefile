@@ -91,19 +91,19 @@ file 'gitaly/praefect.config.toml' => ['support/templates/praefect.config.toml.e
 end
 
 config.praefect.nodes.each do |node|
-  desc "Generate gitaly config for #{node.storage}"
-  file node.config_file => ['support/templates/gitaly.config.toml.erb'] do |t|
+  desc "Generate gitaly config for #{node['storage']}"
+  file node['config_file'] => ['support/templates/gitaly.config.toml.erb'] do |t|
     GDK::ErbRenderer.new(
       t.source,
       t.name,
       config: config,
-      path: node.storage_dir,
-      storage: node.storage,
-      log_dir: node.log_dir,
-      socket_path: node.address
+      path: node['storage_dir'],
+      storage: node['storage'],
+      log_dir: node['log_dir'],
+      socket_path: node['address']
     ).render!
-    FileUtils.mkdir_p(node.storage_dir)
-    FileUtils.mkdir_p(node.log_dir)
+    FileUtils.mkdir_p(node['storage_dir'])
+    FileUtils.mkdir_p(node['log_dir'])
   end
 end
 
