@@ -85,6 +85,8 @@ gdk start
 
 Now login as root using the Gitlab tunnel URL (`https://[PORT].qa-tunnel.gitlab.info`) and the default password. Once you are logged in, change the default password.
 
+Check [the troubleshooting guide](auto_devops/tips_and_troubleshooting.md) if you're still facing some problems.
+
 ### Secure your GitLab instance
 
 Since your GitLab instance is now internet accessible, you should secure it by completing the following actions:
