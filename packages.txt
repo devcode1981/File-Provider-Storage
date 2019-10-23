@@ -19,6 +19,7 @@ libre2-dev
 libreadline-dev
 libsqlite3-dev
 libssl-dev
+openssh-server
 pkg-config
 postgresql
 postgresql-contrib
