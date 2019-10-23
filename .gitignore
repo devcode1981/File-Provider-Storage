@@ -37,7 +37,6 @@ gitlab-development-kit/**
 /gitlab-pages/bin
 /gitlab-pages/src
 /gitlab_pages_port
-/.vagrant_enabled
 /host
 /hostname
 /port
