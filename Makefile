@@ -263,7 +263,7 @@ gitaly/bin/gitaly: ${gitaly_clone_dir}/.git
 
 # Set up supporting services
 
-support-setup: foreman Procfile redis gitaly-setup jaeger-setup postgresql openssh-setup nginx-setup registry-setup elasticsearch-setup
+support-setup: Procfile redis gitaly-setup jaeger-setup postgresql openssh-setup nginx-setup registry-setup elasticsearch-setup
 	@echo ""
 	@echo "*********************************************"
 	@echo "************** Setup finished! **************"
@@ -387,10 +387,6 @@ postgresql/geo-fdw/%/drop:
 postgresql/geo-fdw/%/rebuild:
 	$(MAKE) postgresql/geo-fdw/$*/drop || true
 	$(MAKE) postgresql/geo-fdw/$*/create
-
-.PHONY: foreman
-foreman:
-	command -v $@ > /dev/null || gem install $@
 
 .ruby-version:
 	ln -s ${gitlab_development_root}/gitlab/.ruby-version ${gitlab_development_root}/$@
