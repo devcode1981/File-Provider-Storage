@@ -60,8 +60,12 @@ endif
 all: preflight-checks gitlab-setup gitlab-shell-setup gitlab-workhorse-setup gitlab-pages-setup support-setup gitaly-setup prom-setup object-storage-setup gitlab-elasticsearch-indexer-setup
 
 .PHONY: preflight-checks
-preflight-checks:
+preflight-checks: rake
 	rake $@
+
+.PHONY: rake
+rake:
+	command -v $@ > /dev/null || gem install $@
 
 # Set up the GitLab Rails app
 

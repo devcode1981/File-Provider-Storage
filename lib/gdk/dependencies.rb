@@ -2,35 +2,45 @@ require 'net/http'
 
 module GDK
   module Dependencies
-    def self.local_ruby_version
-      if File.exist?('.ruby-version')
-        IO.read('.ruby-version').strip
+    class GitLabVersions
+      VersionNotDetected = Class.new(StandardError)
+
+      def ruby_version
+        read_gitlab_file('.ruby-version').strip || raise(VersionNotDetected, "Failed to determine GitLab's Ruby version")
+      end
+
+      def bundler_version
+        read_gitlab_file('Gemfile.lock')[/BUNDLED WITH\n +(\d+.\d+.\d+)/, 1] || raise(VersionNotDetected, "Failed to determine GitLab's Bundler version")
+      end
+
+      private
+
+      def read_gitlab_file(filename)
+        return local_gitlab_path(filename).read if local_gitlab_path(filename).exist?
+
+        read_remote_file(filename)
+      end
+
+      def local_gitlab_path(filename)
+        Pathname.new(__dir__).join("../../gitlab/#{filename}").expand_path
+      end
+
+      def read_remote_file(filename)
+        uri = URI("https://gitlab.com/gitlab-org/gitlab/raw/master/#{filename}")
+        Net::HTTP.get(uri)
+      rescue SocketError
+        abort 'Internet connection is required to set up GDK, please ensure you have an internet connection'
       end
     end
 
-    def self.remote_ruby_version
-      gitlab_ruby_version_uri = URI('https://gitlab.com/gitlab-org/gitlab/raw/master/.ruby-version')
-      Net::HTTP.get(gitlab_ruby_version_uri).strip
-    rescue SocketError
-      abort 'Internet connection is required to set up GDK, please ensure you have an internet connection'
-    end
-
-    def self.gitlab_repo_ruby_version
-      local_ruby_version || remote_ruby_version
-    end
-
-    def self.gdk_bundler_version
-      IO.read('Gemfile.lock')[/BUNDLED WITH\n +(\d+.\d+.\d+)/, 1]
-    end
-
-    EXPECTED_GIT_VERSION = '2.22'
-    EXPECTED_RUBY_VERSION = gitlab_repo_ruby_version.freeze
-    EXPECTED_BUNDLER_VERSION = gdk_bundler_version.freeze
-    EXPECTED_GO_VERSION = '1.12'
-    EXPECTED_YARN_VERSION = '1.12'
-    EXPECTED_NODEJS_VERSION = '12.x'
-
     class Checker
+      EXPECTED_GIT_VERSION = '2.22'
+      EXPECTED_RUBY_VERSION = GitLabVersions.new.ruby_version.freeze
+      EXPECTED_BUNDLER_VERSION = GitLabVersions.new.bundler_version.freeze
+      EXPECTED_GO_VERSION = '1.12'
+      EXPECTED_YARN_VERSION = '1.12'
+      EXPECTED_NODEJS_VERSION = '12.x'
+
       attr_reader :error_messages
 
       def initialize
