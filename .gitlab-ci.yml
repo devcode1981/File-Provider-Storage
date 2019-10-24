@@ -39,8 +39,7 @@ test:rspec:
   image: ruby:2.6
   stage: test
   script:
-    - gem install bundler
-    - bundle
+    - gem install rspec
     - rspec
 
 code_quality:
