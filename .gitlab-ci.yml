@@ -10,7 +10,45 @@ stages:
 - test
 - verify
 
+.docs-changes:
+  only:
+    refs:
+      - master
+      - merge_requests
+    changes:
+      - "**/*.{md}"
+      - "{doc}/**/*"
+
+.code-changes:
+  only:
+    refs:
+      - master
+      - merge_requests
+    changes:
+      - "**/*.{rb,erb,yml,example}"
+      - "{lib,gem,bin}/**/*"
+      - "{spec,support}/**/*"
+      - ".gitlab-ci.yml"
+      - "Gemfile{,.lock}"
+      - "Rakefile"
+
+.docs-or-code-changes:
+  only:
+    refs:
+      - master
+      - merge_requests
+    changes:
+      - "**/*.{md}"
+      - "{doc}/**/*"
+      - "**/*.{rb,erb,yml,example}"
+      - "{lib,gem,bin}/**/*"
+      - "{spec,support}/**/*"
+      - ".gitlab-ci.yml"
+      - "Gemfile{,.lock}"
+      - "Rakefile"
+
 build:image:
+  extends: .docs-or-code-changes
   image: docker:git
   stage: build
   script:
@@ -26,30 +64,41 @@ build:image:
       paths:
         - ./latest_image.tar
 
-test:static-analysis:
+test:docs_lint:
+  extends: .docs-changes
+  image: ruby:2.6
   stage: test
   services: []
+  script:
+    - echo "Coming soon..."
+
+test:static-analysis:
+  extends: .docs-or-code-changes
   image: registry.gitlab.com/gitlab-org/gitlab-build-images:node-10
+  stage: test
+  services: []
   script:
     - npm config set unsafe-perm true # enable run npm as root
     - make static-analysis
 
 test:rspec:
-  services: []
+  extends: .code-changes
   image: ruby:2.6
   stage: test
+  services: []
   script:
     - gem install rspec
     - rspec
 
-code_quality:
+test:code_quality:
+  extends: .code-changes
   image: docker:stable
   stage: test
+  services:
+    - docker:stable-dind
   variables:
     DOCKER_DRIVER: overlay2
   allow_failure: true
-  services:
-    - docker:stable-dind
   script:
     - export SP_VERSION=$(echo "$CI_SERVER_VERSION" | sed 's/^\([0-9]*\)\.\([0-9]*\).*/\1-\2-stable/')
     - docker run
@@ -61,16 +110,17 @@ code_quality:
     reports:
       codequality: [gl-code-quality-report.json]
 
-container_scanning:
+test:container_scanning:
+  extends: .code-changes
   image: docker:stable
   stage: test
+  services:
+    - docker:stable-dind
   allow_failure: true
   before_script: []
   cache: {}
   dependencies: []
   tags: []
-  services:
-    - docker:stable-dind
   variables:
     DOCKER_DRIVER: overlay2
   script:
@@ -93,6 +143,7 @@ container_scanning:
 verify:install:
   image: $TEST_IMAGE
   stage: verify
+  extends: .code-changes
   artifacts:
     paths:
       - ./gitlab-development-kit/gitlab/log/*.log
@@ -104,6 +155,7 @@ verify:install:
 verify:update:
   image: $TEST_IMAGE
   stage: verify
+  extends: .code-changes
   artifacts:
     paths:
       - ./gitlab-development-kit/gitlab/log/*.log
