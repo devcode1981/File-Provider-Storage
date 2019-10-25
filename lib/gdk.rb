@@ -77,6 +77,16 @@ module GDK
       end
 
       true
+    when 'config'
+      config_command = ARGV.shift
+      abort 'Usage: gdk config get path.to.the.conf.value' if config_command != 'get' || ARGV.empty?
+
+      begin
+        puts Config.new.dig(*ARGV)
+        true
+      rescue GDK::ConfigSettings::SettingUndefined
+        abort "Cannot get config for #{ARGV.join('.')}"
+      end
     when 'reconfigure'
       remember!($gdk_root)
       exec(MAKE, 'touch-examples', 'unlock-dependency-installers', 'postgresql-sensible-defaults', 'all', chdir: $gdk_root)
@@ -109,7 +119,7 @@ module GDK
       puts File.read(File.join($gdk_root, 'HELP'))
       true
     else
-      puts "Usage: #{PROGNAME} start|status|stop|restart|init|install|update|reconfigure|tail|psql|redis-cli|diff-config|version|help [ARGS...]"
+      puts "Usage: #{PROGNAME} start|status|stop|restart|init|install|update|reconfigure|tail|psql|redis-cli|diff-config|config|version|help [ARGS...]"
       false
     end
   end

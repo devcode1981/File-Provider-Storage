@@ -139,6 +139,10 @@ module GDK
       "#<GDK::ConfigSettings key:#{key}>"
     end
 
+    def to_s
+      dump!.to_yaml
+    end
+
     # Provide a shorter form for `config.setting.enabled` as `config.setting?`
     def method_missing(method_name, *args, &blk)
       enabled = enabled_value(method_name)
