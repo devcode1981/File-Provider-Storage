@@ -180,6 +180,7 @@ module GDK
       g.assembly_dir { config.gdk_root.join('gitaly', 'assembly') }
       g.address { config.gdk_root.join('gitaly.socket') }
       g.log_dir { config.gdk_root.join('log', 'gitaly') }
+      g.internal_socket_dir { config.gdk_root.join('gitaly')}
     end
 
     praefect do |p|
