@@ -7,6 +7,7 @@ describe GDK::Config do
     {
       'auto_devops' => { 'enabled' => auto_devops_enabled },
       'nginx' => { 'enabled' => nginx_enabled },
+      'hostname' => 'gdk.example.com',
     }
   end
 
@@ -15,8 +16,8 @@ describe GDK::Config do
   describe 'workhorse' do
     describe '#__active_host' do
       context 'when AutoDevOps and nginx are not enabled' do
-        it 'returns localhost' do
-          expect(config.workhorse.__active_host).to eq('localhost')
+        it 'returns the configured hostname' do
+          expect(config.workhorse.__active_host).to eq(config.hostname)
         end
       end
 

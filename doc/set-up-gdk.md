@@ -48,7 +48,7 @@ gem install gitlab-development-kit
    sure to use that instead.
 
 1. Install the necessary components (repositories, Ruby gem bundles, and
-configuration) using `gdk install`.
+   configuration) using `gdk install`.
 
    - For those who have write access to the [GitLab.org group](https://gitlab.com/gitlab-org)
    we recommend [Develop against the GitLab project](#develop-against-the-gitlab-project-default) (default)
@@ -131,10 +131,6 @@ onboarding document: https://about.gitlab.com/handbook/developer-onboarding/#wor
 
 The license key generator is only available for GitLab employees, who should use the "Sign in with GitLab" link using their dev.gitlab.org account.
 
-### GitLab Geo
-
-Check the [GitLab Geo instructions](./howto/geo.md).
-
 ## Post-installation
 
 Start GitLab and all required services:
@@ -149,43 +145,45 @@ To stop the Rails app, which saves memory (useful when running tests):
 gdk stop rails
 ```
 
-To access GitLab you may now go to http://localhost:3000 in your browser. The development login credentials are `root` and `5iveL!fe`.
+To access GitLab, you may now go to http://localhost:3000 in your
+browser. The development login credentials are `root` and
+`5iveL!fe`.
 
-If you like, you can override the port, host, or relative URL root by adding the appropriate file to the GDK root. You'll need to reconfigure and restart the GDK for these changes to take effect.
+GDK comes with a number of settings, and most users will use the
+default values, but you are able to override these in `gdk.yml` in the
+GDK root.
+
+For example, to change the port you can set this in your `gdk.yml`:
+
+```yaml
+port: 3001
+```
+
+And run the following command to apply:
 
 ```sh
-echo 4000 > port
-
-# This can be useful if you plan to use GDK inside a Docker container
-echo 0.0.0.0 > host
-
-echo /gitlab > relative_url_root
-
 gdk reconfigure
 ```
 
-You can also override the host name used by the Rails instance (specified by the `host` value in `gitlab/config/gitlab.yml`).
+You can find a bunch of other settings that are configurable in `gdk.example.yml`.
 
-```sh
- echo my.gitlab.dev > hostname
+Read the [configuration document](howto/configuration.md) for more details.
 
- gdk reconfigure
- ```
-
-To enable the OpenLDAP server, see the OpenLDAP instructions in this [README](./howto/ldap.md).
-
-After installation [learn how to use GDK](./howto/README.md).
+After installation [learn how to use GDK](howto/README.md) enable other features.
 
 ### Running GitLab and GitLab FOSS concurrently
 
-To run GitLab and GitLab FOSS concurrently, initialize each into a separate GDK folder. To then run both projects at the same time on the same machine, you need to override the port on one of the installations.
+To have multiple GDK instances running concurrently, for example to
+test GitLab and GitLab FOSS, initialize each into a separate GDK
+folder. To run them simultaneously, make sure they don't use
+conflicting port numbers.
 
-To set a GDK to listen on port `3001`, run:
+You can for example use the following `gdk.yml` in one of both GDKs.
 
-```sh
-echo 3001 > port
+```yaml
+port: 3001
+webpack:
+  port: 3809
+gitlab_pages:
+  port: 3011
 ```
-
-### Enabling GitLab CI/CD in GDK
-
-If you want to work on GitLab CI/CD, see [Using GitLab Runner with GDK](howto/runner.md).

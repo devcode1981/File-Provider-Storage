@@ -14,7 +14,7 @@ postgresql: exec support/postgresql-signal-wrapper <%= config.postgresql.bin_dir
 
 # Geo
 #
-<%= '#' unless config.geo? %>postgresql-geo: exec support/postgresql-signal-wrapper <%= config.postgresql.bin_dir %>/postgres -D <%= config.postgresql.geo_dir %>/data -k <%= config.postgresql.geo_dir %> -h ''
+<%= '#' unless config.geo? %>postgresql-geo: exec support/postgresql-signal-wrapper <%= config.postgresql.bin_dir %>/postgres -D <%= config.postgresql.geo.dir %>/data -k <%= config.postgresql.geo.dir %> -h ''
 <%= '#' unless config.geo? %>geo-cursor: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/geo-logcursor
 
 # Backend services
