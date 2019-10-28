@@ -223,7 +223,7 @@ stop-foreman:
 	@pkill foreman || true
 
 ensure-databases-running:
-	@gdk start postgresql redis gitaly
+	@gdk start rails-migration-dependencies
 
 gitlab-update: ensure-databases-running gitlab/.git/pull gitlab-setup
 	cd ${gitlab_development_root}/gitlab && \
