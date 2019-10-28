@@ -4,6 +4,12 @@ require_relative 'shellout'
 require_relative 'runit/config'
 
 module Runit
+  SERVICE_SHORTCUTS = {
+    'rails' => 'rails-*',
+    'tunnel' => 'tunnel_*',
+    'rails-migration-dependencies' => '{redis,postgresql,gitaly}'
+  }.freeze
+
   def self.start_runsvdir
     Dir.chdir($gdk_root)
 
@@ -90,15 +96,19 @@ module Runit
     return Dir['./services/*'].sort if services.empty?
 
     services.flat_map do |svc|
-      case svc
-      when 'rails'
-        Dir['./services/rails-*'].sort
-      when 'tunnel'
-        Dir['./services/tunnel_*'].sort
-      else
-        File.join('./services', svc)
-      end
+      service_shortcut(svc) || File.join('./services', svc)
+    end.uniq.sort
+  end
+
+  def self.service_shortcut(svc)
+    glob = SERVICE_SHORTCUTS[svc]
+    return unless glob
+
+    if glob.include?('/')
+      abort "invalid service shortcut: #{svc} -> #{glob}"
     end
+
+    Dir[File.join('./services', glob)]
   end
 
   def self.wait_runsv!(dir)
@@ -143,15 +153,19 @@ module Runit
     return Dir['log/*/current'] if services.empty?
 
     services.flat_map do |svc|
-      case svc
-      when 'rails'
-        Dir['./log/rails-*/current']
-      when 'tunnel'
-        Dir['./log/tunnel_*/current']
-      else
-        File.join('log', svc, 'current')
-      end
+      log_shortcut(svc) || File.join('log', svc, 'current')
+    end.uniq
+  end
+
+  def self.log_shortcut(svc)
+    glob = SERVICE_SHORTCUTS[svc]
+    return unless glob
+
+    if glob.include?('/')
+      abort "invalid service shortcut: #{svc} -> #{glob}"
     end
+
+    Dir[File.join('./log', glob, 'current')]
   end
 
   def self.kill_processes(pids)

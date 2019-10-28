@@ -9,8 +9,7 @@ def main
   begin
     FileUtils.rm_f(LOG_FILE)
 
-    log_options = { out: [LOG_FILE, 'a'], err: %i[child out] }
-    system(*%w[gdk start redis postgresql gitaly])
+    system('gdk', 'start', 'rails-migration-dependencies')
 
     try_connect_gitaly!
 
