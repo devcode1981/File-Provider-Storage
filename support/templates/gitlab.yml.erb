@@ -142,6 +142,7 @@ production: &base
     object_store:
       enabled: <%= config.object_store? %>
       remote_directory: artifacts
+      direct_upload: true
       connection:
         provider: AWS
         aws_access_key_id: minio
