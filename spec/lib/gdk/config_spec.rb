@@ -62,4 +62,12 @@ describe GDK::Config do
       end
     end
   end
+
+  describe '#dump_config!' do
+    it 'successfully dumps the config' do
+      expect {
+        expect(config.dump!).to be_a_kind_of(Hash)
+      }.not_to raise_error
+    end
+  end
 end
