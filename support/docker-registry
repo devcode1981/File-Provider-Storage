@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-registry_enabled=$(cat registry_enabled 2>/dev/null)
-registry_port=$(cat registry_port 2>/dev/null)
-registry_image=$(cat registry_image 2>/dev/null)
+registry_enabled=$(gdk config get registry.enabled 2>/dev/null)
+registry_port=$(gdk config get registry.port 2>/dev/null)
+registry_image=$(gdk config get registry.image 2>/dev/null)
 
 if [[ "${registry_enabled}" == "true" ]]; then
   if [[ "$OSTYPE" == "linux-gnu" ]]; then
@@ -16,7 +16,6 @@ if [[ "${registry_enabled}" == "true" ]]; then
       "${registry_image:-registry:2}"
 else
   echo "Docker registry disabled."
-  # If we exit now, Foreman will shut down all our sibling process too.
-  # We want to block until Foreman signals us to exit.
+  # Keep active so the process supervisor (i.e. runit) thinks everything is okay
   exec tail -f /dev/null
 fi

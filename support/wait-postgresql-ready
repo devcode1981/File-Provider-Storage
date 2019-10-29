@@ -1,12 +1,21 @@
 #!/usr/bin/env ruby
 require 'open3'
+require_relative '../lib/gdk/config'
 
-PG_HOST = "#{Dir.pwd}/postgresql".freeze
-PG_PORT_FILE = File.join(Dir.pwd, 'postgresql_port')
-PG_PORT = File.exist?(PG_PORT_FILE) ? File.read(PG_PORT_FILE) : 5432
+def config
+  @config ||= GDK::Config.new
+end
+
+def pg_host
+  config.postgresql.dir
+end
+
+def pg_port
+  config.postgresql.port
+end
 
 def main
-  abort "#{$PROGRAM_NAME}: could not connect to Postgres at #{PG_HOST}" unless pg_ready?
+  abort "#{$PROGRAM_NAME}: could not connect to Postgres at #{pg_host}" unless pg_ready?
 
   exec(*ARGV)
 end
@@ -15,7 +24,7 @@ def pg_ready?
   last_error = nil
 
   10.times do
-    stdin, stdout, stderr, thread = Open3.popen3(*%W[psql -h #{PG_HOST} -d template1 -p #{PG_PORT} -c SELECT\ now()])
+    stdin, stdout, stderr, thread = Open3.popen3(*%W[psql -h #{pg_host} -d template1 -p #{pg_port} -c SELECT\ now()])
     stdin.close
     stdout.readlines
     stdout.close

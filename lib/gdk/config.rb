@@ -109,6 +109,10 @@ module GDK
         read!('registry_port') || 5000
       end
 
+      r.image do
+        read!('registry_image') || 'registry:2'
+      end
+
       r.external_port do
         next 443 if config.auto_devops.enabled
         5000
