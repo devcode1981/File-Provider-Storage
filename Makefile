@@ -39,8 +39,6 @@ registry_port = $(shell cat registry_port 2>/dev/null || echo '5000')
 gitlab_from_container = $(shell [ "$(shell uname)" = "Linux" ] && echo 'localhost' || echo 'docker.for.mac.localhost')
 postgresql_port = $(shell cat postgresql_port 2>/dev/null || echo '5432')
 postgresql_geo_port = $(shell cat postgresql_geo_port 2>/dev/null || echo '5432')
-object_store_enabled = $(shell cat object_store_enabled 2>/dev/null || echo 'false')
-object_store_port = $(shell cat object_store_port 2>/dev/null || echo '9000')
 gitlab_pages_port = $(shell cat gitlab_pages_port 2>/dev/null || echo '3010')
 rails_bundle_install_cmd := bundle install --jobs 4 --without production
 elasticsearch_version = 6.5.1

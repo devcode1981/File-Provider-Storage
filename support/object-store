@@ -1,15 +1,14 @@
 #!/usr/bin/env bash
 
-os_enabled=$(cat object_store_enabled 2>/dev/null)
-os_port=$(cat object_store_port 2>/dev/null)
+os_enabled=$(gdk config get object_store.enabled 2>/dev/null)
+os_port=$(gdk config get object_store.port 2>/dev/null)
 
 if [[ "${os_enabled}" == "true" ]]; then
 
   exec env MINIO_REGION=gdk MINIO_ACCESS_KEY=minio MINIO_SECRET_KEY=gdk-minio minio server \
-      -C minio/config --address "127.0.0.1:${os_port:-9000}" minio/data
+      -C minio/config --address "127.0.0.1:${os_port}" --compat minio/data
 else
   echo "Object Storage disabled."
-  # If we exit now, Foreman will shut down all our sibling process too.
-  # We want to block until Foreman signals us to exit.
+  # Keep active so the process supervisor (i.e. runit) thinks everything is okay
   exec tail -f /dev/null
 fi

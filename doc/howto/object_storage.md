@@ -1,7 +1,7 @@
 # Object Storage (LFS, Artifacts, etc)
 
-GitLab Enterprise Edition has Object Storage integration. In this
-document we explain how to set this up in your development
+GitLab has Object Storage integration.
+In this document we explain how to set this up in your development
 environment.
 
 In order to take advantage of the GDK integration you must first install
@@ -20,10 +20,18 @@ in `object_store_port`.
 
 Changing port number requires `gdk reconfigure`.
 
+## Minio errors
+
+If you cannot start minio, you may have an old version not supporting the `--compat` parameter.
+
+`gdk tail minio` will show a crash loop with the following error
+
+```
+Incorrect Usage: flag provided but not defined: -compat
+```
+
+Upgrading minio to the latest version will fix it.
+
 ## Creating a new bucket
 
 In order to start using minio from your gitlab instance you have to create buckets first. You can create a new bucket by accessing http://127.0.0.1:9000/ (default configuration).
-
-## Changing GitLab configuration
-
-GitLab local development instace expects `uploads` and `lfs-objects` buckets but you can change them in `gitlab.yml` file. You will also need to change `aws_access_key_id` and `aws_secret_access_key` according to your minio installation (you can see these values when you start minio).
