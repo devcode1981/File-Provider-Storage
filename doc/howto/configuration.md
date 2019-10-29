@@ -42,7 +42,7 @@ Here are a few settings worth mentioning:
 | `gitlab_pages.port`    | `3010`  | Specify on which port GitLab Pages should run. See also the [Pages guide](pages.md).       |
 | `relative_url_root`    | `/`     | When you want to test GitLab being available on a different path than `/`, e.g. `/gitlab`. |
 | `object_store.enabled` | `false` | Set this to `true` to enable Object Storage with MinIO.                                    |
-| `registry.enabled`     | `false` | Set this to `true` to enable container registry.                                                              |
+| `registry.enabled`     | `false` | Set this to `true` to enable container registry.                                           |
 | `geo.enabled`          | `false` | Set this to `true` to enable Geo (for now it just enables `postgresql-geo` and `geo-cursor` services). |
 
 There are also a few settings that configure the behavior of GDK itself:
@@ -87,11 +87,19 @@ Below is a table of all the settings that can be set this way:
 
 ### Configuration precedence
 
-GDK will use the following order of precedence when selecting the configuration method to use:
+GDK will use the following order of precedence when selecting the
+configuration method to use:
 
 - `gdk.yml`
 - Loose file
 - Default value
+
+### Reading the configuration
+
+To print settings from the config you can use `gdk config get <setting>`.
+
+More information on the available `gdk` commands is found in
+[GDK commands](gdk_commands.md#configuration).
 
 ### Implementation detail
 
