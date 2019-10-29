@@ -83,21 +83,12 @@ module GDK
       end
 
       def check_bundler_version
-        current_version = `bundle --version`[/(\d+.\d+.\d+)/, 1]
-
-        actual = Gem::Version.new(current_version)
-        expected = Gem::Version.new(EXPECTED_BUNDLER_VERSION)
-
-        if actual != expected
+        unless system("bundle _#{EXPECTED_BUNDLER_VERSION}_ --version >/dev/null 2>&1")
           @error_messages << <<~BUNDLER_VERSION_NOT_MET
-            We've detected that you are using Bundler version #{actual}.
             Please install Bundler version #{EXPECTED_BUNDLER_VERSION}.
+            gem install bundler -v '= #{EXPECTED_BUNDLER_VERSION}'
           BUNDLER_VERSION_NOT_MET
         end
-      rescue Errno::ENOENT
-        @error_messages << <<~MISSING_BUNDLER
-          Bundler is not installed, please install Bundler #{EXPECTED_BUNDLER_VERSION}.
-        MISSING_BUNDLER
       end
 
       def check_go_version
