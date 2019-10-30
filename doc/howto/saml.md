@@ -43,6 +43,36 @@ Instead you can use `https://localhost:3443/groups/zebra/-/saml/sso` as displaye
 
 Sign in can also be initiated from the identity provider at `https://localhost:8443/simplesaml/saml2/idp/SSOService.php?spentityid=https%3A%2F%2Flocalhost%3A3443%2Fgroups%2Fzebra`
 
+## Instance SAML with Docker
+
+Configuring SAML for a GitLab instance can be done using the [SAML OmniAuth Docs](https://docs.gitlab.com/ee/integration/saml.html).
+
+To start an identity provider that works with instance SAML, you'll need to configure the entity ID and callback URL when starting the container:
+
+```shell
+docker run --name=instance_saml_idp -p 8080:8080 -p 8443:8443\
+-e SIMPLESAMLPHP_SP_ENTITY_ID=http://<gitlab-host>:<gitlab-port> \
+-e SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE=http://<gitlab-host>:<gitlab-port>/users/auth/saml/callback \
+-d jamedjo/test-saml-idp
+```
+
+In addition, you'll need to configure the `idp_sso_target_url`, `issuer`, and `idp_cert_fingerprint` to match the values provided by the Docker image:
+
+```yaml
+omniauth:
+  providers:
+  - {
+      name: 'saml',
+      args: {
+        assertion_consumer_service_url: 'http://localhost:3000/users/auth/saml/callback',
+        idp_cert_fingerprint: '11:9b:9e:02:79:59:cd:b7:c6:62:cf:d0:75:d9:e2:ef:38:4e:44:5f',
+        idp_sso_target_url: 'https://localhost:8443/simplesaml/saml2/idp/SSOService.php',
+        issuer: 'http://localhost:3000',
+        name_identifier_format: 'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent'
+      }
+    }
+```
+
 ## Credentials
 
 The following users are described in the [docker image documenation](https://hub.docker.com/r/jamedjo/test-saml-idp/#usage):
