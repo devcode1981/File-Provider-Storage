@@ -180,6 +180,7 @@ module GDK
     postgresql do |p|
       p.port { read!('postgresql_port') || 5432 }
       p.bin_dir { cmd!(%w[support/pg_bindir]) }
+      p.bin { Pathname.new(config.postgresql.bin_dir).join('postgres') }
       p.replication_user 'gitlab_replication'
       p.dir { config.gdk_root.join('postgresql') }
       p.data_dir { config.postgresql.dir.join('data') }
