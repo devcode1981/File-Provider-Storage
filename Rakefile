@@ -80,7 +80,8 @@ file "gitaly/gitaly.config.toml" => ['support/templates/gitaly.config.toml.erb']
     path: config.repositories_root,
     storage: 'default',
     socket_path: config.gitaly.address,
-    log_dir: config.gitaly.log_dir
+    log_dir: config.gitaly.log_dir,
+    internal_socket_dir: config.gitaly.internal_socket_dir
   ).render!
   FileUtils.mkdir_p(config.repositories_root)
   FileUtils.mkdir_p(config.gitaly.log_dir)
