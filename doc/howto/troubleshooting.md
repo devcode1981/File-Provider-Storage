@@ -215,7 +215,7 @@ which fails if column does not exist or can cause data loss if column exists.
 A quick solution is to remove the database data and then recreate it:
 
 ```sh
-rm -rf postgresql/data ; make
+bundle exec rake setup
 ```
 
 ---
