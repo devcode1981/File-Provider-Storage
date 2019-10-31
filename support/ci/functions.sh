@@ -1,5 +1,3 @@
-# vim: filetype=sh
-
 GDK_CHECKOUT_PATH="$(pwd)/gitlab-development-kit"
 
 init() {

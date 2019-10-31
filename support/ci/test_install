@@ -1,8 +1,8 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 parent_path=$(dirname $0)
 
-source ${parent_path}/functions
+source ${parent_path}/functions.sh
 
 init
 checkout ${CI_COMMIT_SHA}
