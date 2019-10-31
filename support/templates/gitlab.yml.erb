@@ -653,14 +653,13 @@ production: &base
     # real path not the symlink.
     storages: # You must have at least a `default` storage path.
       default:
-        path: <%= config.repositories_root %>
-        gitaly_address: unix:<%= config.gitaly.address %>
       <% if config.praefect? %>
-      praefect:
         path: /
         gitaly_address: unix:<%= config.praefect.address %>
+      <% else %>
+        path: <%= config.repositories_root %>
+        gitaly_address: unix:<%= config.gitaly.address %>
       <% end %>
-
 
   ## Backup settings
   backup:
@@ -848,7 +847,7 @@ test:
     storages:
       default:
         path: tmp/tests/repositories/
-        gitaly_address: unix:tmp/tests/gitaly/gitaly.socket
+        gitaly_address: unix:tmp/tests/gitaly/<%= config.praefect? ? 'praefect':'gitaly' %>.socket
 
   gitaly:
     client_path: tmp/tests/gitaly

@@ -68,8 +68,8 @@ praefect:
     path: "/home/git/gdk/praefect.socket"
   config_file: !ruby/object:Pathname
     path: "/home/git/gdk/gitaly/praefect.config.toml"
-  enabled: false
-  node_count: 3
+  enabled: true
+  node_count: 1
   nodes:
   - address: !ruby/object:Pathname
       path: "/home/git/gdk/gitaly-praefect-0.socket"

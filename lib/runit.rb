@@ -7,6 +7,7 @@ module Runit
   SERVICE_SHORTCUTS = {
     'rails' => 'rails-*',
     'tunnel' => 'tunnel_*',
+    'praefect' => 'praefect*',
     'rails-migration-dependencies' => '{redis,postgresql,gitaly}'
   }.freeze
 

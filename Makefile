@@ -156,13 +156,19 @@ gitlab-shell/.gitlab_shell_secret:
 
 # Set up gitaly
 
-gitaly-setup: gitaly/bin/gitaly gitaly/gitaly.config.toml
+gitaly-setup: gitaly/bin/gitaly gitaly/gitaly.config.toml gitaly/praefect.config.toml
 
 ${gitaly_clone_dir}/.git:
 	git clone --quiet --branch "${gitaly_version}" ${git_depth_param} ${gitaly_repo} ${gitaly_clone_dir}
 
-gitaly/gitaly.config.toml: support/templates/gitaly.config.toml.erb
+.PHONY: gitaly/gitaly.config.toml
+gitaly/gitaly.config.toml:
 	rake gitaly/gitaly.config.toml
+
+
+.PHONY: gitaly/praefect.config.toml
+gitaly/praefect.config.toml:
+	rake gitaly/praefect.config.toml
 
 prom-setup:
 	if [ "$(uname -s)" = "Linux" ]; then \

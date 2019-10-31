@@ -182,25 +182,28 @@ module GDK
     end
 
     gitaly do |g|
-      g.assembly_dir { config.gdk_root.join('gitaly', 'assembly') }
       g.address { config.gdk_root.join('gitaly.socket') }
-      g.log_dir { config.gdk_root.join('log', 'gitaly') }
+      g.assembly_dir { config.gdk_root.join('gitaly', 'assembly') }
+      g.config_file { config.gdk_root.join('gitaly', 'gitaly.config.toml') }
       g.internal_socket_dir { config.gdk_root.join('gitaly')}
+      g.log_dir { config.gdk_root.join('log', 'gitaly') }
     end
 
     praefect do |p|
-      p.enabled { read!('praefect_enabled') || false }
-      p.config_file { config.gdk_root.join('gitaly', 'praefect.config.toml') }
       p.address { config.gdk_root.join('praefect.socket') }
-      p.node_count { env!('PRAEFECT_GITALY_NODES')&.to_i || 3 }
+      p.config_file { config.gdk_root.join("gitaly", "praefect.config.toml") }
+      p.enabled { true }
+      p.internal_socket_dir { config.gdk_root.join('gitaly', 'praefect') }
+      p.node_count { 1 }
       p.nodes do
         config_array!(config.praefect.node_count) do |n, i|
-          n.storage { "praefect-internal-#{i}" }
-          n.storage_dir { File.join(config.repositories_root, storage) }
           n.address { config.gdk_root.join("gitaly-praefect-#{i}.socket") }
-          n.primary { i == 0 }
-          n.log_dir { config.gdk_root.join("log", "praefect-gitaly-#{i}") }
           n.config_file { "gitaly/gitaly-#{i}.praefect.toml" }
+          n.log_dir { config.gdk_root.join("log", "praefect-gitaly-#{i}") }
+          n.primary { i == 0 }
+          n.service_name { "praefect-gitaly-#{i}" }
+          n.storage { "praefect-internal-#{i}" }
+          n.storage_dir { i == 0 ? config.repositories_root : File.join(config.repositories_root, storage) }
         end
       end
     end
