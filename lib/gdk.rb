@@ -112,7 +112,7 @@ module GDK
       exec(
         { 'RAILS_ENV' => 'development' },
         *%W[bundle exec thin --socket=#{Dir.pwd}/gitlab.socket start],
-        chdir: 'gitlab'
+        chdir: File.join($gdk_root, 'gitlab')
       )
     when 'help'
       GDK::Logo.print
