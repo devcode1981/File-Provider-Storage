@@ -131,7 +131,16 @@ module Runit
   def self.tail(services)
     Dir.chdir($gdk_root)
 
-    tails = log_files(services).map { |log| spawn('tail', '-f', log) }
+    tails = log_files(services).map do |log|
+      # It looks like 'tail -F' is a non-standard flag that exists in GNU tail
+      # and on macOS/FreeBSD. We use it because we want to detect the log file
+      # disappearing, and reopen the log file when that happens. If we ever
+      # want to revisit this decision, we could make our own "file replacement
+      # detector" as in
+      # https://gitlab.com/gitlab-org/gitlab-development-kit/merge_requests/881/diffs
+      # .
+      spawn('tail', '-F', log)
+    end
 
     %w[INT TERM].each do |sig|
       trap(sig) { kill_processes(tails) }
