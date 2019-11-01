@@ -1,5 +1,3 @@
-# vim: filetype=sh
-
 GDK_CHECKOUT_PATH="$(pwd)/gitlab-development-kit"
 
 init() {
@@ -32,7 +30,8 @@ update() {
   echo "> Updating GDK.."
   IGNORE_INSTALL_WARNINGS=true gdk update
   support/set-gitlab-upstream
-  gdk restart
+  gdk stop || true
+  gdk start
 }
 
 run() {
