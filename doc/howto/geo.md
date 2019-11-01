@@ -44,7 +44,7 @@ tracer:
 Then run the following commands:
 
 ```bash
-unlink services/jaeger
+rm services/jaeger
 gdk start # or just: gdk start postgresql-geo
 make geo-setup
 ```
