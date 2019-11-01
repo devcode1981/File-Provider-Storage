@@ -43,7 +43,7 @@ Here are a few settings worth mentioning:
 | `relative_url_root`    | `/`     | When you want to test GitLab being available on a different path than `/`, e.g. `/gitlab`. |
 | `object_store.enabled` | `false` | Set this to `true` to enable Object Storage with MinIO.                                    |
 | `registry.enabled`     | `false` | Set this to `true` to enable container registry.                                                              |
-| `geo.enabled`          | `false` | Set this to `true` to enable Geo.                                                          |
+| `geo.enabled`          | `false` | Set this to `true` to enable Geo (for now it just enables `postgresql-geo` and `geo-cursor` services). |
 
 There are also a few settings that configure the behavior of GDK itself:
 

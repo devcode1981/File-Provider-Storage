@@ -27,10 +27,25 @@ echo 3002 > port
 echo 3807 > webpack_port
 # Assuming your primary GDK instance lives in parallel folders:
 gdk install gitlab_repo=../gdk-ee/gitlab
-# Cancel (Ctrl-C) seeding when it starts since we will delete the data anyway
-gdk start
+```
 
-# In another terminal window
+When seeding begins, cancel it (Ctrl-C) since we will delete the data anyway.
+
+Add the following to `gdk.yml` file:
+
+```yaml
+geo:
+  enabled: true
+tracer:
+  jaeger:
+    enabled: false
+```
+
+Then run the following commands:
+
+```bash
+unlink services/jaeger
+gdk start # or just: gdk start postgresql-geo
 make geo-setup
 ```
 
