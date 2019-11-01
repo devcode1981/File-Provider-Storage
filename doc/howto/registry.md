@@ -69,9 +69,9 @@ This will allow you to use `gitlab.local` instead of your actual IP address in c
         disabled: true
       ```
 
-1. At this point, you can execute `gdk run` and a local container registry should now be running:
+1. At this point, you can execute `gdk start` and a local container registry should now be running:
 
-   * **Docker shows no running registry**
+   * Docker shows no running registry
 
      ```bash
      docker ps
@@ -79,19 +79,24 @@ This will allow you to use `gitlab.local` instead of your actual IP address in c
      CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
      ```
 
-   * **Execute `gdk run` and notice the `registry.1` entries in the log output**
+   * Execute `gdk start`, notice the registry process has been started and the pid value is displayed:
 
      ```bash
-     gdk run
+     ok: run: ./services/registry: (pid 36343) 0s, normally down
+     ```
+
+   * Execute `gdk tail` and notice the `registry` entries in the log output
+
+     ```bash
+     gdk start
 
      <snip>
-     18:03:42 registry.1    | started with pid 65095
+     registry   : level=warning msg="No HTTP secret provided - generated random secret ...
+     registry   : level=info msg="redis not configured" go.version=go1.11.2 ...
+     registry   : level=info msg="Starting upload purge in 13m0s" go.version=go1.11.2 ...
+     registry   : level=info msg="using inmemory blob descriptor cache" go.version=go1.11.2 ...
+     registry   : level=info msg="listening on [::]:5000" go.version=go1.11.2 ...
      <snip>
-     18:03:42 registry.1    | level=warning msg="No HTTP secret provided - generated random secret ...
-     18:03:42 registry.1    | level=info msg="redis not configured" go.version=go1.11.2 ...
-     18:03:42 registry.1    | level=info msg="Starting upload purge in 29m0s" go.version=go1.11.2 ...
-     18:03:42 registry.1    | level=info msg="using inmemory blob descriptor cache" go.version=go1.11.2 ...
-     18:03:42 registry.1    | level=info msg="listening on [::]:5000" go.version=go1.11.2 ...
      ```
 
    * **Docker now shows running registry**
@@ -264,6 +269,18 @@ pipelines.
    ```bash
    docker push your.local.ip:5000/custom-docker-image
    ```
+
+   **Note:** If the above command returns the following error:
+
+   ```
+   Get https://your.local.ip:5000/v2/: http: server gave HTTP response to HTTPS client
+   ```
+
+   You'll need to ensure you add `your.local.ip` as an insecure registry for your local Docker installation.  This can be achieved with [Docker Desktop on Mac](https://www.docker.com/products/docker-desktop) by clicking the `Docker` icon in the menubar, then clicking on `Preferences...`. Click on the `Daemon` tab, then the `Basic` tab and add your `your.local.ip:5000` in the `Insecure registries` section, then click on the `Apply & Restart` button.
+
+   See [this note](https://nickjanetakis.com/blog/docker-tip-50-running-an-insecure-docker-registry) for details on how to configure an insecure registry for other operating systems.
+
+   Having said that, you should follow the directions given in the [Configuring the GitLab Docker runner to automatically pull images](#configuring-the-gitlab-docker-runner-to-automatically-pull-images) section to avoid pushing images altogether.
 
 1. Create a `.gitlab-ci.yml` and add it to the the git repository for the project. Configure the `image` directive in the `.gitlab-ci.yml` file to reference the `custom-docker-image` which was tagged and pushed in steps `2.` and `3.` above:
 
