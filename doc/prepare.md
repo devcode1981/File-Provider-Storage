@@ -94,7 +94,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
    sudo add-apt-repository ppa:git-core/ppa
    sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server \
      libicu-dev cmake g++ libre2-dev libkrb5-dev libsqlite3-dev golang-${GDK_GO_VERSION}-go ed \
-     pkg-config graphicsmagick runit libimage-exiftool-perl rsync
+     pkg-config graphicsmagick runit libimage-exiftool-perl rsync libssl-dev
    ```
 
    > ℹ️ Ubuntu 18.04 (Bionic Beaver) and beyond doesn't have python-software-properties as a separate package.
