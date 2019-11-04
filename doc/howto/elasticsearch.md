@@ -28,13 +28,11 @@ Procfile to make ElasticSearch run as part of `gdk start`.
 1. Go to **Admin Area > Settings > Integrations** to enable Elasticsearch.
 
 1. Start Elasticsearch by either running `elasticsearch` in a new terminal, or
-   by adding it to your `Procfile`:
+   by uncomment `elasticsearch` in the `Procfile` and run:
 
+   ```sh
+   gdk start elasticsearch
    ```
-   elasticsearch: elasticsearch
-   ```
-
-1. Be sure to restart the GDK's `foreman` instance if it's running.
 
 1. Perform a manual update of the Elasticsearch indexes:
 

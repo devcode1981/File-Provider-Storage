@@ -47,7 +47,7 @@ file GDK::Config::FILE do |t|
   FileUtils.touch(t.name)
 end
 
-desc 'Generate Procfile for Foreman'
+desc 'Generate Procfile that defines the list of services to start'
 file 'Procfile' => ['Procfile.erb', GDK::Config::FILE] do |t|
   GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
 end
