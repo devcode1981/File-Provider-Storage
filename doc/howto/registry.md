@@ -421,3 +421,33 @@ To switch from `docker-machine` to `docker-desktop-for-mac`, simply unset the ab
 ```bash
 unset DOCKER_CERT_PATH DOCKER_HOST DOCKER_MACHINE_NAME DOCKER_TLS_VERIFY
 ```
+
+## Using a Development Image of the Container Registry
+
+To test development versions of the container registry against GDK:
+
+1. Within the [container registry](https://gitlab.com/gitlab-org/container-registry) project root, build and tag an image that includes your changes:
+   ```bash
+   docker build -t registry:dev .
+   ```
+
+1. Write the image tag in the `registry_image` file and reconfigure GDK:
+
+   ```bash
+   echo registry:dev > registry_image
+   gdk reconfigure
+   ```
+
+1. Restart GDK:
+
+   ```bash
+   gdk restart
+   ```
+
+1. Inspect docker to confirm that the development image of the registry is running locally:
+
+   ```bash
+   docker ps
+   CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
+   bc6c0efa5582        registry:dev        "registry serve /etc…"   7 seconds ago       Up 6 seconds                            romantic_nash
+   ```

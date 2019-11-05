@@ -82,6 +82,7 @@ praefect_enabled
 /registry_host
 /registry_external_port
 /registry_port
+/registry_image
 /registry/storage/
 /registry/config.yml
 /postgresql_port
