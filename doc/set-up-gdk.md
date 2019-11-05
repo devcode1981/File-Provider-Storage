@@ -56,7 +56,6 @@ gem install gitlab-development-kit
    - Other options in order of recommendation:
 
      1. [Develop in your own GitLab fork](#develop-in-your-own-gitlab-fork)
-     1. [Develop against the GitLab project](#develop-against-the-gitlab-project-default)
      1. [Develop against the GitLab FOSS project](#develop-against-the-gitlab-foss-project)
 
 ### Develop against the GitLab project (default)
@@ -78,6 +77,8 @@ The clone will be done using [`git clone --depth=1`](https://www.git-scm.com/doc
 
 ### Develop against the GitLab FOSS project
 
+> Learn [how to create a fork](https://docs.gitlab.com/ee/user/project/repository/forking_workflow.html#creating-a-fork) of [GitLab FOSS](https://gitlab.com/gitlab-org/gitlab-foss).
+
 - HTTP, run:
 
   ```sh
@@ -94,6 +95,8 @@ Use `gdk install shallow_clone=true` for a faster clone that consumes less disk-
 The clone will be done using [`git clone --depth=1`](https://www.git-scm.com/docs/git-clone#Documentation/git-clone.txt---depthltdepthgt).
 
 ### Develop in your own GitLab fork
+
+> Learn [how to create a fork](https://docs.gitlab.com/ee/user/project/repository/forking_workflow.html#creating-a-fork) of [GitLab](https://gitlab.com/gitlab-org/gitlab).
 
 - HTTP, run:
 
