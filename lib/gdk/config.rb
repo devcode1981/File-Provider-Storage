@@ -25,7 +25,7 @@ module GDK
         .select { |d| Dir.exist?(d) }
     end
 
-    gdk_root { Pathname.pwd }
+    gdk_root { Pathname.new(__dir__).parent.parent }
 
     gdk do |g|
       g.overwrite_changes false

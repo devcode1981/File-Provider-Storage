@@ -4,6 +4,8 @@ require 'erb'
 require 'fileutils'
 require 'tempfile'
 
+require_relative '../shellout'
+
 module GDK
   class ErbRenderer
     BACKUP_DIR = '.backups'
@@ -54,7 +56,7 @@ module GDK
     private
 
     def warn_changes!(temp_file)
-      diff = `git --no-pager diff --no-index #{colors_arg} -u "#{temp_file}" "#{target}"`
+      diff = Shellout.new(%W[git --no-pager diff --no-index #{colors_arg} -u #{target} #{temp_file}]).run
 
       puts <<~EOF
         -------------------------------------------------------------------------------------------------------------

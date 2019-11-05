@@ -10,7 +10,7 @@ RSpec.configure do |config|
 end
 
 def spec_path
-  Pathname.new(__FILE__).dirname.expand_path
+  Pathname.new(__dir__).expand_path
 end
 
 def fixture_path
