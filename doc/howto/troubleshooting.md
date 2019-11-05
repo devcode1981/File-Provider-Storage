@@ -128,12 +128,12 @@ Make sure that `gem install pg -v '0.18.4'` succeeds before bundling.
 
 This is because the script fails to find the PostgreSQL instance in the path.
 The instructions for this may show up after installing PostgreSQL.
-The example below is from running `brew install postgresql@9.6` on OS X installation.
+The example below is from running `brew install postgresql@10` on OS X installation.
 For other versions, other platform install and other shell terminal please adjust the path accordingly.
 
 ```
 If you need to have this software first in your PATH run:
-  echo 'export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"' >> ~/.bash_profile
+  echo 'export PATH="/usr/local/opt/postgresql@10/bin:$PATH"' >> ~/.bash_profile
 ```
 
 Once this is set, run the `gdk install` command again.
