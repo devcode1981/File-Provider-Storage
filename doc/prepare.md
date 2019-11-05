@@ -153,6 +153,23 @@ sudo dnf install postgresql libpqxx-devel postgresql-libs redis libicu-devel \
 
 You may need to install Redis 2.8 or newer manually.
 
+##### runit
+
+You will also need to install [runit](http://smarden.org/runit) manually.
+
+The following instructions worked for runit version 2.1.2 - but please make sure you read the up to date installation instructions on [the website](http://smarden.org/runit) before continuing.
+
+1. Download and extract the runit source code to a local folder to compile it:
+   ```sh
+   wget http://smarden.org/runit/runit-2.1.2.tar.gz
+   tar xzf runit-2.1.2.tar.gz
+   cd admin/runit-2.1.2
+   sed -i -E 's/ -static$//g' src/Makefile
+   ./package/compile
+   ./package/check
+   ```
+1. Make sure all binaries in `command/` are accessible from your `PATH` (e.g. symlink / copy them to `/usr/local/bin`)
+
 #### CentOS
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
