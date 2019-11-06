@@ -580,7 +580,6 @@ touch-examples:
 	database_geo.yml.example \
 	gitlab-shell/config.yml.example \
 	gitlab-workhorse/config.toml.example \
-	gitlab/config/database.yml.example \
 	gitlab/config/puma.example.development.rb \
 	gitlab/config/unicorn.rb.example.development \
 	grafana/grafana.ini.example \
