@@ -92,7 +92,7 @@ praefect_enabled
 /minio
 /gettext.log
 /elasticsearch*
-/env.mk
+/gdk-config.mk
 /auto_devops_enabled
 /auto_devops_gitlab_port
 /auto_devops_registry_port

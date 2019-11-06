@@ -1,56 +1,24 @@
 .NOTPARALLEL:
 
-gdk-config-get = $(shell gdk config get $(1) 2>/dev/null)
+# Generate a Makefile from Ruby and include it
+include $(shell rake gdk-config.mk)
 
 gitlab_clone_dir = gitlab
-gitlab_repo = $(call gdk-config-get, repositories.gitlab)
-gitlab_shell_repo = $(call gdk-config-get, repositories.gitlab_shell)
 gitlab_shell_clone_dir = go-gitlab-shell/src/gitlab.com/gitlab-org/gitlab-shell
-gitlab_workhorse_repo = $(call gdk-config-get, repositories.gitlab_workhorse)
 gitlab_workhorse_clone_dir = gitlab-workhorse/src/gitlab.com/gitlab-org/gitlab-workhorse
-gitaly_repo = $(call gdk-config-get, repositories.gitaly)
 gitaly_gopath = $(abspath ./gitaly)
 gitaly_clone_dir = ${gitaly_gopath}/src/gitlab.com/gitlab-org/gitaly
-gitlab_pages_repo = $(call gdk-config-get, repositories.gitlab_pages)
 gitlab_pages_clone_dir = gitlab-pages/src/gitlab.com/gitlab-org/gitlab-pages
-gitlab_docs_repo = $(call gdk-config-get, repositories.gitlab_docs)
-gitlab_elasticsearch_indexer_repo = $(call gdk-config-get, repositories.gitlab_elasticsearch_indexer)
-gitlab_development_root = $(call gdk-config-get, gdk_root)
 gitaly_assembly_dir = ${gitlab_development_root}/gitaly/assembly
-postgres_bin_dir = $(call gdk-config-get, postgresql.bin_dir)
-postgres_replication_user = $(call gdk-config-get, postgresql.replication_user)
-postgres_dir = $(call gdk-config-get, postgresql.dir)
-postgres_replica_dir = $(call gdk-config-get, postgresql.replica_dir)
-postgres_geo_dir = $(call gdk-config-get, postgresql.geo.dir)
-postgres_data_dir = $(call gdk-config-get, postgresql.data_dir)
-auto_devops_enabled = $(call gdk-config-get, auto_devops.enabled)
-auto_devops_gitlab_port = $(call gdk-config-get, auto_devops.gitlab.port)
-auto_devops_registry_port = $(call gdk-config-get, auto_devops.registry.port)
-hostname = $(call gdk-config-get, hostname)
-port = $(call gdk-config-get, port)
-https = $(call gdk-config-get, https?)
-relative_url_root = $(call gdk-config-get, relative_url_root)
-username = $(call gdk-config-get, username)
-sshd_bin = $(call gdk-config-get, sshd.bin)
-registry_enabled = $(call gdk-config-get, registry?)
-registry_host = $(call gdk-config-get, registry.host)
-registry_external_port = $(call gdk-config-get, registry.external_port)
-registry_port = $(call gdk-config-get, registry.port)
 gitlab_from_container = $(shell [ "$(shell uname)" = "Linux" ] && echo 'localhost' || echo 'docker.for.mac.localhost')
-postgresql_port = $(call gdk-config-get, postgresql.port)
-postgresql_geo_port = $(call gdk-config-get, postgresql.geo.port)
-gitlab_pages_port = $(call gdk-config-get, gitlab_pages.port)
 rails_bundle_install_cmd = bundle install --jobs 4 --without production
-elasticsearch_version = $(call gdk-config-get, elasticsearch.version)
-elasticsearch_tar_gz_sha1 = $(call gdk-config-get, elasticsearch.checksum)
 workhorse_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_WORKHORSE_VERSION")
 gitlab_shell_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_SHELL_VERSION")
 gitaly_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITALY_SERVER_VERSION")
 pages_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_PAGES_VERSION")
 gitlab_elasticsearch_indexer_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_ELASTICSEARCH_INDEXER_VERSION")
 tracer_build_tags = tracer_static tracer_static_jaeger
-jaeger_server_enabled = $(call gdk-config-get, tracer.jaeger?)
-jaeger_version = $(call gdk-config-get, tracer.jaeger.version)
+
 ifeq ($(shallow_clone),true)
 git_depth_param = --depth=1
 endif
