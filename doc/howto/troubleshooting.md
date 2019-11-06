@@ -678,10 +678,10 @@ documentation](https://docs.gitlab.com/ee/development/distributed_tracing.html).
 If you see errors such as:
 
 ```sh
-07:23:16 gitaly.1                | time="2019-05-17T07:23:16-05:00" level=fatal msg="load config" config_path=<path-to-gdk>/gitaly/config.toml error="open <path-to-gdk>/gitaly/config.toml: no such file or directory"
+07:23:16 gitaly.1                | time="2019-05-17T07:23:16-05:00" level=fatal msg="load config" config_path=<path-to-gdk>/gitaly/gitaly.config.toml error="open <path-to-gdk>/gitaly/gitaly.config.toml: no such file or directory"
 ```
 
-Somehow, `gitaly/config.toml` is missing. You can re-create this file by running
+Somehow, `gitaly/gitaly.config.toml` is missing. You can re-create this file by running
 the following in your gdk directory:
 
 ```sh
