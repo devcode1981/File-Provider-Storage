@@ -60,7 +60,8 @@ module GDK
         .ruby-version
         Procfile
         gitlab-workhorse/config.toml
-        gitaly/config.toml
+        gitaly/gitaly.config.toml
+        gitaly/praefect.config.toml
         nginx/conf/nginx.conf
       ]
 
