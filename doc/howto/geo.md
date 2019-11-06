@@ -183,10 +183,10 @@ bundle exec rails runner 'puts GeoNode.current_node_name'
 Customize to your liking. Requires `gdk start` to be running.
 
 ```bash
-alias geo_primary_migrate="bundle install && bin/rake db:migrate db:test:prepare geo:db:migrate geo:db:test:prepare"
-alias geo_primary_update="gdk update && geo_primary_migrate && cd .. && make postgresql/geo-fdw/test/rebuild && cd gitlab && gco -- db/schema.rb ee/db/geo/schema.rb && gdk diff-config"
-alias geo_secondary_migrate="bundle install && bin/rake geo:db:migrate"
-alias geo_secondary_update="gdk update; geo_secondary_migrate && cd .. && make postgresql/geo-fdw/development/rebuild && cd gitlab && gco -- db/schema.rb ee/db/geo/schema.rb && gdk diff-config"
+alias geo_primary_migrate="bundle install && bin/rake db:migrate db:test:prepare geo:db:migrate geo:db:test:prepare && cd .. && make postgresql/geo-fdw/test/rebuild && cd gitlab && gco -- db/schema.rb ee/db/geo/schema.rb"
+alias geo_primary_update="gdk update && geo_primary_migrate && gdk diff-config"
+alias geo_secondary_migrate="bundle install && bin/rake geo:db:migrate && cd .. && make postgresql/geo-fdw/development/rebuild && cd gitlab && gco -- db/schema.rb ee/db/geo/schema.rb"
+alias geo_secondary_update="gdk update; geo_secondary_migrate && gdk diff-config"
 ```
 
 ### `geo_primary_migrate`
