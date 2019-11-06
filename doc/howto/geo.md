@@ -184,9 +184,9 @@ Customize to your liking. Requires `gdk start` to be running.
 
 ```bash
 alias geo_primary_migrate="bundle install && bin/rake db:migrate db:test:prepare geo:db:migrate geo:db:test:prepare"
-alias geo_primary_update="gdk update && geo_primary_migrate && cd .. && make postgresql/geo-fdw/test/rebuild && cd gitlab && gco -- db/schema.rb ee/db/geo/schema.rb"
+alias geo_primary_update="gdk update && geo_primary_migrate && cd .. && make postgresql/geo-fdw/test/rebuild && cd gitlab && gco -- db/schema.rb ee/db/geo/schema.rb && gdk diff-config"
 alias geo_secondary_migrate="bundle install && bin/rake geo:db:migrate"
-alias geo_secondary_update="gdk update; geo_secondary_migrate && cd .. && make postgresql/geo-fdw/development/rebuild && cd gitlab && gco -- db/schema.rb ee/db/geo/schema.rb"
+alias geo_secondary_update="gdk update; geo_secondary_migrate && cd .. && make postgresql/geo-fdw/development/rebuild && cd gitlab && gco -- db/schema.rb ee/db/geo/schema.rb && gdk diff-config"
 ```
 
 ### `geo_primary_migrate`
@@ -211,6 +211,8 @@ Same as `geo_primary_migrate`, but also:
 * Rebuilds FDW tables in test DB
 * Checks out schemas to get rid of irrelevant diffs (not done in
    `geo_primary_migrate` because you may have created a migration)
+* Finally does `gdk diff-config` so you can see a summary of how your configs
+  differ from a fresh install
 
 ### `geo_secondary_migrate`
 
