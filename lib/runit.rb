@@ -8,8 +8,8 @@ module Runit
     'rails' => 'rails-*',
     'tunnel' => 'tunnel_*',
     'praefect' => 'praefect*',
-    'db' => '{redis,postgresql}',
-    'rails-migration-dependencies' => '{redis,postgresql,gitaly}'
+    'db' => '{redis,postgresql,postgresql-geo}',
+    'rails-migration-dependencies' => '{redis,postgresql,gitaly,postgresql-geo}'
   }.freeze
 
   def self.start_runsvdir
