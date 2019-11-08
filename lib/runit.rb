@@ -8,6 +8,7 @@ module Runit
     'rails' => 'rails-*',
     'tunnel' => 'tunnel_*',
     'praefect' => 'praefect*',
+    'db' => '{redis,postgresql}',
     'rails-migration-dependencies' => '{redis,postgresql,gitaly}'
   }.freeze
 
