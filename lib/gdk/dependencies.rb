@@ -40,6 +40,7 @@ module GDK
       EXPECTED_GO_VERSION = '1.12'
       EXPECTED_YARN_VERSION = '1.12'
       EXPECTED_NODEJS_VERSION = '12.10'
+      EXPECTED_POSTGRESQL_VERSION = '10.x'
 
       attr_reader :error_messages
 
@@ -54,6 +55,11 @@ module GDK
         check_go_version
         check_nodejs_version
         check_yarn_version
+        check_postgresql_version
+
+        check_graphicsmagick_installed
+        check_exiftool_installed
+        check_runit_installed
       end
 
       def check_git_version
@@ -145,6 +151,47 @@ module GDK
         @error_messages << <<~MISSING_YARN
           Yarn is not installed, please install Yarn #{EXPECTED_YARN_VERSION} or higher.
         MISSING_YARN
+      end
+
+      def check_postgresql_version
+        current_postgresql_version = `psql --version`[/psql \(PostgreSQL\) (\d+\.\d+)/, 1]
+
+        actual = Gem::Version.new(current_postgresql_version)
+        expected = Gem::Version.new(EXPECTED_POSTGRESQL_VERSION)
+
+        if actual.segments[0] != expected.segments[0]
+          @error_messages << <<~POSTGRESQL_VERSION_NOT_MET
+            We've detected that you are using PostgreSQL version #{actual}.
+            Please install PostgreSQL version #{EXPECTED_POSTGRESQL_VERSION} or higher.
+          POSTGRESQL_VERSION_NOT_MET
+        end
+      end
+
+      def check_graphicsmagick_installed
+        unless system("gm version >/dev/null 2>&1")
+          @error_messages << <<~GRAPHICKSMAGICK_NOT_INSTALLED
+            We've detected that you do not have GraphicsMagick installed.
+            Please install GraphicsMagick.
+          GRAPHICKSMAGICK_NOT_INSTALLED
+        end
+      end
+
+      def check_exiftool_installed
+        unless system("exiftool -ver >/dev/null 2>&1")
+          @error_messages << <<~EXIFTOOL_NOT_INSTALLED
+            We've detected that you do not have Exiftool installed.
+            Please install Exiftool.
+          EXIFTOOL_NOT_INSTALLED
+        end
+      end
+
+      def check_runit_installed
+        unless system("which runit >/dev/null 2>&1")
+          @error_messages << <<~RUNIT_NOT_INSTALLED
+            We've detected that you do not have Exiftool installed.
+            Please install Exiftool.
+          RUNIT_NOT_INSTALLED
+        end
       end
     end
   end
