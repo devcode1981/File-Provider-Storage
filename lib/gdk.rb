@@ -97,13 +97,20 @@ module GDK
     when 'env'
       GDK::Env.exec(ARGV)
     when 'start', 'status'
-      Runit.sv(subcommand, ARGV)
-    when 'stop', 'restart'
-      # runit stop/restart leave processes hanging if they fail to stop gracefully
-      # the force-* counterparts kill at the end of the grace period
-      # gdk users would just kill these hanging processes anyway, best just do it for them
-      subcommand = 'force-' + subcommand
-      Runit.sv(subcommand, ARGV)
+      exit(Runit.sv(subcommand, ARGV))
+    when 'restart'
+      exit(Runit.sv('force-restart', ARGV))
+    when 'stop'
+      if ARGV.empty?
+        # Runit.stop will stop all services and stop Runit (runsvdir) itself.
+        # This is only safe if all services are shut down; this is why we have
+        # an integrated method for this.
+        Runit.stop
+        exit
+      else
+        # Stop the requested services, but leave Runit itself running.
+        exit(Runit.sv('force-stop', ARGV))
+      end
     when 'tail'
       Runit.tail(ARGV)
     when 'thin'

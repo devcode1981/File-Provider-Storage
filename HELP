@@ -2,7 +2,7 @@
 
 gdk start                     # Start everything
 gdk start redis postgresql    # Start specifc services
-gdk stop                      # Stop everything
+gdk stop                      # Stop all services and unload Runit
 gdk stop redis postgresql     # Stop specific service
 gdk status                    # See status of all services
 gdk restart                   # Restart everything
