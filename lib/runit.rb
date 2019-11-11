@@ -32,8 +32,21 @@ module Runit
 
       # Cargo-culting the use of 395 periods from omnibus-gitlab.
       # https://gitlab.com/gitlab-org/omnibus-gitlab/blob/5dfdcafa30ad6e203a04a917f180b630d5121cf6/config/templates/runit/runsvdir-start.erb#L42
-      spawn(*args, 'log: ' + '.' * 395, in: '/dev/null', out: '/dev/null', err: '/dev/null')
+      args << ('log: ' + '.' * 395)
+
+      spawn(cleaned_path_env, *args, in: '/dev/null', out: '/dev/null', err: '/dev/null')
     end
+  end
+
+  # Runit does not handle ENOTDIR from execve well, so let's try to
+  # prevent that.
+  # https://gitlab.com/gitlab-org/gitlab-development-kit/issues/666#note_241939982
+  def self.cleaned_path_env
+    valid_path_entries = ENV['PATH'].split(File::PATH_SEPARATOR).select do |dir|
+      File.directory?(dir)
+    end
+
+    { 'PATH' => valid_path_entries.join(File::PATH_SEPARATOR) }
   end
 
   def self.no_foreman_running!
