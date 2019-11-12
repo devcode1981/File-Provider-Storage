@@ -1,14 +1,14 @@
 #!/bin/bash
 
 replication_include="include 'replication.conf'"
-postgres_dir="$( cd "$1" && pwd )"
+postgres_dir=$(gdk config get postgresql.data_dir 2>/dev/null)
 
-if ! grep -Fxq "$replication_include" $postgres_dir/data/postgresql.conf; then
-  echo $replication_include >> $postgres_dir/data/postgresql.conf
+if ! grep -Fxq "$replication_include" $postgres_dir/postgresql.conf; then
+  echo $replication_include >> $postgres_dir/postgresql.conf
 fi
 
-if [ ! -f "$postgres_dir/data/replication.conf" ]; then
-  cat <<EOF > $postgres_dir/data/replication.conf
+if [ ! -f "$postgres_dir/replication.conf" ]; then
+  cat <<EOF > $postgres_dir/replication.conf
 wal_level = hot_standby
 max_replication_slots = 1
 max_wal_senders = 10

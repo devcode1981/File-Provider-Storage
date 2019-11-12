@@ -1,56 +1,24 @@
 .NOTPARALLEL:
 
--include env.mk
+# Generate a Makefile from Ruby and include it
+include $(shell rake gdk-config.mk)
 
 gitlab_clone_dir = gitlab
-gitlab_repo = https://gitlab.com/gitlab-org/gitlab.git
-gitlab_shell_repo = https://gitlab.com/gitlab-org/gitlab-shell.git
 gitlab_shell_clone_dir = go-gitlab-shell/src/gitlab.com/gitlab-org/gitlab-shell
-gitlab_workhorse_repo = https://gitlab.com/gitlab-org/gitlab-workhorse.git
 gitlab_workhorse_clone_dir = gitlab-workhorse/src/gitlab.com/gitlab-org/gitlab-workhorse
-gitaly_repo = https://gitlab.com/gitlab-org/gitaly.git
 gitaly_gopath = $(abspath ./gitaly)
 gitaly_clone_dir = ${gitaly_gopath}/src/gitlab.com/gitlab-org/gitaly
-gitlab_pages_repo = https://gitlab.com/gitlab-org/gitlab-pages.git
 gitlab_pages_clone_dir = gitlab-pages/src/gitlab.com/gitlab-org/gitlab-pages
-gitlab_docs_repo = https://gitlab.com/gitlab-com/gitlab-docs.git
-gitlab_elasticsearch_indexer_repo = https://gitlab.com/gitlab-org/gitlab-elasticsearch-indexer.git
-gitlab_development_root = $(shell pwd)
 gitaly_assembly_dir = ${gitlab_development_root}/gitaly/assembly
-postgres_bin_dir ?= $(shell ruby support/pg_bindir)
-postgres_replication_user = gitlab_replication
-postgres_dir = $(abspath ./postgresql)
-postgres_replica_dir = $(abspath ./postgresql-replica)
-postgres_geo_dir = $(abspath ./postgresql-geo)
-postgres_data_dir = ${postgres_dir}/data
-auto_devops_enabled = $(shell cat auto_devops_enabled 2>/dev/null || echo 'false')
-auto_devops_gitlab_port = $(shell cat auto_devops_gitlab_port)
-auto_devops_registry_port = $(shell cat auto_devops_registry_port)
-hostname = $(if $(filter true,$(auto_devops_enabled)),"$(auto_devops_gitlab_port).qa-tunnel.gitlab.info",$(shell cat hostname 2>/dev/null || echo 'localhost'))
-port = $(shell (${auto_devops_enabled} && echo '443') || cat port 2>/dev/null || echo '3000')
-https = $(shell (${auto_devops_enabled} && echo 'true') || cat https_enabled 2>/dev/null || echo 'false')
-relative_url_root = $(shell cat relative_url_root 2>/dev/null || echo '')
-username = $(shell whoami)
-sshd_bin = $(shell which sshd)
-registry_enabled = $(shell cat registry_enabled 2>/dev/null || echo 'false')
-registry_host = $(if $(filter true,$(auto_devops_enabled)),"$(auto_devops_registry_port).qa-tunnel.gitlab.info",$(shell cat registry_host 2>/dev/null || echo '127.0.0.1'))
-registry_external_port = $(if $(filter true,$(auto_devops_enabled)),443,$(shell cat registry_external_port 2>/dev/null || echo '5000'))
-registry_port = $(shell cat registry_port 2>/dev/null || echo '5000')
 gitlab_from_container = $(shell [ "$(shell uname)" = "Linux" ] && echo 'localhost' || echo 'docker.for.mac.localhost')
-postgresql_port = $(shell cat postgresql_port 2>/dev/null || echo '5432')
-postgresql_geo_port = $(shell cat postgresql_geo_port 2>/dev/null || echo '5432')
-gitlab_pages_port = $(shell cat gitlab_pages_port 2>/dev/null || echo '3010')
-rails_bundle_install_cmd := bundle install --jobs 4 --without production
-elasticsearch_version = 6.5.1
-elasticsearch_tar_gz_sha1 = 5903e1913a7c96aad96a8227517c40490825f672
+rails_bundle_install_cmd = bundle install --jobs 4 --without production
 workhorse_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_WORKHORSE_VERSION")
 gitlab_shell_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_SHELL_VERSION")
 gitaly_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITALY_SERVER_VERSION")
 pages_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_PAGES_VERSION")
 gitlab_elasticsearch_indexer_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_ELASTICSEARCH_INDEXER_VERSION")
 tracer_build_tags = tracer_static tracer_static_jaeger
-jaeger_server_enabled ?= true
-jaeger_version = 1.10.1
+
 ifeq ($(shallow_clone),true)
 git_depth_param = --depth=1
 endif
@@ -83,7 +51,8 @@ auto_devops_gitlab_port:
 auto_devops_registry_port: auto_devops_gitlab_port
 	expr ${auto_devops_gitlab_port} + 5000 > $@
 
-gitlab/config/gitlab.yml: support/templates/gitlab.yml.erb auto_devops_enabled auto_devops_gitlab_port auto_devops_registry_port
+.PHONY: gitlab/config/gitlab.yml
+gitlab/config/gitlab.yml:
 	rake gitlab/config/gitlab.yml
 
 gitlab/config/database.yml: database.yml.example
@@ -289,7 +258,8 @@ support-setup: Procfile redis gitaly-setup jaeger-setup postgresql openssh-setup
 gdk.yml:
 	touch $@
 
-Procfile: Procfile.erb gdk.yml auto_devops_enabled auto_devops_gitlab_port auto_devops_registry_port
+.PHONY: Procfile
+Procfile:
 	rake $@
 
 redis: redis/redis.conf
@@ -501,10 +471,9 @@ openssh/ssh_host_rsa_key:
 
 nginx-setup: nginx/conf/nginx.conf nginx/logs nginx/tmp
 
-nginx/conf/nginx.conf: nginx/conf/nginx.conf.example
-	bin/safe-sed "$@" \
-		-e "s|/home/git|${gitlab_development_root}|g" \
-		"$<"
+.PHONY: nginx/conf/nginx.conf
+nginx/conf/nginx.conf:
+	rake $@
 
 nginx/logs:
 	mkdir -p $@
@@ -611,7 +580,6 @@ touch-examples:
 	database_geo.yml.example \
 	gitlab-shell/config.yml.example \
 	gitlab-workhorse/config.toml.example \
-	gitlab/config/database.yml.example \
 	gitlab/config/puma.example.development.rb \
 	gitlab/config/unicorn.rb.example.development \
 	grafana/grafana.ini.example \
@@ -621,9 +589,7 @@ touch-examples:
 	redis/redis.conf.example \
 	redis/resque.yml.example \
 	registry/config.yml.example \
-	support/templates/gitaly.toml.erb \
-	support/templates/praefect.toml.erb \
-	support/templates/gitlab.yml.erb
+	support/templates/*.erb
 
 unlock-dependency-installers:
 	rm -f \

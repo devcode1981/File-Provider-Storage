@@ -52,6 +52,12 @@ file 'Procfile' => ['Procfile.erb', GDK::Config::FILE] do |t|
   GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
 end
 
+# Define as a task instead of a file, so it's built unconditionally
+task 'gdk-config.mk' => 'gdk-config.mk.erb' do |t|
+  GDK::ErbRenderer.new(t.source, t.name, config: config).render!
+  puts t.name # Print the filename, so make can include it
+end
+
 namespace :git do
   desc 'Configure your Git with recommended settings'
   task :configure, :global do |_t, args|

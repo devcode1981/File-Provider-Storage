@@ -95,17 +95,17 @@ praefect:
     primary: false
     storage: praefect-internal-2
     storage_dir: "/home/git/gdk/repositories/praefect-internal-2"
-protocol: http
 registry:
   enabled: false
   external_port: 5000
-  host: 127.0.0.1
+  host: 0.0.0.0
   port: 5000
 relative_url_root: "/"
 repositories:
   gitaly: https://gitlab.com/gitlab-org/gitaly.git
   gitlab: https://gitlab.com/gitlab-org/gitlab.git
   gitlab_docs: https://gitlab.com/gitlab-com/gitlab-docs.git
+  gitlab_elasticsearch_indexer: https://gitlab.com/gitlab-org/gitlab-elasticsearch-indexer.git
   gitlab_pages: https://gitlab.com/gitlab-org/gitlab-pages.git
   gitlab_shell: https://gitlab.com/gitlab-org/gitlab-shell.git
   gitlab_workhorse: https://gitlab.com/gitlab-org/gitlab-workhorse.git

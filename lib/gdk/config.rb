@@ -15,6 +15,7 @@ module GDK
       r.gitaly 'https://gitlab.com/gitlab-org/gitaly.git'
       r.gitlab_pages 'https://gitlab.com/gitlab-org/gitlab-pages.git'
       r.gitlab_docs 'https://gitlab.com/gitlab-com/gitlab-docs.git'
+      r.gitlab_elasticsearch_indexer 'https://gitlab.com/gitlab-org/gitlab-elasticsearch-indexer.git'
     end
 
     git_repositories do
@@ -36,13 +37,13 @@ module GDK
 
     hostname do
       next "#{config.auto_devops.gitlab.port}.qa-tunnel.gitlab.info" if config.auto_devops.enabled
-      env!('host') || read!('hostname') || read!('host') || '0.0.0.0'
+      read!('hostname') || read!('host') || '0.0.0.0'
     end
 
     port do
       next 443 if config.auto_devops.enabled
 
-      env!('port') || read!('port') || 3000
+      read!('port') || 3000
     end
 
     https do |h|
@@ -52,16 +53,20 @@ module GDK
       end
     end
 
-    protocol { config.https? ? 'https' : 'http' }
-
     relative_url_root do
-      env!('relative_url_root') || read!('relative_url_root') || '/'
+      read!('relative_url_root') || '/'
+    end
+
+    __uri do
+      scheme = config.https? ? 'https' : 'http'
+
+      URI::Generic.build(scheme: scheme, host: config.hostname, port: config.port, path: config.relative_url_root)
     end
 
     username { Etc.getlogin }
 
     webpack do |w|
-      w.host { read!('webpack_host') || '0.0.0.0' }
+      w.host { read!('webpack_host') || config.hostname }
       w.port { read!('webpack_port') || 3808 }
     end
 
@@ -97,11 +102,15 @@ module GDK
 
       r.host do
         next "#{config.auto_devops.registry.port}.qa-tunnel.gitlab.info" if config.auto_devops.enabled
-        '127.0.0.1'
+        config.hostname
       end
 
       r.port do
         read!('registry_port') || 5000
+      end
+
+      r.image do
+        read!('registry_image') || 'registry:2'
       end
 
       r.external_port do
@@ -171,6 +180,7 @@ module GDK
     postgresql do |p|
       p.port { read!('postgresql_port') || 5432 }
       p.bin_dir { cmd!(%w[support/pg_bindir]) }
+      p.bin { Pathname.new(config.postgresql.bin_dir).join('postgres') }
       p.replication_user 'gitlab_replication'
       p.dir { config.gdk_root.join('postgresql') }
       p.data_dir { config.postgresql.dir.join('data') }

@@ -841,6 +841,13 @@ test:
     # In order to set it up correctly you need to specify
     # your system username you use to run GitLab
     user: <%= Etc.getlogin %>
+
+  webpack:
+    dev_server:
+      enabled: true
+      host: <%= config.webpack.host %>
+      port: <%= config.webpack.port %>
+
   pages:
     path: tmp/tests/pages
   repositories:
