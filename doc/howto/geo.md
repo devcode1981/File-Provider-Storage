@@ -10,9 +10,8 @@ instances. For more, see
 
 ## Prerequisites
 
-Development on GitLab Geo requires two Enterprise Edition GDK
-instances running side-by-side. You can use an existing `gdk-ee`
-instance based on the [Set up GDK](../set-up-gdk.md#gitlab-enterprise-edition) documentation as primary node.
+Development on GitLab Geo requires two GDK instances running side-by-side.
+You can use an existing `gdk` instance based on the [Set up GDK](../set-up-gdk.md#develop-against-the-gitlab-project-default) documentation as the primary node.
 
 ### Secondary
 
@@ -23,29 +22,40 @@ that it can run alongside the primary.
 ```bash
 gdk init gdk-geo
 cd gdk-geo
-echo 3002 > port
-echo 3807 > webpack_port
-# Assuming your primary GDK instance lives in parallel folders:
-gdk install gitlab_repo=../gdk-ee/gitlab
 ```
-
-When seeding begins, cancel it (Ctrl-C) since we will delete the data anyway.
 
 Add the following to `gdk.yml` file:
 
 ```yaml
+---
 geo:
   enabled: true
+gitlab_pages:
+  enabled: enabled
+  port: 3011
 tracer:
   jaeger:
     enabled: false
+port: 3001
+webpack:
+  host: 0.0.0.0
+  port: 3809
 ```
+
+Then run the following command:
+
+```bash
+# Assuming your primary GDK instance lives in parallel folders:
+gdk install gitlab_repo=../gdk/gitlab
+```
+
+When seeding begins, cancel it (Ctrl-C) since we will delete the data anyway.
 
 Then run the following commands:
 
 ```bash
-rm services/jaeger
-gdk start # or just: gdk start postgresql-geo
+gdk start postgresql
+gdk start postgresql-geo
 make geo-setup
 ```
 
@@ -56,30 +66,19 @@ There are a few extra steps to follow.
 
 ### Prepare primary for replication
 
-In your primary instance (`gdk-ee`) you need to prepare the database for
+In your primary instance (`gdk`) you need to prepare the database for
 replication. This requires the PostgreSQL server to be running, so we'll start
 the server, perform the change (via a `make` task), and then kill and restart
 the server to pick up the change:
 
 ```bash
-cd gdk-ee
-
 # terminal window 1:
-foreman start postgresql
-
-# terminal window 2:
+cd gdk
+gdk start postgresql
 make postgresql-replication-primary
-
-# terminal window 1:
-# stop foreman by hitting Ctrl-C, then restart it:
-foreman start postgresql
-
-# terminal window 2:
+gdk restart postgresql
 make postgresql-replication-primary-create-slot
-
-# terminal window 1:
-# stop foreman by hitting Ctrl-C, then restart it:
-foreman start postgresql
+gdk restart postgresql
 ```
 
 ### Set up replication on secondary
@@ -97,7 +96,7 @@ Now we need to add a symbolic link to the primary instance's data folder:
 
 ```bash
 # From the gdk-geo folder:
-ln -s ../gdk-ee/postgresql postgresql-primary
+ln -s ../gdk/postgresql postgresql-primary
 ```
 
 Initialize a secondary database and setup replication:
@@ -106,9 +105,6 @@ Initialize a secondary database and setup replication:
 # terminal window 2:
 make postgresql-replication-secondary
 ```
-
-Now you can go back to **terminal window 1** and stop `foreman` by hitting
-<kbd>Ctrl-C</kbd>.
 
 ### Running tests
 
@@ -119,7 +115,7 @@ tests will fail to run.
 You can add the tracking database to the primary node by running:
 
 ```bash
-# From the gdk-ee folder:
+# From the gdk folder:
 gdk start
 
 # In another terminal window
@@ -138,7 +134,7 @@ To ensure the tracking database is started, restart GDK. You will need to use
 The primary and the secondary nodes will be using the same secret key
 to encrypt attributes in the database. To copy the secret from your primary to your secondary:
 
-1. Open `gdk-ee/gitlab/config/secrets.yml` with your editor of choice
+1. Open `gdk/gitlab/config/secrets.yml` with your editor of choice
 1. Copy the value of `development.db_key_base`
 1. Paste it into `gdk-geo/gitlab/config/secrets.yml`
 
@@ -154,7 +150,7 @@ to set up [SSH](ssh.md), including [SSH key lookup from database](ssh.md#ssh-key
 There is a rake task that can add the primary node:
 
 ```bash
-cd gdk-ee/gitlab
+cd gdk/gitlab
 
 bundle exec rake geo:set_primary_node
 ```
@@ -272,10 +268,10 @@ make: *** [gitlab-update] Error 1
 
 You need to rebuild FDW tables.
 
-If your local primary is in `~/Developer/gdk-ee`:
+If your local primary is in `~/Developer/gdk`:
 
 ```bash
-cd ~/Developer/gdk-ee
+cd ~/Developer/gdk
 gdk start
 make postgresql/geo-fdw/test/rebuild
 ```
