@@ -39,7 +39,7 @@ module GDK
       EXPECTED_BUNDLER_VERSION = GitLabVersions.new.bundler_version.freeze
       EXPECTED_GO_VERSION = '1.12'
       EXPECTED_YARN_VERSION = '1.12'
-      EXPECTED_NODEJS_VERSION = '12.x'
+      EXPECTED_NODEJS_VERSION = '12.10'
 
       attr_reader :error_messages
 
