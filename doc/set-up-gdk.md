@@ -30,7 +30,7 @@ gem install gitlab-development-kit
     ```
 
   - A custom directory, pass a directory name. For example, to initialize into
-    the `gdk` directory, run:
+    the `my_gitlab_development_kit` directory, run:
 
       ```sh
       gdk init my_gitlab_development_kit
