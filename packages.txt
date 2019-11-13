@@ -27,8 +27,8 @@ redis-server
 
 # GDK tools
 apt-transport-https
-exiftools
 imagemagick
+libimage-exiftool-perl
 net-tools
 psmisc
 rsync
