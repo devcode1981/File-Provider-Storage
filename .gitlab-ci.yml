@@ -31,6 +31,8 @@ stages:
       - ".gitlab-ci.yml"
       - "Gemfile{,.lock}"
       - "Rakefile"
+      - "Dockerfile"
+      - "packages.txt"
 
 .docs-or-code-changes:
   only:
@@ -46,6 +48,8 @@ stages:
       - ".gitlab-ci.yml"
       - "Gemfile{,.lock}"
       - "Rakefile"
+      - "Dockerfile"
+      - "packages.txt"
 
 build:image:
   extends: .docs-or-code-changes
