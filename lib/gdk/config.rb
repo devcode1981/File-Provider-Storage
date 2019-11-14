@@ -66,7 +66,11 @@ module GDK
     username { Etc.getlogin }
 
     webpack do |w|
-      w.host { read!('webpack_host') || config.hostname }
+      w.host do
+        next '0.0.0.0' if config.auto_devops.enabled
+        read!('webpack_host') || config.hostname
+      end
+
       w.port { read!('webpack_port') || 3808 }
     end
 
