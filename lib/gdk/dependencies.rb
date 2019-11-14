@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'net/http'
 
 module GDK
@@ -40,6 +42,7 @@ module GDK
       EXPECTED_GO_VERSION = '1.12'
       EXPECTED_YARN_VERSION = '1.12'
       EXPECTED_NODEJS_VERSION = '12.10'
+      EXPECTED_POSTGRESQL_VERSION = '10.x'
 
       attr_reader :error_messages
 
@@ -54,6 +57,11 @@ module GDK
         check_go_version
         check_nodejs_version
         check_yarn_version
+        check_postgresql_version
+
+        check_graphicsmagick_installed
+        check_exiftool_installed
+        check_runit_installed
       end
 
       def check_git_version
@@ -63,10 +71,7 @@ module GDK
         expected = Gem::Version.new(EXPECTED_GIT_VERSION)
 
         if actual < expected
-          @error_messages << <<~GIT_VERSION_NOT_MET
-            We've detected that you are using Git version #{actual}.
-            Please install Git version #{EXPECTED_GIT_VERSION} or higher.
-          GIT_VERSION_NOT_MET
+          @error_messages << require_minimum_version('Git', actual, expected)
         end
       end
 
@@ -75,10 +80,7 @@ module GDK
         expected = Gem::Version.new(EXPECTED_RUBY_VERSION)
 
         if actual < expected
-          @error_messages << <<~RUBY_VERSION_NOT_MET
-            We've detected that you are using Ruby version #{actual}.
-            Please install Ruby version #{EXPECTED_RUBY_VERSION} or higher.
-          RUBY_VERSION_NOT_MET
+          @error_messages << require_minimum_version('Ruby', actual, expected)
         end
       end
 
@@ -97,16 +99,11 @@ module GDK
         actual = Gem::Version.new(current_version)
         expected = Gem::Version.new(EXPECTED_GO_VERSION)
         if actual < expected
-          @error_messages << <<~GO_VERSION_NOT_MET
-            We've detected that you are using Go version #{actual}.
-            Please install Go version #{EXPECTED_GO_VERSION} or higher.
-          GO_VERSION_NOT_MET
+          @error_messages << require_minimum_version('Go', actual, expected)
         end
 
       rescue Errno::ENOENT
-        @error_messages << <<~MISSING_GO
-          Go is not installed, please install Go #{EXPECTED_GO_VERSION} or higher.
-        MISSING_GO
+        @error_messages << missing_dependency('Go', minimum_version: EXPECTED_GO_VERSION)
       end
 
       def check_nodejs_version
@@ -116,16 +113,11 @@ module GDK
         expected = Gem::Version.new(EXPECTED_NODEJS_VERSION)
 
         if actual < expected
-          @error_messages << <<~NODEJS_VERSION_NOT_MET
-            We've detected that you are using Node.js version #{actual}.
-            Please install Node.js version #{EXPECTED_NODEJS_VERSION} or higher.
-          NODEJS_VERSION_NOT_MET
+          @error_messages << require_minimum_version('Node.js', actual, expected)
         end
 
       rescue Errno::ENOENT
-        @error_messages << <<~MISSING_NODEJS
-          Node.js is not installed, please install Node.js #{EXPECTED_NODEJS_VERSION} or higher.
-        MISSING_NODEJS
+        @error_messages << missing_dependency('Node.js', minimum_version: EXPECTED_NODEJS_VERSION)
       end
 
       def check_yarn_version
@@ -135,16 +127,54 @@ module GDK
         expected = Gem::Version.new(EXPECTED_YARN_VERSION)
 
         if actual < expected
-          @error_messages << <<~YARN_VERSION_NOT_MET
-            We've detected that you are using Yarn version #{actual}.
-            Please install Yarn version #{EXPECTED_YARN_VERSION} or higher.
-          YARN_VERSION_NOT_MET
+          @error_messages << require_minimum_version('Yarn', actual, expected)
         end
 
       rescue Errno::ENOENT
-        @error_messages << <<~MISSING_YARN
-          Yarn is not installed, please install Yarn #{EXPECTED_YARN_VERSION} or higher.
-        MISSING_YARN
+        @error_messages << missing_dependency('Yarn', minimum_version: expected)
+      end
+
+      def check_postgresql_version
+        current_postgresql_version = `psql --version`[/psql \(PostgreSQL\) (\d+\.\d+)/, 1]
+
+        actual = Gem::Version.new(current_postgresql_version)
+        expected = Gem::Version.new(EXPECTED_POSTGRESQL_VERSION)
+
+        if actual.segments[0] != expected.segments[0]
+          @error_messages << require_minimum_version('PostgreSQL', actual, expected)
+        end
+      end
+
+      def check_graphicsmagick_installed
+        unless system("gm version >/dev/null 2>&1")
+          @error_messages << missing_dependency('GraphicsMagick')
+        end
+      end
+
+      def check_exiftool_installed
+        unless system("exiftool -ver >/dev/null 2>&1")
+          @error_messages << missing_dependency('Exiftool')
+        end
+      end
+
+      def check_runit_installed
+        unless system("which runit >/dev/null 2>&1")
+          @error_messages << missing_dependency('Runit')
+        end
+      end
+
+      def require_minimum_version(dependency, actual, expected)
+        "#{dependency} version #{actual} detected, please install #{dependency} version #{expected} or higher."
+      end
+
+      def missing_dependency(dependency, minimum_version: nil)
+        message = "#{dependency} is not installed, please install #{dependency}"
+
+        if minimum_version.nil?
+          "#{message}."
+        else
+          "#{message} #{minimum_version} or higher."
+        end
       end
     end
   end
