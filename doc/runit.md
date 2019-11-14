@@ -6,16 +6,6 @@ We have replaced
 `gdk run` is no longer available. Instead, use `gdk start`, `gdk stop`,
 and `gdk tail`.
 
-## Disabling Runit
-
-After `gdk stop`, there will still be an empty Runit supervision tree
-running (`runsvdir` and children) but this does no harm. The intended
-use of GDK Runit integration is to leave this tree running all the time:
-it only uses about 10MB of memory.
-
-If you do want to shut down `runsvdir`, first use `gdk stop`, then run
-`pkill -HUP runsvdir`.
-
 ## Why replace Foreman
 
 Foreman was the tool behind `gdk run`; it was configured via the

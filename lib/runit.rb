@@ -23,8 +23,8 @@ module Runit
     # It is important that we use an absolute path with `runsvdir`: this
     # allows us to distinguish processes belonging to different GDK
     # installations on the same machine.
-    args = ['runsvdir', '-P', File.join($gdk_root, 'services')]
-    return if runsvdir_running?(args.join(' '))
+    args = runsvdir_base_args
+    return if runsvdir_pid(args)
 
     Process.fork do
       Dir.chdir('/')
@@ -49,6 +49,10 @@ module Runit
     { 'PATH' => valid_path_entries.join(File::PATH_SEPARATOR) }
   end
 
+  def self.runsvdir_base_args
+    ['runsvdir', '-P', File.join($gdk_root, 'services')]
+  end
+
   def self.no_foreman_running!
     return if ::GDK::Config.new.gdk.ignore_foreman
     return if Shellout.new(%w[pgrep foreman]).run.empty?
@@ -64,13 +68,13 @@ module Runit
     MESSAGE
   end
 
-  def self.runsvdir_running?(cmd)
+  def self.runsvdir_pid(args)
     pgrep = Shellout.new(%w[pgrep runsvdir]).run
     return if pgrep.empty?
 
     pids = pgrep.split("\n").map { |str| Integer(str) }
-    pids.any? do |pid|
-      Shellout.new(%W[ps -o args= -p #{pid}]).run.start_with?(cmd + ' ')
+    pids.find do |pid|
+      Shellout.new(%W[ps -o args= -p #{pid}]).run.start_with?(args.join(' ') + ' ')
     end
   end
 
@@ -99,12 +103,28 @@ module Runit
     end
   end
 
+  def self.stop
+    # The first stop attempt may fail; ignore its return value.
+    stopped = false
+    2.times do
+      stopped = sv('force-stop', [])
+      break if stopped
+      puts 'GDK: retrying stop'
+    end
+    abort 'stop failed' unless stopped
+
+    # Unload runsvdir: this is safe because we have just stopped all services.
+    pid = runsvdir_pid(runsvdir_base_args)
+    puts "Shutting down runsvdir (pid #{pid})"
+    Process.kill('HUP', pid)
+  end
+
   def self.sv(cmd, services)
     Dir.chdir($gdk_root)
     start_runsvdir
     services = service_args(services)
     services.each { |svc| wait_runsv!(svc) }
-    exec('sv', cmd, *services)
+    system('sv', cmd, *services)
   end
 
   def self.service_args(services)
