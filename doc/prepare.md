@@ -148,7 +148,7 @@ sudo dnf module enable postgresql:10
 sudo dnf install postgresql libpqxx-devel postgresql-libs redis libicu-devel \
   nodejs git ed cmake rpm-build gcc-c++ krb5-devel go postgresql-server \
   postgresql-contrib re2 GraphicsMagick re2-devel sqlite-devel perl-Digest-SHA \
-  runit perl-Image-ExifTool rsync
+  perl-Image-ExifTool rsync
 ```
 
 You may need to install Redis 2.8 or newer manually.
