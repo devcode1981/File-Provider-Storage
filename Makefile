@@ -195,7 +195,7 @@ update: stop-foreman ensure-databases-running unlock-dependency-installers gitla
 stop-foreman:
 	@pkill foreman || true
 
-ensure-databases-running:
+ensure-databases-running: Procfile
 	@gdk start rails-migration-dependencies
 
 gitlab-update: ensure-databases-running gitlab/.git/pull gitlab-setup
