@@ -118,7 +118,7 @@ module GDK
       system('gdk', 'stop', 'rails-web')
       exec(
         { 'RAILS_ENV' => 'development' },
-        *%W[bundle exec thin --socket=#{Dir.pwd}/gitlab.socket start],
+        *%W[bundle exec thin --socket=#{$gdk_root}/gitlab.socket start],
         chdir: File.join($gdk_root, 'gitlab')
       )
     when 'help'
