@@ -152,8 +152,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       enable_shares(override, enable_nfs)
     end
 
-    # use 1/4 of memory or 3 GB, whichever is greatest
-    mem = [mem / 4, 3072].max
+    # use 1/4 of memory or 6 GB, whichever is greatest
+    mem = [mem / 4, 6144].max
 
     # Set up swap
     override.vm.provision "shell", inline: $swap_setup
