@@ -140,7 +140,7 @@ module GDK
         actual = Gem::Version.new(current_postgresql_version)
         expected = Gem::Version.new(EXPECTED_POSTGRESQL_VERSION)
 
-        if actual.segments[0] != expected.segments[0]
+        if actual.segments[0] < expected.segments[0]
           @error_messages << require_minimum_version('PostgreSQL', actual, expected)
         end
       end
