@@ -84,7 +84,6 @@ Below is a table of all the settings that can be set this way:
 | `auto_devops_registry_port`  | number       | `auto_devops_gitlab_port + 5000` |
 | `google_oauth_client_secret` | ?            | ?                                |
 | `google_oauth_client_id`     | ?            | ?                                |
-| `praefect_enabled`           | boolean      | `false`                          |
 
 ### Configuration precedence
 
