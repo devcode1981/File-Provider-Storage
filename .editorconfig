@@ -15,7 +15,7 @@ indent_style = space
 charset = utf-8
 
 # Protect the ascii-art!
-[lib/run.rb]
+[lib/gdk/logo.rb]
 end_of_line = unset
 trim_trailing_whitespace = unset
 insert_final_newline = unset
