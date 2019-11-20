@@ -366,6 +366,32 @@ postgresql/geo-fdw/%/rebuild:
 	$(MAKE) postgresql/geo-fdw/$*/drop || true
 	$(MAKE) postgresql/geo-fdw/$*/create
 
+.PHONY: geo-primary-migrate
+geo-primary-migrate: ensure-databases-running
+	cd ${gitlab_development_root}/gitlab && \
+		bundle install && \
+		bundle exec rake db:migrate db:test:prepare geo:db:migrate geo:db:test:prepare && \
+		git checkout -- db/schema.rb ee/db/geo/schema.rb
+	$(MAKE) postgresql/geo-fdw/test/rebuild
+
+.PHONY: geo-primary-update
+geo-primary-update: update geo-primary-migrate
+	gdk diff-config
+
+.PHONY: geo-secondary-migrate
+geo-secondary-migrate: ensure-databases-running
+	cd ${gitlab_development_root}/gitlab && \
+		bundle install && \
+		bundle exec rake geo:db:migrate && \
+		git checkout -- ee/db/geo/schema.rb
+	$(MAKE) postgresql/geo-fdw/development/rebuild
+
+.PHONY: geo-secondary-update
+geo-secondary-update:
+	-$(MAKE) update
+	$(MAKE) geo-secondary-migrate
+	gdk diff-config
+
 .ruby-version:
 	ln -s ${gitlab_development_root}/gitlab/.ruby-version ${gitlab_development_root}/$@
 

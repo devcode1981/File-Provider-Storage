@@ -178,18 +178,9 @@ bundle exec rails runner 'puts GeoNode.current_node_name'
 
 ![Adding a secondary node](img/adding_a_secondary_node.png)
 
-## Useful aliases
+## Geo-specific GDK commands
 
-Customize to your liking. Requires `gdk start` to be running.
-
-```bash
-alias geo_primary_migrate="bundle install && bin/rake db:migrate db:test:prepare geo:db:migrate geo:db:test:prepare"
-alias geo_primary_update="gdk update && geo_primary_migrate && cd .. && make postgresql/geo-fdw/test/rebuild && cd gitlab && gco -- db/schema.rb ee/db/geo/schema.rb"
-alias geo_secondary_migrate="bundle install && bin/rake geo:db:migrate"
-alias geo_secondary_update="gdk update; geo_secondary_migrate && cd .. && make postgresql/geo-fdw/development/rebuild && cd gitlab && gco -- db/schema.rb ee/db/geo/schema.rb"
-```
-
-### `geo_primary_migrate`
+### `make geo-primary-migrate`
 
 Use this when your checked out files have changed, and e.g. your instance or
 tests are now erroring. For example, after you pull master, but you don't care
@@ -197,28 +188,30 @@ to update dependencies right now. Or maybe you checked out someone else's
 branch.
 
 * Bundle installs to ensure gems are up-to-date
-* Migrates main DB and tracking DB (be sure to run `geo_secondary_migrate` on
+* Migrates main DB and tracking DB (be sure to run `make geo-secondary-migrate` on
 your secondary if you have Geo migrations)
 * Prepares main and tracking test DBs
+* Checks out schemas to get rid of irrelevant diffs (not done in
+   `make geo-primary-migrate` because you may have created a migration)
 
-### `geo_primary_update`
+### `make geo-primary-update`
 
-Same as `geo_primary_migrate`, but also:
+Same as `make geo-primary-migrate`, but also:
 
 * Does `gdk update`
 * Checks out and pulls master
 * Updates dependencies (e.g. if Gitaly is erroring)
 * Rebuilds FDW tables in test DB
-* Checks out schemas to get rid of irrelevant diffs (not done in
-   `geo_primary_migrate` because you may have created a migration)
+* Finally does `gdk diff-config` so you can see a summary of how your configs
+  differ from a fresh install
 
-### `geo_secondary_migrate`
+### `make geo-secondary-migrate`
 
-Similar to `geo_primary_migrate` but for your local secondary.
+Similar to `make geo-primary-migrate` but for your local secondary.
 
-### `geo_secondary_update`
+### `make geo-secondary-update`
 
-Similar to `geo_primary_update` but for your local secondary.
+Similar to `make geo-primary-update` but for your local secondary.
 
 ## Troubleshooting
 
