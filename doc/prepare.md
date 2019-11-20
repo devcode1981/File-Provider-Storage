@@ -42,6 +42,10 @@ We are using PostgreSQL 10 in the following example. If you want to use another 
 
 [Homebrew](https://brew.sh/) is a package manager for macOS that allows you to easily install programs and tools through the Terminal. Visit their website for installation details.
 
+| **Note on the Homebrew installation directory** |
+| ------ |
+| We strongly recommend using the default installation directory for Homebrew `/usr/local`. This makes it a lot easier to install Ruby gems with C extensions. If you use a custom directory, you will have to do a lot of extra work when installing Ruby gems. For more information, see [Why does Homebrew prefer I install to /usr/local?](https://docs.brew.sh/FAQ#why-does-homebrew-prefer-i-install-to-usrlocal). |
+
 | **Note on Node.js** |
 | ------------------- |
 | We recommend manual installation of Node.js 12.10 instead of using Homebrew to avoid breaking your development setup when you run `brew upgrade`. Install Node.js 12.10 [manually](https://nodejs.org/en/download/) or use a tool like [NVM](https://github.com/creationix/nvm). If you want to use Homebrew, you can prevent it from upgrading the current Node.js formula by pinning it with `brew pin node@12`. |
