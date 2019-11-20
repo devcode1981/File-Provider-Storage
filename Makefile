@@ -388,7 +388,7 @@ geo-secondary-migrate: ensure-databases-running
 
 .PHONY: geo-secondary-update
 geo-secondary-update:
-	$(MAKE) update
+	-$(MAKE) update
 	$(MAKE) geo-secondary-migrate
 	gdk diff-config
 
