@@ -17,7 +17,11 @@ you have two Geo nodes (a primary and a secondary) on your local machine. If not
 
 ### Enable Docker Registry on both nodes
 
-To enable Docker Registry on both nodes, follow [Docker Registry](registry.md).
+To enable Docker Registry on both nodes:
+
+1. Follow the instructions for [Docker Registry](registry.md) on both nodes.
+1. Ensure the registry service port used on the secondary is different to the port used
+   on the primary by [changing one of the port numbers](registry.md#changing-the-port-number-of-the-gitlab-local-container-registry).
 
 ### Enable notification on primary's Registry
 

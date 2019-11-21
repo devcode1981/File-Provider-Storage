@@ -49,7 +49,7 @@ This will allow you to use `gitlab.local` instead of your actual IP address in c
         path: ../registry/storage/
         issuer: gitlab-issuer
       ```
-1. Copy the [registry/config.yml.example](https://gitlab.com/gitlab-org/gitlab-development-kit/blob/932ba8f6bf0dc69634ac478f5bc9d3bdc213dff7/registry/config.yml.example) file to `gdk/gitlab/registry/config.yml`, and make sure to **remove or comment out** the [auth block](https://gitlab.com/gitlab-org/gitlab-development-kit/blob/932ba8f6bf0dc69634ac478f5bc9d3bdc213dff7/registry/config.yml.example#L26-32) from the file
+1. Copy the [registry/config.yml.example](https://gitlab.com/gitlab-org/gitlab-development-kit/blob/932ba8f6bf0dc69634ac478f5bc9d3bdc213dff7/registry/config.yml.example) file to `gdk/registry/config.yml`, and make sure to **remove or comment out** the [auth block](https://gitlab.com/gitlab-org/gitlab-development-kit/blob/932ba8f6bf0dc69634ac478f5bc9d3bdc213dff7/registry/config.yml.example#L26-32) from the file
       ```yaml
       version: 0.1
       <snip>
