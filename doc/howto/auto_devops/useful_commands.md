@@ -133,7 +133,7 @@ File.open('/tmp/key.pem', 'w') { |f| f.write(client_cert.key_string) }; nil
 File.open('/tmp/cert.pem', 'w') { |f| f.write(client_cert.cert_string) }; nil
 ```
 
-Now we already have proper SSL files: `/tmp/ca_cert.pem`, `/tmp/key.pem` and `/tmp/cert.pem`. So let's finnaly run Helm commands that will be executed also on our server via Tiller communication:
+Now we already have proper SSL files: `/tmp/ca_cert.pem`, `/tmp/key.pem` and `/tmp/cert.pem`. So let's finally run Helm commands that will be executed also on our server via Tiller communication:
 
 ```bash
 helm version --tls \
@@ -151,3 +151,29 @@ Note that we stopped using `--client-only`, but instead we added the tls flags:
 - `--tls-key /tmp/key.pem`
 
 and the `--tiller-namespace=gitlab-managed-apps` flag.
+
+To make this process less verbose, we can use a simple bash function to fetch and use our certs:
+
+```shell
+function gitlab-helm() {
+  [ ! -d ~/.gitlab-helm ] && mkdir ~/.gitlab-helm
+  [ -f ~/.gitlab-helm/tiller-ca.crt ] || (kubectl get secrets/tiller-secret -n gitlab-managed-apps -o "jsonpath={.data['ca\.crt']}"  | base64 --decode > ~/.gitlab-helm/tiller-ca.crt)
+  [ -f ~/.gitlab-helm/tiller.crt ]    || (kubectl get secrets/tiller-secret -n gitlab-managed-apps -o "jsonpath={.data['tls\.crt']}" | base64 --decode > ~/.gitlab-helm/tiller.crt)
+  [ -f ~/.gitlab-helm/tiller.key ]    || (kubectl get secrets/tiller-secret -n gitlab-managed-apps -o "jsonpath={.data['tls\.key']}" | base64 --decode > ~/.gitlab-helm/tiller.key)
+  helm "$@" --tiller-connection-timeout 1 --tls \
+    --tls-ca-cert ~/.gitlab-helm/tiller-ca.crt \
+    --tls-cert ~/.gitlab-helm/tiller.crt \
+    --tls-key ~/.gitlab-helm/tiller.key \
+    --tiller-namespace gitlab-managed-apps
+}
+```
+
+This can be problematic, however, if we are frequently switching clusters or projects since
+we are not purging our previous credentials. To avoid this, when switching `kubectl`
+contexts, it can be useful to purge any previous certs:
+
+```shell
+function gitlab-helm-purge-credentials() {
+  rm -rf ~/.gitlab-helm
+}
+```
