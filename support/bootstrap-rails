@@ -12,15 +12,9 @@ def main
   begin
     FileUtils.rm_f(LOG_FILE)
 
-    services = ['rails-migration-dependencies']
+    system('gdk', 'start', 'rails-migration-dependencies')
 
-    git_data_service = config.praefect? ? 'praefect' : 'gitaly'
-
-    services << git_data_service
-
-    system('gdk', 'start', *services)
-
-    try_connect!(git_data_service)
+    try_connect!(config.praefect? ? 'praefect' : 'gitaly')
     [
       %w[support/wait-postgresql-ready support/exec-cd gitlab bundle exec rake db:create],
       %w[support/exec-cd gitlab bundle exec rake dev:setup]
