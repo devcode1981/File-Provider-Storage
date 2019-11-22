@@ -38,7 +38,7 @@ To avoid usage of slow VirtualBox shared folders we use NFS here.
   command prompt if on Windows). Vagrant will download an OS image, bring it
   up, and install all the prerequisites.
 1. Run `vagrant ssh` to SSH into the box.
-1. cd into /vagrant
+1. Run `cd /vagrant`.
 1. Continue setup at [Installation](https://gitlab.com/gitlab-org/gitlab-development-kit/blob/master/doc/set-up-gdk.md#develop-against-the-gitlab-project-default) below.
 
 ### Vagrant with Docker
