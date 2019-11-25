@@ -1,7 +1,7 @@
 # GitLab Development Kit cheat sheet
 
 gdk start                     # Start everything
-gdk start redis postgresql    # Start specifc services
+gdk start redis postgresql    # Start specific services
 gdk stop                      # Stop all services and unload Runit
 gdk stop redis postgresql     # Stop specific service
 gdk status                    # See status of all services
