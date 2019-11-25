@@ -22,8 +22,8 @@ for more details.
 
 ## Getting started
 
-The preferred way to use GitLab Development Kit is to install Ruby and
-dependencies on your 'native' OS. We strongly recommend the native install
+The preferred way to use GitLab Development Kit is to install Ruby and its
+dependencies on your 'native' OS. We strongly recommend the native install,
 since it is much faster than a virtualized one. Due to heavy IO operations a
 virtualized installation will be much slower running the app and the tests.
 
@@ -73,4 +73,4 @@ is available on the [architecture components list](https://docs.gitlab.com/ee/de
 ## License
 
 The GitLab Development Kit is distributed under the MIT license,
-see the LICENSE file.
+see the [LICENSE](./LICENSE) file.

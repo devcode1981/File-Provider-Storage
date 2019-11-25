@@ -127,9 +127,9 @@ sudo apt-get install postgresql postgresql-contrib libpq-dev redis-server \
   runit libimage-exiftool-perl rsync
 ```
 
-If you are running Debian Experimenal or newer you can install a Go
+If you are running Debian [Experimental](https://wiki.debian.org/DebianExperimental), or [newer](https://packages.debian.org/search?keywords=golang-go) you can install a Go
 compiler via your package manager: `sudo apt-get install golang`.
-Otherwise you need to install it manually. See [go] official installation
+Otherwise you need to install it manually. See [Go](https://golang.org/doc/install#install) official installation
 instructions.
 
 You may need to install Redis 2.8 or newer manually.
