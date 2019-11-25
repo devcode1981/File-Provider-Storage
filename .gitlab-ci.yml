@@ -152,6 +152,8 @@ verify:install:
   image: $TEST_IMAGE
   stage: verify
   extends: .code-changes
+  tags:
+    - gitlab-org
   artifacts:
     paths:
       - ./gitlab-development-kit/gitlab/log/*.log
@@ -164,6 +166,8 @@ verify:update:
   image: $TEST_IMAGE
   stage: verify
   extends: .code-changes
+  tags:
+    - gitlab-org
   artifacts:
     paths:
       - ./gitlab-development-kit/gitlab/log/*.log
