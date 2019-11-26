@@ -11,6 +11,7 @@ gitaly_clone_dir = ${gitaly_gopath}/src/gitlab.com/gitlab-org/gitaly
 gitlab_pages_clone_dir = gitlab-pages/src/gitlab.com/gitlab-org/gitlab-pages
 gitaly_assembly_dir = ${gitlab_development_root}/gitaly/assembly
 gitlab_from_container = $(shell [ "$(shell uname)" = "Linux" ] && echo 'localhost' || echo 'docker.for.mac.localhost')
+postgres_dev_db = gitlabhq_development
 rails_bundle_install_cmd = bundle install --jobs 4 --without production
 workhorse_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_WORKHORSE_VERSION")
 gitlab_shell_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_SHELL_VERSION")
@@ -195,10 +196,10 @@ update: stop-foreman ensure-databases-running unlock-dependency-installers gitla
 stop-foreman:
 	@pkill foreman || true
 
-ensure-databases-running: Procfile
+ensure-databases-running: Procfile postgresql/data
 	@gdk start rails-migration-dependencies
 
-gitlab-update: ensure-databases-running gitlab/.git/pull gitlab-setup
+gitlab-update: ensure-databases-running postgresql gitlab/.git/pull gitlab-setup
 	cd ${gitlab_development_root}/gitlab && \
 		bundle exec rake db:migrate db:test:prepare
 
@@ -269,11 +270,14 @@ redis/redis.conf: redis/redis.conf.example
 		-e "s|/home/git|${gitlab_development_root}|g" \
 		"$<"
 
-postgresql: postgresql/data
+postgresql: postgresql/data/.rails-seed
 
 postgresql/data:
 	${postgres_bin_dir}/initdb --locale=C -E utf-8 ${postgres_data_dir}
-	support/bootstrap-rails
+
+postgresql/data/.rails-seed: postgresql/data ensure-databases-running
+	gdk psql ${postgres_dev_db} -c '\q' > /dev/null 2>&1 || support/bootstrap-rails
+	touch $@
 
 postgresql/port:
 	./support/postgres-port ${postgres_dir} ${postgresql_port}
