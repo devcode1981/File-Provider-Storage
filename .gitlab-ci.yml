@@ -25,16 +25,21 @@ stages:
       - master
       - merge_requests
     changes:
-      - "**/*.{rb,erb,yml,example}"
+      - "**/*.{rb,erb,sh,yml,example,types}"
       - "{lib,gem,bin}/**/*"
       - "{spec,support}/**/*"
       - ".gitlab-ci.yml"
       - "Gemfile{,.lock}"
       - "Rakefile"
-      - "Dockerfile"
+      - "**/*/Dockerfile"
       - "packages.txt"
-      - "Makefile"
+      - "**/*/Makefile"
       - "Vagrantfile"
+      - "gitlab-openldap/**/*"
+      - "vagrant/assets/**/*"
+  except:
+    changes:
+      - "**/*.{md}"
 
 .docs-or-code-changes:
   only:
@@ -44,16 +49,18 @@ stages:
     changes:
       - "**/*.{md}"
       - "{doc}/**/*"
-      - "**/*.{rb,erb,yml,example}"
+      - "**/*.{rb,erb,sh,yml,example,types}"
       - "{lib,gem,bin}/**/*"
       - "{spec,support}/**/*"
       - ".gitlab-ci.yml"
       - "Gemfile{,.lock}"
       - "Rakefile"
-      - "Dockerfile"
+      - "**/*/Dockerfile"
       - "packages.txt"
-      - "Makefile"
+      - "**/*/Makefile"
       - "Vagrantfile"
+      - "gitlab-openldap/**/*"
+      - "vagrant/assets/**/*"
 
 build:image:
   extends: .docs-or-code-changes
