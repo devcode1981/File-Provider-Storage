@@ -148,8 +148,10 @@ To stop the Rails app, which saves memory (useful when running tests):
 gdk stop rails
 ```
 
-To access GitLab, you may now go to http://localhost:3000 in your
-browser. The development login credentials are `root` and
+To access GitLab, you may now go to http://localhost:3000 in your browser.
+It may take a few minutes for the Rails app to be ready. During this period you would see `dial unix /Users/.../gitlab.socket: connect: connection refused` in the browser.
+
+The development login credentials are `root` and
 `5iveL!fe`.
 
 GDK comes with a number of settings, and most users will use the
