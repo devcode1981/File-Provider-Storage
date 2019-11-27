@@ -15,6 +15,7 @@ gdk_root: !ruby/object:Pathname
   path: "/home/git/gdk"
 geo:
   enabled: false
+  node_name: "My local Geo node name"
 git:
   bin: "/usr/bin/git"
 git_repositories:

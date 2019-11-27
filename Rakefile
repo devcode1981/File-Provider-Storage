@@ -74,7 +74,7 @@ end
 
 desc 'Generate the gitlab.yml config file'
 file 'gitlab/config/gitlab.yml' => ['support/templates/gitlab.yml.erb'] do |t|
-  GDK::ErbRenderer.new(t.source, t.name, config: config).render!
+  GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
 end
 
 desc "Generate gitaly config toml"
