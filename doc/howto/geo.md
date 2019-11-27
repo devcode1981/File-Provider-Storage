@@ -30,6 +30,7 @@ Add the following to `gdk.yml` file:
 ---
 geo:
   enabled: true
+  node_name: gdk-geo
 gitlab_pages:
   enabled: enabled
   port: 3011

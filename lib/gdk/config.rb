@@ -153,6 +153,7 @@ module GDK
 
     geo do |g|
       g.enabled false
+      g.node_name Pathname.new(Dir.pwd).parent.parent.basename.to_s # gdk directory
     end
 
     elasticsearch do |e|
