@@ -15,20 +15,29 @@ environment.
     brew cask install adoptopenjdk8
     ```
 
-1. Uncomment ElasticSearch in your Procfile
+1. Enable Elasticsearch in the GDK
 
-   ElasticSearch 6.5.1 should already be installed into your GDK root
-under /elasticsearch. Uncomment the `#elasticsearch:` line in your
-Procfile to make ElasticSearch run as part of `gdk start`.
+   The correct version of Elasticsearch should already be installed into your GDK root under `/elasticsearch`.
+
+   To make the service run as part of `gdk start`:
+
+   1. Add these lines to your [`gdk.yml`](configuration.md):
+
+      ```yaml
+      elasticsearch:
+        enabled: true
+      ```
+
+   1. Run `gdk reconfigure`
 
 ## Setup
 
-1. Go to **Admin Area > License** and ensure you have a [license](https://about.gitlab.com/handbook/developer-onboarding/#working-on-gitlab-ee) installed as this is required for ElasticSearch.
+1. Go to **Admin Area > License** and ensure you have a [license](https://about.gitlab.com/handbook/developer-onboarding/#working-on-gitlab-ee) installed as this is required for Elasticsearch.
 
 1. Go to **Admin Area > Settings > Integrations** to enable Elasticsearch.
 
 1. Start Elasticsearch by either running `elasticsearch` in a new terminal, or
-   by uncomment `elasticsearch` in the `Procfile` and run:
+   by starting the GDK service:
 
    ```sh
    gdk start elasticsearch
