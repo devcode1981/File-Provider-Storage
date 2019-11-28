@@ -158,7 +158,7 @@ module GDK
       end
 
       def check_runit_installed
-        unless system("which runit >/dev/null 2>&1")
+        unless system("which runsvdir >/dev/null 2>&1")
           @error_messages << missing_dependency('Runit')
         end
       end
