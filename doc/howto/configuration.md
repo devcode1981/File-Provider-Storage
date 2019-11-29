@@ -65,11 +65,11 @@ Below is a table of all the settings that can be set this way:
 
 | Filename                     | Type         | Default                          |
 |------------------------------|--------------|----------------------------------|
-| `host` / `hostname`          | string or IP | `0.0.0.0`                        |
+| `host` / `hostname`          | string or IP | `localhost`                      |
 | `port`                       | number       | `3000`                           |
 | `https_enabled`              | boolean      | `false`                          |
 | `relative_url_root`          | string       | `/`                              |
-| `webpack_host`               | string or IP | `0.0.0.0`                        |
+| `webpack_host`               | string or IP | `localhost`                      |
 | `webpack_port`               | number       | `3808`                           |
 | `registry_enabled`           | boolean      | `false`                          |
 | `registry_port`              | number       | `5000`                           |

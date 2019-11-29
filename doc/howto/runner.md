@@ -29,9 +29,8 @@ With GDK running:
 ### Advanced configuration
 
 Ensure you have Docker installed, then set up GitLab to bind to all
-IPs on your machine by following [these instructions](local_network.md)
-(in short: `echo "0.0.0.0" > host` in the GDK root directory). Without this
-step, builds will fail with a 'connection refused' error.
+IPs on your machine by following [these instructions](local_network.md).
+Without this step, builds will fail with a 'connection refused' error.
 
 The `gitlab/config/gitlab.yml` configuration file also needs tweaking - find
 this section:

@@ -39,7 +39,7 @@ spec:
               cd /home/gdk;
               gdk init;
               cd gitlab-development-kit;
+              echo 'hostname: 0.0.0.0' > gdk.yml;
               gdk install;
-              echo 0.0.0.0 > host;
               gdk start;
               gdk tail

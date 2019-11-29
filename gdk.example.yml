@@ -31,7 +31,7 @@ gitaly:
 gitlab_pages:
   enabled: true
   port: 3010
-hostname: 0.0.0.0
+hostname: localhost
 https:
   enabled: false
 nginx:
@@ -100,7 +100,7 @@ praefect:
 registry:
   enabled: false
   external_port: 5000
-  host: 0.0.0.0
+  host: localhost
   port: 5000
 relative_url_root: "/"
 repositories:
@@ -122,7 +122,7 @@ tracer:
     version: 1.10.1
 username: git
 webpack:
-  host: 0.0.0.0
+  host: localhost
   port: 3808
 workhorse:
   configured_port: 3333
