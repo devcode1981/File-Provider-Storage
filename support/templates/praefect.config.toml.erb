@@ -2,13 +2,13 @@
 virtual_storage_name = "default"
 
 # # TCP address to listen on
-# listen_addr = "127.0.0.1:2305"
+# listen_addr = "<%= config.hostname %>:2305"
 
 # # Praefect can listen on a socket when placed on the same machine as all clients
 socket_path = "<%= config.gdk_root.join('praefect.socket') %>"
 # # Praefect will only replicate whitelisted repositories
 # # Optional: export metrics via Prometheus
-# prometheus_listen_addr = "127.0.01:10101"
+# prometheus_listen_addr = "<%= config.hostname %>:10101"
 
 # # You can optionally configure Praefect to output JSON-formatted log messages to stdout
 # [logging]
