@@ -5,6 +5,7 @@ module GDK
     class Doctor
       def run
         check_dependencies
+        check_diff_config
       end
 
       def check_dependencies
@@ -15,6 +16,12 @@ module GDK
           puts checker.error_messages
         end
       end
+
+      def check_diff_config
+        puts 'Inspecting config...'
+        DiffConfig.new.run
+      end
+
     end
   end
 end
