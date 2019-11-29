@@ -5,6 +5,7 @@
 
 require_relative 'gdk/env'
 require_relative 'gdk/config'
+require_relative 'gdk/cmd'
 require_relative 'gdk/dependencies'
 require_relative 'gdk/erb_renderer'
 require_relative 'gdk/logo'
@@ -122,6 +123,9 @@ module GDK
         *%W[bundle exec thin --socket=#{$gdk_root}/gitlab.socket start],
         chdir: File.join($gdk_root, 'gitlab')
       )
+    when 'doctor'
+      GDK::CMD::Doctor.new.run
+      true
     when 'help'
       GDK::Logo.print
       puts File.read(File.join($gdk_root, 'HELP'))
