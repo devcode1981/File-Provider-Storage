@@ -37,9 +37,6 @@ stages:
       - "Vagrantfile"
       - "gitlab-openldap/**/*"
       - "vagrant/assets/**/*"
-  except:
-    changes:
-      - "**/*.{md}"
 
 .docs-or-code-changes:
   only:
