@@ -11,7 +11,7 @@ module GDK
       end
 
       def check_dependencies
-        puts 'Inspecting gdk dependencies...'
+        header('Inspecting gdk dependencies...')
         checker = Dependencies::Checker.new
         checker.check_all
         if checker.error_messages.empty?
@@ -20,12 +20,12 @@ module GDK
       end
 
       def check_diff_config
-        puts 'Inspecting gdk config...'
+        header('Inspecting gdk config...')
         DiffConfig.new.run
       end
 
       def check_gdk_version
-        puts 'Inspecting gdk version...'
+        header('Inspecting gdk version...')
         gdk_master = `git show-ref refs/remotes/origin/master -s --abbrev`
         head = `git rev-parse --short HEAD`
 
@@ -35,8 +35,15 @@ module GDK
       end
 
       def check_gdk_status
-        puts 'Inspecting gdk status...'
+        header('Inspecting gdk status...')
         Runit.sv('status', ARGV)
+      end
+
+      private
+
+      def header(message)
+        puts '*'*80
+        puts message
       end
     end
   end
