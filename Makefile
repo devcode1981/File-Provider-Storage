@@ -192,6 +192,8 @@ self-update: unlock-dependency-installers
 # Update gitlab, gitlab-shell, gitlab-workhorse, gitlab-pages and gitaly
 # Pull gitlab directory first since dependencies are linked from there.
 update: stop-foreman ensure-databases-running unlock-dependency-installers gitlab/.git/pull gitlab-shell-update gitlab-workhorse-update gitlab-pages-update gitaly-update gitlab-update gitlab-elasticsearch-indexer-update
+	@echo
+	@echo 'make update: done'
 
 stop-foreman:
 	@pkill foreman || true
