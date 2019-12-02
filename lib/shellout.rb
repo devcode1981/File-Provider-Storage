@@ -1,23 +1,40 @@
-class Shellout
-  attr_reader :args
+require 'open3'
 
-  def initialize(args)
+class Shellout
+  attr_reader :args, :opts
+
+  def initialize(args, **opts)
     @args = args
+    @opts = opts
   end
 
   def run
-    popen_read
+    capture
+    read_stdout
   end
 
   def try_run
-    popen_read(err: '/dev/null')
+    capture(err: '/dev/null')
+    read_stdout
   rescue Errno::ENOENT
     ''
   end
 
+  def read_stdout
+    @stdout_str.chomp
+  end
+
+  def read_stderr
+    @stderr_str.chomp
+  end
+
+  def success?
+    @status.success?
+  end
+
   private
 
-  def popen_read(options = {})
-    IO.popen(args, options, &:read).chomp
+  def capture(extra_options = {})
+    @stdout_str, @stderr_str, @status = Open3.capture3(*args, opts.merge(extra_options))
   end
 end
