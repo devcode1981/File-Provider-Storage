@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module GDK
-  module CMD
+  module Command
     class Doctor
       def run
         check_dependencies

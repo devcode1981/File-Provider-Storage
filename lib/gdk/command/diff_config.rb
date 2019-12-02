@@ -3,7 +3,7 @@
 require_relative '../../config_diff'
 
 module GDK
-  module CMD
+  module Command
     class DiffConfig
       def run
         files = %w[

@@ -5,7 +5,7 @@
 
 require_relative 'gdk/env'
 require_relative 'gdk/config'
-require_relative 'gdk/cmd'
+require_relative 'gdk/command'
 require_relative 'gdk/dependencies'
 require_relative 'gdk/erb_renderer'
 require_relative 'gdk/logo'
@@ -44,7 +44,7 @@ module GDK
       puts "\n> Running `make self-update update`..\n\n"
       exec(MAKE, 'self-update', 'update', chdir: $gdk_root)
     when 'diff-config'
-      GDK::CMD::DiffConfig.new.run
+      GDK::Command::DiffConfig.new.run
 
       true
     when 'config'
@@ -95,7 +95,7 @@ module GDK
         chdir: File.join($gdk_root, 'gitlab')
       )
     when 'doctor'
-      GDK::CMD::Doctor.new.run
+      GDK::Command::Doctor.new.run
       true
     when 'help'
       GDK::Logo.print
