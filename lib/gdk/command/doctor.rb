@@ -44,14 +44,14 @@ module GDK
 
       def check_pending_migrations
         header('Inspecting pending migrations...')
-        Open3.popen3(*%W[bundle exec rails db:abort_if_pending_migrations], chdir: 'gitlab') do |stdin, stdout, stderr, thread|
-          unless thread.value.success?
-            puts stdout.read
-            puts stderr.read
-          end
+        shellout = Shellout.new(%W[bundle exec rails db:abort_if_pending_migrations], chdir: 'gitlab')
+        shellout.run
+
+        unless shellout.success?
+          puts shellout.read_stdout
+          puts shellout.read_stderr
         end
       end
-
 
       private
 
