@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'open3'
+
 module GDK
   module Command
     class Doctor
@@ -8,6 +10,7 @@ module GDK
         check_diff_config
         check_gdk_version
         check_gdk_status
+        check_pending_migrations
       end
 
       def check_dependencies
@@ -38,6 +41,17 @@ module GDK
         header('Inspecting gdk status...')
         Runit.sv('status', ARGV)
       end
+
+      def check_pending_migrations
+        header('Inspecting pending migrations...')
+        Open3.popen3(*%W[bundle exec rails db:abort_if_pending_migrations], chdir: 'gitlab') do |stdin, stdout, stderr, thread|
+          unless thread.value.success?
+            puts stdout.read
+            puts stderr.read
+          end
+        end
+      end
+
 
       private
 
