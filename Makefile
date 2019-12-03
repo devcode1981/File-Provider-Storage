@@ -12,9 +12,8 @@ gitlab_clone_dir = gitlab
 gitlab_shell_clone_dir = go-gitlab-shell/src/gitlab.com/gitlab-org/gitlab-shell
 gitlab_workhorse_clone_dir = gitlab-workhorse/src/gitlab.com/gitlab-org/gitlab-workhorse
 gitaly_gopath = $(abspath ./gitaly)
-gitaly_clone_dir = ${gitaly_gopath}/src/gitlab.com/gitlab-org/gitaly
+gitaly_clone_dir = gitaly
 gitlab_pages_clone_dir = gitlab-pages/src/gitlab.com/gitlab-org/gitlab-pages
-gitaly_assembly_dir = ${gitlab_development_root}/gitaly/assembly
 gitlab_from_container = $(shell [ "$(shell uname)" = "Linux" ] && echo 'localhost' || echo 'docker.for.mac.localhost')
 postgres_dev_db = gitlabhq_development
 rails_bundle_install_cmd = bundle install --jobs 4 --without production
@@ -243,10 +242,14 @@ gitlab-shell/.gitlab_shell_secret:
 
 gitaly-setup: gitaly/bin/gitaly gitaly/gitaly.config.toml gitaly/praefect.config.toml
 
-${gitaly_clone_dir}/.git:
+${gitaly_clone_dir}/.git: .backups
+	if [ -e gitaly ]; then mv gitaly .backups/$(shell date +gitaly.old.%Y-%m-%d_%H.%M.%S); fi
 	git clone --quiet --branch "${gitaly_version}" ${git_depth_param} ${gitaly_repo} ${gitaly_clone_dir}
 
-gitaly-update: gitaly/.git/pull gitaly-clean gitaly/bin/gitaly
+.backups:
+	mkdir .backups
+
+gitaly-update: gitaly/.git/pull gitaly-clean gitaly-setup
 
 .PHONY: gitaly/.git/pull
 gitaly/.git/pull: ${gitaly_clone_dir}/.git
@@ -257,16 +260,11 @@ gitaly/.git/pull: ${gitaly_clone_dir}/.git
 	$(Q)support/component-git-update gitaly "${gitaly_clone_dir}" "${gitaly_version}" ${QQ}
 
 gitaly-clean:
-	$(Q)rm -rf ${gitaly_assembly_dir}
 	$(Q)rm -rf gitlab/tmp/tests/gitaly
 
 .PHONY: gitaly/bin/gitaly
 gitaly/bin/gitaly: ${gitaly_clone_dir}/.git
-	$(Q)$(MAKE) -C ${gitaly_clone_dir} assemble ASSEMBLY_ROOT=${gitaly_assembly_dir} BUNDLE_FLAGS=--no-deployment BUILD_TAGS="${tracer_build_tags}" ${QQ}
-	$(Q)mkdir -p ${gitlab_development_root}/gitaly/bin
-	$(Q)ln -sf ${gitaly_assembly_dir}/bin/* ${gitlab_development_root}/gitaly/bin
-	$(Q)rm -rf ${gitlab_development_root}/gitaly/ruby
-	$(Q)ln -sf ${gitaly_assembly_dir}/ruby ${gitlab_development_root}/gitaly/ruby
+	$(Q)$(MAKE) -C ${gitaly_clone_dir} BUNDLE_FLAGS=--no-deployment BUILD_TAGS="${tracer_build_tags}"
 
 .PHONY: gitaly/gitaly.config.toml
 gitaly/gitaly.config.toml:
