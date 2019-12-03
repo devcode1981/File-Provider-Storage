@@ -15,6 +15,8 @@ module GDK
           out = send(check)
           next if out.nil? || out.empty?
 
+          show_warning unless warned
+
           puts out
           success = false
         end
@@ -53,9 +55,9 @@ module GDK
         return if head == gdk_master
 
         <<~MESSAGE
-          #{header('Inspecting gdk version...')}
+          #{header('Inspecting GDK version...')}
           This GDK might be out-of-date with master.
-          If you are not currently developing GDK, consider updating GDK with `gdk update`.
+          If you are not actively developing on the GDK, consider updating GDK with `gdk update`.
         MESSAGE
       end
 
@@ -68,7 +70,7 @@ module GDK
         return if down_services.empty?
 
         <<~MESSAGE
-          #{header('Inspecting gdk status...')}
+          #{header('Inspecting GDK status...')}
           These services are not running.
           #{down_services.join("\n")}
         MESSAGE
@@ -83,7 +85,7 @@ module GDK
         <<~MESSAGE
           #{header('Inspecting migrations...')}
           There are pending migrations.
-          Run `cd gitlab && rails db:migrate` to update your database then try again.
+          Run `cd gitlab && bundle exec rails db:migrate` to update your database then try again.
         MESSAGE
       end
 
@@ -100,7 +102,7 @@ module GDK
         return if config_diff.empty?
 
         <<~MESSAGE
-          #{header('Inspecting gdk configuration...')}
+          #{header('Inspecting GDK configuration...')}
           We have detected changes in GDK configuration,
           please review the following diff or consider `gdk reconfigure`.
           #{config_diff}
@@ -109,12 +111,28 @@ module GDK
 
       private
 
+      attr_reader :warned
+
       def gdk_start
         Shellout.new('gdk start').run
       end
 
       def header(message)
         ['*' * 80, message].join("\n")
+      end
+
+      def show_warning
+        puts warning
+        @warned = true
+      end
+
+      def warning
+        <<~WARNING
+          Please note that these warnings are only used to help
+          in debugging if you encounter issues with GDK.
+          If GDK is working fine for you, you can safely ignore this. Thanks!
+
+        WARNING
       end
     end
   end
