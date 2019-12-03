@@ -5,7 +5,7 @@ require_relative '../../config_diff'
 module GDK
   module Command
     class DiffConfig
-      def run
+      def run(stdout: $stdout, stderr: $stderr)
         files = %w[
           gitlab/config/gitlab.yml
           gitlab/config/database.yml
@@ -28,11 +28,11 @@ module GDK
         end
 
         file_diffs.each do |diff|
-          $stderr.puts diff.make_output
+          stderr.puts diff.make_output
         end
 
         file_diffs.each do |diff|
-          puts diff.output unless diff.output == ""
+          stdout.puts diff.output unless diff.output == ""
         end
       end
     end
