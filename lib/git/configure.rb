@@ -35,7 +35,7 @@ module Git
           'help.autocorrect',
           -1,
           'Let git auto correct commands after some deciseconds, e.g. git branhc <something> will be executed as if you typed git branch',
-          (-1..)
+          (-1..100)
         ),
         Recommendation.new(
           'fetch.prune',
