@@ -157,6 +157,7 @@ module GDK
     end
 
     elasticsearch do |e|
+      e.enabled false
       e.version '6.5.1'
       e.checksum '5903e1913a7c96aad96a8227517c40490825f672'
     end
