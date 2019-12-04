@@ -49,9 +49,11 @@ module GDK
 
       def warning
         <<~WARNING
-        Please note that these warnings are only used to help
-        in debugging if you encounter issues with GDK.
-        If GDK is working fine for you, you can safely ignore this. Thanks!
+        #{'=' * 80}
+        Please note that these warnings are only used to help in debugging if you
+        encounter issues with GDK. If this GDK is working fine for you, you can
+        safely ignore them. Thanks!
+        #{'=' * 80}
 
         WARNING
       end

@@ -27,9 +27,10 @@ module GDK
 
       def message
         <<~MESSAGE
-        #{'*' * 80}
-        #{header(self.class::TITLE)}
-        #{detail}
+
+          #{self.class::TITLE}
+          #{'-' * 80}
+          #{detail}
         MESSAGE
       end
 
@@ -37,11 +38,6 @@ module GDK
         ''
       end
 
-      private
-
-      def header(title)
-        "Inspecting #{title}..."
-      end
     end
 
     class DiagnoseDependencies < Base
@@ -55,7 +51,6 @@ module GDK
 
       def detail
         <<~MESSAGE
-          Some GDK dependencies are not installed.
           #{@checker.error_messages.join("\n")}
         MESSAGE
       end
@@ -72,8 +67,7 @@ module GDK
 
       def detail
         <<~MESSAGE
-          This GDK might be out-of-date with master.
-          If you are not actively developing on the GDK, consider updating GDK with `gdk update`.
+          If you are not currently developing GDK, consider updating GDK with `gdk update`.
         MESSAGE
       end
     end
@@ -92,7 +86,7 @@ module GDK
 
       def detail
         <<~MESSAGE
-          These services are not running.
+          The following services are not running.
           #{@down_services.join("\n")}
         MESSAGE
       end
@@ -111,12 +105,12 @@ module GDK
       def detail
         <<~MESSAGE
           There are pending database migrations.
-          Run `cd gitlab && bundle exec rails db:migrate` to update your database then try again.
+          To update your database, run `cd gitlab && bundle exec rails db:migrate`.
         MESSAGE
       end
     end
 
-    class DiagnoseConfig < Base
+    class DiagnoseConfiguration < Base
       TITLE = 'GDK Configuration'
 
       def diagnose
@@ -134,8 +128,8 @@ module GDK
 
       def detail
         <<~MESSAGE
-          We have detected changes in GDK configuration,
-          please review the following diff or consider `gdk reconfigure`.
+          Please review the following diff or consider `gdk reconfigure`.
+
           #{@config_diff}
         MESSAGE
       end
