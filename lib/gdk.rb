@@ -34,7 +34,7 @@ module GDK
       abort <<~MSG
         'gdk run' is no longer available; see doc/runit.md.
 
-        Use 'gdk start', 'gdk stop' and 'gdk tail' instead.
+        Use 'gdk start', 'gdk stop', and 'gdk tail' instead.
       MSG
     when 'install'
       exec(MAKE, *ARGV, chdir: $gdk_root)
