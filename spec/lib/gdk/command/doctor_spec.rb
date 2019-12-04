@@ -31,7 +31,7 @@ describe GDK::Command::Doctor do
     end
 
     it 'prints GDK is ready.' do
-      expect(mock_stdout).to receive(:puts).with('GDK is ready.')
+      expect(mock_stdout).to receive(:puts).with('GDK is healthy.')
       subject.run
     end
   end

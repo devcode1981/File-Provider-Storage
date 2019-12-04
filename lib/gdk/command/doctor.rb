@@ -27,7 +27,7 @@ module GDK
 
         return unless success
 
-        stdout.puts 'GDK is ready.'
+        stdout.puts 'GDK is healthy.'
       end
 
       def diagnostics
