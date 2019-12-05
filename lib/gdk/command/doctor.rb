@@ -11,23 +11,18 @@ module GDK
       def run
         gdk_start
 
-        success = true
-
-        diagnostics.each do |diagnostic|
-          diagnostic.diagnose
-
-          next if diagnostic.success?
-
-          show_warning unless warned
-
-          stdout.puts diagnostic.message
-
-          success = false
+        if diagnostic_results.empty?
+          show_healthy
+        else
+          show_results
         end
+      end
 
-        return unless success
-
-        stdout.puts 'GDK is healthy.'
+      def diagnostic_results
+        @diagnostic_results ||= diagnostics.each_with_object([]) do |diagnostic, results|
+          diagnostic.diagnose
+          results << diagnostic.message unless diagnostic.success?
+        end
       end
 
       def diagnostics
@@ -36,24 +31,30 @@ module GDK
 
       private
 
-      attr_reader :warned, :stdout, :stderr
+      attr_reader :stdout, :stderr
 
       def gdk_start
         Shellout.new('gdk start').run
       end
 
-      def show_warning
+      def show_healthy
+        stdout.puts 'GDK is healthy.'
+      end
+
+      def show_results
         stdout.puts warning
-        @warned = true
+        diagnostic_results.each do |result|
+          stdout.puts result
+        end
       end
 
       def warning
         <<~WARNING
-        #{'=' * 80}
-        Please note that these warnings are only used to help in debugging if you
-        encounter issues with GDK. If this GDK is working fine for you, you can
-        safely ignore them. Thanks!
-        #{'=' * 80}
+          #{'=' * 80}
+          Please note that these warnings are only used to help in debugging if you
+          encounter issues with GDK. If this GDK is working fine for you, you can
+          safely ignore them. Thanks!
+          #{'=' * 80}
 
         WARNING
       end
