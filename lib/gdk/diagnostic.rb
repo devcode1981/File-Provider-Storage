@@ -13,16 +13,12 @@ module GDK
     class Base
       TITLE = 'Diagnostic name'
 
-      def initialize
-        @success = false
-      end
-
       def diagnose
-        # Do stuff
+        raise NotImplementedError
       end
 
       def success?
-        @success
+        raise NotImplementedError
       end
 
       def message
@@ -37,7 +33,6 @@ module GDK
       def detail
         ''
       end
-
     end
 
     class DiagnoseDependencies < Base
@@ -46,7 +41,10 @@ module GDK
       def diagnose
         @checker = Dependencies::Checker.new
         @checker.check_all
-        @success = @checker.error_messages.empty?
+      end
+
+      def success?
+        @checker.error_messages.empty?
       end
 
       def detail
@@ -60,9 +58,12 @@ module GDK
       TITLE = 'GDK Version'
 
       def diagnose
-        gdk_master = `git show-ref refs/remotes/origin/master -s --abbrev`
-        head = `git rev-parse --short HEAD`
-        @success = head == gdk_master
+        @gdk_master = `git show-ref refs/remotes/origin/master -s --abbrev`
+        @head = `git rev-parse --short HEAD`
+      end
+
+      def success?
+        @head == @gdk_master
       end
 
       def detail
@@ -81,7 +82,10 @@ module GDK
         status = shell.read_stdout
 
         @down_services = status.split("\n").select { |svc| svc.start_with?('down') }
-        @success = @down_services.empty?
+      end
+
+      def success?
+        @down_services.empty?
       end
 
       def detail
@@ -96,10 +100,12 @@ module GDK
       TITLE = 'Database Migrations'
 
       def diagnose
-        shellout = Shellout.new(%W[bundle exec rails db:abort_if_pending_migrations], chdir: 'gitlab')
-        shellout.run
+        @shellout = Shellout.new(%W[bundle exec rails db:abort_if_pending_migrations], chdir: 'gitlab')
+        @shellout.run
+      end
 
-        @success = shellout.success?
+      def success?
+        @shellout.success?
       end
 
       def detail
@@ -123,7 +129,10 @@ module GDK
         err.close
 
         @config_diff = out.string
-        @success = @config_diff.empty?
+      end
+
+      def success?
+        @config_diff.empty?
       end
 
       def detail
