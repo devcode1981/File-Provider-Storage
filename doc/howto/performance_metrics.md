@@ -31,8 +31,8 @@ You can access Grafana at http://localhost:9999 using the credentials
 ## Caveats
 
 InfluxDB uses several UDP and TCP ports in the 8080-8090 range. We set
-as many ports as possible to only listen on localhost but the cluster
-auto-discovery mechanism insists on binding to 0.0.0.0.
+as many ports as possible to only listen on `localhost` but the cluster
+auto-discovery mechanism insists on binding to `0.0.0.0`.
 
 It is currently not possible to have two separate GDK installations
 running on the same host (e.g. one for GitLab CE, one for GitLab EE) and

@@ -616,7 +616,6 @@ touch-examples:
 	gitlab/config/unicorn.rb.example.development \
 	grafana/grafana.ini.example \
 	influxdb/influxdb.conf.example \
-	nginx/conf/nginx.conf.example \
 	openssh/sshd_config.example \
 	redis/redis.conf.example \
 	redis/resque.yml.example \

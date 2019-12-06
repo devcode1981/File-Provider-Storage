@@ -39,7 +39,6 @@ tracer:
     enabled: false
 port: 3001
 webpack:
-  host: 0.0.0.0
   port: 3809
 ```
 

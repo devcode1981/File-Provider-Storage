@@ -37,7 +37,7 @@ module GDK
 
     hostname do
       next "#{config.auto_devops.gitlab.port}.qa-tunnel.gitlab.info" if config.auto_devops.enabled
-      read!('hostname') || read!('host') || '0.0.0.0'
+      read!('hostname') || read!('host') || 'localhost'
     end
 
     port do

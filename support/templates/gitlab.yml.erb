@@ -148,7 +148,7 @@ production: &base
         aws_access_key_id: minio
         aws_secret_access_key: gdk-minio
         region: gdk
-        endpoint: 'http://127.0.0.1:<%= config.object_store.port %>'
+        endpoint: 'http://<%= config.hostname %>:<%= config.object_store.port %>'
         path_style: true
 
   ## Merge request external diff storage
@@ -181,7 +181,7 @@ production: &base
         aws_access_key_id: minio
         aws_secret_access_key: gdk-minio
         region: gdk
-        endpoint: 'http://127.0.0.1:<%= config.object_store.port %>'
+        endpoint: 'http://<%= config.hostname %>:<%= config.object_store.port %>'
         path_style: true
 
   ## Uploads (attachments, avatars, etc...)
@@ -198,7 +198,7 @@ production: &base
         aws_access_key_id: minio
         aws_secret_access_key: gdk-minio
         region: gdk
-        endpoint: 'http://127.0.0.1:<%= config.object_store.port %>'
+        endpoint: 'http://<%= config.hostname %>:<%= config.object_store.port %>'
         path_style: true
 
   ## Packages (maven repository, npm registry, etc...)
@@ -213,7 +213,7 @@ production: &base
         aws_access_key_id: minio
         aws_secret_access_key: gdk-minio
         region: gdk
-        endpoint: 'http://127.0.0.1:<%= config.object_store.port %>'
+        endpoint: 'http://<%= config.hostname %>:<%= config.object_store.port %>'
         path_style: true
 
   ## GitLab Pages

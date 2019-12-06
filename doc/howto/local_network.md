@@ -2,16 +2,17 @@
 
 The default host binding for the rails application is `localhost`, if you
 would like to use other devices on your local network to test the rails
-application then run:
+application then:
 
-```
-echo 0.0.0.0 > host
-gdk restart
-```
+* In your `gdk.yml` write:
 
-If you would like to revert back to the `localhost` network then run:
+    ```yaml
+    hostname: 0.0.0.0
+    ```
 
-```
-rm host
-gdk restart
-```
+* Reconfigure and restart
+
+    ```sh
+    gdk reconfigure
+    gdk restart
+    ```

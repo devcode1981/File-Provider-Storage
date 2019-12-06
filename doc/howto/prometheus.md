@@ -93,14 +93,10 @@ You can use this for future troubleshooting.
 minikube dashboard
 ```
 
-## Configure GDK to listen to more than localhost.
+## Configure GDK to listen to more than localhost
 
-From the GDK root directory, create a host file to configure GDK to listen for
-more than just localhost. This will allow the Runner to connect to your GDK instance:
-
-```
-echo 0.0.0.0 > host
-```
+Follow [the instructions](local_network.md) to make your GDK
+accessible to other devices in the local network.
 
 ## Edit GitLab's `gitlab.yml`
 
