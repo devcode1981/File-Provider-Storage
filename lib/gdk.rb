@@ -62,8 +62,7 @@ module GDK
       remember!($gdk_root)
       exec(MAKE, 'touch-examples', 'unlock-dependency-installers', 'postgresql-sensible-defaults', 'all', chdir: $gdk_root)
     when 'psql'
-      pg_port_file = File.join($gdk_root, 'postgresql_port')
-      pg_port = File.exist?(pg_port_file) ? File.read(pg_port_file) : 5432
+      pg_port = Config.new.postgresql.port
 
       exec('psql', '-h', File.join($gdk_root, 'postgresql'), '-p', pg_port.to_s, *ARGV, chdir: $gdk_root)
     when 'redis-cli'
