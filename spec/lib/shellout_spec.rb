@@ -19,7 +19,7 @@ describe Shellout do
     end
 
     it 'does not raise error' do
-      expect{subject.try_run}.not_to raise_error
+      expect{ subject.try_run }.not_to raise_error
     end
   end
 

@@ -5,8 +5,8 @@ require 'stringio'
 module GDK
   module Diagnostic
     def self.all
-      self.constants.grep(/^Diagnose/).map do |const|
-        self.const_get(const).new
+      constants.grep(/^Diagnose/).map do |const|
+        const_get(const).new
       end
     end
 
@@ -100,7 +100,7 @@ module GDK
       TITLE = 'Database Migrations'
 
       def diagnose
-        @shellout = Shellout.new(%W[bundle exec rails db:abort_if_pending_migrations], chdir: 'gitlab')
+        @shellout = Shellout.new(%w[bundle exec rails db:abort_if_pending_migrations], chdir: 'gitlab')
         @shellout.run
       end
 

@@ -5,6 +5,5 @@ require_relative 'command/doctor'
 
 module GDK
   module Command
-
   end
 end
