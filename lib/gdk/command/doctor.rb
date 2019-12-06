@@ -3,7 +3,8 @@
 module GDK
   module Command
     class Doctor
-      def initialize(stdout: $stdout, stderr: $stderr)
+      def initialize(diagnostics: GDK::Diagnostic.all, stdout: $stdout, stderr: $stderr)
+        @diagnostics = diagnostics
         @stdout = stdout
         @stderr = stderr
       end
@@ -18,20 +19,16 @@ module GDK
         end
       end
 
+      private
+
+      attr_reader :diagnostics, :stdout, :stderr
+
       def diagnostic_results
         @diagnostic_results ||= diagnostics.each_with_object([]) do |diagnostic, results|
           diagnostic.diagnose
           results << diagnostic.message unless diagnostic.success?
         end
       end
-
-      def diagnostics
-        GDK::Diagnostic.all
-      end
-
-      private
-
-      attr_reader :stdout, :stderr
 
       def gdk_start
         Shellout.new('gdk start').run

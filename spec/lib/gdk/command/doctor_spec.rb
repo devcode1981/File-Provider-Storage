@@ -9,11 +9,10 @@ describe GDK::Command::Doctor do
   let(:diagnostics) { [] }
   let(:warning_message) { 'This is a warning' }
 
-  subject { described_class.new(stdout: mock_stdout, stderr: mock_stderr) }
+  subject { described_class.new(diagnostics: diagnostics, stdout: mock_stdout, stderr: mock_stderr) }
 
   before do
     allow(subject).to receive(:gdk_start)
-    allow(subject).to receive(:diagnostics).and_return(diagnostics)
     allow(subject).to receive(:warning).and_return(warning_message)
   end
 
