@@ -172,6 +172,7 @@ module GDK
 
     nginx do |n|
       n.enabled false
+      n.listen { config.hostname }
       n.bin { find_executable!('nginx') || '/usr/sbin/nginx' }
       n.ssl do |s|
         s.certificate 'localhost.crt'

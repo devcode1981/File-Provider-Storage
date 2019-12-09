@@ -29,7 +29,7 @@ http {
   client_max_body_size 0;
 
   upstream gitlab-workhorse {
-    server <%= config.hostname %>:<%= config.workhorse.__active_port  %> fail_timeout=0;
+    server <%= config.nginx.listen %>:<%= config.workhorse.__active_port  %> fail_timeout=0;
   }
 
   map $http_upgrade $connection_upgrade {
@@ -39,7 +39,7 @@ http {
 
 <% if config.https? %>
   server {
-    listen <%= config.hostname %>:<%= config.port %> ssl;
+    listen <%= config.nginx.listen %>:<%= config.port %> ssl;
 
     ssl_certificate <%= config.gdk_root.join(config.nginx.ssl.certificate) %>;
     ssl_certificate_key <%= config.gdk_root.join(config.nginx.ssl.key) %>;
@@ -60,7 +60,7 @@ http {
 
 <% if config.nginx.http? %>
   server {
-    listen <%= config.hostname %>:<%= config.nginx.http.port %>;
+    listen <%= config.nginx.listen %>:<%= config.nginx.http.port %>;
 
     return 301 https://$host$request_uri;
   }
