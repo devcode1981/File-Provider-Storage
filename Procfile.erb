@@ -50,7 +50,7 @@ registry: exec support/docker-registry
 
 # Additional services
 #
-#sshd: exec <%= config.sshd.bin %> -e -D -f <%= config.gdk_root.join('openssh', 'sshd_config') %>
+<%= '#' unless config.sshd? %>sshd: exec <%= config.sshd.bin %> -e -D -f <%= config.gdk_root.join('openssh', 'sshd_config') %>
 <%= '#' unless config.nginx? %>nginx: exec <%= config.nginx.bin %> -p <%= config.gdk_root.join('nginx') %> -c conf/nginx.conf
 <%= '#' unless config.elasticsearch? %>elasticsearch: exec elasticsearch/bin/elasticsearch
 
