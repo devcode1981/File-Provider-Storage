@@ -225,6 +225,7 @@ module GDK
     end
 
     sshd do |s|
+      s.enabled false
       s.bin { find_executable!('sshd') || '/usr/sbin/sshd' }
     end
 

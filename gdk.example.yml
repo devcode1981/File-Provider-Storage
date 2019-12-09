@@ -114,6 +114,7 @@ repositories:
 repositories_root: !ruby/object:Pathname
   path: "/home/git/gdk/repositories"
 sshd:
+  enabled: false
   bin: "/usr/sbin/sshd"
 tracer:
   build_tags: tracer_static tracer_static_jaeger
