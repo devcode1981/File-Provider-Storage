@@ -201,7 +201,7 @@ module GDK
       g.address { config.gdk_root.join('gitaly.socket') }
       g.assembly_dir { config.gdk_root.join('gitaly', 'assembly') }
       g.config_file { config.gdk_root.join('gitaly', 'gitaly.config.toml') }
-      g.internal_socket_dir { config.gdk_root.join('gitaly')}
+      g.internal_socket_dir { config.gdk_root.join('tmp', 'gitaly')}
       g.log_dir { config.gdk_root.join('log', 'gitaly') }
     end
 
@@ -209,7 +209,7 @@ module GDK
       p.address { config.gdk_root.join('praefect.socket') }
       p.config_file { config.gdk_root.join("gitaly", "praefect.config.toml") }
       p.enabled { true }
-      p.internal_socket_dir { config.gdk_root.join('gitaly', 'praefect') }
+      p.internal_socket_dir { config.gdk_root.join('tmp', 'praefect') }
       p.node_count { 1 }
       p.nodes do
         config_array!(config.praefect.node_count) do |n, i|
