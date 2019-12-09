@@ -39,7 +39,7 @@ rails-web: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$rela
 
 # Docker
 #
-registry: exec support/docker-registry
+<%= '#' unless config.registry? %>registry: exec support/docker-registry
 
 # Monitoring and tracing
 #
