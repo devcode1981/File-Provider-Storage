@@ -30,6 +30,7 @@ stages:
       - "{spec,support}/**/*"
       - ".gitlab-ci.yml"
       - "Gemfile{,.lock}"
+      - "Makefile"
       - "Rakefile"
       - "**/*/Dockerfile"
       - "packages.txt"
