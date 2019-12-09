@@ -40,6 +40,7 @@ nginx:
   http:
     enabled: false
     port: 80
+  listen: localhost
   ssl:
     certificate: localhost.crt
 object_store:
