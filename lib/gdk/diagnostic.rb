@@ -68,7 +68,8 @@ module GDK
 
       def detail
         <<~MESSAGE
-          If you are not currently developing GDK, consider updating GDK with `gdk update`.
+          An update for GDK is available. Unless you are developing on GDK itself,
+          consider updating GDK with `gdk update`.
         MESSAGE
       end
     end
