@@ -48,13 +48,16 @@ IMPORTANT: These steps are currently only applicable to GitLab employees as it
 depends on our infrastructure. For non-GitLab employees you can see
 [Alternatives](#alternatives) below.
 
-From the GDK directory, run:
+From the GDK directory, create [a `gdk.yml` configuration file](configuration.md)
+containing the following settings:
 
 ```bash
-echo true > registry_enabled
-echo true > auto_devops_enabled
-gdk reconfigure
+---
+auto_devops:
+  enabled: true
 ```
+
+Once created, run `gdk reconfigure` to apply the configuration.
 
 This script will create all necessary configuration for one to run Auto DevOps locally. Including assigning two random ports for GitLab instance and GitLab Registry. It's important that this ports are randomized so we avoid colliding two developers with the same ports.
 
