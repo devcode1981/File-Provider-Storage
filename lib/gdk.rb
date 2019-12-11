@@ -5,7 +5,9 @@
 
 require_relative 'gdk/env'
 require_relative 'gdk/config'
+require_relative 'gdk/command'
 require_relative 'gdk/dependencies'
+require_relative 'gdk/diagnostic'
 require_relative 'gdk/erb_renderer'
 require_relative 'gdk/logo'
 require_relative 'runit'
@@ -26,9 +28,6 @@ module GDK
       return false
     end
 
-    pg_port_file = File.join($gdk_root, 'postgresql_port')
-    pg_port = File.exist?(pg_port_file) ? File.read(pg_port_file) : 5432
-
     case subcommand = ARGV.shift
     when 'run'
       abort <<~MSG
@@ -46,36 +45,7 @@ module GDK
       puts "\n> Running `make self-update update`..\n\n"
       exec(MAKE, 'self-update', 'update', chdir: $gdk_root)
     when 'diff-config'
-      require_relative './config_diff.rb'
-
-      files = %w[
-        gitlab/config/gitlab.yml
-        gitlab/config/database.yml
-        gitlab/config/unicorn.rb
-        gitlab/config/puma.rb
-        gitlab/config/resque.yml
-        gitlab-shell/config.yml
-        gitlab-shell/.gitlab_shell_secret
-        redis/redis.conf
-        .ruby-version
-        Procfile
-        gitlab-workhorse/config.toml
-        gitaly/gitaly.config.toml
-        gitaly/praefect.config.toml
-        nginx/conf/nginx.conf
-      ]
-
-      file_diffs = files.map do |file|
-        ConfigDiff.new(file)
-      end
-
-      file_diffs.each do |diff|
-        $stderr.puts diff.make_output
-      end
-
-      file_diffs.each do |diff|
-        puts diff.output unless diff.output == ""
-      end
+      GDK::Command::DiffConfig.new.run
 
       true
     when 'config'
@@ -92,6 +62,8 @@ module GDK
       remember!($gdk_root)
       exec(MAKE, 'touch-examples', 'unlock-dependency-installers', 'postgresql-sensible-defaults', 'all', chdir: $gdk_root)
     when 'psql'
+      pg_port = Config.new.postgresql.port
+
       exec('psql', '-h', File.join($gdk_root, 'postgresql'), '-p', pg_port.to_s, *ARGV, chdir: $gdk_root)
     when 'redis-cli'
       exec('redis-cli', '-s', File.join($gdk_root, 'redis/redis.socket'), *ARGV, chdir: $gdk_root)
@@ -122,12 +94,15 @@ module GDK
         *%W[bundle exec thin --socket=#{$gdk_root}/gitlab.socket start],
         chdir: File.join($gdk_root, 'gitlab')
       )
+    when 'doctor'
+      GDK::Command::Doctor.new.run
+      true
     when 'help'
       GDK::Logo.print
       puts File.read(File.join($gdk_root, 'HELP'))
       true
     else
-      puts "Usage: #{PROGNAME} start|status|stop|restart|init|install|update|reconfigure|tail|psql|redis-cli|diff-config|config|version|help [ARGS...]"
+      puts "Usage: #{PROGNAME} start|status|stop|restart|init|install|update|reconfigure|tail|psql|redis-cli|diff-config|config|doctor|version|help [ARGS...]"
       false
     end
   end
