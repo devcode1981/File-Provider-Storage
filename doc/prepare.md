@@ -34,6 +34,8 @@ To start preparing the GDK installation, pick your platform of choice:
 
 Supported versions: OS X 10.9 (Mavericks) and up.
 
+In OS X 10.15 the default shell changed from Bash to Zsh. The instructions below for Homebrew and MacPorts handle Bash or Zsh slightly differently by setting a `shell_file` variable based on your current shell.
+
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 We are using PostgreSQL 10 in the following example. If you want to use another version, please adjust paths accordingly.
