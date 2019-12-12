@@ -28,9 +28,11 @@ gitaly:
     path: "/home/git/gdk/gitaly/assembly"
   log_dir: !ruby/object:Pathname
     path: "/home/git/gdk/log/gitaly"
+  auto_update: true
 gitlab_pages:
   enabled: true
   port: 3010
+  auto_update: true
 hostname: localhost
 https:
   enabled: false
@@ -128,3 +130,8 @@ webpack:
   port: 3808
 workhorse:
   configured_port: 3333
+  auto_update: true
+gitlab_elasticsearch_indexer:
+  auto_update: true
+gitlab_shell:
+  auto_update: true

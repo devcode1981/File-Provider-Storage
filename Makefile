@@ -215,19 +215,13 @@ gitlab/.git/pull:
 		git pull --ff-only
 
 gitlab-shell/.git/pull:
-	cd ${gitlab_development_root}/gitlab-shell && \
-		git stash && \
-		git fetch --all --tags --prune && \
-		git checkout "${gitlab_shell_version}"
+	support/component-git-update gitlab_shell "${gitlab_development_root}/gitlab-shell" "${gitlab_shell_version}"
 
 gitaly-update: gitaly/.git/pull gitaly-clean gitaly/bin/gitaly
 
 .PHONY: gitaly/.git/pull
 gitaly/.git/pull: ${gitaly_clone_dir}/.git
-	cd ${gitaly_clone_dir} && \
-		git stash && \
-		git fetch --all --tags --prune && \
-		git checkout "${gitaly_version}"
+	support/component-git-update gitaly "${gitaly_clone_dir}" "${gitaly_version}"
 
 gitaly-clean:
 	rm -rf ${gitaly_assembly_dir}
@@ -427,10 +421,7 @@ ${gitlab_workhorse_clone_dir}/.git:
 	git clone --quiet --branch "${workhorse_version}" ${git_depth_param} ${gitlab_workhorse_repo} ${gitlab_workhorse_clone_dir}
 
 gitlab-workhorse/.git/pull:
-	cd ${gitlab_workhorse_clone_dir} && \
-		git stash && \
-		git fetch --all --tags --prune && \
-		git checkout "${workhorse_version}"
+	support/component-git-update workhorse "${gitlab_workhorse_clone_dir}" "${workhorse_version}"
 
 gitlab-pages-setup: gitlab-pages/bin/gitlab-pages
 
@@ -449,10 +440,7 @@ ${gitlab_pages_clone_dir}/.git:
 	git clone --quiet --branch "${pages_version}" ${git_depth_param} ${gitlab_pages_repo} ${gitlab_pages_clone_dir}
 
 gitlab-pages/.git/pull:
-	cd ${gitlab_pages_clone_dir} && \
-		git stash &&\
-		git fetch --all --tags --prune && \
-		git checkout "${pages_version}"
+	support/component-git-update gitlab_pages "${gitlab_pages_clone_dir}" "${pages_version}"
 
 influxdb-setup: influxdb/influxdb.conf influxdb/bin/influxd influxdb/meta/meta.db
 
@@ -557,10 +545,7 @@ gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer: gitlab-elasticsea
 
 .PHONY: gitlab-elasticsearch-indexer/.git/pull
 gitlab-elasticsearch-indexer/.git/pull: gitlab-elasticsearch-indexer/.git
-	cd gitlab-elasticsearch-indexer && \
-		git stash &&\
-		git fetch --all --tags --prune && \
-		git checkout "${gitlab_elasticsearch_indexer_version}"
+	support/component-git-update gitlab_elasticsearch_indexer gitlab-elasticsearch-indexer "${gitlab_elasticsearch_indexer_version}"
 
 object-storage-setup: minio/data/lfs-objects minio/data/artifacts minio/data/uploads minio/data/packages
 
