@@ -96,6 +96,16 @@ module GDK
           config.port
         end
       end
+
+      w.auto_update { true }
+    end
+
+    gitlab_shell do |s|
+      s.auto_update { true }
+    end
+
+    gitlab_elasticsearch_indexer do |i|
+      i.auto_update { true }
     end
 
     registry do |r|
@@ -131,6 +141,7 @@ module GDK
     gitlab_pages do |p|
       p.enabled true
       p.port { read!('gitlab_pages_port') || 3010 }
+      p.auto_update { true }
     end
 
     auto_devops do |a|
@@ -204,6 +215,7 @@ module GDK
       g.config_file { config.gdk_root.join('gitaly', 'gitaly.config.toml') }
       g.internal_socket_dir { config.gdk_root.join('tmp', 'gitaly')}
       g.log_dir { config.gdk_root.join('log', 'gitaly') }
+      g.auto_update { true }
     end
 
     praefect do |p|

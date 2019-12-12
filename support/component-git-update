@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative '../lib/gdk/config'
+
+PROGNAME = File.basename(__FILE__)
+
+def main(component, worktree, revision)
+  config = GDK::Config.new[component]
+  abort "unknown component: #{component.inspect}" unless config
+
+  unless config.auto_update
+    warn "#{PROGNAME}: auto update for #{component} is disabled via gdk.yml"
+    exit
+  end
+
+  Dir.chdir(worktree)
+
+  [
+    %w[git stash],
+    %w[git fetch --all --tags --prune],
+    %W[git checkout #{revision}]
+  ].each do |cmd|
+    next if system(*cmd)
+
+    abort "command failed: #{cmd.join(' ')}"
+  end
+end
+
+if ARGV.count!= 3
+  abort "usage: #{PROGNAME} COMPONENT WORKTREE REVISION"
+end
+
+main(*ARGV)
