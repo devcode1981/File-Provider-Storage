@@ -1,0 +1,17 @@
+AllowUsers <%= config.sshd.user %>
+AuthenticationMethods publickey
+HostKey <%= config.sshd.host_key %>
+ListenAddress <%= config.sshd.listen_address %>:<%= config.sshd.listen_port %>
+LogLevel VERBOSE
+PasswordAuthentication no
+PidFile none
+Protocol 2
+StrictModes no
+UseLogin no
+UsePAM no
+UsePrivilegeSeparation no
+
+Match User <%= config.sshd.user %>
+AuthorizedKeysFile <%= config.sshd.authorized_keys_file %>
+
+<%= config.sshd.additional_config -%>

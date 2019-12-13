@@ -485,12 +485,6 @@ performance-metrics-setup: Procfile influxdb-setup grafana-setup
 
 openssh-setup: openssh/sshd_config openssh/ssh_host_rsa_key
 
-openssh/sshd_config: openssh/sshd_config.example
-	bin/safe-sed "$@" \
-		-e "s|/home/git|${gitlab_development_root}|g" \
-		-e "s/GDK_USERNAME/${username}/g" \
-		"$<"
-
 openssh/ssh_host_rsa_key:
 	ssh-keygen -f $@ -N '' -t rsa
 
@@ -498,6 +492,10 @@ nginx-setup: nginx/conf/nginx.conf nginx/logs nginx/tmp
 
 .PHONY: nginx/conf/nginx.conf
 nginx/conf/nginx.conf:
+	rake $@
+
+.PHONY: openssh/sshd_config
+openssh/sshd_config:
 	rake $@
 
 nginx/logs:
@@ -606,7 +604,6 @@ touch-examples:
 	gitlab/config/unicorn.rb.example.development \
 	grafana/grafana.ini.example \
 	influxdb/influxdb.conf.example \
-	openssh/sshd_config.example \
 	redis/redis.conf.example \
 	redis/resque.yml.example \
 	registry/config.yml.example \
