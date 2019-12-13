@@ -28,7 +28,8 @@ module GDK
         end
 
         file_diffs.each do |diff|
-          stderr.puts diff.make_output
+          output = diff.make_output.chomp
+          stderr.puts(output) unless output.empty?
         end
 
         file_diffs.each do |diff|
