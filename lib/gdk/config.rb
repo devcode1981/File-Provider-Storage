@@ -29,9 +29,10 @@ module GDK
     gdk_root { Pathname.new(__dir__).parent.parent }
 
     gdk do |g|
+      g.ask_to_restart_after_update true
       g.debug false
-      g.overwrite_changes false
       g.ignore_foreman { read!('.ignore-foreman') || false }
+      g.overwrite_changes false
     end
 
     repositories_root { config.gdk_root.join('repositories') }

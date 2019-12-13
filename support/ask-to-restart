@@ -1,0 +1,42 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative '../lib/gdk/config'
+
+PROMPT_TIMEOUT = 5
+
+def ask_to_restart?
+  GDK::Config.new.gdk.ask_to_restart_after_update
+end
+
+def display_banner
+  puts <<~EOS
+  -------------------------------------------------------
+  Would you like to restart your GDK?
+
+  Any running sidekiq jobs (CI, Geo, etc) may be
+  interrupted if you say yes.
+  -------------------------------------------------------
+
+  EOS
+end
+
+def restart_gdk?
+  print "Restart GDK (will timeout after #{PROMPT_TIMEOUT} secs) [y/N]? "
+
+  if select([$stdin], nil, nil, PROMPT_TIMEOUT)
+    return gets.to_s.chomp.downcase == 'y'
+  end
+
+  puts  # so keep the same formatting
+  false
+end
+
+def restart_gdk
+  system('gdk restart')
+end
+
+return unless ask_to_restart?
+
+display_banner
+restart_gdk if restart_gdk?
