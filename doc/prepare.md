@@ -326,11 +326,19 @@ sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server \
   libicu-dev cmake g++ libkrb5-dev libre2-dev golang ed pkg-config runit
 ```
 
-Start the PostgreSQL database
+Start the PostgreSQL database (SystemV)
 
 ```
 sudo service postgresql start
 ```
+
+Start the PostgreSQL database (SystemD)
+
+```
+sudo systemctl enable postgresql
+sudo systemctl start postgresql
+```
+
 
 For some common troubleshooting steps for Windows 10 GDK installs please refer to [Troubleshooting](./howto/troubleshooting.md)
 
