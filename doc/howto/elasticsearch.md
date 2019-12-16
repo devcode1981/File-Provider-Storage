@@ -30,6 +30,8 @@ environment.
 
    1. Run `gdk reconfigure`
 
+   1. Uncomment the `elasticsearch:` service in your `Procfile` file
+
 ## Setup
 
 1. Go to **Admin Area > License** and ensure you have a [license](https://about.gitlab.com/handbook/developer-onboarding/#working-on-gitlab-ee) installed as this is required for Elasticsearch.
