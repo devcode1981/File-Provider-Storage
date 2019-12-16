@@ -14,7 +14,7 @@ Make sure you follow all the guidelines and resolve all the dependencies listed 
 | Ruby           | <p>Use a Ruby version manager ([RVM](https://rvm.io/), [rbenv](https://github.com/rbenv/rbenv), [chruby](https://github.com/postmodern/chruby), etc.) to install the current [`gitlab` Ruby version](https://gitlab.com/gitlab-org/gitlab/blob/master/.ruby-version).</p><p>To ensure installation of the correct version, **DO NOT** use the system Ruby.</p>                                                       |
 | Terminal       | <p>Make sure to close and reopen the Terminal after installing a Ruby version manager to read new PATH variables added for Ruby executable files.</p><p>You can check the active version with the following command: `ruby --version`.</p>                                                                                                                                                                           |
 | Bundler        | <p>Install the version of Bundler specified in this [Gemfile.lock](https://gitlab.com/gitlab-org/gitlab/blob/master/Gemfile.lock), as noted with the `BUNDLED WITH` text at the end of the file.</p><p> To install Bundler, use the following command: `gem install bundler -v <version>`. Replace `<version>` with the `BUNDLED_WITH` version.</p>                                            |
-| Git            | <p>We recommend using Git version 2.24 or higher (minimal supported version is 2.22).</p><p>git installation is covered in the instructions in the [Platform-specific setup](#platform-specific-setup).</p>                                                                                                                                                                                                                                                           |
+| Git            | <p>We recommend using Git version 2.24 or higher (minimal supported version is 2.22).</p><p>git installation is covered in the instructions in the [Platform-specific setup](#platform-specific-setup).</p> <p>For checking out test fixtures, you will also need Git LFS</p> |
 | Node.js        | <p>Node.js **12.10** and Yarn 1.12 or newer.</p><p>Node.js and Yarn installation is covered in the instructions below. If your package manager does not have Node.js 12.10 or yarn available, visit the official websites for [Node](https://nodejs.org/en/download/) and [Yarn](https://yarnpkg.com/en/docs/install/) for installation instructions.</p> |
 | Go             | <p>Go 1.12.</p><p>Go installation is covered in the instructions below. If your package manager does not have up-to-date versions of Go available, visit the official [Go](https://golang.org/doc/install) website for installation instructions.</p>                                                                                                              |
 | Google Chrome  | [Google Chrome](https://www.google.com/chrome/) 60 or greater with [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) version 2.33 or greater. Visit the Chrome Driver [Getting started](https://sites.google.com/a/chromium.org/chromedriver/getting-started) page for more details.                                                           |
@@ -53,7 +53,7 @@ We are using PostgreSQL 10 in the following example. If you want to use another 
 | We recommend manual installation of Node.js 12.10 instead of using Homebrew to avoid breaking your development setup when you run `brew upgrade`. Install Node.js 12.10 [manually](https://nodejs.org/en/download/) or use a tool like [NVM](https://github.com/creationix/nvm). If you want to use Homebrew, you can prevent it from upgrading the current Node.js formula by pinning it with `brew pin node@12`. |
 
 ```
-brew install git redis postgresql@10 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@12 gpg runit icu4c exiftool
+brew install git git-lfs redis postgresql@10 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@12 gpg runit icu4c exiftool
 brew install yarn --ignore-dependencies
 brew link pkg-config
 brew pin node@12 icu4c readline
@@ -70,7 +70,7 @@ brew cask install google-chrome chromedriver
 [MacPorts](https://www.macports.org/) is another package manager for macOS. Visit their website for installation details.
 
 ```
-sudo port install git redis libiconv postgresql10-server icu pkgconfig cmake nodejs12 go openssl npm5 yarn coreutils re2 GraphicsMagick runit exiftool
+sudo port install git git-lfs redis libiconv postgresql10-server icu pkgconfig cmake nodejs12 go openssl npm5 yarn coreutils re2 GraphicsMagick runit exiftool
 bundle config build.eventmachine --with-cppflags=-I/opt/local/include/openssl
 if [ ${ZSH_VERSION} ]; then shell_file='~/.zshrc'; else shell_file='~/.bash_profile'; fi
 echo 'export PATH=/opt/local/lib/postgresql10/bin/:$PATH' >> ${shell_file}
@@ -100,7 +100,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
    export PATH="/usr/lib/go-${GDK_GO_VERSION}/bin:$PATH"
    # This PPA contains an up-to-date version of git
    sudo add-apt-repository ppa:git-core/ppa
-   sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server \
+   sudo apt-get install git git-lfs postgresql postgresql-contrib libpq-dev redis-server \
      libicu-dev cmake g++ libre2-dev libkrb5-dev libsqlite3-dev golang-${GDK_GO_VERSION}-go ed \
      pkg-config graphicsmagick runit libimage-exiftool-perl rsync libssl-dev
    ```
@@ -117,7 +117,7 @@ you can [install re2 manually](https://github.com/google/re2/wiki/Install).
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
 ```
-pacman -S postgresql redis postgresql-libs icu npm ed cmake openssh git go re2 \
+pacman -S postgresql redis postgresql-libs icu npm ed cmake openssh git git-lfs go re2 \
   unzip graphicsmagick runit perl-image-exiftool rsync
 ```
 
@@ -154,7 +154,7 @@ sudo dnf module enable postgresql:10
 
 ```
 sudo dnf install postgresql libpqxx-devel postgresql-libs redis libicu-devel \
-  nodejs git ed cmake rpm-build gcc-c++ krb5-devel go postgresql-server \
+  nodejs git git-lfs ed cmake rpm-build gcc-c++ krb5-devel go postgresql-server \
   postgresql-contrib re2 GraphicsMagick re2-devel sqlite-devel perl-Digest-SHA \
   perl-Image-ExifTool rsync
 ```
@@ -187,7 +187,7 @@ This is tested on CentOS 6.5:
 ```
 sudo yum install https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-6-x86_64/pgdg-centos10-10-2.noarch.rpm
 sudo yum install https://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-sudo yum install postgresql10-server postgresql10-devel libicu-devel git cmake \
+sudo yum install postgresql10-server postgresql10-devel libicu-devel git git-lfs cmake \
   gcc-c++ redis ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 \
   libstdc++.so.6 nodejs npm re2 re2-devel GraphicsMagick runit perl-Image-ExifTool \
   rsync
@@ -220,7 +220,7 @@ This was tested on OpenSUSE LEAP 42.1, and Tumbleweed (20161109)
 ```
 sudo zypper dup
 
-sudo zypper install libxslt-devel  postgresql postgresql-devel libpqxx-devel redis libicu-devel nodejs git ed cmake \
+sudo zypper install libxslt-devel  postgresql postgresql-devel libpqxx-devel redis libicu-devel nodejs git git-lfs ed cmake \
         rpm-build gcc-c++ krb5-devel postgresql-server postgresql-contrib \
         libxml2-devel libxml2-devel-32bit findutils-locate re2 GraphicsMagick \
         runit exiftool rsync
@@ -255,7 +255,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 
 ```
 sudo pkg install postgresql10-server postgresql10-contrib postgresql-libpqxx \
-redis go node icu krb5 gmake re2 GraphicsMagick p5-Image-ExifTool
+redis go node icu krb5 gmake re2 GraphicsMagick p5-Image-ExifTool git-lfs
 ```
 
 ### Windows 10
@@ -322,7 +322,7 @@ Install the remainder of the prerequisites
 # Add apt-add-repository helper script
 sudo apt-get install software-properties-common python-software-properties
 sudo apt-get update
-sudo apt-get install git postgresql postgresql-contrib libpq-dev redis-server \
+sudo apt-get install git git-lfs postgresql postgresql-contrib libpq-dev redis-server \
   libicu-dev cmake g++ libkrb5-dev libre2-dev golang ed pkg-config runit
 ```
 
