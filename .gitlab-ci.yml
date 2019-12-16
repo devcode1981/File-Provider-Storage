@@ -166,6 +166,7 @@ verify:install:
     when: always
   script:
     - support/ci/test_install
+  retry: 1
 
 verify:update:
   image: $TEST_IMAGE
@@ -180,3 +181,4 @@ verify:update:
     when: always
   script:
     - support/ci/test_update
+  retry: 1
