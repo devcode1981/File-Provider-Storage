@@ -59,7 +59,7 @@ $apt_reqs = <<EOT
   export DEBIAN_FRONTEND=noninteractive
   export RUNLEVEL=1
   apt-get update && apt-get -y install git graphicsmagick postgresql postgresql-contrib libpq-dev libimage-exiftool-perl redis-server libicu-dev cmake g++ nodejs libkrb5-dev curl ruby ed golang-go nginx libgmp-dev rvm yarn libre2-dev docker.io runit
-  apt-get update && apt-get -y upgrade
+  apt-get -y upgrade
 EOT
 
 # Set up swap when using a full VM
