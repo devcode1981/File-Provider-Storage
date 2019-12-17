@@ -91,6 +91,7 @@ test:static-analysis:
   stage: test
   services: []
   script:
+    - apt-get update && apt-get install -y rake
     - npm config set unsafe-perm true # enable run npm as root
     - make static-analysis
 
