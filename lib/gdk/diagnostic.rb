@@ -53,6 +53,10 @@ module GDK
 
         <<~MESSAGE
           #{messages}
+
+          For details on how to install, please visit:
+
+          https://gitlab.com/gitlab-org/gitlab-development-kit/blob/master/doc/prepare.md#platform-specific-setup
         MESSAGE
       end
     end
