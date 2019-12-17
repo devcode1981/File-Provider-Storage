@@ -33,7 +33,7 @@ gitlab_pages:
   enabled: true
   port: 3010
   auto_update: true
-hostname: localhost
+hostname: 127.0.0.1
 https:
   enabled: false
 nginx:
@@ -42,7 +42,7 @@ nginx:
   http:
     enabled: false
     port: 80
-  listen: localhost
+  listen: 127.0.0.1
   ssl:
     certificate: localhost.crt
 object_store:
@@ -103,7 +103,7 @@ praefect:
 registry:
   enabled: false
   external_port: 5000
-  host: localhost
+  host: 127.0.0.1
   port: 5000
 relative_url_root: "/"
 repositories:
@@ -126,7 +126,7 @@ tracer:
     version: 1.10.1
 username: git
 webpack:
-  host: localhost
+  host: 127.0.0.1
   port: 3808
 workhorse:
   configured_port: 3333
