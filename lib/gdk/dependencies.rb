@@ -169,12 +169,8 @@ module GDK
 
       def missing_dependency(dependency, minimum_version: nil)
         message = "#{dependency} is not installed, please install #{dependency}"
-
-        if minimum_version.nil?
-          "#{message}."
-        else
-          "#{message} #{minimum_version} or higher."
-        end
+        message += "#{minimum_version} or higher" unless minimum_version.nil?
+        message + "."
       end
     end
   end
