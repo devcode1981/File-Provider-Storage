@@ -61,6 +61,7 @@ module GDK
 
         check_graphicsmagick_installed
         check_exiftool_installed
+        check_minio_installed
         check_runit_installed
       end
 
@@ -154,6 +155,12 @@ module GDK
       def check_exiftool_installed
         unless system("exiftool -ver >/dev/null 2>&1")
           @error_messages << missing_dependency('Exiftool')
+        end
+      end
+
+      def check_minio_installed
+        unless system("minio version >/dev/null 2>&1")
+          @error_messages << missing_dependency('MinIO')
         end
       end
 
