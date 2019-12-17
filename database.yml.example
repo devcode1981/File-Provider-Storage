@@ -5,6 +5,9 @@ development:
   host: /home/git/postgresql
   port: 5432
   pool: 10
+  load_balancing:
+    hosts:
+      - /home/git/postgresql
 
 test: &test
   adapter: postgresql
@@ -13,3 +16,6 @@ test: &test
   host: /home/git/postgresql
   port: 5432
   pool: 10
+  load_balancing:
+    hosts:
+      - /home/git/postgresql
