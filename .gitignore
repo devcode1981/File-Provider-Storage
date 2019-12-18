@@ -105,3 +105,4 @@ gitlab-development-kit/**
 /log/
 /gitlab-elasticsearch-indexer
 /.ignore-foreman
+/env.runit
