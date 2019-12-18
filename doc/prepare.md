@@ -53,7 +53,7 @@ We are using PostgreSQL 10 in the following example. If you want to use another 
 | We recommend manual installation of Node.js 12.10 instead of using Homebrew to avoid breaking your development setup when you run `brew upgrade`. Install Node.js 12.10 [manually](https://nodejs.org/en/download/) or use a tool like [NVM](https://github.com/creationix/nvm). If you want to use Homebrew, you can prevent it from upgrading the current Node.js formula by pinning it with `brew pin node@12`. |
 
 ```
-brew install git git-lfs redis postgresql@10 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@12 gpg runit icu4c exiftool
+brew install git git-lfs redis postgresql@10 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@12 gpg runit icu4c exiftool minio
 brew install yarn --ignore-dependencies
 brew link pkg-config
 brew pin node@12 icu4c readline
@@ -70,7 +70,7 @@ brew cask install google-chrome chromedriver
 [MacPorts](https://www.macports.org/) is another package manager for macOS. Visit their website for installation details.
 
 ```
-sudo port install git git-lfs redis libiconv postgresql10-server icu pkgconfig cmake nodejs12 go openssl npm5 yarn coreutils re2 GraphicsMagick runit exiftool
+sudo port install git git-lfs redis libiconv postgresql10-server icu pkgconfig cmake nodejs12 go openssl npm5 yarn coreutils re2 GraphicsMagick runit exiftool minio
 bundle config build.eventmachine --with-cppflags=-I/opt/local/include/openssl
 if [ ${ZSH_VERSION} ]; then shell_file='~/.zshrc'; else shell_file='~/.bash_profile'; fi
 echo 'export PATH=/opt/local/lib/postgresql10/bin/:$PATH' >> ${shell_file}
@@ -88,7 +88,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 1. Install **Node.js 12.10** from the [official Node.js binary distribution](https://github.com/nodesource/distributions/blob/master/README.md#debinstall).
 1. Install **Yarn** from the [Yarn Debian package repository](https://yarnpkg.com/lang/en/docs/install/#debian-stable).
 1. Install remaining dependencies; modify the `GDK_GO_VERSION` with the major.minor version number (currently 1.12) as needed:
-   ```
+   ```sh
    # Add apt-add-repository helper script
    sudo apt-get update
    sudo apt-get install software-properties-common
@@ -103,6 +103,8 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
    sudo apt-get install git git-lfs postgresql postgresql-contrib libpq-dev redis-server \
      libicu-dev cmake g++ libre2-dev libkrb5-dev libsqlite3-dev golang-${GDK_GO_VERSION}-go ed \
      pkg-config graphicsmagick runit libimage-exiftool-perl rsync libssl-dev
+   sudo curl https://dl.min.io/server/minio/release/linux-amd64/minio --output /usr/local/bin/minio
+   sudo chmod +x /usr/local/bin/minio
    ```
 
    > ℹ️ Ubuntu 18.04 (Bionic Beaver) and beyond doesn't have python-software-properties as a separate package.
@@ -125,10 +127,12 @@ pacman -S postgresql redis postgresql-libs icu npm ed cmake openssh git git-lfs 
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
-```
+```sh
 sudo apt-get install postgresql postgresql-contrib libpq-dev redis-server \
   libicu-dev cmake g++ libkrb5-dev libre2-dev ed pkg-config graphicsmagick \
   runit libimage-exiftool-perl rsync
+sudo curl https://dl.min.io/server/minio/release/linux-amd64/minio --output /usr/local/bin/minio
+sudo chmod +x /usr/local/bin/minio
 ```
 
 If you are running Debian [Experimental](https://wiki.debian.org/DebianExperimental), or [newer](https://packages.debian.org/search?keywords=golang-go) you can install a Go
@@ -152,11 +156,13 @@ sudo dnf install fedora-repos-modular
 sudo dnf module enable postgresql:10
 ```
 
-```
+```sh
 sudo dnf install postgresql libpqxx-devel postgresql-libs redis libicu-devel \
   nodejs git git-lfs ed cmake rpm-build gcc-c++ krb5-devel go postgresql-server \
   postgresql-contrib re2 GraphicsMagick re2-devel sqlite-devel perl-Digest-SHA \
   perl-Image-ExifTool rsync
+sudo curl https://dl.min.io/server/minio/release/linux-amd64/minio --output /usr/local/bin/minio
+sudo chmod +x /usr/local/bin/minio
 ```
 
 You may need to install Redis 2.8 or newer manually.
@@ -184,13 +190,15 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 
 This is tested on CentOS 6.5:
 
-```
+```sh
 sudo yum install https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-6-x86_64/pgdg-centos10-10-2.noarch.rpm
 sudo yum install https://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 sudo yum install postgresql10-server postgresql10-devel libicu-devel git git-lfs cmake \
   gcc-c++ redis ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 \
   libstdc++.so.6 nodejs npm re2 re2-devel GraphicsMagick runit perl-Image-ExifTool \
   rsync
+sudo curl https://dl.min.io/server/minio/release/linux-amd64/minio --output /usr/local/bin/minio
+sudo chmod +x /usr/local/bin/minio
 
 bundle config build.pg --with-pg-config=/usr/pgsql-10/bin/pg_config
 # This example uses Ruby 2.6.3. Substitute with the current version if different.
@@ -217,13 +225,14 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 This was tested on OpenSUSE LEAP 42.1, and Tumbleweed (20161109)
 
 
-```
+```sh
 sudo zypper dup
-
 sudo zypper install libxslt-devel  postgresql postgresql-devel libpqxx-devel redis libicu-devel nodejs git git-lfs ed cmake \
         rpm-build gcc-c++ krb5-devel postgresql-server postgresql-contrib \
         libxml2-devel libxml2-devel-32bit findutils-locate re2 GraphicsMagick \
         runit exiftool rsync
+sudo curl https://dl.min.io/server/minio/release/linux-amd64/minio --output /usr/local/bin/minio
+sudo chmod +x /usr/local/bin/minio
 ```
 
 On leap 42.1 you also need:
@@ -253,9 +262,9 @@ sudo ln -s /usr/sbin/redis-server /usr/bin/redis-server
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
-```
+```sh
 sudo pkg install postgresql10-server postgresql10-contrib postgresql-libpqxx \
-redis go node icu krb5 gmake re2 GraphicsMagick p5-Image-ExifTool git-lfs
+redis go node icu krb5 gmake re2 GraphicsMagick p5-Image-ExifTool git-lfs minio
 ```
 
 ### Windows 10
