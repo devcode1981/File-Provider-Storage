@@ -223,6 +223,11 @@ module GDK
       p.config_file { config.gdk_root.join("gitaly", "praefect.config.toml") }
       p.enabled { true }
       p.internal_socket_dir { config.gdk_root.join('tmp', 'praefect') }
+      p.database do |d|
+        d.host { config.postgresql.dir }
+        d.dbname { 'praefect_development' }
+        d.sslmode { 'disable' }
+      end
       p.node_count { 1 }
       p.nodes do
         config_array!(config.praefect.node_count) do |n, i|

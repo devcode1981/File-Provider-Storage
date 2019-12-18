@@ -198,6 +198,7 @@ update: stop-foreman ensure-databases-running unlock-dependency-installers gitla
 stop-foreman:
 	@pkill foreman || true
 
+.PHONY: ensure-databases-running
 ensure-databases-running: Procfile postgresql/data
 	@gdk start rails-migration-dependencies
 
@@ -266,14 +267,18 @@ redis/redis.conf: redis/redis.conf.example
 		-e "s|/home/git|${gitlab_development_root}|g" \
 		"$<"
 
-postgresql: postgresql/data/.rails-seed
+postgresql: postgresql/data postgresql-seed-rails postgresql-seed-praefect
 
 postgresql/data:
 	${postgres_bin_dir}/initdb --locale=C -E utf-8 ${postgres_data_dir}
 
-postgresql/data/.rails-seed: postgresql/data ensure-databases-running
-	gdk psql ${postgres_dev_db} -c '\q' > /dev/null 2>&1 || support/bootstrap-rails
-	touch $@
+.PHONY: postgresql-seed-rails
+postgresql-seed-rails: ensure-databases-running
+	support/bootstrap-rails
+
+.PHONY: postgresql-seed-praefect
+postgresql-seed-praefect: ensure-databases-running
+	support/bootstrap-praefect
 
 postgresql/port:
 	./support/postgres-port ${postgres_dir} ${postgresql_port}
@@ -468,7 +473,7 @@ grafana/grafana.ini: grafana/grafana.ini.example
 		"$<"
 
 grafana/gdk-pg-created:
-	PATH=${postgres_bin_dir}:${PATH} support/create-grafana-db
+	support/create-grafana-db
 	touch $@
 
 grafana/gdk-data-source-created:
