@@ -168,3 +168,21 @@ When you add a new setting:
 1. Add it to `lib/gdk/config.rb`.
 1. Run `rake gdk.example.yml` to regenerate this file.
 1. Commit both files.
+
+## Webpack Settings
+
+The GitLab application exposes various configuration options for webpack via
+ENV variables. These can be modified to improve performance or enable debugging.
+
+These settings can be configured using [`env.runit`](../runit.md#modifying-environment-configuration-for-services).
+
+| Variable | Default | Description |
+| ------------- | ------- | ----------- |
+| DEV_SERVER_LIVERELOAD | true | Disables live reloading of frontend assets |
+| NO_COMPRESSION        | false | Disables compression of assets |
+| NO_SOURCEMAPS         | false | Disables generation of sourcemaps (reduces size of `main.chunk.js` by ~50%) |
+| WEBPACK_MEMORY_TEST   | false | Output the in-memory heap size upon compilation and exit |
+| WEBPACK_CACHE_PATH    | ./tmp/cache | Path string to temporary dir     |
+| WEBPACK_REPORT        | false       | Generates bundle analysis report |
+| WEBPACK_VENDOR_DLL    | false       | Reduce webpack-dev-server memory requirements when vendor bundle has been precompiled with `yarn webpack-vendor` |
+
