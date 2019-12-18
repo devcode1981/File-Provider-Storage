@@ -29,3 +29,8 @@ socket_path = "<%= config.gdk_root.join('praefect.socket') %>"
   address = "unix:<%= praefect_node[:address] %>"
   primary = <%= praefect_node[:primary] %>
 <% end %>
+
+[database]
+host = "<%= config.praefect.database.host %>"
+dbname = "<%= config.praefect.database.dbname %>"
+sslmode = "<%= config.praefect.database.sslmode %>"

@@ -3,20 +3,24 @@ require 'socket'
 require 'fileutils'
 
 require_relative '../lib/gdk/config'
+require_relative '../lib/gdk/postgresql'
 
 LOG_FILE = 'bootstrap-rails.log'.freeze
 
 def main
+  postgresql = GDK::PostgreSQL.new
+  abort 'Cannot connect to postgres' unless postgresql.ready?
+
+  exit if postgresql.db_exists?('gitlabhq_development')
+
   success = true
 
   begin
     FileUtils.rm_f(LOG_FILE)
 
-    system('gdk', 'start', 'rails-migration-dependencies')
-
     try_connect!(config.praefect? ? 'praefect' : 'gitaly')
     [
-      %w[support/wait-postgresql-ready support/exec-cd gitlab bundle exec rake db:create],
+      %w[support/exec-cd gitlab bundle exec rake db:create],
       %w[support/exec-cd gitlab bundle exec rake dev:setup]
     ].each do |cmd|
       success &&= system({ 'force' => 'yes', 'BOOTSTRAP' => '1' }, *cmd)

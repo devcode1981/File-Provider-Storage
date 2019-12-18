@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/gdk/postgresql'
+require_relative '../lib/gdk/config'
+
+def main
+  postgresql = GDK::PostgreSQL.new
+  abort 'postgres not ready' unless postgresql.ready?
+
+  config = GDK::Config.new
+  dbname = config.praefect.database.dbname
+
+  exit if postgresql.db_exists?(dbname)
+
+  unless postgresql.createdb(%W[--encoding=UTF8 --locale=C --echo #{dbname}])
+    abort 'createdb failed'
+  end
+end
+
+main

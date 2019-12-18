@@ -1,6 +1,9 @@
 #!/usr/bin/env ruby
+require_relative '../lib/gdk/postgresql'
 
 system(*%w[gdk start postgresql])
 
-createdb_status = system(*%W[support/wait-postgresql-ready createdb -h #{Dir.pwd}/postgresql grafana])
-exit createdb_status
+postgresql = GDK::PostgreSQL.new
+abort 'postgres not ready' unless postgresql.ready?
+
+abort 'createdb failed' unless postgresql.createdb(['grafana'])
