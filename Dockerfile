@@ -6,10 +6,16 @@ LABEL authors.maintainer "GDK contributors: https://gitlab.com/gitlab-org/gitlab
 
 RUN useradd --user-group --create-home gdk
 ENV DEBIAN_FRONTEND=noninteractive
+
+# Install packages
 COPY packages.txt /
 RUN apt-get update && apt-get install -y software-properties-common \
     && add-apt-repository ppa:git-core/ppa -y \
     && apt-get install -y $(sed -e 's/#.*//' /packages.txt)
+
+# Install minio
+RUN curl https://dl.min.io/server/minio/release/linux-amd64/minio > /usr/local/bin/minio \
+  && chmod +x /usr/local/bin/minio
 
 # stages for fetching remote content
 # highly cacheable
