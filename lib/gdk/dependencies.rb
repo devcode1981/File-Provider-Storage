@@ -37,8 +37,6 @@ module GDK
 
     class Checker
       EXPECTED_GIT_VERSION = '2.22'
-      EXPECTED_RUBY_VERSION = GitLabVersions.new.ruby_version.freeze
-      EXPECTED_BUNDLER_VERSION = GitLabVersions.new.bundler_version.freeze
       EXPECTED_GO_VERSION = '1.12'
       EXPECTED_YARN_VERSION = '1.12'
       EXPECTED_NODEJS_VERSION = '12.10'
@@ -77,7 +75,7 @@ module GDK
 
       def check_ruby_version
         actual = Gem::Version.new(RUBY_VERSION)
-        expected = Gem::Version.new(EXPECTED_RUBY_VERSION)
+        expected = Gem::Version.new(GitLabVersions.new.ruby_version)
 
         if actual < expected
           @error_messages << require_minimum_version('Ruby', actual, expected)
@@ -85,10 +83,10 @@ module GDK
       end
 
       def check_bundler_version
-        unless system("bundle _#{EXPECTED_BUNDLER_VERSION}_ --version >/dev/null 2>&1")
+        unless system("bundle _#{expected_bundler_version}_ --version >/dev/null 2>&1")
           @error_messages << <<~BUNDLER_VERSION_NOT_MET
-            Please install Bundler version #{EXPECTED_BUNDLER_VERSION}.
-            gem install bundler -v '= #{EXPECTED_BUNDLER_VERSION}'
+            Please install Bundler version #{expected_bundler_version}.
+            gem install bundler -v '= #{expected_bundler_version}'
           BUNDLER_VERSION_NOT_MET
         end
       end
@@ -175,6 +173,12 @@ module GDK
         else
           "#{message} #{minimum_version} or higher."
         end
+      end
+
+      private
+
+      def expected_bundler_version
+        @expected_bundler_version ||= GitLabVersions.new.bundler_version.freeze
       end
     end
   end
