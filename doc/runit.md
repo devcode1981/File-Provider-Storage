@@ -22,7 +22,7 @@ number of drawbacks in GDK:
 -  There is no good way to start / stop / restart individual processes
     in the Procfile. This is not so noticeable when you work with Ruby
     or JavaScript because of live code reload features, but for Go
-    programs (e.g. `gitaly`) this does not work well. There you really
+    programs (e.g. `gitaly`) this does not work well. There you really
     need to stop an old binary and start a new binary.
 
 ## Why Runit
@@ -37,7 +37,7 @@ macOS, systemd on Linux) is that:
 -   Runit works the same on macOS and Linux so we don't need to handle
     them separately
 -   Runit does not mind running next to the official OS supervisor
--   it is easy to run more than one Runit supervision tree (e.g. if you
+-   it is easy to run more than one Runit supervision tree (e.g. if you
     have multiple GDK installations)
 
 ## Solving the closed terminal window problem
@@ -89,6 +89,15 @@ If you want to remove a service `foo`:
 -   run `gdk stop foo`
 -   `rm services/foo`
 
+## Modifying environment configuration for services
+
 If you want to set environment variables for services, either edit the
-Procfile and restart the service, or create a file `env.runit` with
-contents such as `export myvar=myvalue`.
+Procfile and restart the service, or create a file `env.runit` in the root directory with contents such as `export myvar=myvalue`.
+
+Example:
+
+```bash
+export CUSTOMER_PORTAL_URL=http://localhost:5000
+export IS_EE=true
+export USE_WEB_SERVER=unicorn
+```
