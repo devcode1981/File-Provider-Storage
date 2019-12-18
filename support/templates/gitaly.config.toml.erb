@@ -8,11 +8,11 @@ bin_dir = "<%= config.gdk_root.join('gitaly', 'bin') %>"
 internal_socket_dir = "<%= internal_socket_dir %>"
 
 # # Optional: listen on a TCP socket. This is insecure (no authentication)
-# listen_addr = "localhost:9999"
-# tls_listen_addr = "localhost:8888
+# listen_addr = "<%= config.hostname %>:9999"
+# tls_listen_addr = "<%= config.hostname %>:8888
 
 # # Optional: export metrics via Prometheus
-# prometheus_listen_addr = "localhost:9236"
+# prometheus_listen_addr = "<%= config.hostname %>:9236"
 
 # # Optional: authenticate Gitaly requests using a shared secret
 # [auth]
