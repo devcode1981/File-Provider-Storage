@@ -43,15 +43,6 @@ gitlab/.git:
 
 gitlab-config: gitlab/config/gitlab.yml gitlab/config/database.yml gitlab/config/unicorn.rb gitlab/config/resque.yml gitlab/public/uploads gitlab/config/puma.rb
 
-auto_devops_enabled:
-	echo 'false' > $@
-
-auto_devops_gitlab_port:
-	awk -v min=20000 -v max=24999 'BEGIN{srand(); print int(min+rand()*(max-min+1))}' > $@
-
-auto_devops_registry_port: auto_devops_gitlab_port
-	expr ${auto_devops_gitlab_port} + 5000 > $@
-
 .PHONY: gitlab/config/gitlab.yml
 gitlab/config/gitlab.yml:
 	rake gitlab/config/gitlab.yml
@@ -506,7 +497,7 @@ registry-setup: registry/storage registry/config.yml localhost.crt
 registry/storage:
 	mkdir -p $@
 
-registry/config.yml: auto_devops_enabled
+registry/config.yml:
 	cp registry/config.yml.example $@
 	if ${auto_devops_enabled}; then \
 		protocol='https' gitlab_host=${hostname} gitlab_port=${port} registry_port=${registry_port} \
