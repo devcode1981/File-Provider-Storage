@@ -245,6 +245,12 @@ module GDK
     sshd do |s|
       s.enabled false
       s.bin { find_executable!('sshd') || '/usr/sbin/sshd' }
+      s.listen_address { config.hostname }
+      s.listen_port "2222"
+      s.user { config.username }
+      s.authorized_keys_file { config.gdk_root.join('.ssh', 'authorized_keys') }
+      s.host_key { config.gdk_root.join('openssh', 'ssh_host_rsa_key') }
+      s.additional_config ''
     end
 
     git do |g|

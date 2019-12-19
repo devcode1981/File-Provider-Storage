@@ -119,6 +119,11 @@ repositories_root: !ruby/object:Pathname
 sshd:
   enabled: false
   bin: "/usr/sbin/sshd"
+  user: git
+  listen_address: "127.0.0.1"
+  listen_port: "2222"
+  authorized_keys_file: /home/git/.ssh/authorized_keys
+  host_key: /home/git/openssh/ssh_host_rsa_key
 tracer:
   build_tags: tracer_static tracer_static_jaeger
   jaeger:
