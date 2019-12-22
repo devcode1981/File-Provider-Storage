@@ -75,7 +75,7 @@ omniauth:
 
 ## Credentials
 
-The following users are described in the [docker image documenation](https://hub.docker.com/r/jamedjo/test-saml-idp/#usage):
+The following users are described in the [docker image documentation](https://hub.docker.com/r/jamedjo/test-saml-idp/#usage):
 
 | Username | Password |
 | -------- | -------- |

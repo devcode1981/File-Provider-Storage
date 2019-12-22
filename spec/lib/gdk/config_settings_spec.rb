@@ -30,7 +30,7 @@ describe GDK::ConfigSettings do
   end
 
   describe '#array!' do
-    it 'creates an arrary of the desired number of configs' do
+    it 'creates an array of the desired number of configs' do
       expect(config.config_array!(3, &:nil).count).to eq(3)
     end
 

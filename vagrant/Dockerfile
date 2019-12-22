@@ -3,7 +3,7 @@ MAINTAINER GitLab.com
 
 ENV DEBIAN_FRONTEND noninteractive
 
-# 16.04 uses systemd instead of init - runlevels are kept for compability
+# 16.04 uses systemd instead of init - runlevels are kept for compatibility
 # Avoid ERROR: invoke-rc.d: could not determine current runlevel
 ENV RUNLEVEL 1
 # Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.

@@ -54,7 +54,7 @@ trim_trailing_whitespace = unset
 insert_final_newline = unset
 
 # ----------------------------------------------------------------------
-# This rule should always stay at the bottom for greatest precendence
+# This rule should always stay at the bottom for greatest precedence
 # ----------------------------------------------------------------------
 
 # Don't apply these rules to any nested projects
