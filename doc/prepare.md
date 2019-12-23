@@ -58,7 +58,7 @@ brew install yarn --ignore-dependencies
 brew link pkg-config
 brew pin node@12 icu4c readline
 bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
-if [ ${ZSH_VERSION} ]; then shell_file='~/.zshrc'; else shell_file='~/.bash_profile'; fi
+if [ ${ZSH_VERSION} ]; then shell_file="${HOME}/.zshrc"; else shell_file="${HOME}/.bash_profile"; fi
 echo 'export PATH="/usr/local/opt/postgresql@10/bin:/usr/local/opt/node@12/bin:$PATH"' >> ${shell_file}
 echo 'export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"' >> ${shell_file}
 source ${shell_file}
@@ -72,7 +72,7 @@ brew cask install google-chrome chromedriver
 ```
 sudo port install git git-lfs redis libiconv postgresql10-server icu pkgconfig cmake nodejs12 go openssl npm5 yarn coreutils re2 GraphicsMagick runit exiftool minio
 bundle config build.eventmachine --with-cppflags=-I/opt/local/include/openssl
-if [ ${ZSH_VERSION} ]; then shell_file='~/.zshrc'; else shell_file='~/.bash_profile'; fi
+if [ ${ZSH_VERSION} ]; then shell_file="${HOME}/.zshrc"; else shell_file="${HOME}/.bash_profile"; fi
 echo 'export PATH=/opt/local/lib/postgresql10/bin/:$PATH' >> ${shell_file}
 source ${shell_file}
 ```
