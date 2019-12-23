@@ -508,7 +508,7 @@ You can find and delete any unused load balancers following these steps:
 
 ### Unused Persistent Disks
 
-When creating a new GKE cluster it will also provision peristent disks in your
+When creating a new GKE cluster it will also provision persistent disks in your
 GCP project. Because persistent disks have a fixed limit per GCP project and
 also because they cost money it is important that we periodically clean up all
 the unused orphaned persistent disks from deleted clusters.

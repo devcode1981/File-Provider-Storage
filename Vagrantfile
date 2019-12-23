@@ -133,9 +133,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     override.disksize.size = "15GB"
     if Vagrant::Util::Platform.windows?
       # thanks to https://github.com/rdsubhas/vagrant-faster/blob/master/lib/vagrant/faster/action.rb
-      # current bug in Facter requires detecting Windows core count seperately - https://tickets.puppetlabs.com/browse/FACT-959
+      # current bug in Facter requires detecting Windows core count separately - https://tickets.puppetlabs.com/browse/FACT-959
       cpus = `wmic cpu Get NumberOfCores`.split[1].to_i
-      # current bug in Facter requires detecting Windows memory seperately - https://tickets.puppetlabs.com/browse/FACT-960
+      # current bug in Facter requires detecting Windows memory separately - https://tickets.puppetlabs.com/browse/FACT-960
       mem = `wmic computersystem Get TotalPhysicalMemory`.split[1].to_i / 1024 / 1024
       enable_shares(override, false)
     else

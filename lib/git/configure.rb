@@ -18,7 +18,7 @@ module Git
 
         set_config(rec.key, input)
 
-        puts # New line to seperate each recommendation
+        puts # New line to separate each recommendation
       end
     end
 
