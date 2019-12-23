@@ -10,7 +10,6 @@ redis: exec redis-server <%= config.gdk_root.join('redis', 'redis.conf') %>
 postgresql: exec support/postgresql-signal-wrapper <%= config.postgresql.bin %> -D <%= config.postgresql.data_dir %> -k <%= config.postgresql.dir %> -h ''
 #postgresql-replica: exec support/postgresql-signal-wrapper <%= config.postgresql.bin %> -D <%= config.postgresql.replica_dir.join('data') %> -k <%= config.postgresql.replica_dir %> -h ''
 #openldap: exec support/exec-cd gitlab-openldap libexec/slapd -F slapd.d -d2 -h "ldap://<%= config.hostname %>:3890"
-#storage-check: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/exec-cd gitlab bin/storage_check -t unix://<%= config.gdk_root.join('gitlab.socket') %>
 
 # Geo
 #
