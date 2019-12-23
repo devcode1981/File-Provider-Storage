@@ -169,10 +169,10 @@ symlink-gitlab-docs:
 gitlab-docs-update: gitlab-docs/.git/pull gitlab-docs-bundle gitlab-docs/nanoc.yaml
 
 self-update: unlock-dependency-installers
-	$(Q)echo
-	$(Q)echo "-------------------------------------------------------"
-	$(Q)echo "Running self-update on GDK"
-	$(Q)echo "-------------------------------------------------------"
+	@echo
+	@echo "-------------------------------------------------------"
+	@echo "Running self-update on GDK"
+	@echo "-------------------------------------------------------"
 	$(Q)cd ${gitlab_development_root} && \
 		git stash ${QQ} && \
 		git checkout master ${QQ} && \
@@ -197,10 +197,10 @@ gitlab-update: ensure-databases-running postgresql gitlab/.git/pull gitlab-setup
 gitlab-shell-update: gitlab-shell/.git/pull gitlab-shell-setup
 
 gitlab/.git/pull:
-	$(Q)echo
-	$(Q)echo "-------------------------------------------------------"
-	$(Q)echo "Updating gitlab to current master.."
-	$(Q)echo "-------------------------------------------------------"
+	@echo
+	@echo "-------------------------------------------------------"
+	@echo "Updating gitlab to current master.."
+	@echo "-------------------------------------------------------"
 	$(Q)cd ${gitlab_development_root}/gitlab && \
 		git checkout -- Gemfile.lock db/schema.rb ${QQ} && \
 		git stash ${QQ} && \
@@ -208,20 +208,20 @@ gitlab/.git/pull:
 		git pull --ff-only ${QQ}
 
 gitlab-shell/.git/pull:
-	$(Q)echo
-	$(Q)echo "-------------------------------------------------------"
-	$(Q)echo "Updating gitlab-shell to ${gitlab_shell_version}.."
-	$(Q)echo "-------------------------------------------------------"
+	@echo
+	@echo "-------------------------------------------------------"
+	@echo "Updating gitlab-shell to ${gitlab_shell_version}.."
+	@echo "-------------------------------------------------------"
 	$(Q)support/component-git-update gitlab_shell "${gitlab_development_root}/gitlab-shell" "${gitlab_shell_version}"
 
 gitaly-update: gitaly/.git/pull gitaly-clean gitaly/bin/gitaly
 
 .PHONY: gitaly/.git/pull
 gitaly/.git/pull: ${gitaly_clone_dir}/.git
-	$(Q)echo
-	$(Q)echo "-------------------------------------------------------"
-	$(Q)echo "Updating gitaly to ${gitaly_version}.."
-	$(Q)echo "-------------------------------------------------------"
+	@echo
+	@echo "-------------------------------------------------------"
+	@echo "Updating gitaly to ${gitaly_version}.."
+	@echo "-------------------------------------------------------"
 	$(Q)support/component-git-update gitaly "${gitaly_clone_dir}" "${gitaly_version}" ${QQ}
 
 gitaly-clean:
@@ -237,21 +237,21 @@ gitaly/bin/gitaly: ${gitaly_clone_dir}/.git
 	$(Q)ln -sf ${gitaly_assembly_dir}/ruby ${gitlab_development_root}/gitaly/ruby
 
 support-setup: Procfile redis gitaly-setup jaeger-setup postgresql openssh-setup nginx-setup registry-setup elasticsearch-setup
-	$(Q)echo
-	$(Q)echo "-------------------------------------------------------"
-	$(Q)echo "Setup finished!"
-	$(Q)echo "-------------------------------------------------------"
-	$(Q)echo
+	@echo
+	@echo "-------------------------------------------------------"
+	@echo "Setup finished!"
+	@echo "-------------------------------------------------------"
+	@echo
 	$(Q)cat HELP
 
 ifeq ($(auto_devops_enabled),true)
-	$(Q)echo
-	$(Q)echo "-------------------------------------------------------"
-	$(Q)echo "Tunnel URLs"
-	$(Q)echo
-	$(Q)echo "GitLab: https://${hostname}"
-	$(Q)echo "Registry: https://${registry_host}"
-	$(Q)echo "-------------------------------------------------------"
+	@echo
+	@echo "-------------------------------------------------------"
+	@echo "Tunnel URLs"
+	@echo
+	@echo "GitLab: https://${hostname}"
+	@echo "Registry: https://${registry_host}"
+	@echo "-------------------------------------------------------"
 endif
 
 gdk.yml:
@@ -427,10 +427,10 @@ ${gitlab_workhorse_clone_dir}/.git:
 	$(Q)git clone --quiet --branch "${workhorse_version}" ${git_depth_param} ${gitlab_workhorse_repo} ${gitlab_workhorse_clone_dir}
 
 gitlab-workhorse/.git/pull:
-	$(Q)echo
-	$(Q)echo "-------------------------------------------------------"
-	$(Q)echo "Updating gitlab-workhorse to ${workhorse_version}.."
-	$(Q)echo "-------------------------------------------------------"
+	@echo
+	@echo "-------------------------------------------------------"
+	@echo "Updating gitlab-workhorse to ${workhorse_version}.."
+	@echo "-------------------------------------------------------"
 	$(Q)support/component-git-update workhorse "${gitlab_workhorse_clone_dir}" "${workhorse_version}"
 
 gitlab-pages-setup: gitlab-pages/bin/gitlab-pages
@@ -450,10 +450,10 @@ ${gitlab_pages_clone_dir}/.git:
 	$(Q)git clone --quiet --branch "${pages_version}" ${git_depth_param} ${gitlab_pages_repo} ${gitlab_pages_clone_dir} ${QQ}
 
 gitlab-pages/.git/pull:
-	$(Q)echo
-	$(Q)echo "-------------------------------------------------------"
-	$(Q)echo "Updating gitlab-pages to ${pages_version}.."
-	$(Q)echo "-------------------------------------------------------"
+	@echo
+	@echo "-------------------------------------------------------"
+	@echo "Updating gitlab-pages to ${pages_version}.."
+	@echo "-------------------------------------------------------"
 	$(Q)support/component-git-update gitlab_pages "${gitlab_pages_clone_dir}" "${pages_version}"
 
 influxdb-setup: influxdb/influxdb.conf influxdb/bin/influxd influxdb/meta/meta.db
@@ -557,10 +557,10 @@ gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer: gitlab-elasticsea
 
 .PHONY: gitlab-elasticsearch-indexer/.git/pull
 gitlab-elasticsearch-indexer/.git/pull: gitlab-elasticsearch-indexer/.git
-	$(Q)echo
-	$(Q)echo "-------------------------------------------------------"
-	$(Q)echo "Updating gitlab-elasticsearch-indexer to ${gitlab_elasticsearch_indexer_version}.."
-	$(Q)echo "-------------------------------------------------------"
+	@echo
+	@echo "-------------------------------------------------------"
+	@echo "Updating gitlab-elasticsearch-indexer to ${gitlab_elasticsearch_indexer_version}.."
+	@echo "-------------------------------------------------------"
 	$(Q)support/component-git-update gitlab_elasticsearch_indexer gitlab-elasticsearch-indexer "${gitlab_elasticsearch_indexer_version}"
 
 object-storage-setup: minio/data/lfs-objects minio/data/artifacts minio/data/uploads minio/data/packages
@@ -585,10 +585,10 @@ jaeger-artifacts/jaeger-${jaeger_version}.tar.gz:
 	$(Q)find jaeger-artifacts ! -path "$@" -type f -exec rm -f {} + -print
 
 jaeger/jaeger-${jaeger_version}/jaeger-all-in-one: jaeger-artifacts/jaeger-${jaeger_version}.tar.gz
-	$(Q)echo
-	$(Q)echo "-------------------------------------------------------"
-	$(Q)echo "Installing jaeger ${jaeger_version}.."
-	$(Q)echo "-------------------------------------------------------"
+	@echo
+	@echo "-------------------------------------------------------"
+	@echo "Installing jaeger ${jaeger_version}.."
+	@echo "-------------------------------------------------------"
 
 	$(Q)mkdir -p "jaeger/jaeger-${jaeger_version}"
 	$(Q)tar -xf "$<" -C "jaeger/jaeger-${jaeger_version}" --strip-components 1
