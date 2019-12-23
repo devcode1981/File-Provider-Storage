@@ -2,17 +2,17 @@ development:
   adapter: postgresql
   encoding: unicode
   database: gitlabhq_development
-  host: /home/git/postgresql
-  port: 5432
+  host: <%= config.postgresql.dir %>
+  port: <%= config.postgresql.port %>
   pool: 10
   load_balancing:
     hosts:
-      - /home/git/postgresql
+      - <%= config.postgresql.dir %>
 
 test: &test
   adapter: postgresql
   encoding: unicode
   database: gitlabhq_test
-  host: /home/git/postgresql
-  port: 5432
+  host: <%= config.postgresql.dir %>
+  port: <%= config.postgresql.port %>
   pool: 10
