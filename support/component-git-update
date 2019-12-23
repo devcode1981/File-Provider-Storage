@@ -17,14 +17,19 @@ def main(component, worktree, revision)
   Dir.chdir(worktree)
 
   [
-    %w[git stash],
-    %w[git fetch --all --tags --prune],
-    %W[git checkout #{revision}]
-  ].each do |cmd|
-    next if system(*cmd)
+    [%w[git stash], false],
+    [%w[git fetch --all --tags --prune], true],
+    [%W[git checkout #{revision}], true]
+  ].each do |cmd, print_stdout|
+    out = print_stdout ? $stdout : :close
+    next if system(*cmd, out: out)
 
     abort "command failed: #{cmd.join(' ')}"
   end
+end
+
+def debug?
+  ENV.fetch('GDK_DEBUG', 'false') == 'true'
 end
 
 if ARGV.count!= 3

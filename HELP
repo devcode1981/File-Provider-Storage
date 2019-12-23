@@ -1,17 +1,17 @@
 # GitLab Development Kit cheat sheet
 
-gdk start                     # Start everything
-gdk start redis postgresql    # Start specific services
-gdk stop                      # Stop all services and unload Runit
-gdk stop redis postgresql     # Stop specific service
-gdk status                    # See status of all services
-gdk restart                   # Restart everything
-gdk restart redis postgresql  # Restart specific services
+gdk start                                 # Start everything
+gdk start redis postgresql                # Start specific services
+gdk stop                                  # Stop all services and unload Runit
+gdk stop redis postgresql                 # Stop specific service
+gdk status                                # See status of all services
+gdk restart                               # Restart everything
+gdk restart redis postgresql              # Restart specific services
 
-gdk tail                   # Tail all logs
-gdk tail redis postgresql  # Tail specific logs
+gdk tail                                  # Tail all logs
+gdk tail redis postgresql                 # Tail specific logs
 
-gdk thin           # Run rails web server with thin in foreground
+gdk thin                                  # Run rails web server with thin in foreground
 
 gdk install gitlab_repo=https://my-fork   # Install everything
 gdk update                                # Pull application changes from Git
