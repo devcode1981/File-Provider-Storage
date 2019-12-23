@@ -22,7 +22,7 @@ tracer_build_tags = tracer_static tracer_static_jaeger
 
 # Borrowed from https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Makefile#n87
 #
-ifeq ($(GDK_DEBUG),true)
+ifeq ($(gdk_debug),true)
 	Q =
 	QQ =
 else

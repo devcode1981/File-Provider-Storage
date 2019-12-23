@@ -29,6 +29,7 @@ module GDK
     gdk_root { Pathname.new(__dir__).parent.parent }
 
     gdk do |g|
+      g.debug false
       g.overwrite_changes false
       g.ignore_foreman { read!('.ignore-foreman') || false }
     end
