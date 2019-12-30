@@ -34,7 +34,7 @@ update() {
   gdk start
 }
 
-run() {
+start() {
   cd ${GDK_CHECKOUT_PATH}
   killall node || true
   echo "> Starting up GDK.."
