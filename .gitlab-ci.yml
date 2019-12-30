@@ -166,7 +166,7 @@ verify:install:
     expire_in: 2 days
     when: always
   script:
-    - support/ci/test_install
+    - support/ci/verify_install
   retry: 1
 
 verify:update:
@@ -181,5 +181,5 @@ verify:update:
     expire_in: 2 days
     when: always
   script:
-    - support/ci/test_update
+    - support/ci/verify_update
   retry: 1
