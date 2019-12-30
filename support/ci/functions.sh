@@ -28,7 +28,9 @@ update() {
   cd ${GDK_CHECKOUT_PATH}
   netstat -lpt
   echo "> Updating GDK.."
-  IGNORE_INSTALL_WARNINGS=true gdk update
+  # we use `make update` instead of `gdk update` to ensure the working directory
+  # is not reset to master.
+  IGNORE_INSTALL_WARNINGS=true make update
   support/set-gitlab-upstream
   gdk stop || true
   gdk start
