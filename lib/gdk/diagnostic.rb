@@ -48,8 +48,15 @@ module GDK
       end
 
       def detail
+        messages = @checker.error_messages.join("\n").chomp
+        return if messages.empty?
+
         <<~MESSAGE
-          #{@checker.error_messages.join("\n")}
+          #{messages}
+
+          For details on how to install, please visit:
+
+          https://gitlab.com/gitlab-org/gitlab-development-kit/blob/master/doc/prepare.md#platform-specific-setup
         MESSAGE
       end
     end
@@ -91,7 +98,8 @@ module GDK
 
       def detail
         <<~MESSAGE
-          The following services are not running.
+          The following services are not running:
+
           #{@down_services.join("\n")}
         MESSAGE
       end
@@ -129,7 +137,7 @@ module GDK
         out.close
         err.close
 
-        @config_diff = out.string
+        @config_diff = out.string.chomp
       end
 
       def success?

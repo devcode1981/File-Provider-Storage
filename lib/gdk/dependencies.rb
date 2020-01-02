@@ -59,6 +59,7 @@ module GDK
 
         check_graphicsmagick_installed
         check_exiftool_installed
+        check_minio_installed
         check_runit_installed
       end
 
@@ -155,6 +156,12 @@ module GDK
         end
       end
 
+      def check_minio_installed
+        unless system("minio version >/dev/null 2>&1")
+          @error_messages << missing_dependency('MinIO')
+        end
+      end
+
       def check_runit_installed
         unless system("which runsvdir >/dev/null 2>&1")
           @error_messages << missing_dependency('Runit')
@@ -167,12 +174,8 @@ module GDK
 
       def missing_dependency(dependency, minimum_version: nil)
         message = "#{dependency} is not installed, please install #{dependency}"
-
-        if minimum_version.nil?
-          "#{message}."
-        else
-          "#{message} #{minimum_version} or higher."
-        end
+        message += "#{minimum_version} or higher" unless minimum_version.nil?
+        message + "."
       end
 
       private
