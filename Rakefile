@@ -58,15 +58,6 @@ task 'gdk-config.mk' => 'gdk-config.mk.erb' do |t|
   puts t.name # Print the filename, so make can include it
 end
 
-namespace :git do
-  desc 'Configure your Git with recommended settings'
-  task :configure, :global do |_t, args|
-    global = args[:global] == "true"
-
-    Git::Configure.new(global: global).run!
-  end
-end
-
 desc 'Generate nginx configuration'
 file 'nginx/conf/nginx.conf' => ['nginx/conf/nginx.conf.erb', GDK::Config::FILE] do |t|
   GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
