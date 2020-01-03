@@ -257,5 +257,10 @@ module GDK
     git do |g|
       g.bin { find_executable!('git') }
     end
+
+    runner do |r|
+      r.config_file { config.gdk_root.join('gitlab-runner-config.toml') }
+      r.enabled { read!(config.runner.config_file) || false }
+    end
   end
 end

@@ -117,7 +117,11 @@ can be found [here](https://docs.gitlab.com/runner/executors/).
 Each `register` invocation adds a section to the configuration file, so make
 sure you're referencing the same one each time.
 
-Finally, run `gitlab-runner --log-level debug run --config <path-to-gdk>/gitlab-runner-config.toml`
+Finally, rebuild your `Procfile` with `rm Procfile; make Procfile` or un-comment
+the line that starts with `runner:`. This will allow you to manage it along with
+your other GDK processes.
+
+Alternately, run `gitlab-runner --log-level debug run --config <path-to-gdk>/gitlab-runner-config.toml`
 to get a long-lived Runner process, using the configuration you created in the
 last step. It will stay in the foreground, outputting logs as it executes
 builds, so run it in its own terminal session.
