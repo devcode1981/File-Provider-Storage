@@ -32,13 +32,18 @@ update() {
   # is not reset to master.
   make update
   support/set-gitlab-upstream
-  gdk stop || true
-  gdk start
+  restart
 }
 
 start() {
   cd ${GDK_CHECKOUT_PATH}
   killall node || true
   echo "> Starting up GDK.."
+  gdk start
+}
+
+restart() {
+  cd ${GDK_CHECKOUT_PATH}
+  gdk stop || true
   gdk start
 }
