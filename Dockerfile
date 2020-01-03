@@ -52,7 +52,7 @@ RUN echo 'eval "$(rbenv init -)"' >> .bash_profile
 COPY --from=source-rbenv --chown=gdk /rbenv .rbenv
 COPY --from=source-ruby-build --chown=gdk /ruby-build .rbenv/plugins/ruby-build
 USER gdk
-RUN bash -l -c "rbenv install 2.6.3 && rbenv global 2.6.3"
+RUN bash -l -c "rbenv install 2.6.5 && rbenv global 2.6.5"
 
 # build final image
 FROM base AS release
