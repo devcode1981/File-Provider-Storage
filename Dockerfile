@@ -27,7 +27,7 @@ ARG RBENV_REVISION=v1.1.1
 RUN git clone --branch $RBENV_REVISION --depth 1 https://github.com/rbenv/rbenv
 
 FROM fetch AS source-ruby-build
-ARG RUBY_BUILD_REVISION=v20190423
+ARG RUBY_BUILD_REVISION=v20191225
 RUN git clone --branch $RUBY_BUILD_REVISION --depth 1 https://github.com/rbenv/ruby-build
 
 FROM fetch AS go
