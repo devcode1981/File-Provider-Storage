@@ -47,3 +47,8 @@ restart() {
   gdk stop || true
   gdk start
 }
+
+wait_for_boot() {
+  echo "> Waiting 90 secs to give GDK a chance to boot up.."
+  sleep 90
+}
