@@ -84,10 +84,18 @@ gitlab/public/uploads:
 	$(Q)mkdir $@
 
 .gitlab-bundle:
+	@echo
+	@echo "-------------------------------------------------------"
+	@echo "Installing Ruby gems.."
+	@echo "-------------------------------------------------------"
 	$(Q)cd ${gitlab_development_root}/gitlab && $(rails_bundle_install_cmd) ${QQ}
 	$(Q)touch $@
 
 .gitlab-yarn:
+	@echo
+	@echo "-------------------------------------------------------"
+	@echo "Installing Node packages.."
+	@echo "-------------------------------------------------------"
 	$(Q)cd ${gitlab_development_root}/gitlab && yarn install --pure-lockfile ${QQ}
 	$(Q)touch $@
 
@@ -191,6 +199,10 @@ ensure-databases-running: Procfile postgresql/data
 	$(Q)gdk start rails-migration-dependencies
 
 gitlab-update: ensure-databases-running postgresql gitlab/.git/pull gitlab-setup
+	@echo
+	@echo "-------------------------------------------------------"
+	@echo "Running Rails DB migrations.."
+	@echo "-------------------------------------------------------"
 	$(Q)cd ${gitlab_development_root}/gitlab && \
 		bundle exec rake db:migrate db:test:prepare
 
