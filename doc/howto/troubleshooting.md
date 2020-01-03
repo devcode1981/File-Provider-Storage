@@ -461,8 +461,8 @@ the `readline` library that may have been updated on your system. To fix
 the error, reinstall the Ruby interpreter. For example, for environments
 managed with:
 
-- [rbenv](https://github.com/rbenv/rbenv), run `rbenv install 2.6.3`.
-- [RVM](https://rvm.io), run `rvm reinstall ruby-2.6.3`.
+- [rbenv](https://github.com/rbenv/rbenv), run `rbenv install 2.6.5`.
+- [RVM](https://rvm.io), run `rvm reinstall ruby-2.6.5`.
 
 ## Delete non-existent migrations from the database
 

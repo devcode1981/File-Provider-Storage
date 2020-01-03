@@ -201,9 +201,9 @@ sudo curl https://dl.min.io/server/minio/release/linux-amd64/minio --output /usr
 sudo chmod +x /usr/local/bin/minio
 
 bundle config build.pg --with-pg-config=/usr/pgsql-10/bin/pg_config
-# This example uses Ruby 2.6.3. Substitute with the current version if different.
-sudo rvm install 2.6.3
-sudo rvm use 2.6.3
+# This example uses Ruby 2.6.5. Substitute with the current version if different.
+sudo rvm install 2.6.5
+sudo rvm use 2.6.5
 #Ensure your user is in rvm group
 sudo usermod -a -G rvm <username>
 #add iptables exceptions, or sudo service stop iptables
@@ -313,9 +313,9 @@ sudo make install
 Install the current `gitlab` Ruby version using [RVM](https://rvm.io/):
 
 ```
-# This example uses Ruby 2.6.3. Substitute with the current version if different.
-rvm install 2.6.3
-rvm use 2.6.3
+# This example uses Ruby 2.6.5. Substitute with the current version if different.
+rvm install 2.6.5
+rvm use 2.6.5
 ```
 
 Install yarn
