@@ -105,19 +105,32 @@ module Runit
   end
 
   def self.stop
+    GDK::Output.notice "Shutting all services: "
+
     # The first stop attempt may fail; ignore its return value.
     stopped = false
+
     2.times do
       stopped = sv('force-stop', [])
+
       break if stopped
-      puts 'GDK: retrying stop'
+
+      GDK::Output.notice 'retrying stop'
     end
-    abort 'stop failed' unless stopped
+
+    unless stopped
+      GDK::Output.error 'stop failed'
+
+      abort
+    end
 
     # Unload runsvdir: this is safe because we have just stopped all services.
     pid = runsvdir_pid(runsvdir_base_args)
-    puts "Shutting down runsvdir (pid #{pid})"
+
+    GDK::Output.notice "Shutting down runsvdir (pid #{pid})"
     Process.kill('HUP', pid)
+
+    GDK::Output.success "All services are shutdown!"
   end
 
   def self.sv(cmd, services)
@@ -141,14 +154,20 @@ module Runit
     return unless glob
 
     if glob.include?('/')
-      abort "invalid service shortcut: #{svc} -> #{glob}"
+      GDK::Output.error  "invalid service shortcut: #{svc} -> #{glob}"
+
+      abort
     end
 
     Dir[File.join('./services', glob)]
   end
 
   def self.wait_runsv!(dir)
-    abort "unknown runit service: #{dir}" unless File.directory?(dir)
+    unless File.directory?(dir)
+      GDK::Output.error "unknown runit service: #{dir}"
+
+      abort
+    end
 
     50.times do
       begin
@@ -160,7 +179,9 @@ module Runit
       return
     end
 
-    abort "timeout waiting for runsv in #{dir}"
+    GDK::Output.error "timeout waiting for runsv in #{dir}"
+
+    abort
   end
 
   def self.tail(services)
@@ -207,7 +228,9 @@ module Runit
     return unless glob
 
     if glob.include?('/')
-      abort "invalid service shortcut: #{svc} -> #{glob}"
+      GDK::Output.error "invalid service shortcut: #{svc} -> #{glob}"
+
+      abort
     end
 
     Dir[File.join('./log', glob, 'current')]

@@ -3,6 +3,7 @@
 # This file is loaded by the 'gdk' command in the gem. This file is NOT
 # part of the gitlab-development-kit gem so that we can iterate faster.
 
+require_relative 'gdk/output'
 require_relative 'gdk/env'
 require_relative 'gdk/config'
 require_relative 'gdk/command'
@@ -107,7 +108,7 @@ module GDK
       puts File.read(File.join($gdk_root, 'HELP'))
       true
     else
-      puts "Usage: #{PROGNAME} start|status|stop|restart|init|install|update|reconfigure|tail|psql|redis-cli|diff-config|config|doctor|version|help [ARGS...]"
+      GDK::Output.notice "Usage: #{PROGNAME} start|status|stop|restart|init|install|update|reconfigure|tail|psql|redis-cli|diff-config|config|doctor|version|help [ARGS...]"
       false
     end
   end

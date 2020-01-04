@@ -18,7 +18,7 @@ module GDK
         sleep 1
       end
 
-      puts last_error
+      GDK::Output.error last_error
       false
     end
 
