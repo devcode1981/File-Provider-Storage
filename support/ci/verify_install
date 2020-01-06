@@ -7,7 +7,6 @@ source ${parent_path}/functions.sh
 init
 checkout ${CI_COMMIT_SHA}
 install
-run &
-echo "> Waiting 90 secs to give GDK a chance to boot up.."
-sleep 90
+start
+wait_for_boot
 ${parent_path}/test_url

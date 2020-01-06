@@ -20,7 +20,7 @@ install() {
   cd ${GDK_CHECKOUT_PATH}
   netstat -lpt
   echo "> Installing GDK.."
-  IGNORE_INSTALL_WARNINGS=true gdk install shallow_clone=true
+  gdk install shallow_clone=true
   support/set-gitlab-upstream
 }
 
@@ -28,15 +28,27 @@ update() {
   cd ${GDK_CHECKOUT_PATH}
   netstat -lpt
   echo "> Updating GDK.."
-  IGNORE_INSTALL_WARNINGS=true gdk update
+  # we use `make update` instead of `gdk update` to ensure the working directory
+  # is not reset to master.
+  make update
   support/set-gitlab-upstream
-  gdk stop || true
-  gdk start
+  restart
 }
 
-run() {
+start() {
   cd ${GDK_CHECKOUT_PATH}
   killall node || true
   echo "> Starting up GDK.."
   gdk start
+}
+
+restart() {
+  cd ${GDK_CHECKOUT_PATH}
+  gdk stop || true
+  gdk start
+}
+
+wait_for_boot() {
+  echo "> Waiting 90 secs to give GDK a chance to boot up.."
+  sleep 90
 }

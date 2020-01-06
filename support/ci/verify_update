@@ -1,0 +1,25 @@
+#!/bin/bash -ex
+
+parent_path=$(dirname $0)
+
+source ${parent_path}/functions.sh
+
+init
+
+# test GDK install
+checkout "master"
+install
+start
+wait_for_boot
+${parent_path}/test_url
+
+# test GDK self-update
+checkout ${CI_COMMIT_SHA}
+restart
+wait_for_boot
+${parent_path}/test_url
+
+# test GDK components update
+update
+wait_for_boot
+${parent_path}/test_url
