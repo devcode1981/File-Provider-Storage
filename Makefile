@@ -55,11 +55,9 @@ gitlab-config: gitlab/config/gitlab.yml gitlab/config/database.yml gitlab/config
 gitlab/config/gitlab.yml:
 	$(Q)rake gitlab/config/gitlab.yml
 
-gitlab/config/database.yml: database.yml.example
-	$(Q)bin/safe-sed "$@" \
-		-e "s|/home/git|${gitlab_development_root}|g" \
-		-e "s|5432|${postgresql_port}|" \
-		"$<"
+.PHONY: gitlab/config/database.yml
+gitlab/config/database.yml:
+	$(Q)rake $@
 
 # Versions older than GitLab 11.5 won't have this file
 gitlab/config/puma.example.development.rb:
@@ -614,7 +612,6 @@ clean-config:
 touch-examples:
 	$(Q)touch \
 	Procfile.erb \
-	database.yml.example \
 	database_geo.yml.example \
 	gitlab-shell/config.yml.example \
 	gitlab-workhorse/config.toml.example \
