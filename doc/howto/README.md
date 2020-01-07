@@ -43,3 +43,4 @@ to learn how to develop GitLab CE.
 - [Debugging with Pry](pry.md)
 - [Asset Proxy / Camo Server](asset_proxy.md)
 - [Email](email.md)
+- [Dependency Proxy](dependency_proxy.md)
