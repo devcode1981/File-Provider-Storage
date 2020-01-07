@@ -205,6 +205,9 @@ module GDK
       p.dir { config.gdk_root.join('postgresql') }
       p.data_dir { config.postgresql.dir.join('data') }
       p.replica_dir { config.gdk_root.join('postgresql-replica') }
+      p.replica do |r|
+        r.enabled { false }
+      end
       p.geo do |g|
         g.port { read!('postgresql_geo_port') || 5432 }
         g.dir { config.gdk_root.join('postgresql-geo') }
@@ -262,6 +265,22 @@ module GDK
     runner do |r|
       r.config_file { config.gdk_root.join('gitlab-runner-config.toml') }
       r.enabled { read!(config.runner.config_file) || false }
+    end
+
+    influxdb do |i|
+      i.enabled { false }
+    end
+
+    grafana do |g|
+      g.enabled { false }
+    end
+
+    prometheus do |p|
+      p.enabled { false }
+    end
+
+    openldap do |o|
+      o.enabled { false }
     end
   end
 end
