@@ -104,11 +104,10 @@ module GDK
       GDK::Command::Doctor.new.run
       true
     when 'help'
-      GDK::Logo.print
-      puts File.read(File.join($gdk_root, 'HELP'))
+      GDK::Command::Help.new.run
       true
     else
-      GDK::Output.notice "Usage: #{PROGNAME} start|status|stop|restart|init|install|update|reconfigure|tail|psql|redis-cli|diff-config|config|doctor|version|help [ARGS...]"
+      GDK::Command::Help.new.run
       false
     end
   end
