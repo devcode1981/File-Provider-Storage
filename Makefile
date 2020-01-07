@@ -2,6 +2,9 @@
 
 SHELL = /bin/bash
 
+# Speed up Go module downloads
+export GOPROXY ?= https://proxy.golang.org
+
 # Generate a Makefile from Ruby and include it
 include $(shell rake gdk-config.mk)
 
