@@ -8,8 +8,8 @@
 redis: exec redis-server <%= config.gdk_root.join('redis', 'redis.conf') %>
 <%= '#' unless config.object_store? %>minio: exec env MINIO_REGION=gdk MINIO_ACCESS_KEY=minio MINIO_SECRET_KEY=gdk-minio minio server -C minio/config --address "<%= config.hostname %>:<%= config.object_store.port %>" --compat minio/data
 postgresql: exec support/postgresql-signal-wrapper <%= config.postgresql.bin %> -D <%= config.postgresql.data_dir %> -k <%= config.postgresql.dir %> -h ''
-#postgresql-replica: exec support/postgresql-signal-wrapper <%= config.postgresql.bin %> -D <%= config.postgresql.replica_dir.join('data') %> -k <%= config.postgresql.replica_dir %> -h ''
-#openldap: exec support/exec-cd gitlab-openldap libexec/slapd -F slapd.d -d2 -h "ldap://<%= config.hostname %>:3890"
+<%= '#' unless config.postgresql.replica? %>postgresql-replica: exec support/postgresql-signal-wrapper <%= config.postgresql.bin %> -D <%= config.postgresql.replica_dir.join('data') %> -k <%= config.postgresql.replica_dir %> -h ''
+<%= '#' unless config.openldap? %>openldap: exec support/exec-cd gitlab-openldap libexec/slapd -F slapd.d -d2 -h "ldap://<%= config.hostname %>:3890"
 
 # Geo
 #
@@ -42,9 +42,9 @@ rails-web: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$rela
 
 # Monitoring and tracing
 #
-#influxdb: exec influxdb/bin/influxd -config influxdb/influxdb.conf
-#grafana: exec support/exec-cd grafana bin/grafana-server -config grafana.ini
-#prometheus: exec docker run --net host -p 9090:9090 -v <%= config.gdk_root.join('prometheus', 'prometheus.yml') %>:/etc/prometheus/prometheus.yml prom/prometheus:v2.8.1
+<%= '#' unless config.influxdb? %>influxdb: exec influxdb/bin/influxd -config influxdb/influxdb.conf
+<%= '#' unless config.grafana? %>grafana: exec support/exec-cd grafana bin/grafana-server -config grafana.ini
+<%= '#' unless config.prometheus? %>prometheus: exec docker run --net host -p 9090:9090 -v <%= config.gdk_root.join('prometheus', 'prometheus.yml') %>:/etc/prometheus/prometheus.yml prom/prometheus:v2.8.1
 <%= '#' unless config.tracer.jaeger? %>jaeger: exec jaeger/jaeger-<%= config.tracer.jaeger.version %>/jaeger-all-in-one --memory.max-traces 512
 
 # Additional services
