@@ -53,7 +53,7 @@ We are using PostgreSQL 10 in the following example. If you want to use another 
 | We recommend manual installation of Node.js 12.10 instead of using Homebrew to avoid breaking your development setup when you run `brew upgrade`. Install Node.js 12.10 [manually](https://nodejs.org/en/download/) or use a tool like [NVM](https://github.com/creationix/nvm). If you want to use Homebrew, you can prevent it from upgrading the current Node.js formula by pinning it with `brew pin node@12`. |
 
 ```
-brew install git git-lfs redis postgresql@10 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@12 gpg runit icu4c exiftool minio
+brew install git git-lfs redis postgresql@10 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@12 gpg runit icu4c exiftool minio/stable/minio
 brew install yarn --ignore-dependencies
 brew link pkg-config
 brew pin node@12 icu4c readline
