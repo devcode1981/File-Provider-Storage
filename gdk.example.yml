@@ -13,6 +13,7 @@ gdk:
   debug: false
   ignore_foreman: false
   overwrite_changes: false
+  ask_to_restart_after_update: true
 gdk_root: !ruby/object:Pathname
   path: "/home/git/gdk"
 geo:

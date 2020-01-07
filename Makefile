@@ -1,5 +1,7 @@
 .NOTPARALLEL:
 
+SHELL = /bin/bash
+
 # Generate a Makefile from Ruby and include it
 include $(shell rake gdk-config.mk)
 
@@ -179,7 +181,7 @@ self-update: unlock-dependency-installers
 
 # Update gitlab, gitlab-shell, gitlab-workhorse, gitlab-pages and gitaly
 # Pull gitlab directory first since dependencies are linked from there.
-update: stop-foreman ensure-databases-running unlock-dependency-installers gitlab/.git/pull gitlab-shell-update gitlab-workhorse-update gitlab-pages-update gitaly-update gitlab-update gitlab-elasticsearch-indexer-update
+update: stop-foreman ensure-databases-running unlock-dependency-installers gitlab/.git/pull gitlab-shell-update gitlab-workhorse-update gitlab-pages-update gitaly-update gitlab-update gitlab-elasticsearch-indexer-update ask-to-restart
 
 stop-foreman:
 	$(Q)pkill foreman || true
@@ -650,3 +652,9 @@ install-eclint:
 	$(Q)(command -v eclint > /dev/null) || \
 	((command -v npm > /dev/null) && npm install -g eclint) || \
 	((command -v yarn > /dev/null) && yarn global add eclint)
+
+.PHONY: ask-to-restart
+ask-to-restart:
+	@echo
+	$(Q)support/ask-to-restart
+	@echo
