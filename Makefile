@@ -280,7 +280,7 @@ redis/redis.conf: redis/redis.conf.example
 		-e "s|/home/git|${gitlab_development_root}|g" \
 		"$<"
 
-postgresql: postgresql/data postgresql-seed-rails postgresql-seed-praefect
+postgresql: postgresql/data postgresql/port postgresql-seed-rails postgresql-seed-praefect
 
 postgresql/data:
 	$(Q)${postgres_bin_dir}/initdb --locale=C -E utf-8 ${postgres_data_dir}
