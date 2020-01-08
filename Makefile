@@ -41,6 +41,72 @@ endif
 
 all: preflight-checks gitlab-setup gitlab-shell-setup gitlab-workhorse-setup gitlab-pages-setup support-setup gitaly-setup prom-setup object-storage-setup gitlab-elasticsearch-indexer-setup
 
+self-update: unlock-dependency-installers
+	@echo
+	@echo "-------------------------------------------------------"
+	@echo "Running self-update on GDK"
+	@echo "-------------------------------------------------------"
+	$(Q)cd ${gitlab_development_root} && \
+		git stash ${QQ} && \
+		git checkout master ${QQ} && \
+		git fetch ${QQ} && \
+		support/self-update-git-worktree ${QQ}
+
+# Update gitlab, gitlab-shell, gitlab-workhorse, gitlab-pages and gitaly
+# Pull gitlab directory first since dependencies are linked from there.
+update: stop-foreman ensure-databases-running unlock-dependency-installers gitlab/.git/pull gitlab-shell-update gitlab-workhorse-update gitlab-pages-update gitaly-update gitlab-update gitlab-elasticsearch-indexer-update
+
+clean-config:
+	$(Q)rm -rf \
+	gitlab/config/gitlab.yml \
+	gitlab/config/database.yml \
+	gitlab/config/unicorn.rb \
+	gitlab/config/puma.rb \
+	gitlab/config/resque.yml \
+	gitlab-shell/config.yml \
+	gitlab-shell/.gitlab_shell_secret \
+	redis/redis.conf \
+	.ruby-version \
+	Procfile \
+	gitlab-workhorse/config.toml \
+	gitaly/gitaly.config.toml \
+	nginx/conf/nginx.conf \
+	registry/config.yml \
+	jaeger
+
+touch-examples:
+	$(Q)touch \
+	Procfile.erb \
+	database_geo.yml.example \
+	gitlab-shell/config.yml.example \
+	gitlab-workhorse/config.toml.example \
+	gitlab/config/puma.example.development.rb \
+	gitlab/config/unicorn.rb.example.development \
+	grafana/grafana.ini.example \
+	influxdb/influxdb.conf.example \
+	redis/redis.conf.example \
+	redis/resque.yml.example \
+	registry/config.yml.example \
+	support/templates/*.erb
+
+unlock-dependency-installers:
+	$(Q)rm -f \
+	.gitlab-bundle \
+	.gitlab-shell-bundle \
+	.gitlab-yarn \
+	.gettext \
+
+gdk.yml:
+	$(Q)touch $@
+
+.PHONY: Procfile
+Procfile:
+	$(Q)rake $@
+
+.PHONY: stop-foreman
+stop-foreman:
+	$(Q)pkill foreman || true
+
 .PHONY: preflight-checks
 preflight-checks: rake
 	$(Q)rake $@
@@ -49,7 +115,33 @@ preflight-checks: rake
 rake:
 	$(Q)command -v $@ ${QQ} || gem install $@
 
+.PHONY: ensure-databases-running
+ensure-databases-running: Procfile postgresql/data
+	$(Q)gdk start rails-migration-dependencies
+
+##############################################################
+# GitLab
+##############################################################
+
 gitlab-setup: gitlab/.git .ruby-version gitlab-config .gitlab-bundle .gitlab-yarn .gettext
+
+gitlab-update: ensure-databases-running postgresql gitlab/.git/pull gitlab-setup
+	$(Q)cd ${gitlab_development_root}/gitlab && \
+		bundle exec rake db:migrate db:test:prepare
+
+gitlab/.git/pull:
+	@echo
+	@echo "-------------------------------------------------------"
+	@echo "Updating gitlab to current master.."
+	@echo "-------------------------------------------------------"
+	$(Q)cd ${gitlab_development_root}/gitlab && \
+		git checkout -- Gemfile.lock db/schema.rb ${QQ} && \
+		git stash ${QQ} && \
+		git checkout master ${QQ} && \
+		git pull --ff-only ${QQ}
+
+.ruby-version:
+	$(Q)ln -s ${gitlab_development_root}/gitlab/.ruby-version ${gitlab_development_root}/$@
 
 gitlab/.git:
 	$(Q)git clone ${git_depth_param} ${gitlab_repo} ${gitlab_clone_dir} $(if $(realpath ${gitlab_repo}),--shared)
@@ -107,8 +199,21 @@ gitlab/public/uploads:
 	$(Q)git -C ${gitlab_development_root}/gitlab checkout locale/*/gitlab.po
 	$(Q)touch $@
 
+##############################################################
+# gitlab-shell
+##############################################################
+
 gitlab-shell-setup: symlink-gitlab-shell ${gitlab_shell_clone_dir}/.git gitlab-shell/config.yml .gitlab-shell-bundle gitlab-shell/.gitlab_shell_secret
 	$(Q)make -C gitlab-shell build ${QQ}
+
+gitlab-shell-update: gitlab-shell/.git/pull gitlab-shell-setup
+
+gitlab-shell/.git/pull:
+	@echo
+	@echo "-------------------------------------------------------"
+	@echo "Updating gitlab-shell to ${gitlab_shell_version}.."
+	@echo "-------------------------------------------------------"
+	$(Q)support/component-git-update gitlab_shell "${gitlab_development_root}/gitlab-shell" "${gitlab_shell_version}"
 
 symlink-gitlab-shell:
 	$(Q)support/symlink gitlab-shell ${gitlab_shell_clone_dir}
@@ -132,10 +237,36 @@ gitlab-shell/config.yml: gitlab-shell/config.yml.example
 gitlab-shell/.gitlab_shell_secret:
 	$(Q)ln -s ${gitlab_development_root}/gitlab/.gitlab_shell_secret $@
 
+##############################################################
+# gitaly
+##############################################################
+
 gitaly-setup: gitaly/bin/gitaly gitaly/gitaly.config.toml gitaly/praefect.config.toml
 
 ${gitaly_clone_dir}/.git:
 	git clone --quiet --branch "${gitaly_version}" ${git_depth_param} ${gitaly_repo} ${gitaly_clone_dir}
+
+gitaly-update: gitaly/.git/pull gitaly-clean gitaly/bin/gitaly
+
+.PHONY: gitaly/.git/pull
+gitaly/.git/pull: ${gitaly_clone_dir}/.git
+	@echo
+	@echo "-------------------------------------------------------"
+	@echo "Updating gitaly to ${gitaly_version}.."
+	@echo "-------------------------------------------------------"
+	$(Q)support/component-git-update gitaly "${gitaly_clone_dir}" "${gitaly_version}" ${QQ}
+
+gitaly-clean:
+	$(Q)rm -rf ${gitaly_assembly_dir}
+	$(Q)rm -rf gitlab/tmp/tests/gitaly
+
+.PHONY: gitaly/bin/gitaly
+gitaly/bin/gitaly: ${gitaly_clone_dir}/.git
+	$(Q)$(MAKE) -C ${gitaly_clone_dir} assemble ASSEMBLY_ROOT=${gitaly_assembly_dir} BUNDLE_FLAGS=--no-deployment BUILD_TAGS="${tracer_build_tags}" ${QQ}
+	$(Q)mkdir -p ${gitlab_development_root}/gitaly/bin
+	$(Q)ln -sf ${gitaly_assembly_dir}/bin/* ${gitlab_development_root}/gitaly/bin
+	$(Q)rm -rf ${gitlab_development_root}/gitaly/ruby
+	$(Q)ln -sf ${gitaly_assembly_dir}/ruby ${gitlab_development_root}/gitaly/ruby
 
 .PHONY: gitaly/gitaly.config.toml
 gitaly/gitaly.config.toml:
@@ -145,8 +276,9 @@ gitaly/gitaly.config.toml:
 gitaly/praefect.config.toml:
 	$(Q)rake gitaly/praefect.config.toml
 
-prom-setup:
-	$(Q)[ "$(uname -s)" = "Linux" ] && sed -i -e 's/docker\.for\.mac\.localhost/localhost/g' ${gitlab_development_root}/prometheus/prometheus.yml || true
+##############################################################
+# gitlab-docs
+##############################################################
 
 gitlab-docs-setup: gitlab-docs/.git gitlab-docs-bundle gitlab-docs/nanoc.yaml symlink-gitlab-docs
 
@@ -179,77 +311,139 @@ symlink-gitlab-docs:
 
 gitlab-docs-update: gitlab-docs/.git/pull gitlab-docs-bundle gitlab-docs/nanoc.yaml
 
-self-update: unlock-dependency-installers
-	@echo
-	@echo "-------------------------------------------------------"
-	@echo "Running self-update on GDK"
-	@echo "-------------------------------------------------------"
-	$(Q)cd ${gitlab_development_root} && \
-		git stash ${QQ} && \
-		git checkout master ${QQ} && \
-		git fetch ${QQ} && \
-		support/self-update-git-worktree ${QQ}
+##############################################################
+# gitlab geo
+##############################################################
 
-# Update gitlab, gitlab-shell, gitlab-workhorse, gitlab-pages and gitaly
-# Pull gitlab directory first since dependencies are linked from there.
-update: stop-foreman ensure-databases-running unlock-dependency-installers gitlab/.git/pull gitlab-shell-update gitlab-workhorse-update gitlab-pages-update gitaly-update gitlab-update gitlab-elasticsearch-indexer-update ask-to-restart
+.PHONY: geo-setup geo-cursor
+geo-setup: Procfile geo-cursor gitlab/config/database_geo.yml postgresql/geo
 
-stop-foreman:
-	$(Q)pkill foreman || true
+geo-cursor:
+	$(Q)grep '^geo-cursor:' Procfile || (printf ',s/^#geo-cursor/geo-cursor/\nwq\n' | ed -s Procfile)
 
-.PHONY: ensure-databases-running
-ensure-databases-running: Procfile postgresql/data
-	$(Q)gdk start rails-migration-dependencies
+gitlab/config/database_geo.yml: database_geo.yml.example
+	$(Q)bin/safe-sed "$@" \
+		-e "s|/home/git|${gitlab_development_root}|g" \
+		"$<"
 
-gitlab-update: ensure-databases-running postgresql gitlab/.git/pull gitlab-setup
-	@echo
-	@echo "-------------------------------------------------------"
-	@echo "Running Rails DB migrations.."
-	@echo "-------------------------------------------------------"
+.PHONY: geo-primary-migrate
+geo-primary-migrate: ensure-databases-running
 	$(Q)cd ${gitlab_development_root}/gitlab && \
-		bundle exec rake db:migrate db:test:prepare
+		bundle install && \
+		bundle exec rake db:migrate db:test:prepare geo:db:migrate geo:db:test:prepare && \
+		git checkout -- db/schema.rb ee/db/geo/schema.rb
+	$(Q)$(MAKE) postgresql/geo-fdw/test/rebuild ${QQ}
 
-gitlab-shell-update: gitlab-shell/.git/pull gitlab-shell-setup
+.PHONY: geo-primary-update
+geo-primary-update: update geo-primary-migrate
+	$(Q)gdk diff-config
 
-gitlab/.git/pull:
-	@echo
-	@echo "-------------------------------------------------------"
-	@echo "Updating gitlab to current master.."
-	@echo "-------------------------------------------------------"
+.PHONY: geo-secondary-migrate
+geo-secondary-migrate: ensure-databases-running
 	$(Q)cd ${gitlab_development_root}/gitlab && \
-		git checkout -- Gemfile.lock db/schema.rb ${QQ} && \
-		git stash ${QQ} && \
-		git checkout master ${QQ} && \
-		git pull --ff-only ${QQ}
+		${rails_bundle_install_cmd} ${QQ} && \
+		bundle exec rake geo:db:migrate && \
+		git checkout -- ee/db/geo/schema.rb
+	$(Q)$(MAKE) postgresql/geo-fdw/development/rebuild ${QQ}
 
-gitlab-shell/.git/pull:
+.PHONY: geo-secondary-update
+geo-secondary-update:
+	$(Q)-$(MAKE) update ${QQ}
+	$(Q)$(MAKE) geo-secondary-migrate ${QQ}
+	$(Q)gdk diff-config
+
+##############################################################
+# gitlab-workhorse
+##############################################################
+
+gitlab-workhorse-setup: gitlab-workhorse/bin/gitlab-workhorse gitlab-workhorse/config.toml
+
+gitlab-workhorse/config.toml: gitlab-workhorse/config.toml.example
+	$(Q)bin/safe-sed "$@" \
+		-e "s|/home/git|${gitlab_development_root}|g" \
+		"$<"
+
+gitlab-workhorse-update: ${gitlab_workhorse_clone_dir}/.git gitlab-workhorse/.git/pull gitlab-workhorse-clean-bin gitlab-workhorse/bin/gitlab-workhorse
+
+gitlab-workhorse-clean-bin:
+	$(Q)rm -rf gitlab-workhorse/bin
+
+.PHONY: gitlab-workhorse/bin/gitlab-workhorse
+gitlab-workhorse/bin/gitlab-workhorse: ${gitlab_workhorse_clone_dir}/.git
+	$(Q)$(MAKE) -C ${gitlab_workhorse_clone_dir} install PREFIX=${gitlab_development_root}/gitlab-workhorse ${QQ}
+
+${gitlab_workhorse_clone_dir}/.git:
+	$(Q)git clone --quiet --branch "${workhorse_version}" ${git_depth_param} ${gitlab_workhorse_repo} ${gitlab_workhorse_clone_dir}
+
+gitlab-workhorse/.git/pull:
 	@echo
 	@echo "-------------------------------------------------------"
-	@echo "Updating gitlab-shell to ${gitlab_shell_version}.."
+	@echo "Updating gitlab-workhorse to ${workhorse_version}.."
 	@echo "-------------------------------------------------------"
-	$(Q)support/component-git-update gitlab_shell "${gitlab_development_root}/gitlab-shell" "${gitlab_shell_version}"
+	$(Q)support/component-git-update workhorse "${gitlab_workhorse_clone_dir}" "${workhorse_version}"
 
-gitaly-update: gitaly/.git/pull gitaly-clean gitaly/bin/gitaly
+##############################################################
+# gitlab-elasticsearch
+##############################################################
 
-.PHONY: gitaly/.git/pull
-gitaly/.git/pull: ${gitaly_clone_dir}/.git
+gitlab-elasticsearch-indexer-setup: gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer
+
+gitlab-elasticsearch-indexer-update: gitlab-elasticsearch-indexer/.git/pull gitlab-elasticsearch-indexer-clean-bin gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer
+
+gitlab-elasticsearch-indexer-clean-bin:
+	$(Q)rm -rf gitlab-elasticsearch-indexer/bin
+
+gitlab-elasticsearch-indexer/.git:
+	$(Q)git clone --quiet --branch "${gitlab_elasticsearch_indexer_version}" ${git_depth_param} ${gitlab_elasticsearch_indexer_repo} gitlab-elasticsearch-indexer
+
+.PHONY: gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer
+gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer: gitlab-elasticsearch-indexer/.git
+	$(Q)$(MAKE) -C gitlab-elasticsearch-indexer build ${QQ}
+
+.PHONY: gitlab-elasticsearch-indexer/.git/pull
+gitlab-elasticsearch-indexer/.git/pull: gitlab-elasticsearch-indexer/.git
 	@echo
 	@echo "-------------------------------------------------------"
-	@echo "Updating gitaly to ${gitaly_version}.."
+	@echo "Updating gitlab-elasticsearch-indexer to ${gitlab_elasticsearch_indexer_version}.."
 	@echo "-------------------------------------------------------"
-	$(Q)support/component-git-update gitaly "${gitaly_clone_dir}" "${gitaly_version}" ${QQ}
+	$(Q)support/component-git-update gitlab_elasticsearch_indexer gitlab-elasticsearch-indexer "${gitlab_elasticsearch_indexer_version}"
 
-gitaly-clean:
-	$(Q)rm -rf ${gitaly_assembly_dir}
-	$(Q)rm -rf gitlab/tmp/tests/gitaly
+##############################################################
+# gitlab-pages
+##############################################################
 
-.PHONY: gitaly/bin/gitaly
-gitaly/bin/gitaly: ${gitaly_clone_dir}/.git
-	$(Q)$(MAKE) -C ${gitaly_clone_dir} assemble ASSEMBLY_ROOT=${gitaly_assembly_dir} BUNDLE_FLAGS=--no-deployment BUILD_TAGS="${tracer_build_tags}" ${QQ}
-	$(Q)mkdir -p ${gitlab_development_root}/gitaly/bin
-	$(Q)ln -sf ${gitaly_assembly_dir}/bin/* ${gitlab_development_root}/gitaly/bin
-	$(Q)rm -rf ${gitlab_development_root}/gitaly/ruby
-	$(Q)ln -sf ${gitaly_assembly_dir}/ruby ${gitlab_development_root}/gitaly/ruby
+gitlab-pages-setup: gitlab-pages/bin/gitlab-pages
+
+gitlab-pages-update: ${gitlab_pages_clone_dir}/.git gitlab-pages/.git/pull gitlab-pages-clean-bin gitlab-pages/bin/gitlab-pages
+
+gitlab-pages-clean-bin:
+	$(Q)rm -rf gitlab-pages/bin
+
+.PHONY: gitlab-pages/bin/gitlab-pages
+gitlab-pages/bin/gitlab-pages: ${gitlab_pages_clone_dir}/.git
+	$(Q)mkdir -p gitlab-pages/bin
+	$(Q)$(MAKE) -C ${gitlab_pages_clone_dir} ${QQ}
+	$(Q)install -m755 ${gitlab_pages_clone_dir}/gitlab-pages gitlab-pages/bin
+
+${gitlab_pages_clone_dir}/.git:
+	$(Q)git clone --quiet --branch "${pages_version}" ${git_depth_param} ${gitlab_pages_repo} ${gitlab_pages_clone_dir} ${QQ}
+
+gitlab-pages/.git/pull:
+	@echo
+	@echo "-------------------------------------------------------"
+	@echo "Updating gitlab-pages to ${pages_version}.."
+	@echo "-------------------------------------------------------"
+	$(Q)support/component-git-update gitlab_pages "${gitlab_pages_clone_dir}" "${pages_version}"
+
+##############################################################
+# gitlab performance metrics
+##############################################################
+
+performance-metrics-setup: Procfile influxdb-setup grafana-setup
+
+##############################################################
+# gitlab support setup
+##############################################################
 
 support-setup: Procfile redis gitaly-setup jaeger-setup postgresql openssh-setup nginx-setup registry-setup elasticsearch-setup
 	@echo
@@ -269,12 +463,9 @@ ifeq ($(auto_devops_enabled),true)
 	@echo "-------------------------------------------------------"
 endif
 
-gdk.yml:
-	$(Q)touch $@
-
-.PHONY: Procfile
-Procfile:
-	$(Q)rake $@
+##############################################################
+# redis
+##############################################################
 
 redis: redis/redis.conf
 
@@ -282,6 +473,10 @@ redis/redis.conf: redis/redis.conf.example
 	$(Q)bin/safe-sed "$@" \
 		-e "s|/home/git|${gitlab_development_root}|g" \
 		"$<"
+
+##############################################################
+# postgresql
+##############################################################
 
 postgresql: postgresql/data postgresql/port postgresql-seed-rails postgresql-seed-praefect
 
@@ -301,6 +496,10 @@ postgresql/port:
 
 postgresql-sensible-defaults:
 	$(Q)support/postgresql-sensible-defaults ${postgres_dir}
+
+##############################################################
+# postgresql replication
+##############################################################
 
 postgresql-replication-primary: postgresql-replication/access postgresql-replication/role postgresql-replication/config
 
@@ -339,18 +538,9 @@ postgresql-replication/drop-slot:
 postgresql-replication/config:
 	$(Q)./support/postgres-replication ${postgres_dir}
 
-# Setup GitLab Geo databases
-
-.PHONY: geo-setup geo-cursor
-geo-setup: Procfile geo-cursor gitlab/config/database_geo.yml postgresql/geo
-
-geo-cursor:
-	$(Q)grep '^geo-cursor:' Procfile || (printf ',s/^#geo-cursor/geo-cursor/\nwq\n' | ed -s Procfile)
-
-gitlab/config/database_geo.yml: database_geo.yml.example
-	$(Q)bin/safe-sed "$@" \
-		-e "s|/home/git|${gitlab_development_root}|g" \
-		"$<"
+##############################################################
+# postgresql geo
+##############################################################
 
 postgresql/geo:
 	$(Q)${postgres_bin_dir}/initdb --locale=C -E utf-8 postgresql-geo/data
@@ -387,89 +577,9 @@ postgresql/geo-fdw/%/rebuild:
 	$(Q)$(MAKE) postgresql/geo-fdw/$*/drop || true ${QQ}
 	$(Q)$(MAKE) postgresql/geo-fdw/$*/create ${QQ}
 
-.PHONY: geo-primary-migrate
-geo-primary-migrate: ensure-databases-running
-	$(Q)cd ${gitlab_development_root}/gitlab && \
-		bundle install && \
-		bundle exec rake db:migrate db:test:prepare geo:db:migrate geo:db:test:prepare && \
-		git checkout -- db/schema.rb ee/db/geo/schema.rb
-	$(Q)$(MAKE) postgresql/geo-fdw/test/rebuild ${QQ}
-
-.PHONY: geo-primary-update
-geo-primary-update: update geo-primary-migrate
-	$(Q)gdk diff-config
-
-.PHONY: geo-secondary-migrate
-geo-secondary-migrate: ensure-databases-running
-	$(Q)cd ${gitlab_development_root}/gitlab && \
-		${rails_bundle_install_cmd} ${QQ} && \
-		bundle exec rake geo:db:migrate && \
-		git checkout -- ee/db/geo/schema.rb
-	$(Q)$(MAKE) postgresql/geo-fdw/development/rebuild ${QQ}
-
-.PHONY: geo-secondary-update
-geo-secondary-update:
-	$(Q)-$(MAKE) update ${QQ}
-	$(Q)$(MAKE) geo-secondary-migrate ${QQ}
-	$(Q)gdk diff-config
-
-.ruby-version:
-	$(Q)ln -s ${gitlab_development_root}/gitlab/.ruby-version ${gitlab_development_root}/$@
-
-localhost.crt: localhost.key
-
-localhost.key:
-	$(Q)openssl req -new -subj "/CN=localhost/" -x509 -days 365 -newkey rsa:2048 -nodes -keyout "localhost.key" -out "localhost.crt"
-	$(Q)chmod 600 $@
-
-gitlab-workhorse-setup: gitlab-workhorse/bin/gitlab-workhorse gitlab-workhorse/config.toml
-
-gitlab-workhorse/config.toml: gitlab-workhorse/config.toml.example
-	$(Q)bin/safe-sed "$@" \
-		-e "s|/home/git|${gitlab_development_root}|g" \
-		"$<"
-
-gitlab-workhorse-update: ${gitlab_workhorse_clone_dir}/.git gitlab-workhorse/.git/pull gitlab-workhorse-clean-bin gitlab-workhorse/bin/gitlab-workhorse
-
-gitlab-workhorse-clean-bin:
-	$(Q)rm -rf gitlab-workhorse/bin
-
-.PHONY: gitlab-workhorse/bin/gitlab-workhorse
-gitlab-workhorse/bin/gitlab-workhorse: ${gitlab_workhorse_clone_dir}/.git
-	$(Q)$(MAKE) -C ${gitlab_workhorse_clone_dir} install PREFIX=${gitlab_development_root}/gitlab-workhorse ${QQ}
-
-${gitlab_workhorse_clone_dir}/.git:
-	$(Q)git clone --quiet --branch "${workhorse_version}" ${git_depth_param} ${gitlab_workhorse_repo} ${gitlab_workhorse_clone_dir}
-
-gitlab-workhorse/.git/pull:
-	@echo
-	@echo "-------------------------------------------------------"
-	@echo "Updating gitlab-workhorse to ${workhorse_version}.."
-	@echo "-------------------------------------------------------"
-	$(Q)support/component-git-update workhorse "${gitlab_workhorse_clone_dir}" "${workhorse_version}"
-
-gitlab-pages-setup: gitlab-pages/bin/gitlab-pages
-
-gitlab-pages-update: ${gitlab_pages_clone_dir}/.git gitlab-pages/.git/pull gitlab-pages-clean-bin gitlab-pages/bin/gitlab-pages
-
-gitlab-pages-clean-bin:
-	$(Q)rm -rf gitlab-pages/bin
-
-.PHONY: gitlab-pages/bin/gitlab-pages
-gitlab-pages/bin/gitlab-pages: ${gitlab_pages_clone_dir}/.git
-	$(Q)mkdir -p gitlab-pages/bin
-	$(Q)$(MAKE) -C ${gitlab_pages_clone_dir} ${QQ}
-	$(Q)install -m755 ${gitlab_pages_clone_dir}/gitlab-pages gitlab-pages/bin
-
-${gitlab_pages_clone_dir}/.git:
-	$(Q)git clone --quiet --branch "${pages_version}" ${git_depth_param} ${gitlab_pages_repo} ${gitlab_pages_clone_dir} ${QQ}
-
-gitlab-pages/.git/pull:
-	@echo
-	@echo "-------------------------------------------------------"
-	@echo "Updating gitlab-pages to ${pages_version}.."
-	@echo "-------------------------------------------------------"
-	$(Q)support/component-git-update gitlab_pages "${gitlab_pages_clone_dir}" "${pages_version}"
+##############################################################
+# influxdb
+##############################################################
 
 influxdb-setup: influxdb/influxdb.conf influxdb/bin/influxd influxdb/meta/meta.db
 
@@ -484,6 +594,43 @@ influxdb/influxdb.conf: influxdb/influxdb.conf.example
 	$(Q)bin/safe-sed "$@" \
 		-e "s|/home/git|${gitlab_development_root}|g" \
 		"$<"
+
+##############################################################
+# elasticsearch
+##############################################################
+
+elasticsearch-setup: elasticsearch/bin/elasticsearch
+
+elasticsearch/bin/elasticsearch: elasticsearch-${elasticsearch_version}.tar.gz
+	$(Q)rm -rf elasticsearch
+	$(Q)tar zxf elasticsearch-${elasticsearch_version}.tar.gz
+	$(Q)mv elasticsearch-${elasticsearch_version} elasticsearch
+	$(Q)touch $@
+
+elasticsearch-${elasticsearch_version}.tar.gz:
+	$(Q)curl -L -o $@.tmp https://artifacts.elastic.co/downloads/elasticsearch/$@
+	$(Q)echo "${elasticsearch_tar_gz_sha1}  $@.tmp" | shasum -a1 -c -
+	$(Q)mv $@.tmp $@
+
+##############################################################
+# minio / object storage
+##############################################################
+
+object-storage-setup: minio/data/lfs-objects minio/data/artifacts minio/data/uploads minio/data/packages
+
+minio/data/%:
+	$(Q)mkdir -p $@
+
+##############################################################
+# prometheus
+##############################################################
+
+prom-setup:
+	$(Q)[ "$(uname -s)" = "Linux" ] && sed -i -e 's/docker\.for\.mac\.localhost/localhost/g' ${gitlab_development_root}/prometheus/prometheus.yml || true
+
+##############################################################
+# grafana
+##############################################################
 
 grafana-setup: grafana/grafana.ini grafana/bin/grafana-server grafana/gdk-pg-created grafana/gdk-data-source-created
 
@@ -505,7 +652,9 @@ grafana/gdk-data-source-created:
 	$(Q)support/bootstrap-grafana
 	$(Q)touch $@
 
-performance-metrics-setup: Procfile influxdb-setup grafana-setup
+##############################################################
+# openssh
+##############################################################
 
 openssh-setup: openssh/sshd_config openssh/ssh_host_rsa_key
 
@@ -522,13 +671,27 @@ nginx/conf/nginx.conf:
 openssh/sshd_config:
 	$(Q)rake $@
 
+##############################################################
+# nginx
+##############################################################
+
 nginx/logs:
 	$(Q)mkdir -p $@
 
 nginx/tmp:
 	$(Q)mkdir -p $@
 
+##############################################################
+# registry
+##############################################################
+
 registry-setup: registry/storage registry/config.yml localhost.crt
+
+localhost.crt: localhost.key
+
+localhost.key:
+	$(Q)openssl req -new -subj "/CN=localhost/" -x509 -days 365 -newkey rsa:2048 -nodes -keyout "localhost.key" -out "localhost.crt"
+	$(Q)chmod 600 $@
 
 registry/storage:
 	$(Q)mkdir -p $@
@@ -543,45 +706,9 @@ registry/config.yml:
 		support/edit-registry-config.yml $@; \
 	fi
 
-elasticsearch-setup: elasticsearch/bin/elasticsearch
-
-elasticsearch/bin/elasticsearch: elasticsearch-${elasticsearch_version}.tar.gz
-	$(Q)rm -rf elasticsearch
-	$(Q)tar zxf elasticsearch-${elasticsearch_version}.tar.gz
-	$(Q)mv elasticsearch-${elasticsearch_version} elasticsearch
-	$(Q)touch $@
-
-elasticsearch-${elasticsearch_version}.tar.gz:
-	$(Q)curl -L -o $@.tmp https://artifacts.elastic.co/downloads/elasticsearch/$@
-	$(Q)echo "${elasticsearch_tar_gz_sha1}  $@.tmp" | shasum -a1 -c -
-	$(Q)mv $@.tmp $@
-
-gitlab-elasticsearch-indexer-setup: gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer
-
-gitlab-elasticsearch-indexer-update: gitlab-elasticsearch-indexer/.git/pull gitlab-elasticsearch-indexer-clean-bin gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer
-
-gitlab-elasticsearch-indexer-clean-bin:
-	$(Q)rm -rf gitlab-elasticsearch-indexer/bin
-
-gitlab-elasticsearch-indexer/.git:
-	$(Q)git clone --quiet --branch "${gitlab_elasticsearch_indexer_version}" ${git_depth_param} ${gitlab_elasticsearch_indexer_repo} gitlab-elasticsearch-indexer
-
-.PHONY: gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer
-gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer: gitlab-elasticsearch-indexer/.git
-	$(Q)$(MAKE) -C gitlab-elasticsearch-indexer build ${QQ}
-
-.PHONY: gitlab-elasticsearch-indexer/.git/pull
-gitlab-elasticsearch-indexer/.git/pull: gitlab-elasticsearch-indexer/.git
-	@echo
-	@echo "-------------------------------------------------------"
-	@echo "Updating gitlab-elasticsearch-indexer to ${gitlab_elasticsearch_indexer_version}.."
-	@echo "-------------------------------------------------------"
-	$(Q)support/component-git-update gitlab_elasticsearch_indexer gitlab-elasticsearch-indexer "${gitlab_elasticsearch_indexer_version}"
-
-object-storage-setup: minio/data/lfs-objects minio/data/artifacts minio/data/uploads minio/data/packages
-
-minio/data/%:
-	$(Q)mkdir -p $@
+##############################################################
+# jaeger
+##############################################################
 
 ifeq ($(jaeger_server_enabled),true)
 .PHONY: jaeger-setup
@@ -608,45 +735,9 @@ jaeger/jaeger-${jaeger_version}/jaeger-all-in-one: jaeger-artifacts/jaeger-${jae
 	$(Q)mkdir -p "jaeger/jaeger-${jaeger_version}"
 	$(Q)tar -xf "$<" -C "jaeger/jaeger-${jaeger_version}" --strip-components 1
 
-clean-config:
-	$(Q)rm -rf \
-	gitlab/config/gitlab.yml \
-	gitlab/config/database.yml \
-	gitlab/config/unicorn.rb \
-	gitlab/config/puma.rb \
-	gitlab/config/resque.yml \
-	gitlab-shell/config.yml \
-	gitlab-shell/.gitlab_shell_secret \
-	redis/redis.conf \
-	.ruby-version \
-	Procfile \
-	gitlab-workhorse/config.toml \
-	gitaly/gitaly.config.toml \
-	nginx/conf/nginx.conf \
-	registry/config.yml \
-	jaeger
-
-touch-examples:
-	$(Q)touch \
-	Procfile.erb \
-	database_geo.yml.example \
-	gitlab-shell/config.yml.example \
-	gitlab-workhorse/config.toml.example \
-	gitlab/config/puma.example.development.rb \
-	gitlab/config/unicorn.rb.example.development \
-	grafana/grafana.ini.example \
-	influxdb/influxdb.conf.example \
-	redis/redis.conf.example \
-	redis/resque.yml.example \
-	registry/config.yml.example \
-	support/templates/*.erb
-
-unlock-dependency-installers:
-	$(Q)rm -f \
-	.gitlab-bundle \
-	.gitlab-shell-bundle \
-	.gitlab-yarn \
-	.gettext \
+##############################################################
+# tests
+##############################################################
 
 .PHONY:
 static-analysis: static-analysis-editorconfig
