@@ -30,7 +30,11 @@ such as when running tests.
 
 ### Secondary
 
-Now we'll create a secondary instance in a `gdk-geo` folder to act as
+We assume your primary GDK instance lives in a parallel folder: `../gdk`,
+make sure you use the correct folder name if not when looking at
+the instructions below.
+
+We'll create a secondary instance in a `gdk-geo` folder to act as
 a secondary node. We'll configure unique ports for the new instance so
 that it can run alongside the primary.
 
@@ -57,7 +61,9 @@ webpack:
   port: 3809
 ```
 
-Then run the following command:
+When seeding begins, cancel it (Ctrl-C) since we will delete the data anyway.
+
+Then run the following commands:
 
 ```shell
 # Assuming your primary GDK instance lives in parallel folders:
@@ -74,7 +80,10 @@ When seeding begins, cancel it (Ctrl-C) since we will delete the data anyway.
 Then run the following commands:
 
 ```shell
-gdk start postgresql
+# Run this on your primary instance folder: (../gdk)
+gdk start
+
+# Run this on your secondary instance folder: (../gdk-geo)
 gdk start postgresql-geo
 make geo-setup
 ```
@@ -109,7 +118,8 @@ remove the secondary's PostgreSQL data folder:
 ```shell
 # terminal window 2:
 cd gdk-geo
-rm -r postgresql
+gdk stop postgresql
+rm -r postgresql/data
 ```
 
 Now we need to add a symbolic link to the primary instance's data folder:
