@@ -565,7 +565,7 @@ postgresql-replication/role:
 
 postgresql-replication/backup:
 	$(Q)$(eval postgres_primary_dir := $(realpath postgresql-primary))
-	$(Q)$(eval postgres_primary_port := $(shell cat ${postgres_primary_dir}/../postgresql_port 2>/dev/null || echo '5432'))
+	$(Q)$(eval postgres_primary_port := $(shell cd ${postgres_primary_dir}/../ && gdk config get postgresql.port 2>/dev/null || echo '5432'))
 
 	$(Q)psql -h ${postgres_primary_dir} -p ${postgres_primary_port} -d postgres -c "select pg_start_backup('base backup for streaming rep')"
 	$(Q)rsync -cva --inplace --exclude="*pg_xlog*" --exclude="*.pid" ${postgres_primary_dir}/data postgresql
