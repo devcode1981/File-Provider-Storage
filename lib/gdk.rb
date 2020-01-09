@@ -125,6 +125,9 @@ module GDK
     false
   end
 
+  # Return the path to the GDK base path
+  #
+  # @return [String] path to GDK base path
   def self.root
     $gdk_root || File.realpath(File.join(__dir__, '../'))
   end

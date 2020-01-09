@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe GDK do
   before do
-    $gdk_root = 'root'
+    allow(GDK).to receive(:root) { 'root' }
     allow(GDK).to receive(:install_root_ok?).and_return(true)
   end
 
