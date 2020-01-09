@@ -87,6 +87,7 @@ clean-config:
 	$(Q)rm -rf \
 	gitlab/config/gitlab.yml \
 	gitlab/config/database.yml \
+	gitlab/config/database_geo.yml \
 	gitlab/config/unicorn.rb \
 	gitlab/config/puma.rb \
 	gitlab/config/puma_actioncable.rb \
@@ -111,7 +112,6 @@ clean-config:
 touch-examples:
 	$(Q)touch \
 	Procfile.erb \
-	database_geo.yml.example \
 	gitlab-shell/config.yml.example \
 	gitlab-workhorse/config.toml.example \
 	gitlab/config/puma.example.development.rb \
@@ -375,10 +375,9 @@ endif
 geo-cursor:
 	$(Q)grep '^geo-cursor:' Procfile || (printf ',s/^#geo-cursor/geo-cursor/\nwq\n' | ed -s Procfile)
 
-gitlab/config/database_geo.yml: database_geo.yml.example
-	$(Q)bin/safe-sed "$@" \
-		-e "s|/home/git|${gitlab_development_root}|g" \
-		"$<"
+.PHONY: gitlab/config/database_geo.yml
+gitlab/config/database_geo.yml:
+	$(Q)rake $@
 
 .PHONY: geo-primary-migrate
 geo-primary-migrate: ensure-databases-running
