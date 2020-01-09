@@ -149,6 +149,10 @@ error, make sure you pull the latest changes from the GDK repository and run:
 ./support/enable-postgres-extensions
 ```
 
+## Error installing node-gyp
+
+node-gyp may fail to build on macOS Catalina installations. Follow [the node-gyp troubleshooting guide](https://github.com/nodejs/node-gyp/blob/master/macOS_Catalina.md).
+
 ## Upgrading PostgreSQL
 
 In case you are hit by `FATAL: database files are incompatible with server`,
