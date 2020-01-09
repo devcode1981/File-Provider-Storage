@@ -157,7 +157,7 @@ module GDK
       end
 
       def check_minio_installed
-        unless system("minio version >/dev/null 2>&1 || minio --version >/dev/null 2>&1")
+        unless system("minio --help >/dev/null 2>&1")
           @error_messages << missing_dependency('MinIO')
         end
       end
