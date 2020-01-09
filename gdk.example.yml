@@ -78,13 +78,15 @@ openldap:
   enabled: false
 port: 3000
 postgresql:
+  address: "/home/git/gdk/postgresql"
   bin: "/usr/lib/postgresql/11/bin/postgres"
   bin_dir: "/usr/lib/postgresql/11/bin"
   data_dir: "/home/git/gdk/postgresql/data"
   dir: "/home/git/gdk/postgresql"
   geo:
+    address: "/home/git/gdk/postgresql-geo"
     dir: "/home/git/gdk/postgresql-geo"
-    port: 5432
+    port: 5431
   port: 5432
   replica:
     enabled: false
