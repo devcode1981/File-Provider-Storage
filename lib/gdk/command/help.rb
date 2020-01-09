@@ -7,7 +7,7 @@ module GDK
     class Help
       def run(stdout: $stdout, stderr: $stderr)
         GDK::Logo.print
-        stdout.puts File.read(File.join($gdk_root, 'HELP'))
+        stdout.puts File.read(File.join(GDK.root, 'HELP'))
       end
     end
   end

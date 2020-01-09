@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-#
+
 # GitLab Development Kit CLI parser / executor
 #
 # This file is loaded by the 'gdk' command in the gem. This file is NOT
@@ -40,19 +40,19 @@ module GDK
         Use 'gdk start', 'gdk stop', and 'gdk tail' instead.
       MSG
     when 'install'
-      exec(MAKE, *ARGV, chdir: $gdk_root)
+      exec(MAKE, *ARGV, chdir: root)
     when 'update'
       # Otherwise we would miss it and end up in a weird state.
       puts "-------------------------------------------------------"
       puts "Running `make self-update`.."
       puts "-------------------------------------------------------"
       puts "Running separately in case the Makefile is updated.\n"
-      system(MAKE, 'self-update', chdir: $gdk_root)
+      system(MAKE, 'self-update', chdir: root)
 
       puts "\n-------------------------------------------------------"
       puts "Running `make self-update update`.."
       puts "-------------------------------------------------------"
-      exec(MAKE, 'self-update', 'update', chdir: $gdk_root)
+      exec(MAKE, 'self-update', 'update', chdir: root)
     when 'diff-config'
       GDK::Command::DiffConfig.new.run
 
@@ -68,15 +68,15 @@ module GDK
         abort "Cannot get config for #{ARGV.join('.')}"
       end
     when 'reconfigure'
-      remember!($gdk_root)
-      exec(MAKE, 'touch-examples', 'unlock-dependency-installers', 'postgresql-sensible-defaults', 'all', chdir: $gdk_root)
+      remember!(root)
+      exec(MAKE, 'touch-examples', 'unlock-dependency-installers', 'postgresql-sensible-defaults', 'all', chdir: root)
     when 'psql'
       pg_port = Config.new.postgresql.port
       args = ARGV.empty? ? ['-d', 'gitlabhq_development'] : ARGV
 
-      exec('psql', '-h', File.join($gdk_root, 'postgresql'), '-p', pg_port.to_s, *args, chdir: $gdk_root)
+      exec('psql', '-h', File.join(root, 'postgresql'), '-p', pg_port.to_s, *args, chdir: root)
     when 'redis-cli'
-      exec('redis-cli', '-s', GDK::Config.new.redis_socket.to_s, *ARGV, chdir: $gdk_root)
+      exec('redis-cli', '-s', GDK::Config.new.redis_socket.to_s, *ARGV, chdir: root)
     when 'env'
       GDK::Env.exec(ARGV)
     when 'start', 'status'
@@ -101,8 +101,8 @@ module GDK
       system('gdk', 'stop', 'rails-web')
       exec(
         { 'RAILS_ENV' => 'development' },
-        *%W[bundle exec thin --socket=#{$gdk_root}/gitlab.socket start],
-        chdir: File.join($gdk_root, 'gitlab')
+        *%W[bundle exec thin --socket=#{root}/gitlab.socket start],
+        chdir: File.join(root, 'gitlab')
       )
     when 'doctor'
       GDK::Command::Doctor.new.run
@@ -118,10 +118,14 @@ module GDK
   end
 
   def self.install_root_ok?
-    expected_root = File.read(File.join($gdk_root, ROOT_CHECK_FILE)).chomp
-    File.realpath(expected_root) == File.realpath($gdk_root)
+    expected_root = File.read(File.join(root, ROOT_CHECK_FILE)).chomp
+    File.realpath(expected_root) == root
   rescue => ex
     warn ex
     false
+  end
+
+  def self.root
+    $gdk_root || File.realpath(File.join(__dir__, '../'))
   end
 end

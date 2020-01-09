@@ -43,7 +43,7 @@ module GDK
       end
 
       def get_project
-        relative_path = Pathname.new(Dir.pwd).relative_path_from(Pathname.new($gdk_root)).to_s
+        relative_path = Pathname.new(Dir.pwd).relative_path_from(Pathname.new(GDK.root)).to_s
         relative_path.split('/').first
       end
 
