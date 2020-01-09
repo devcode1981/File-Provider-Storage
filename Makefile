@@ -183,7 +183,7 @@ gitlab/public/uploads:
 	@echo "-------------------------------------------------------"
 	@echo "Installing Ruby gems.."
 	@echo "-------------------------------------------------------"
-	$(Q)cd ${gitlab_development_root}/gitlab && $(rails_bundle_install_cmd) ${QQ}
+	$(Q)cd ${gitlab_development_root}/gitlab && $(rails_bundle_install_cmd)
 	$(Q)touch $@
 
 .gitlab-yarn:
@@ -231,7 +231,7 @@ gitlab-shell/config.yml: gitlab-shell/config.yml.example
 		"$<"
 
 .gitlab-shell-bundle:
-	$(Q)cd ${gitlab_development_root}/gitlab-shell && $(rails_bundle_install_cmd) ${QQ}
+	$(Q)cd ${gitlab_development_root}/gitlab-shell && $(rails_bundle_install_cmd)
 	$(Q)touch $@
 
 gitlab-shell/.gitlab_shell_secret:
@@ -341,7 +341,7 @@ geo-primary-update: update geo-primary-migrate
 .PHONY: geo-secondary-migrate
 geo-secondary-migrate: ensure-databases-running
 	$(Q)cd ${gitlab_development_root}/gitlab && \
-		${rails_bundle_install_cmd} ${QQ} && \
+		${rails_bundle_install_cmd} && \
 		bundle exec rake geo:db:migrate && \
 		git checkout -- ee/db/geo/schema.rb
 	$(Q)$(MAKE) postgresql/geo-fdw/development/rebuild ${QQ}
