@@ -58,9 +58,8 @@ module GDK
     def warn_changes!(temp_file)
       diff = Shellout.new(%W[git --no-pager diff --no-index #{colors_arg} -u #{target} #{temp_file}]).run
 
+      GDK::Output.warn "Your '#{target}' contains changes. Here is the diff:"
       puts <<~EOF
-        -------------------------------------------------------------------------------------------------------------
-        Warning: Your '#{target}' contains changes. Here is the diff:
         -------------------------------------------------------------------------------------------------------------
         #{diff}
         -------------------------------------------------------------------------------------------------------------
@@ -68,8 +67,8 @@ module GDK
     end
 
     def warn_not_applied!
+      GDK::Output.warn 'The changes have not been applied.'
       puts <<~EOF
-        The changes have not been applied.
         - To apply these changes, run:
           rm #{target} && make #{target}
         - To silence this warning (at your own peril):
@@ -79,9 +78,9 @@ module GDK
     end
 
     def warn_overwritten!
+      GDK::Output.warn "'#{target}' bas been overwritten. To recover the previous version, run:"
       puts <<~EOF
-        '#{target}' bas been overwritten. To recover the previous version, run:
-          cp -f '#{backup_file}' '#{target}'
+        cp -f '#{backup_file}' '#{target}'"
         -------------------------------------------------------------------------------------------------------------
       EOF
     end
