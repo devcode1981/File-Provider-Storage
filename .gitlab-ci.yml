@@ -165,6 +165,7 @@ verify:install:
   artifacts:
     paths:
       - ./gitlab-development-kit/gitlab/log/*.log
+      - ./gitlab-development-kit/log
     expire_in: 2 days
     when: always
   script:
@@ -180,6 +181,7 @@ verify:update:
   artifacts:
     paths:
       - ./gitlab-development-kit/gitlab/log/*.log
+      - ./gitlab-development-kit/log
     expire_in: 2 days
     when: always
   script:

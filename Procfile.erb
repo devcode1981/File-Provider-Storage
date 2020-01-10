@@ -22,12 +22,12 @@ gitlab-workhorse: exec /usr/bin/env PATH="<%= config.gdk_root.join('gitlab-workh
 rails-background-jobs: exec /usr/bin/env SIDEKIQ_LOG_ARGUMENTS=1 RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$relative_url_root support/exec-cd gitlab bin/background_jobs start_foreground
 
 <%- if config.praefect? -%>
-praefect: exec gitaly/bin/praefect -config <%= config.praefect.config_file %>
+praefect: exec gitaly/praefect -config <%= config.praefect.config_file %>
 <% config.praefect.nodes.each_with_index do |praefect_node, index| %>
-<%= praefect_node.service_name %>: exec gitaly/bin/gitaly <%=config.gdk_root.join(praefect_node.config_file) %>
+<%= praefect_node.service_name %>: exec gitaly/gitaly <%=config.gdk_root.join(praefect_node.config_file) %>
 <%- end -%>
 <% else %>
-gitaly: exec gitaly/bin/gitaly <%= config.gitaly.config_file %>
+gitaly: exec gitaly/gitaly <%= config.gitaly.config_file %>
 <%- end -%>
 
 # Frontend services
