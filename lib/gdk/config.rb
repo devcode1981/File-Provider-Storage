@@ -65,7 +65,7 @@ module GDK
       URI::Generic.build(scheme: scheme, host: config.hostname, port: config.port, path: config.relative_url_root)
     end
 
-    username { Etc.getlogin }
+    username { Etc.getpwuid.name }
 
     webpack do |w|
       w.host do
