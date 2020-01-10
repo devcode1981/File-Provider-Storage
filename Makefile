@@ -115,7 +115,7 @@ rake:
 	$(Q)command -v $@ ${QQ} || gem install $@
 
 .PHONY: ensure-databases-running
-ensure-databases-running: Procfile postgresql/data
+ensure-databases-running: Procfile postgresql/data gitaly-setup
 	$(Q)gdk start rails-migration-dependencies
 
 ##############################################################
