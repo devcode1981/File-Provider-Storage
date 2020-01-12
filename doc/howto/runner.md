@@ -32,8 +32,9 @@ Ensure you have Docker installed, then set up GitLab to bind to all
 IPs on your machine by following [these instructions](local_network.md).
 Without this step, builds will fail with a 'connection refused' error.
 
-The `gitlab/config/gitlab.yml` configuration file also needs tweaking - find
-this section:
+The `gitlab/config/gitlab.yml` configuration file also needs tweaking in the following sections:
+
+ - GitLab host:
 
 ```yaml
 production: &base
@@ -47,7 +48,18 @@ production: &base
     host: localhost
 ```
 
-The `host` parameter needs to be changed from `localhost` to an IP address that
+ - Webpack dev server host:
+
+```yaml
+  ## Webpack settings
+  webpack:
+    dev_server:
+      enabled: true
+      host: 127.0.0.1
+      port: 3808
+```
+
+The `host` parameter needs to be changed from `localhost`/ `127.0.0.1` to an IP address that
 *actually exists on the computer*. `0.0.0.0` is not valid - run `ipconfig`
 (Windows), `ifconfig` (Mac, BSD) or `ip addr show` (Linux) to get a list of IPs.
 The right one to use depends on your network, and may change from time to time,
