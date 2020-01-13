@@ -873,7 +873,7 @@ test:
     # When you run tests we clone and set up gitlab-shell
     # In order to set it up correctly you need to specify
     # your system username you use to run GitLab
-    user: <%= Etc.getlogin %>
+    user: <%= config.username %>
 
   webpack:
     dev_server:

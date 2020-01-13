@@ -70,4 +70,14 @@ describe GDK::Config do
       }.not_to raise_error
     end
   end
+
+  describe '#username' do
+    before do
+      allow(Etc).to receive_message_chain(:getpwuid, :name) { 'iamfoo' }
+    end
+
+    it 'returns the short login name of the current process uid' do
+      expect(config.username).to eq('iamfoo')
+    end
+  end
 end
