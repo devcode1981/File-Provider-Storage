@@ -6,6 +6,8 @@ module Runit
   class Config
     attr_reader :gdk_root
 
+    Service = Struct.new(:name, :command)
+
     COLORS = {
       red: '31',
       green: '32',
@@ -53,22 +55,38 @@ module Runit
         line.chomp!
         next if line.start_with?('#')
 
-        service, command = line.split(': ', 2)
-        next unless service && command
+        name, command = line.split(': ', 2)
+        next unless name && command
 
-        delete_exec_prefix!(service, command)
+        delete_exec_prefix!(name, command)
 
-        [service, command]
+        Service.new(name, command)
       end.compact
 
-      max_service_length = services.map { |svc| svc.first.size }.max
+      max_service_length = services.map { |svc| svc.name.size }.max
 
-      services.each_with_index do |(service, command), i|
-        create_runit_service(service, command)
+      services.each_with_index do |service, i|
+        create_runit_service(service)
         create_runit_control_t(service)
         create_runit_log_service(service, max_service_length, i)
         enable_runit_service(service)
       end
+
+      FileUtils.rm(stale_service_links(services))
+    end
+
+    def stale_service_links(services)
+      service_names = services.map(&:name)
+
+      stale_entries = Dir.entries(services_dir).reject do |svc|
+        service_names.include?(svc) || %w[. ..].include?(svc)
+      end
+
+      stale_entries.map do |entry|
+        path = File.join(services_dir, entry)
+        next unless File.symlink?(path)
+        path
+      end.compact
     end
 
     private
@@ -82,7 +100,7 @@ module Runit
       command.delete_prefix!(exec_prefix)
     end
 
-    def create_runit_service(service, command)
+    def create_runit_service(service)
       run_template = <<~TEMPLATE
         #!/bin/sh
         set -e
@@ -95,7 +113,7 @@ module Runit
         test -f env.runit && . ./env.runit
 
         # Use chpst -P to run the command in its own process group
-        exec chpst -P <%= command %>
+        exec chpst -P <%= service.command %>
       TEMPLATE
 
       run_path = File.join(dir(service), 'run')
@@ -107,7 +125,7 @@ module Runit
     end
 
     def create_runit_control_t(service)
-      term_signal = TERM_SIGNAL.fetch(service, 'TERM')
+      term_signal = TERM_SIGNAL.fetch(service.name, 'TERM')
       control_t_template = <<~'TEMPLATE'
         #!/usr/bin/env ruby
 
@@ -124,7 +142,7 @@ module Runit
     end
 
     def create_runit_log_service(service, max_service_length, index)
-      service_log_dir = File.join(log_dir, service)
+      service_log_dir = File.join(log_dir, service.name)
       FileUtils.mkdir_p(service_log_dir)
 
       log_run_template = <<~TEMPLATE
@@ -140,13 +158,13 @@ module Runit
       log_run_path = File.join(dir(service), 'log/run')
       write_file(log_run_path, ERB.new(log_run_template).result(binding), 0o755)
 
-      log_label = sprintf("%-#{max_service_length}s : ", service)
+      log_label = sprintf("%-#{max_service_length}s : ", service.name)
 
       # See http://smarden.org/runit/svlogd.8.html#sect6 for documentation of the svlogd config file
       log_config_template = <<~TEMPLATE
         # zip old log files
         !gzip
-        # custom log prefix for <%= service %>
+        # custom log prefix for <%= service.name %>
         p<%= ansi(color(index)) + log_label + ansi(0) %>
         # keep at most 1 old log file
         n1
@@ -158,11 +176,11 @@ module Runit
 
     def enable_runit_service(service)
       # If the user removes this symlink, runit will stop managing this service.
-      FileUtils.ln_sf(dir(service), File.join(services_dir, service))
+      FileUtils.ln_sf(dir(service), File.join(services_dir, service.name))
     end
 
     def dir(service)
-      File.join(sv_dir, service)
+      File.join(sv_dir, service.name)
     end
 
     def write_file(path, content, perm)
