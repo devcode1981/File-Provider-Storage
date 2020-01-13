@@ -32,6 +32,7 @@ module GDK
       g.ask_to_restart_after_update true
       g.debug false
       g.overwrite_changes false
+      g.protected_config_files { ['*'] }
     end
 
     repositories_root { config.gdk_root.join('repositories') }

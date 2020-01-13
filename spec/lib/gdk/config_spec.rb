@@ -3,9 +3,12 @@ require 'spec_helper'
 describe GDK::Config do
   let(:auto_devops_enabled) { false }
   let(:nginx_enabled) { false }
+  let(:protected_config_files) { ['*'] }
+  let(:overwrite_changes) { false }
   let(:yaml) do
     {
       'auto_devops' => { 'enabled' => auto_devops_enabled },
+      'gdk' => { 'protected_config_files' => protected_config_files, 'overwrite_changes' => overwrite_changes },
       'nginx' => { 'enabled' => nginx_enabled },
       'hostname' => 'gdk.example.com',
     }
@@ -116,6 +119,26 @@ describe GDK::Config do
           it 'returns URL from configuration file' do
             expect(config.geo.registry_replication.primary_api_url).to eq('http://localhost:5001')
           end
+        end
+      end
+    end
+  end
+
+  describe '#config_file_protected?' do
+    subject { config.config_file_protected?('foobar') }
+
+    context 'with full wildcard protected_config_files' do
+      let(:protected_config_files) { ['*'] }
+
+      it 'returns true' do
+        expect(config.config_file_protected?('foobar')).to eq(true)
+      end
+
+      context 'but legacy overwrite_changes set to true' do
+        let(:overwrite_changes) { true }
+
+        it 'returns false' do
+          expect(config.config_file_protected?('foobar')).to eq(false)
         end
       end
     end

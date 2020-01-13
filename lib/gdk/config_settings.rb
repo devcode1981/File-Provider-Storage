@@ -125,6 +125,12 @@ module GDK
       value.dig(*keys)
     end
 
+    def config_file_protected?(target)
+      return false if gdk.overwrite_changes
+
+      gdk.protected_config_files&.any? { |pattern| File.fnmatch(pattern, target) }
+    end
+
     def root
       parent&.root || self
     end
