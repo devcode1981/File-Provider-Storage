@@ -2,6 +2,7 @@
 
 require_relative 'shellout'
 require_relative 'runit/config'
+require_relative 'gdk/output'
 
 module Runit
   SERVICE_SHORTCUTS = {

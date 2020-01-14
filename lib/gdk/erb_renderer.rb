@@ -5,6 +5,7 @@ require 'fileutils'
 require 'tempfile'
 
 require_relative '../shellout'
+require_relative 'output'
 
 module GDK
   class ErbRenderer
