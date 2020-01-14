@@ -1,6 +1,7 @@
 require 'open3'
 require_relative 'config'
 require_relative '../shellout'
+require_relative 'output'
 
 module GDK
   class PostgreSQL
