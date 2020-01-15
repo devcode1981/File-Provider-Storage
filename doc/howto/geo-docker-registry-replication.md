@@ -56,6 +56,17 @@ registry:
   notification_secret: <secret>
 ```
 
+### Configure the secondary node
+
+Enable registry replication on secondary node in your `gdk.yml`:
+
+```yaml
+geo:
+  registry_replication:
+    enabled: true
+    primary_api_url: http://localhost:5000 # internal address to the primary registry, will be used by GitLab to directly communicate with primary registry API
+```
+
 ### Install certificates on the secondary node
 
 Copy `localhost.crt` and `localhost.key` from your primary node to

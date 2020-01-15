@@ -18,6 +18,9 @@ gdk_root: !ruby/object:Pathname
 geo:
   enabled: false
   node_name: gitlab-development-kit
+  registry_replication:
+    enabled: false
+    primary_api_url: "http://localhost:5000/"
 git:
   bin: "/usr/local/bin/git"
 git_repositories: []

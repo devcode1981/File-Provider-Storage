@@ -312,8 +312,8 @@ production: &base
     node_name: <%= config.geo.node_name %>
 
     registry_replication:
-      # enabled: true
-      # primary_api_url: http://localhost:5000/ # internal address to the primary registry, will be used by GitLab to directly communicate with primary registry API
+      enabled: <%= config.geo.registry_replication? %>
+      primary_api_url: <%= config.geo.registry_replication.primary_api_url %> # internal address to the primary registry, will be used by GitLab to directly communicate with primary registry API
 
   ## Feature Flag https://docs.gitlab.com/ee/user/project/operations/feature_flags.html
   feature_flags:

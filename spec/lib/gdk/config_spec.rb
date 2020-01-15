@@ -80,4 +80,44 @@ describe GDK::Config do
       expect(config.username).to eq('iamfoo')
     end
   end
+
+  context 'Geo section' do
+    describe 'Registry replication' do
+      describe '#enabled' do
+        it 'returns false be default' do
+          expect(config.geo.registry_replication.enabled).to be false
+        end
+
+        context 'when enabled in config file' do
+          let(:yaml) do
+            {
+              'geo' => { 'registry_replication' => { "enabled" => true } }
+            }
+          end
+
+          it 'returns true' do
+            expect(config.geo.registry_replication.enabled).to be true
+          end
+        end
+      end
+
+      describe '#primary_api_url' do
+        it 'returns default URL' do
+          expect(config.geo.registry_replication.primary_api_url).to eq('http://localhost:5000')
+        end
+
+        context 'when URL is specified' do
+          let(:yaml) do
+            {
+              'geo' => { 'registry_replication' => { "primary_api_url" => 'http://localhost:5001' } }
+            }
+          end
+
+          it 'returns URL from configuration file' do
+            expect(config.geo.registry_replication.primary_api_url).to eq('http://localhost:5001')
+          end
+        end
+      end
+    end
+  end
 end
