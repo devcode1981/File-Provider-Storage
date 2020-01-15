@@ -32,7 +32,7 @@ gdk start postgresql redis
 
 ## Update GitLab
 
-To update `gitlab` and all of it's dependencies run the following command.
+To update `gitlab` and all of its dependencies, run the following command.
 
 ```sh
 gdk update
