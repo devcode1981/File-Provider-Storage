@@ -249,7 +249,7 @@ ${gitaly_clone_dir}/.git: .backups
 .backups:
 	mkdir .backups
 
-gitaly-update: gitaly/.git/pull gitaly-clean gitaly-setup
+gitaly-update: gitaly/.git/pull gitaly-clean gitaly-setup praefect-migrate
 
 .PHONY: gitaly/.git/pull
 gitaly/.git/pull: ${gitaly_clone_dir}/.git
@@ -273,6 +273,10 @@ gitaly/gitaly.config.toml:
 .PHONY: gitaly/praefect.config.toml
 gitaly/praefect.config.toml:
 	$(Q)rake gitaly/praefect.config.toml
+
+.PHONY: praefect-migrate
+praefect-migrate: postgresql-seed-praefect
+	$(Q)support/migrate-praefect
 
 ##############################################################
 # gitlab-docs
@@ -486,7 +490,8 @@ postgresql-seed-rails: ensure-databases-running
 	$(Q)support/bootstrap-rails
 
 .PHONY: postgresql-seed-praefect
-postgresql-seed-praefect: ensure-databases-running
+postgresql-seed-praefect: Procfile postgresql/data
+	$(Q)gdk start postgresql
 	$(Q)support/bootstrap-praefect
 
 postgresql/port:

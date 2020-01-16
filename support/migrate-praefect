@@ -1,0 +1,6 @@
+#!/bin/sh
+set -e
+
+# Intentionally allow this to fail: we still need to support older
+# Gitaly/Praefect versions that don't have the sql-migrate subcommand.
+gitaly/praefect -config gitaly/praefect.config.toml sql-migrate || true
