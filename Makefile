@@ -53,7 +53,7 @@ self-update: unlock-dependency-installers
 
 # Update gitlab, gitlab-shell, gitlab-workhorse, gitlab-pages and gitaly
 # Pull gitlab directory first since dependencies are linked from there.
-update: stop-foreman ensure-databases-running unlock-dependency-installers gitlab/.git/pull gitlab-shell-update gitlab-workhorse-update gitlab-pages-update gitaly-update gitlab-update gitlab-elasticsearch-indexer-update
+update: stop-foreman ensure-databases-running unlock-dependency-installers gitlab/.git/pull gitlab-shell-update gitlab-workhorse-update gitlab-pages-update gitaly-update gitlab-update gitlab-elasticsearch-indexer-update show-date
 
 clean-config:
 	$(Q)rm -rf \
@@ -762,3 +762,7 @@ ask-to-restart:
 	@echo
 	$(Q)support/ask-to-restart
 	@echo
+
+.PHONY: show-date
+show-date:
+	@echo "> Updated as of $$(date +"%Y-%m-%d %T")"
