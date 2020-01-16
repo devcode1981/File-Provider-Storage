@@ -157,22 +157,24 @@ bundle exec rake geo:set_primary_node
 
 ### Add secondary node
 
-There isn't a convenient rake task to add the secondary node because the command
-must be run on the secondary, but written on the primary. So we must get the
-name and manually add the node. Open a terminal window on the secondary node.
-This will output the secondary node's name.
+There isn't a convenient rake task to add the secondary node because the relevant
+data is on the secondary, but we can only write to the primary database. So we
+must get the values from the secondary, and then manually add the node.
 
-```bash
-cd gdk-geo/gitlab
+1. In a terminal, change to the gitlab directory of the secondary node:
 
-bundle exec rails runner 'puts GeoNode.current_node_name'
-```
+   ```bash
+   cd gdk-geo/gitlab
+   ```
+1. Output the secondary node's **Name** and **URL**:
 
+   ```bash
+   bundle exec rails runner 'puts "Name: \"GeoNode.current_node_name\"; puts "URL: \"GeoNode.current_node_url\"'
+   ```
 1. Visit the **primary** node's **Admin Area ➔ Geo Nodes** (`/admin/geo/nodes`)
    in your browser.
 1. Click the **New node** button.
-1. Using the *exact* output from the `puts GeoNode.current_node_name` command,
-   fill in the **Name** and **URL** fields for the **secondary** node.
+1. Fill in the **Name** and **URL** fields for the **secondary** node, using the *exact* values from step 2.
 1. **Do not** check the box 'This is a primary node'.
 1. Click the **Add node** button.
 
