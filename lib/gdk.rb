@@ -107,7 +107,8 @@ module GDK
       GDK::Command::Help.new.run
       true
     else
-      GDK::Command::Help.new.run
+      GDK::Output.notice "gdk: #{subcommand} is not a gdk command."
+      GDK::Output.notice "See 'gdk help' for more detail."
       false
     end
   end
