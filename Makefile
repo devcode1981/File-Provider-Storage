@@ -53,7 +53,7 @@ self-update: unlock-dependency-installers
 
 # Update gitlab, gitlab-shell, gitlab-workhorse, gitlab-pages and gitaly
 # Pull gitlab directory first since dependencies are linked from there.
-update: stop-foreman ensure-databases-running unlock-dependency-installers gitlab/.git/pull gitlab-shell-update gitlab-workhorse-update gitlab-pages-update gitaly-update gitlab-update gitlab-elasticsearch-indexer-update show-date
+update: ensure-databases-running unlock-dependency-installers gitlab/.git/pull gitlab-shell-update gitlab-workhorse-update gitlab-pages-update gitaly-update gitlab-update gitlab-elasticsearch-indexer-update show-date
 
 clean-config:
 	$(Q)rm -rf \
@@ -101,10 +101,6 @@ gdk.yml:
 .PHONY: Procfile
 Procfile:
 	$(Q)rake $@
-
-.PHONY: stop-foreman
-stop-foreman:
-	$(Q)pkill foreman || true
 
 .PHONY: preflight-checks
 preflight-checks: rake

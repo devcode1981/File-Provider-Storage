@@ -51,7 +51,6 @@ There are also a few settings that configure the behavior of GDK itself:
 |-----------------------------------|---------|--------------------------------------------------------------------------------------------------|
 | `gdk.ask_to_restart_after_update` | `true`  | Set this to `false` if you do not wish to be prompted to restart your GDK after an update. |
 | `gdk.debug`                       | `false` | Set this to `true` to enable increased output. |
-| `gdk.ignore_foreman`              | `false` | Set this to `true` to ignore any running Foreman processes. Might be useful when you run GDK in parallel with other services that use Foreman. |
 | `gdk.overwrite_changes`           | `false` | When set to `true` `gdk reconfigure` will overwrite files and move the old version to `.backups`.|
 
 ### Loose files (deprecated)

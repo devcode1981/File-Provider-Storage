@@ -31,7 +31,6 @@ module GDK
     gdk do |g|
       g.ask_to_restart_after_update true
       g.debug false
-      g.ignore_foreman { read!('.ignore-foreman') || false }
       g.overwrite_changes false
     end
 
