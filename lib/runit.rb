@@ -17,7 +17,6 @@ module Runit
   def self.start_runsvdir
     Dir.chdir($gdk_root)
 
-    no_foreman_running!
     runit_installed!
 
     Runit::Config.new($gdk_root).render
@@ -53,21 +52,6 @@ module Runit
 
   def self.runsvdir_base_args
     ['runsvdir', '-P', File.join($gdk_root, 'services')]
-  end
-
-  def self.no_foreman_running!
-    return if ::GDK::Config.new.gdk.ignore_foreman
-    return if Shellout.new(%w[pgrep foreman]).run.empty?
-
-    abort <<~MESSAGE
-
-      ERROR: It looks like 'gdk run' is running somewhere. You cannot
-      use 'gdk start' and 'gdk run' at the same time.
-
-      Please stop 'gdk run' with Ctrl-C.
-
-      (If this is a false alarm, set 'gdk.ignore_foreman: true' in gdk.yml and try again.)
-    MESSAGE
   end
 
   def self.runsvdir_pid(args)
