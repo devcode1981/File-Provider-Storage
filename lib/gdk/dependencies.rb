@@ -3,8 +3,10 @@
 require 'net/http'
 require 'mkmf'
 
+# Make the MakeMakefile logger write file output to null.
 module MakeMakefile::Logging
   @logfile = File::NULL
+  @quiet = true
 end
 
 module GDK
