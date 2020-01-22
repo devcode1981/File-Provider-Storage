@@ -25,16 +25,6 @@ module GDK
         value
       end
 
-      def method_missing(method_name, *args, &block)
-        return value.send(method_name, *args, &block) if value_respond_to?(method_name)
-
-        super
-      end
-
-      def respond_to_missing?(method_name, include_private = false)
-        value_respond_to?(method_name) || super
-      end
-
       private
 
       def type

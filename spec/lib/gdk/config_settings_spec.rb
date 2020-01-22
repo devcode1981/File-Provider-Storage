@@ -29,7 +29,7 @@ describe GDK::ConfigSettings do
     end
   end
 
-  describe '#settings_arrary!' do
+  describe '#settings_array!' do
     it 'creates an array of the desired number of settings' do
       expect(config.settings_array!(3, &proc { nil }).count).to eq(3)
     end
@@ -47,7 +47,7 @@ describe GDK::ConfigSettings do
         end
       end.new
 
-      expect(config.arrrr.last.buz).to eq('sub 2')
+      expect(config.arrrr.map(&:buz)).to eq(['sub 0', 'sub 1', 'sub 2'])
     end
   end
 end
