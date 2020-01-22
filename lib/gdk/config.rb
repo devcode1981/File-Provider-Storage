@@ -244,15 +244,15 @@ module GDK
       end
       integer(:node_count) { 1 }
       array(:nodes) do
-        collect!(config.praefect.node_count) do
-          path(:address) { config.gdk_root.join("gitaly-praefect-#{__index}.socket") }
-          string(:config_file) { "gitaly/gitaly-#{__index}.praefect.toml" }
-          path(:log_dir) { config.gdk_root.join("log", "praefect-gitaly-#{__index}") }
-          bool(:primary) { __index == 0 }
-          string(:service_name) { "praefect-gitaly-#{__index}" }
-          string(:storage) { "praefect-internal-#{__index}" }
-          path(:storage_dir) { __index == 0 ? config.repositories_root : File.join(config.repositories_root, storage) }
-          path(:internal_socket_dir) { config.gdk_root.join('tmp', 'praefect', "gitaly-#{__index}") }
+        settings_array!(config.praefect.node_count) do |i|
+          path(:address) { config.gdk_root.join("gitaly-praefect-#{i}.socket") }
+          string(:config_file) { "gitaly/gitaly-#{i}.praefect.toml" }
+          path(:log_dir) { config.gdk_root.join("log", "praefect-gitaly-#{i}") }
+          bool(:primary) { i == 0 }
+          string(:service_name) { "praefect-gitaly-#{i}" }
+          string(:storage) { "praefect-internal-#{i}" }
+          path(:storage_dir) { i == 0 ? config.repositories_root : File.join(config.repositories_root, storage) }
+          path(:internal_socket_dir) { config.gdk_root.join('tmp', 'praefect', "gitaly-#{i}") }
         end
       end
     end

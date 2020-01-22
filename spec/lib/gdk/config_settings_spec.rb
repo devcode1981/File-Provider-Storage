@@ -29,20 +29,20 @@ describe GDK::ConfigSettings do
     end
   end
 
-  describe '#collect!' do
-    it 'creates an array of the desired number of configs' do
-      expect(config.collect!(3, &proc { nil }).count).to eq(3)
+  describe '#settings_arrary!' do
+    it 'creates an array of the desired number of settings' do
+      expect(config.settings_array!(3, &proc { nil }).count).to eq(3)
     end
 
-    it 'creates configs with self as parent' do
-      expect(config.collect!(1, &proc { nil }).first.parent).to eq(config)
+    it 'creates settings with self as parent' do
+      expect(config.settings_array!(1, &proc { nil }).first.parent).to eq(config)
     end
 
     it 'attributes are available through root config' do
       config = Class.new(GDK::ConfigSettings) do
         array(:arrrr) do
-          collect!(3) do
-            string(:buz) { "sub #{__index}" }
+          settings_array!(3) do |i|
+            string(:buz) { "sub #{i}" }
           end
         end
       end.new

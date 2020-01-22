@@ -123,13 +123,13 @@ module GDK
       value
     end
 
-    # Create an array of configs with self as parent
+    # Create an array of settings with self as parent
     #
-    # @param count [Integer] the number of configs in the array
-    def collect!(count, &blk)
+    # @param count [Integer] the number of settings in the array
+    def settings_array!(count, &blk)
       count.times.map do |i|
-        subconfig!(i, &blk).tap do |sub|
-          sub.class.define_method(:__index) { i }
+        subconfig!(i) do
+          instance_exec(i, &blk)
         end
       end
     end
