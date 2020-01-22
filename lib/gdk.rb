@@ -103,7 +103,7 @@ module GDK
     when 'doctor'
       GDK::Command::Doctor.new.run
       true
-    when 'help'
+    when /-{0,2}help/, '-h'
       GDK::Command::Help.new.run
       true
     else
