@@ -3,6 +3,10 @@
 require 'net/http'
 require 'mkmf'
 
+module MakeMakefile::Logging
+  @logfile = File::NULL
+end
+
 module GDK
   module Dependencies
     class GitLabVersions
