@@ -103,12 +103,12 @@ module GDK
     when 'doctor'
       GDK::Command::Doctor.new.run
       true
-    when 'help'
-      GDK::Logo.print
-      puts File.read(File.join($gdk_root, 'HELP'))
+    when /-{0,2}help/, '-h'
+      GDK::Command::Help.new.run
       true
     else
-      GDK::Output.notice "Usage: #{PROGNAME} start|status|stop|restart|init|install|update|reconfigure|tail|psql|redis-cli|diff-config|config|doctor|version|help [ARGS...]"
+      GDK::Output.notice "gdk: #{subcommand} is not a gdk command."
+      GDK::Output.notice "See 'gdk help' for more detail."
       false
     end
   end

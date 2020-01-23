@@ -449,7 +449,7 @@ support-setup: Procfile redis gitaly-setup jaeger-setup postgresql openssh-setup
 	@echo "Setup finished!"
 	@echo "-------------------------------------------------------"
 	@echo
-	$(Q)cat HELP
+	$(Q)gdk help
 
 ifeq ($(auto_devops_enabled),true)
 	@echo
