@@ -1,31 +1,38 @@
 # GitLab Development Kit
 
-Usage:
+Usage: gdk <command> [<args>]
 
-gdk start                                 # Start everything
-gdk start redis postgresql                # Start specific services
-gdk stop                                  # Stop all services and unload Runit
-gdk stop redis postgresql                 # Stop specific service
-gdk status                                # See status of all services
-gdk restart                               # Restart everything
-gdk restart redis postgresql              # Restart specific services
+Manage services:
 
-gdk tail                                  # Tail all logs
-gdk tail redis postgresql                 # Tail specific logs
+  gdk start                                 # Start everything
+  gdk start redis postgresql                # Start specific services
+  gdk stop                                  # Stop all services and unload Runit
+  gdk stop redis postgresql                 # Stop specific service
+  gdk status                                # See status of all services
+  gdk restart                               # Restart everything
+  gdk restart redis postgresql              # Restart specific services
 
-gdk thin                                  # Run rails web server with thin in foreground
+  gdk tail                                  # Tail all logs
+  gdk tail redis postgresql                 # Tail specific logs
 
-gdk init                                  # Initialize GDK
-gdk install gitlab_repo=https://my-fork   # Install everything
-gdk update                                # Pull application changes from Git
-gdk reconfigure                           # Delete and regenerate all config files created by GDK
+  gdk thin                                  # Run Rails web server with thin in foreground
+  gdk psql -d gitlabhq_development          # Run Postgres console
+  gdk redis-cli                             # Run Redis console
 
-gdk psql -d gitlabhq_development          # Postgres console
-gdk redis-cli                             # Redis console
+Manage GDK:
 
-gdk config get postgresql.port            # Get configuration values
-gdk diff-config                           # Print difference between current and new configuration values
-gdk doctor                                # Run diagnostics on GDK
+  gdk init                                  # Initialize GDK
+  gdk install gitlab_repo=https://my-fork   # Install everything
+  gdk update                                # Pull application changes from Git
+  gdk reconfigure                           # Delete and regenerate all config files created by GDK
+
+  gdk config get postgresql.port            # Get configuration values
+  gdk diff-config                           # Print difference between current and new configuration values
+  gdk trust /path/to/gdk                    # Mark an existing GDK as trusted
+
+  gdk doctor                                # Run diagnostics on GDK
+  gdk version                               # Print current GDK version
+  gdk help                                  # Print this help text
 
 # Development admin account: root / 5iveL!fe
 
