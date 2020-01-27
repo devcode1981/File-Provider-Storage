@@ -77,6 +77,8 @@ a note of the `Registration token`.
 
 ## Download GitLab Runner
 
+### Simple configuration
+
 Unless you want to make changes to the Runner, it's easiest to install a binary
 package. Follow the
 [installation instructions](https://docs.gitlab.com/runner/install/)
@@ -92,7 +94,13 @@ GDK doesn't manage it for you. The official GitLab Runner repository is
 
 All the methods should (eventually) create a `gitlab-runner` binary.
 
+### Advanced configuration
+
+If you followed the advanced configuration and want to install the runner as a docker service, follow the steps described in <https://docs.gitlab.com/runner/install/docker.html#docker-image-installation>.
+
 ## Setting up the Runner
+
+### Simple configuration
 
 Run `gitlab-runner register --run-untagged --config <path-to-gdk>/gitlab-runner-config.toml`
 (as your normal user), and follow the prompts. Use:
@@ -143,3 +151,8 @@ project in the GitLab web interface and add a
 [.gitlab-ci.yml](https://docs.gitlab.com/ce/ci/examples/) file,
 or clone an [example project](https://gitlab.com/groups/gitlab-examples), and
 watch as the Runner processes the builds just as it would on a "real" install!
+
+### Advanced configuration
+
+Register your docker-based runner by following the steps described in <https://docs.gitlab.com/runner/register/index.html#docker>.
+
