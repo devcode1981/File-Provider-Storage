@@ -17,7 +17,7 @@ Use `$RAILS_ENV` to access the test environment:
 RAILS_ENV=test bundle exec rails dbconsole
 ```
 
-To access the database using an external SQL editor, pass in the:
+To access the database using an external SQL editor, such as [psequel](http://www.psequel.com/), pass in the:
 
 - Datafile path - e.g. `<path to GDK>/gitlab-development-kit/postgresql`
 - Database port - e.g. `5432`
