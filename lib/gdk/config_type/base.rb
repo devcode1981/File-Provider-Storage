@@ -16,9 +16,11 @@ module GDK
       end
 
       def validate!
+        orig_value = value
+
         return if parse
 
-        raise TypeError, "Value '#{value}' for slug #{slug} is not a valid #{type}"
+        raise TypeError, "Value '#{orig_value}' for #{slug} is not a valid #{type}"
       end
 
       def dump!
