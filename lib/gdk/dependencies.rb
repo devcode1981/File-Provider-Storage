@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 require 'net/http'
+require 'mkmf'
+
+# Make the MakeMakefile logger write file output to null.
+module MakeMakefile::Logging
+  @logfile = File::NULL
+  @quiet = true
+end
 
 module GDK
   module Dependencies
@@ -63,7 +70,17 @@ module GDK
         check_runit_installed
       end
 
+      def check_binary(binary)
+        find_executable(binary).tap do |result|
+          unless result
+            @error_messages << "#{binary} does not exist. You may need to check your PATH or install a missing package."
+          end
+        end
+      end
+
       def check_git_version
+        return unless check_binary('git')
+
         current_git_version = `git version`[/git version (\d+\.\d+.\d+)/, 1]
 
         actual = Gem::Version.new(current_git_version)
@@ -75,6 +92,8 @@ module GDK
       end
 
       def check_ruby_version
+        return unless check_binary('ruby')
+
         actual = Gem::Version.new(RUBY_VERSION)
         expected = Gem::Version.new(GitLabVersions.new.ruby_version)
 
@@ -93,6 +112,8 @@ module GDK
       end
 
       def check_go_version
+        return unless check_binary('go')
+
         current_version = `go version`[/go((\d+.\d+)(.\d+)?)/, 1]
 
         actual = Gem::Version.new(current_version)
@@ -106,6 +127,8 @@ module GDK
       end
 
       def check_nodejs_version
+        return unless check_binary('node')
+
         current_version = `node --version`[/v(\d+\.\d+\.\d+)/, 1]
 
         actual = Gem::Version.new(current_version)
@@ -120,6 +143,8 @@ module GDK
       end
 
       def check_yarn_version
+        return unless check_binary('yarn')
+
         current_version = `yarn --version`
 
         actual = Gem::Version.new(current_version)
@@ -134,6 +159,8 @@ module GDK
       end
 
       def check_postgresql_version
+        return unless check_binary('psql')
+
         current_postgresql_version = `psql --version`[/psql \(PostgreSQL\) (\d+\.\d+)/, 1]
 
         actual = Gem::Version.new(current_postgresql_version)
