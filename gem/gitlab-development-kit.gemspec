@@ -15,4 +15,6 @@ Gem::Specification.new do |spec|
   spec.license       = "MIT"
   spec.files         = ['lib/gitlab_development_kit.rb']
   spec.executables   = ['gdk']
+
+  spec.required_ruby_version  = '~> 2.6.5'
 end
