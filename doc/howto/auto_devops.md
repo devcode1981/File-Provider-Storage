@@ -25,6 +25,9 @@ depends on our infrastructure. For non-GitLab employees you can see
       User <username>
     ```
 
+    Your `<username>` may be associated with your GitLab email instead of your GitLab username.
+    For example, if your email is `myname@gitlab.com` then your username would be `myname`.
+
 1. Verify you have `ssh` access into `qa-tunnel.gitlab.info`:
 
     ```
