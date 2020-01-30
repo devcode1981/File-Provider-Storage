@@ -11,7 +11,7 @@ cannot open shared object file: No such file or directory - /home/user/.rvm/gems
 ```
 
 ```shell
-cd /home/user/gitlab-development-kit/gitlab && bundle exec rake gettext:compile > /home/user/gitlab-development-kit/gettext.log 2>&1
+cd /home/user/gitlab-development-kit/gitlab && bundle exec rake gettext:compile > /home/user/gitlab-development-kit/gitlab/log/gettext.log 2>&1
 make: *** [.gettext] Error 1
 ```
 
