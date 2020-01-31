@@ -5,8 +5,8 @@ the ability to run the full Auto DevOps workflow.
 
 ## Prerequisites (For GitLab employees only)
 
-IMPORTANT: These steps are currently only applicable to GitLab employees as it
-depends on our infrastructure. For non-GitLab employees you can see
+IMPORTANT: These steps are currently only applicable to GitLab team members as it
+depends on our infrastructure. For non-GitLab team members you can see
 [Alternatives](#alternatives) below.
 
 1. Request GCP permission and SSH tunnel by
