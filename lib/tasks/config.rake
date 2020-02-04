@@ -104,9 +104,10 @@ config.praefect.nodes.each do |node|
       storage: node['storage'],
       log_dir: node['log_dir'],
       socket_path: node['address'],
-      internal_socket_dir: config.praefect.internal_socket_dir
+      internal_socket_dir: node['internal_socket_dir']
     ).render!
     FileUtils.mkdir_p(node['storage_dir'])
     FileUtils.mkdir_p(node['log_dir'])
+    FileUtils.mkdir_p(node['internal_socket_dir'])
   end
 end
