@@ -169,7 +169,7 @@ must get the values from the secondary, and then manually add the node.
 1. Output the secondary node's **Name** and **URL**:
 
    ```bash
-   bundle exec rails runner 'puts "Name: \"GeoNode.current_node_name\"; puts "URL: \"GeoNode.current_node_url\"'
+   bundle exec rails runner 'puts "Name: #{GeoNode.current_node_name}"; puts "URL: #{GeoNode.current_node_url}"'
    ```
 1. Visit the **primary** node's **Admin Area ➔ Geo Nodes** (`/admin/geo/nodes`)
    in your browser.
