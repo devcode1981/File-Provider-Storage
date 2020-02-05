@@ -242,6 +242,7 @@ module GDK
           n.service_name { "praefect-gitaly-#{i}" }
           n.storage { "praefect-internal-#{i}" }
           n.storage_dir { i == 0 ? config.repositories_root : File.join(config.repositories_root, storage) }
+          n.internal_socket_dir { config.gdk_root.join('tmp', 'praefect', "gitaly-#{i}") }
         end
       end
     end
