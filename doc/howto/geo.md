@@ -171,7 +171,7 @@ must get the values from the secondary, and then manually add the node.
    ```bash
    bundle exec rails runner 'puts "Name: #{GeoNode.current_node_name}"; puts "URL: #{GeoNode.current_node_url}"'
    ```
-1. Visit the **primary** node's **Admin Area ➔ Geo Nodes** (`/admin/geo/nodes`)
+1. Visit the **primary** node's **Admin Area > Geo > Nodes** (`/admin/geo/nodes`)
    in your browser.
 1. Click the **New node** button.
 1. Fill in the **Name** and **URL** fields for the **secondary** node, using the *exact* values from step 2.
