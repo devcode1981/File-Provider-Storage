@@ -28,11 +28,11 @@ module GDK
       end
       directory = ARGV.count == 2 ? ARGV[1] : DEFAULT_INIT_DIRECTORY
       if directory.start_with?('-')
-  puts <<-EOS.gsub(/^\s+\|/, '')
-    |The gdk directory cannot start with a dash ('-').  Did you mean:
-    |gdk init #{directory.sub(/^-+/,'')}
-  EOS
-  return false
+        warn <<~EOS
+          The gdk directory cannot start with a dash ('-').  Did you mean:
+          gdk init #{directory.sub(/^-+/,'')}
+        EOS
+        return false
       end
       cmd = %W[git clone https://gitlab.com/gitlab-org/gitlab-development-kit.git #{directory}]
       system(*cmd) && trust!(directory) && remember!(directory)
@@ -45,27 +45,27 @@ module GDK
     else
       $gdk_root = find_root(Dir.pwd)
       if $gdk_root.nil?
-        puts <<-EOS.gsub(/^\s+\|/, '')
-          |
-          |The current working directory is not inside a gitlab-development-kit
-          |installation. Use 'cd' to go to your gitlab-development-kit or create
-          |a new one with 'gdk init'.
-          |
-          |gdk init [DIRECTORY] # Default: #{DEFAULT_INIT_DIRECTORY}
-          |
+        warn <<~EOS
+
+          The current working directory is not inside a gitlab-development-kit
+          installation. Use 'cd' to go to your gitlab-development-kit or create
+          a new one with 'gdk init'.
+
+          gdk init [DIRECTORY] # Default: #{DEFAULT_INIT_DIRECTORY}
+
         EOS
         return false
       end
       warn "(in #{$gdk_root})"
 
       unless trusted?($gdk_root)
-        puts <<-EOS.gsub(/^\s+\|/, '')
-          |
-          |This GitLab Development Kit root directory is not known to the "gdk"
-          |command. To mark it as trusted run:
-          |
-          |gdk trust #{$gdk_root}
-          |
+        warn <<~EOS
+
+          This GitLab Development Kit root directory is not known to the "gdk"
+          command. To mark it as trusted run:
+
+          gdk trust #{$gdk_root}
+
         EOS
         return false
       end

@@ -71,3 +71,20 @@ gdk config get <setting>
 ```
 
 More information can be found in the [configuration documentation](configuration.md).
+
+## Shell completion
+
+To enable tab completion for the `gdk` command in Bash, add the following to your `~/.bash_profile`:
+
+```bash
+source ~/path/to/your/gdk/support/completions/gdk.bash
+```
+
+For Zsh, you can enable Bash completion support in your `~/.zshrc`:
+
+```bash
+autoload bashcompinit
+bashcompinit
+
+source ~/path/to/your/gdk/support/completions/gdk.bash
+```
