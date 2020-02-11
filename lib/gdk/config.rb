@@ -166,6 +166,10 @@ module GDK
     geo do |g|
       g.enabled false
       g.node_name Pathname.new(__dir__).parent.parent.basename.to_s # gdk directory
+      g.registry_replication do |rr|
+        rr.enabled { false }
+        rr.primary_api_url { 'http://localhost:5000' }
+      end
     end
 
     elasticsearch do |e|
