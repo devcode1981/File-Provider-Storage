@@ -3,6 +3,8 @@
 require 'pathname'
 require 'shellwords'
 
+require_relative 'config'
+
 module GDK
   module Env
     class << self
@@ -31,7 +33,10 @@ module GDK
       def env
         case get_project
         when 'gitaly'
-          { 'GOPATH' => File.join($gdk_root, 'gitaly') }
+          {
+            'PGHOST' => config.postgresql.dir.to_s,
+            'PGPORT' => config.postgresql.port.to_s,
+          }
         when 'gitlab-workhorse'
           { 'GOPATH' => File.join($gdk_root, 'gitlab-workhorse') }
         when 'gitlab-shell', 'go-gitlab-shell'
@@ -44,6 +49,10 @@ module GDK
       def get_project
         relative_path = Pathname.new(Dir.pwd).relative_path_from(Pathname.new($gdk_root)).to_s
         relative_path.split('/').first
+      end
+
+      def config
+        @config ||= GDK::Config.new
       end
     end
   end
