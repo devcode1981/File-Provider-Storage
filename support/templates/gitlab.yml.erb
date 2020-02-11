@@ -720,8 +720,8 @@ production: &base
     upload_pack: true
     receive_pack: true
 
-    ssh_port: 2222
-    ssh_host: localhost
+    ssh_port: <%= config.sshd.listen_port %>
+    ssh_host: <%= config.sshd.listen_address %>
 
   workhorse:
     # File that contains the secret key for verifying access for gitlab-workhorse.
