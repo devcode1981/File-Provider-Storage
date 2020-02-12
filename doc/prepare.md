@@ -42,7 +42,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 
 We are using PostgreSQL 10 in the following example. If you want to use another version, please adjust paths accordingly.
 
-#### Install OS X prerequisites using Homebrew
+#### Install macOS prerequisites using Homebrew
 
 [Homebrew](https://brew.sh/) is a package manager for macOS that allows you to easily install programs and tools through the Terminal. Visit their website for installation details.
 
@@ -67,7 +67,7 @@ source ${shell_file}
 brew cask install google-chrome chromedriver
 ```
 
-#### Install OS X prerequisites using MacPorts
+#### Install macOS prerequisites using MacPorts
 
 [MacPorts](https://www.macports.org/) is another package manager for macOS. Visit their website for installation details.
 
