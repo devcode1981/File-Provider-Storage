@@ -2,9 +2,9 @@
 
 module GDK
   module ConfigType
-    class Base
-      TypeError = Class.new(StandardError)
+    TypeError = Class.new(StandardError)
 
+    class Base
       attr_accessor :value
       attr_reader :slug
 
