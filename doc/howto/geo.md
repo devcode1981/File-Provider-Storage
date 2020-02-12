@@ -123,6 +123,8 @@ make postgresql-replication-secondary
 
 ### Running tests
 
+#### On a primary
+
 The secondary has a read-write tracking database, which is necessary for some
 Geo tests to run. However, its copy of the replicated database is read-only, so
 tests will fail to run.
@@ -143,6 +145,38 @@ stubbed.
 
 To ensure the tracking database is started, restart GDK. You will need to use
 `gdk start` to be able to run the tests.
+
+#### On a secondary
+
+When you try to run tests on a GDK configured as a Geo secondary, tests
+might fail because the main database is read-only.
+
+You can work around this by using the PostgreSQL instance that is used
+for the tracking database (i.e. the one running in
+`<secondary-gdk-root>/postgresql-geo`) for both the tracking and the
+main database.
+
+Add or replace the `test:` block with the following to `<secondary-gdk-root>/gitlab/config/database.yml`:
+
+```yaml
+test: &test
+  adapter: postgresql
+  encoding: unicode
+  database: gitlabhq_test
+  host: /home/<secondary-gdk-root>/postgresql-geo
+  port: 5432
+  pool: 10
+```
+
+Now run the following to ensure the database and FDW schema are setup:
+
+```sh
+# Within the <secondary-gdk-root>/gitlab folder:
+bin/rake db:test:prepare
+
+# Within the <secondary-gdk-root> folder:
+make postgresql/geo-fdw/test/rebuild
+```
 
 ## Copy database encryption key
 
