@@ -2,17 +2,19 @@
 auto_devops:
   enabled: false
   gitlab:
-    port: 20077
+    port: 21838
   registry:
-    port: 25077
+    port: 26838
 elasticsearch:
   checksum: 5903e1913a7c96aad96a8227517c40490825f672
   enabled: false
   version: 6.5.1
 gdk:
+  ask_to_restart_after_update: true
   debug: false
   overwrite_changes: false
-  ask_to_restart_after_update: true
+  protected_config_files:
+  - "*"
 gdk_root: !ruby/object:Pathname
   path: "/home/git/gdk"
 geo:
@@ -20,7 +22,7 @@ geo:
   node_name: gitlab-development-kit
   registry_replication:
     enabled: false
-    primary_api_url: "http://localhost:5000/"
+    primary_api_url: http://localhost:5000
 git:
   bin: "/usr/local/bin/git"
 git_repositories: []
@@ -52,7 +54,7 @@ https:
 influxdb:
   enabled: false
 nginx:
-  bin: "/usr/local/bin/nginx"
+  bin: "/usr/sbin/nginx"
   enabled: false
   http:
     enabled: false
@@ -65,8 +67,8 @@ object_store:
   port: 9000
 omniauth:
   google_oauth2:
-    client_id:
-    client_secret:
+    client_id: 
+    client_secret: 
     enabled: false
 openldap:
   enabled: false
@@ -107,6 +109,8 @@ praefect:
   - address: !ruby/object:Pathname
       path: "/home/git/gdk/gitaly-praefect-0.socket"
     config_file: gitaly/gitaly-0.praefect.toml
+    internal_socket_dir: !ruby/object:Pathname
+      path: "/home/git/gdk/tmp/praefect/gitaly-0"
     log_dir: !ruby/object:Pathname
       path: "/home/git/gdk/log/praefect-gitaly-0"
     primary: true
