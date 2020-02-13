@@ -127,7 +127,7 @@ gitlab-update: ensure-databases-running postgresql gitlab/.git/pull gitlab-setup
 gitlab/.git/pull:
 	@echo
 	@echo "-------------------------------------------------------"
-	@echo "Updating gitlab to current master.."
+	@echo "Updating gitlab to current master"
 	@echo "-------------------------------------------------------"
 	$(Q)cd ${gitlab_development_root}/gitlab && \
 		git checkout -- Gemfile.lock db/schema.rb ${QQ} && \
@@ -176,7 +176,7 @@ gitlab/public/uploads:
 .gitlab-bundle:
 	@echo
 	@echo "-------------------------------------------------------"
-	@echo "Installing Ruby gems.."
+	@echo "Installing Ruby gems"
 	@echo "-------------------------------------------------------"
 	$(Q)cd ${gitlab_development_root}/gitlab && $(rails_bundle_install_cmd)
 	$(Q)touch $@
@@ -184,7 +184,7 @@ gitlab/public/uploads:
 .gitlab-yarn:
 	@echo
 	@echo "-------------------------------------------------------"
-	@echo "Installing Node packages.."
+	@echo "Installing Node packages"
 	@echo "-------------------------------------------------------"
 	$(Q)cd ${gitlab_development_root}/gitlab && yarn install --pure-lockfile ${QQ}
 	$(Q)touch $@
@@ -206,7 +206,7 @@ gitlab-shell-update: gitlab-shell/.git/pull gitlab-shell-setup
 gitlab-shell/.git/pull:
 	@echo
 	@echo "-------------------------------------------------------"
-	@echo "Updating gitlab-shell to ${gitlab_shell_version}.."
+	@echo "Updating gitlab-shell to ${gitlab_shell_version}"
 	@echo "-------------------------------------------------------"
 	$(Q)support/component-git-update gitlab_shell "${gitlab_development_root}/gitlab-shell" "${gitlab_shell_version}"
 
@@ -251,7 +251,7 @@ gitaly-update: gitaly/.git/pull gitaly-clean gitaly-setup praefect-migrate
 gitaly/.git/pull: ${gitaly_clone_dir}/.git
 	@echo
 	@echo "-------------------------------------------------------"
-	@echo "Updating gitaly to ${gitaly_version}.."
+	@echo "Updating gitaly to ${gitaly_version}"
 	@echo "-------------------------------------------------------"
 	$(Q)support/component-git-update gitaly "${gitaly_clone_dir}" "${gitaly_version}" ${QQ}
 
@@ -286,7 +286,7 @@ gitlab-docs/.git:
 gitlab-docs/.git/pull:
 	@echo
 	@echo "-------------------------------------------------------"
-	@echo "Updating gitlab-docs.."
+	@echo "Updating gitlab-docs"
 	@echo "-------------------------------------------------------"
 	$(Q)cd gitlab-docs && \
 		git stash ${QQ} && \
@@ -376,7 +376,7 @@ ${gitlab_workhorse_clone_dir}/.git:
 gitlab-workhorse/.git/pull:
 	@echo
 	@echo "-------------------------------------------------------"
-	@echo "Updating gitlab-workhorse to ${workhorse_version}.."
+	@echo "Updating gitlab-workhorse to ${workhorse_version}"
 	@echo "-------------------------------------------------------"
 	$(Q)support/component-git-update workhorse "${gitlab_workhorse_clone_dir}" "${workhorse_version}"
 
@@ -402,7 +402,7 @@ gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer: gitlab-elasticsea
 gitlab-elasticsearch-indexer/.git/pull: gitlab-elasticsearch-indexer/.git
 	@echo
 	@echo "-------------------------------------------------------"
-	@echo "Updating gitlab-elasticsearch-indexer to ${gitlab_elasticsearch_indexer_version}.."
+	@echo "Updating gitlab-elasticsearch-indexer to ${gitlab_elasticsearch_indexer_version}"
 	@echo "-------------------------------------------------------"
 	$(Q)support/component-git-update gitlab_elasticsearch_indexer gitlab-elasticsearch-indexer "${gitlab_elasticsearch_indexer_version}"
 
@@ -429,7 +429,7 @@ ${gitlab_pages_clone_dir}/.git:
 gitlab-pages/.git/pull:
 	@echo
 	@echo "-------------------------------------------------------"
-	@echo "Updating gitlab-pages to ${pages_version}.."
+	@echo "Updating gitlab-pages to ${pages_version}"
 	@echo "-------------------------------------------------------"
 	$(Q)support/component-git-update gitlab_pages "${gitlab_pages_clone_dir}" "${pages_version}"
 
@@ -728,7 +728,7 @@ jaeger-artifacts/jaeger-${jaeger_version}.tar.gz:
 jaeger/jaeger-${jaeger_version}/jaeger-all-in-one: jaeger-artifacts/jaeger-${jaeger_version}.tar.gz
 	@echo
 	@echo "-------------------------------------------------------"
-	@echo "Installing jaeger ${jaeger_version}.."
+	@echo "Installing jaeger ${jaeger_version}"
 	@echo "-------------------------------------------------------"
 
 	$(Q)mkdir -p "jaeger/jaeger-${jaeger_version}"
