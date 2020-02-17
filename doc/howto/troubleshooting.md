@@ -149,6 +149,17 @@ error, make sure you pull the latest changes from the GDK repository and run:
 ./support/enable-postgres-extensions
 ```
 
+## ActiveRecord::PendingMigrationError at /
+
+After running the GitLab Development Kit using `gdk start` and browsing to `http://localhost:3000/`, you may see an error page that says `ActiveRecord::PendingMigrationError at /. Migrations are pending`.
+
+To fix this error, the pending migration must be resolved. Perform the following steps in your terminal:
+
+1. Change to the `gitlab` directory using `cd gitlab`
+2. Run the following command to perform the migration: `rails db:migrate RAILS_ENV=development`
+
+Once the operation is complete, refresh the page.
+
 ## Error installing node-gyp
 
 node-gyp may fail to build on macOS Catalina installations. Follow [the node-gyp troubleshooting guide](https://github.com/nodejs/node-gyp/blob/master/macOS_Catalina.md).
