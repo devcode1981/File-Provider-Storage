@@ -61,7 +61,7 @@ a new **Insecure registry**. Click **Apply & Restart**.
 
 ![Adding an insecure registry](img/dependency_proxy_macos_config.png)
 
-##### New Docker app
+##### Docker for Mac 2.2.0.0+ (newest versions)
 
 Open Docker -> Right click on status bar -> Preferences -> Docker Engine, and type in:
 
