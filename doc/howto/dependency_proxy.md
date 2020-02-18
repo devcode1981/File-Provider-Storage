@@ -53,7 +53,7 @@ Run `gdk reconfigure` and `gdk restart` to envoke the changes and visit the IP
 
 #### Add this IP address and port to the list of insecure registries and restart Docker.
 
-##### Old Docker app
+##### Old Docker for Mac (< 2.2.0.0)
 
 Open Docker -> Preferences, and navigate to the tab labelled **Daemon**.
 Check the box to enable **Experimental features** and you will be able to add
