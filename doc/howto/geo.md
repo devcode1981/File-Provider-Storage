@@ -13,6 +13,21 @@ instances. For more, see
 Development on GitLab Geo requires two GDK instances running side-by-side.
 You can use an existing `gdk` instance based on the [Set up GDK](../set-up-gdk.md#develop-against-the-gitlab-project-default) documentation as the primary node.
 
+### Primary
+
+Add the following to `gdk.yml` file on the primary node:
+
+```yml
+---
+geo:
+  enabled: true
+```
+
+Though this setting normally indicates the node is a secondary, many scripts and `make` targets
+assume they can run secondary-specific logic on any node. That is, rather than the scripts being
+node-type aware, this ensures the primary can act "like a secondary" in some cases
+such as when running tests.
+
 ### Secondary
 
 Now we'll create a secondary instance in a `gdk-geo` folder to act as
@@ -182,38 +197,10 @@ must get the values from the secondary, and then manually add the node.
 
 ## Geo-specific GDK commands
 
-### `make geo-primary-migrate`
+Use the following commands to keep Geo-enabled GDK installations up to date.
 
-Use this when your checked out files have changed, and e.g. your instance or
-tests are now erroring. For example, after you pull master, but you don't care
-to update dependencies right now. Or maybe you checked out someone else's
-branch.
-
-* Bundle installs to ensure gems are up-to-date
-* Migrates main DB and tracking DB (be sure to run `make geo-secondary-migrate` on
-your secondary if you have Geo migrations)
-* Prepares main and tracking test DBs
-* Checks out schemas to get rid of irrelevant diffs (not done in
-   `make geo-primary-migrate` because you may have created a migration)
-
-### `make geo-primary-update`
-
-Same as `make geo-primary-migrate`, but also:
-
-* Does `gdk update`
-* Checks out and pulls master
-* Updates dependencies (e.g. if Gitaly is erroring)
-* Rebuilds FDW tables in test DB
-* Finally does `gdk diff-config` so you can see a summary of how your configs
-  differ from a fresh install
-
-### `make geo-secondary-migrate`
-
-Similar to `make geo-primary-migrate` but for your local secondary.
-
-### `make geo-secondary-update`
-
-Similar to `make geo-primary-update` but for your local secondary.
+- `make geo-primary-update`, run on the primary GDK node.
+- `make geo-secondary-update`, run on any secondary GDK nodes.
 
 ## Troubleshooting
 
@@ -221,7 +208,7 @@ Similar to `make geo-primary-update` but for your local secondary.
 
 If you see this error during setup because you have already run `make geo-setup` once:
 
-```
+```plaintext
 initdb: directory "postgresql-geo/data" exists but is not empty
 If you want to create a new database system, either remove or empty
 the directory "postgresql-geo/data" or run initdb
@@ -232,7 +219,7 @@ make: *** [postgresql/geo] Error 1
 Then you may delete or move that data in order to run `make geo-setup` again.
 
 ```bash
-$ mv postgresql-geo/data postgresql-geo/data.backup
+mv postgresql-geo/data postgresql-geo/data.backup
 ```
 
 ### GDK update command error on secondaries
