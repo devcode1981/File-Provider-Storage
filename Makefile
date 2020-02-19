@@ -190,7 +190,7 @@ gitlab/public/uploads:
 	$(Q)touch $@
 
 .gettext:
-	$(Q)cd ${gitlab_development_root}/gitlab && bundle exec rake gettext:compile > ${gitlab_development_root}/gettext.log 2>&1
+	$(Q)cd ${gitlab_development_root}/gitlab && bundle exec rake gettext:compile > ${gitlab_development_root}/gitlab/log/gettext.log 2>&1
 	$(Q)git -C ${gitlab_development_root}/gitlab checkout locale/*/gitlab.po
 	$(Q)touch $@
 
