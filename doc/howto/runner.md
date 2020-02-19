@@ -185,8 +185,9 @@ different configuration files:
    ```
 
 Note that all three settings must be set because the URL in the runner
-config is used for two purposes: to register the runner on the host
-network, and to make API requests (e.g. send artifacts) inside the
-container during a CI job. The `/etc/hosts` parameter is needed to make
-that work for both cases. In addition, the `host` parameter is used by
-the runner to clone the repository (`CI_REPOSITORY_URL`).
+config is used for two purposes: to register the runner and poll for
+jobs on the host network, and to make API requests (e.g. send artifacts)
+inside the container during a CI job. The `/etc/hosts` parameter is
+needed to make that work for both cases. In addition, the `host`
+parameter is used by the runner to clone the repository
+(`CI_REPOSITORY_URL`).
