@@ -37,38 +37,52 @@ in the output.
 
 ### MacOS
 
-1. You need to use an IP address with your GDK installation, `localhost` will not work.
+#### Use an IP address with your GDK installation, `localhost` will not work.
 
-   This can be accomplished by [updating the GDK configuration](configuration.md) by
-   creating or updating the `gdk.yml` file in the root of your GDK directory.
+This can be accomplished by [updating the GDK configuration](configuration.md) by
+creating or updating the `gdk.yml` file in the root of your GDK directory.
 
-   The file should contain the intended host, such as `127.0.0.1` or `0.0.0.0`:
+The file should contain the intended host, such as `127.0.0.1` or `0.0.0.0`:
 
-   ```ini
-   host: 0.0.0.0
-   ```
+```ini
+host: 0.0.0.0
+```
 
-   Run `gdk reconfigure` and `gdk restart` to envoke the changes and visit the IP
-   (`0.0.0.0:3000`) to check if GitLab is accessible through the new IP.
+Run `gdk reconfigure` and `gdk restart` to envoke the changes and visit the IP
+(`0.0.0.0:3000`) to check if GitLab is accessible through the new IP.
 
-2. You need to add this IP address and port to the list of insecure registries
-   and restart Docker.
+#### Add this IP address and port to the list of insecure registries and restart Docker.
 
-   Open Docker -> Preferences, and navigate to the tab labelled **Daemon**.
-   Check the box to enable **Experimental features** and you will be able to add
-   a new **Insecure registry**. Click **Apply & Restart**.
+##### Old Docker for Mac (< 2.2.0.0)
 
-   ![Adding an insecure registry](img/dependency_proxy_macos_config.png)
+Open Docker -> Preferences, and navigate to the tab labelled **Daemon**.
+Check the box to enable **Experimental features** and you will be able to add
+a new **Insecure registry**. Click **Apply & Restart**.
 
-   Once Docker has restarted, you can test the dependency proxy with:
+![Adding an insecure registry](img/dependency_proxy_macos_config.png)
 
-   ```sh
-   sudo docker run 0.0.0.0:3000/gitlab-org/dependency_proxy/containers/hello-world:latest
-   ```
+##### Docker for Mac 2.2.0.0+ (newest versions)
 
-   Docker should succeed and you should see the following:
+Open Docker -> Right click on status bar -> Preferences -> Docker Engine, and type in:
 
-   ```sh
-   Hello from Docker!
-   This message shows that your installation appears to be working correctly.
-   ```
+```json
+{
+  "experimental": true,
+  "insecure-registries": ["0.0.0.0:3000", "127.0.0.1:3000"]
+}
+```
+
+![Adding an insecure registry on the new app](img/dependency_proxy_macos_config_new.png)
+
+Once Docker has restarted, you can test the dependency proxy with:
+
+```sh
+sudo docker run 0.0.0.0:3000/gitlab-org/dependency_proxy/containers/hello-world:latest
+```
+
+Docker should succeed and you should see the following:
+
+```sh
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+```
