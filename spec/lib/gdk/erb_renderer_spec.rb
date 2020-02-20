@@ -13,12 +13,12 @@ describe GDK::ErbRenderer do
 
   let(:config_klass) do
     Class.new(GDK::ConfigSettings) do
-      foo 'foo'
-      bar 'bar'
+      string(:foo) { 'foo' }
+      string(:bar) { 'bar' }
 
-      gdk do |g|
-        g.protected_config_files []
-        g.overwrite_changes false
+      settings(:gdk) do
+        array(:protected_config_files) { [] }
+        bool(:overwrite_changes) { false }
       end
     end
   end

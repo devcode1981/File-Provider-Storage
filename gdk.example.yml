@@ -15,8 +15,7 @@ gdk:
   overwrite_changes: false
   protected_config_files:
   - "*"
-gdk_root: !ruby/object:Pathname
-  path: "/home/git/gdk"
+gdk_root: "/home/git/gdk"
 geo:
   enabled: false
   node_name: gitlab-development-kit
@@ -24,20 +23,16 @@ geo:
     enabled: false
     primary_api_url: http://localhost:5000
 git:
-  bin: "/usr/local/bin/git"
-git_repositories: []
+  bin: "/home/toon/bin/git"
+git_repositories:
+- "/home/git/gdk/"
 gitaly:
-  address: !ruby/object:Pathname
-    path: "/home/git/gdk/gitaly.socket"
-  assembly_dir: !ruby/object:Pathname
-    path: "/home/git/gdk/gitaly/assembly"
+  address: "/home/git/gdk/gitaly.socket"
+  assembly_dir: "/home/git/gdk/gitaly/assembly"
   auto_update: true
-  config_file: !ruby/object:Pathname
-    path: "/home/git/gdk/gitaly/gitaly.config.toml"
-  internal_socket_dir: !ruby/object:Pathname
-    path: "/home/git/gdk/tmp/gitaly"
-  log_dir: !ruby/object:Pathname
-    path: "/home/git/gdk/log/gitaly"
+  config_file: "/home/git/gdk/gitaly/gitaly.config.toml"
+  internal_socket_dir: "/home/git/gdk/tmp/gitaly"
+  log_dir: "/home/git/gdk/log/gitaly"
 gitlab_elasticsearch_indexer:
   auto_update: true
 gitlab_pages:
@@ -62,62 +57,50 @@ nginx:
   listen: 127.0.0.1
   ssl:
     certificate: localhost.crt
+    key: localhost.key
 object_store:
   enabled: false
   port: 9000
 omniauth:
   google_oauth2:
-    client_id: 
-    client_secret: 
-    enabled: false
+    client_id: ''
+    client_secret: ''
+    enabled: ''
 openldap:
   enabled: false
 port: 3000
 postgresql:
-  bin: !ruby/object:Pathname
-    path: "/usr/local/opt/postgresql@10/bin/postgres"
-  bin_dir: "/usr/local/opt/postgresql@10/bin"
-  data_dir: !ruby/object:Pathname
-    path: "/home/git/gdk/postgresql/data"
-  dir: !ruby/object:Pathname
-    path: "/home/git/gdk/postgresql"
+  bin: "/usr/lib/postgresql/11/bin/postgres"
+  bin_dir: "/usr/lib/postgresql/11/bin"
+  data_dir: "/home/git/gdk/postgresql/data"
+  dir: "/home/git/gdk/postgresql"
   geo:
-    dir: !ruby/object:Pathname
-      path: "/home/git/gdk/postgresql-geo"
+    dir: "/home/git/gdk/postgresql-geo"
     port: 5432
   port: 5432
   replica:
     enabled: false
-  replica_dir: !ruby/object:Pathname
-    path: "/home/git/gdk/postgresql-replica"
+  replica_dir: "/home/git/gdk/postgresql-replica"
   replication_user: gitlab_replication
 praefect:
-  address: !ruby/object:Pathname
-    path: "/home/git/gdk/praefect.socket"
-  config_file: !ruby/object:Pathname
-    path: "/home/git/gdk/gitaly/praefect.config.toml"
+  address: "/home/git/gdk/praefect.socket"
+  config_file: "/home/git/gdk/gitaly/praefect.config.toml"
   database:
     dbname: praefect_development
-    host: !ruby/object:Pathname
-      path: "/home/git/gdk/postgresql"
+    host: "/home/git/gdk/postgresql"
     sslmode: disable
   enabled: true
-  internal_socket_dir: !ruby/object:Pathname
-    path: "/home/git/gdk/tmp/praefect"
+  internal_socket_dir: "/home/git/gdk/tmp/praefect"
   node_count: 1
   nodes:
-  - address: !ruby/object:Pathname
-      path: "/home/git/gdk/gitaly-praefect-0.socket"
+  - address: "/home/git/gdk/gitaly-praefect-0.socket"
     config_file: gitaly/gitaly-0.praefect.toml
-    internal_socket_dir: !ruby/object:Pathname
-      path: "/home/git/gdk/tmp/praefect/gitaly-0"
-    log_dir: !ruby/object:Pathname
-      path: "/home/git/gdk/log/praefect-gitaly-0"
+    internal_socket_dir: "/home/git/gdk/tmp/praefect/gitaly-0"
+    log_dir: "/home/git/gdk/log/praefect-gitaly-0"
     primary: true
     service_name: praefect-gitaly-0
     storage: praefect-internal-0
-    storage_dir: !ruby/object:Pathname
-      path: "/home/git/gdk/repositories"
+    storage_dir: "/home/git/gdk/repositories"
 prometheus:
   enabled: false
 registry:
@@ -135,22 +118,18 @@ repositories:
   gitlab_pages: https://gitlab.com/gitlab-org/gitlab-pages.git
   gitlab_shell: https://gitlab.com/gitlab-org/gitlab-shell.git
   gitlab_workhorse: https://gitlab.com/gitlab-org/gitlab-workhorse.git
-repositories_root: !ruby/object:Pathname
-  path: "/home/git/gdk/repositories"
+repositories_root: "/home/git/gdk/repositories"
 runner:
-  config_file: !ruby/object:Pathname
-    path: "/home/git/gdk/gitlab-runner-config.toml"
+  config_file: "/home/git/gdk/gitlab-runner-config.toml"
   enabled: false
 sshd:
   additional_config: ''
-  authorized_keys_file: !ruby/object:Pathname
-    path: "/home/git/gdk/.ssh/authorized_keys"
+  authorized_keys_file: "/home/git/gdk/.ssh/authorized_keys"
   bin: "/usr/sbin/sshd"
   enabled: false
-  host_key: !ruby/object:Pathname
-    path: "/home/git/gdk/openssh/ssh_host_rsa_key"
+  host_key: "/home/git/gdk/openssh/ssh_host_rsa_key"
   listen_address: 127.0.0.1
-  listen_port: '2222'
+  listen_port: 2222
   user: git
 tracer:
   build_tags: tracer_static tracer_static_jaeger

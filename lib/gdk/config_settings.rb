@@ -1,34 +1,62 @@
 # frozen_string_literal: true
 
 require 'yaml'
+require_relative 'config_type/anything'
+require_relative 'config_type/array'
+require_relative 'config_type/bool'
+require_relative 'config_type/integer'
+require_relative 'config_type/path'
+require_relative 'config_type/string'
 
 module GDK
   class ConfigSettings
     SettingUndefined = Class.new(StandardError)
 
-    attr_reader :parent, :yaml, :key
+    attr_reader :parent, :yaml, :slug
 
-    def self.method_missing(name, *args, &blk)
-      if !args.empty?
-        define_method(name) do
-          yaml.fetch(name.to_s, args.first)
-        end
-      elsif block_given?
-        define_method(name) do
-          # return the result of the block if it didn't take an argument
-          # otherwise return an instance of the sub ConfigSettings
-          return yaml.fetch(name.to_s, instance_eval(&blk)) if blk.arity.zero?
+    class << self
+      def anything(name, &blk)
+        setting(name, ConfigType::Anything, &blk)
+      end
 
+      def array(name, &blk)
+        setting(name, ConfigType::Array, &blk)
+      end
+
+      def bool(name, &blk)
+        setting(name, ConfigType::Bool, &blk)
+      end
+
+      def integer(name, &blk)
+        setting(name, ConfigType::Integer, &blk)
+      end
+
+      def path(name, &blk)
+        setting(name, ConfigType::Path, &blk)
+      end
+
+      def string(name, &blk)
+        setting(name, ConfigType::String, &blk)
+      end
+
+      def settings(name, &blk)
+        define_method(name) do
           subconfig!(name, &blk)
         end
-      else
-        super
+      end
+
+      private
+
+      def setting(name, config_type, &blk)
+        define_method(name) do
+          config_type.new(yaml.fetch(name.to_s, instance_eval(&blk)), slug: slug_for(name)).value
+        end
       end
     end
 
-    def initialize(parent: nil, yaml: nil, key: nil)
+    def initialize(parent: nil, yaml: nil, slug: nil)
       @parent = parent
-      @key = key
+      @slug = slug
       @yaml = yaml || load_yaml!
     end
 
@@ -45,9 +73,12 @@ module GDK
           hash[method.to_s] = value.dump!
         elsif value.is_a?(Enumerable) && value.first.is_a?(ConfigSettings)
           hash[method.to_s] = value.map(&:dump!)
+        elsif value.is_a?(Pathname)
+          hash[method.to_s] = value.to_s
         else
           hash[method.to_s] = value
         end
+
         hash
       end
 
@@ -92,37 +123,39 @@ module GDK
       value
     end
 
-    # Create an array of configs with self as parent
+    # Create an array of settings with self as parent
     #
-    # @param count [Integer] the number of configs in the array
-    def config_array!(count, &blk)
+    # @param count [Integer] the number of settings in the array
+    def settings_array!(count, &blk)
       count.times.map do |i|
-        subconfig!(i, &blk)
+        subconfig!(i) do
+          instance_exec(i, &blk)
+        end
       end
     end
 
-    def fetch(key, *args)
+    def fetch(slug, *args)
       raise ::ArgumentError.new(%Q[Wrong number of arguments (#{args.count + 1} for 1..2)]) if args.count > 1
 
-      return public_send(key) if respond_to?(key)
+      return public_send(slug) if respond_to?(slug)
 
-      raise SettingUndefined.new(%Q[Could not fetch the setting '#{key}' in '#{self.key || '<root>'}']) if args.empty?
+      raise SettingUndefined.new(%Q[Could not fetch the setting '#{slug}' in '#{self.slug || '<root>'}']) if args.empty?
 
       args.first
     end
 
-    def [](key)
-      fetch(key, nil)
+    def [](slug)
+      fetch(slug, nil)
     end
 
-    def dig(*keys)
-      keys = keys.first.to_s.split('.') if keys.one?
+    def dig(*slugs)
+      slugs = slugs.first.to_s.split('.') if slugs.one?
 
-      value = fetch(keys.shift)
+      value = fetch(slugs.shift)
 
-      return value if keys.empty?
+      return value if slugs.empty?
 
-      value.dig(*keys)
+      value.dig(*slugs)
     end
 
     def config_file_protected?(target)
@@ -137,7 +170,7 @@ module GDK
     alias_method :config, :root
 
     def inspect
-      "#<GDK::ConfigSettings key:#{key}>"
+      "#<GDK::ConfigSettings slug:#{slug}>"
     end
 
     def to_s
@@ -159,18 +192,21 @@ module GDK
 
     private
 
-    def enabled_value(method_name)
-      chopped_name = method_name.to_s.chop.to_sym
+    def slug_for(name)
+      [slug, name].compact.join('.')
+    end
 
+    def enabled_value(method_name)
       return nil unless method_name.to_s.end_with?('?')
 
+      chopped_name = method_name.to_s.chop.to_sym
       fetch(chopped_name, nil)&.fetch(:enabled, nil)
     end
 
     def subconfig!(name, &blk)
       sub = Class.new(ConfigSettings)
-      blk.call(sub, name)
-      sub.new(parent: self, yaml: yaml.fetch(name.to_s, {}), key: [key, name].compact.join('.'))
+      sub.class_eval(&blk)
+      sub.new(parent: self, yaml: yaml.fetch(name.to_s, {}), slug: slug_for(name))
     end
 
     def load_yaml!
@@ -179,19 +215,12 @@ module GDK
       YAML.load_file(self.class::FILE) || {}
     end
 
-    def from_yaml(key, default: nil)
-      yaml.has_key?(key) ? yaml[key] : default
+    def from_yaml(slug, default: nil)
+      yaml.has_slug?(slug) ? yaml[slug] : default
     end
 
     def sanitized_read!(filename)
-      sanitize_value(File.read(filename).chomp)
-    end
-
-    def sanitize_value(value)
-      return true if value == "true"
-      return false if value == "false"
-      return value.to_i if value == value.to_i.to_s
-      value
+      File.read(filename).chomp
     end
   end
 end

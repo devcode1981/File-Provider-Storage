@@ -56,7 +56,7 @@ module GDK
       true
     when 'config'
       config_command = ARGV.shift
-      abort 'Usage: gdk config get path.to.the.conf.value' if config_command != 'get' || ARGV.empty?
+      abort 'Usage: gdk config get slug.of.the.conf.value' if config_command != 'get' || ARGV.empty?
 
       begin
         puts Config.new.dig(*ARGV)
