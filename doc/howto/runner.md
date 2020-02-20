@@ -66,8 +66,8 @@ The right one to use depends on your network, and may change from time to time,
 but an address like `10.x.x.x`, `172.16.x.x` or `192.168.x.x` is normally the
 right one.
 
-NOTE: If you want to use a Docker executor on macOS, see [the section
-below on Docker for Mac](#docker-for-mac).
+NOTE: If you want to use a Docker executor, see [the section
+below](#docker-executor).
 
 Now run GDK: `gdk start`. Navigate to `http://<ip>:3000/gitlab-org/gitlab-test`.
 If the URL doesn't work, repeat the last step and pick a different IP.
@@ -159,6 +159,8 @@ watch as the Runner processes the builds just as it would on a "real" install!
 
 Register your docker-based runner by following the steps described in <https://docs.gitlab.com/runner/register/index.html#docker>.
 
+### Docker executor
+
 #### Docker for Mac
 
 Docker for Mac [has some networking
@@ -196,3 +198,36 @@ The `/etc/hosts` parameter is needed to make the first two items work,
 since this maps `host.docker.internal` to `localhost`. The `config.toml`
 changes allow the third item to work. The `gitlab.yml` changes are used
 used for the fourth item.
+
+#### Using an internal, dummy interface
+
+The trick described above is a bit of a hack and only works for Docker
+for Mac, but the "proper" way to support a Docker executor is to use an
+internal, dummy interface that can be used by both the host and the
+container.  Here's how:
+
+1. Create an internal interface. On macOS, this will add an alias IP
+   172.16.123.1 to the loopback adapter:
+
+    ```sh
+    sudo ifconfig lo0 alias 172.16.123.1
+    ```
+
+    On Linux, you can create a dummy interface:
+
+    ```sh
+    sudo ip link add dummy0 type dummy
+    ifconfig dummy0 172.16.123.1
+    ```
+
+1. In `config/gitlab.yml`, set the `host` parameter to `172.16.123.1`.
+
+1. In the GitLab runner config (e.g. `~/.gitlab-runner/config.toml`), set the coordinator
+   URL with this hostname:
+
+   ```toml
+    url = "http://172.16.123.1:3001/"
+   ```
+
+Note that for this to work across reboots, the aliased IP in step 1 needs to be run
+at startup.
