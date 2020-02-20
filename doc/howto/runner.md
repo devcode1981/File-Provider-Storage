@@ -184,10 +184,15 @@ different configuration files:
     url = "http://host.docker.internal:3001/"
    ```
 
-Note that all three settings must be set because the URL in the runner
-config is used for two purposes: to register the runner and poll for
-jobs on the host network, and to make API requests (e.g. send artifacts)
-inside the container during a CI job. The `/etc/hosts` parameter is
-needed to make that work for both cases. In addition, the `host`
-parameter is used by the runner to clone the repository
-(`CI_REPOSITORY_URL`).
+Note that all three settings must be set to ensure a number of items
+work with the runner:
+
+1. Registering the runner
+1. Polling for jobs on the host network
+1. Making API requests (e.g. sending artifacts) inside the container during a CI job.
+1. Cloning the repository ([`CI_REPOSITORY_URL`](https://docs.gitlab.com/ee/ci/variables/predefined_variables.html))
+
+The `/etc/hosts` parameter is needed to make the first two items work,
+since this maps `host.docker.internal` to `localhost`. The `config.toml`
+changes allow the third item to work. The `gitlab.yml` changes are used
+used for the fourth item.
