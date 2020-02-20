@@ -38,7 +38,7 @@ Kubectl is required for Minikube to function. You can also use `homebrew` to ins
 
 ### Install Minikube
 
-For macOS with homebrew, run `brew cask install minikube`.
+For macOS with homebrew, run `brew install minikube`.
 
 1. First, download it:
 
@@ -60,7 +60,10 @@ For macOS with homebrew, run `brew cask install minikube`.
 ## Install a virtualization driver
 
 
-Minikube requires virtualization. Install the appropriate driver for your operation system: [MacOS](https://github.com/kubernetes/minikube/blob/master/docs/drivers.md#hyperkit-driver) or [Linux](https://github.com/kubernetes/minikube/blob/master/docs/drivers.md#kvm2-driver).
+Minikube requires virtualization. Install the appropriate driver for your operation system:
+
+- [macOS](https://minikube.sigs.k8s.io/docs/reference/drivers/hyperkit/)
+- [Linux](https://minikube.sigs.k8s.io/docs/reference/drivers/kvm2/)
 
 ### Start Minikube
 
