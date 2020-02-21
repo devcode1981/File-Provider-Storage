@@ -197,7 +197,7 @@ work with the runner:
 The `/etc/hosts` parameter is needed to make the first two items work,
 since this maps `host.docker.internal` to `localhost`. The `config.toml`
 changes allow the third item to work. The `gitlab.yml` changes are used
-used for the fourth item.
+for the fourth item.
 
 #### Using an internal, dummy interface
 
