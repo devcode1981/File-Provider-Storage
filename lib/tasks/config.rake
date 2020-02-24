@@ -67,6 +67,11 @@ file 'gitlab/config/database.yml' => ['support/templates/database.yml.erb', GDK:
   GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
 end
 
+desc 'Generate the cable.yml config file'
+file 'gitlab/config/cable.yml' => ['support/templates/cable.yml.erb', GDK::Config::FILE] do |t|
+  GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
+end
+
 desc 'Generate the resque.yml config file'
 file 'gitlab/config/resque.yml' => ['support/templates/resque.yml.erb', GDK::Config::FILE] do |t|
   GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
