@@ -72,7 +72,7 @@ module GDK
 
       exec('psql', '-h', File.join($gdk_root, 'postgresql'), '-p', pg_port.to_s, *ARGV, chdir: $gdk_root)
     when 'redis-cli'
-      exec('redis-cli', '-s', File.join($gdk_root, 'redis/redis.socket'), *ARGV, chdir: $gdk_root)
+      exec('redis-cli', '-s', GDK::Config.new.redis_socket.to_s, *ARGV, chdir: $gdk_root)
     when 'env'
       GDK::Env.exec(ARGV)
     when 'start', 'status'

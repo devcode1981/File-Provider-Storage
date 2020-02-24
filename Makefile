@@ -165,10 +165,9 @@ gitlab/config/unicorn.rb: gitlab/config/unicorn.rb.example.development
 		-e "s|/home/git|${gitlab_development_root}|g" \
 		"$<"
 
-gitlab/config/resque.yml: redis/resque.yml.example
-	$(Q)bin/safe-sed "$@" \
-		-e "s|/home/git|${gitlab_development_root}|g" \
-		"$<"
+.PHONY: gitlab/config/resque.yml
+gitlab/config/resque.yml:
+	$(Q)rake $@
 
 gitlab/public/uploads:
 	$(Q)mkdir $@
@@ -220,8 +219,6 @@ gitlab-shell/config.yml: gitlab-shell/config.yml.example
 	$(Q)bin/safe-sed "$@" \
 		-e "s|/home/git|${gitlab_development_root}|g" \
 		-e "s|^gitlab_url:.*|gitlab_url: http+unix://$(subst /,%2F,${gitlab_development_root}/gitlab.socket)|" \
-		-e "s|/usr/bin/redis-cli|$(shell which redis-cli)|" \
-		-e "s|^  socket: .*|  socket: ${gitlab_development_root}/redis/redis.socket|" \
 		-e "s|^# migration|migration|" \
 		"$<"
 
@@ -354,10 +351,9 @@ geo-secondary-update:
 
 gitlab-workhorse-setup: gitlab-workhorse/bin/gitlab-workhorse gitlab-workhorse/config.toml
 
-gitlab-workhorse/config.toml: gitlab-workhorse/config.toml.example
-	$(Q)bin/safe-sed "$@" \
-		-e "s|/home/git|${gitlab_development_root}|g" \
-		"$<"
+.PHONY: gitlab-workhorse/config.toml
+gitlab-workhorse/config.toml:
+	$(Q)rake $@
 
 gitlab-workhorse-update: ${gitlab_workhorse_clone_dir}/.git gitlab-workhorse/.git/pull gitlab-workhorse-clean-bin gitlab-workhorse/bin/gitlab-workhorse
 
@@ -465,10 +461,9 @@ endif
 
 redis: redis/redis.conf
 
-redis/redis.conf: redis/redis.conf.example
-	$(Q)bin/safe-sed "$@" \
-		-e "s|/home/git|${gitlab_development_root}|g" \
-		"$<"
+.PHONY: redis/redis.conf
+redis/redis.conf:
+	$(Q)rake $@
 
 ##############################################################
 # postgresql
