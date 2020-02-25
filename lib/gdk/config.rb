@@ -106,6 +106,7 @@ module GDK
 
     settings :gitlab_shell do
       bool(:auto_update) { true }
+      string(:dir) { config.gdk_root.join('gitlab-shell') }
     end
 
     settings :gitlab_elasticsearch_indexer do

@@ -219,12 +219,9 @@ symlink-gitlab-shell:
 ${gitlab_shell_clone_dir}/.git:
 	$(Q)git clone --quiet --branch "${gitlab_shell_version}" ${git_depth_param} ${gitlab_shell_repo} ${gitlab_shell_clone_dir}
 
-gitlab-shell/config.yml: gitlab-shell/config.yml.example
-	$(Q)bin/safe-sed "$@" \
-		-e "s|/home/git|${gitlab_development_root}|g" \
-		-e "s|^gitlab_url:.*|gitlab_url: http+unix://$(subst /,%2F,${gitlab_development_root}/gitlab.socket)|" \
-		-e "s|^# migration|migration|" \
-		"$<"
+.PHONY: gitlab-shell/config.yml
+gitlab-shell/config.yml: ${gitlab_shell_clone_dir}/.git
+	$(Q)rake $@
 
 .gitlab-shell-bundle:
 	$(Q)cd ${gitlab_development_root}/gitlab-shell && $(rails_bundle_install_cmd)
