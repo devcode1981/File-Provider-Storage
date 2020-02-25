@@ -61,6 +61,7 @@ clean-config:
 	gitlab/config/database.yml \
 	gitlab/config/unicorn.rb \
 	gitlab/config/puma.rb \
+	gitlab/config/cable.yml \
 	gitlab/config/resque.yml \
 	gitlab-shell/config.yml \
 	gitlab-shell/.gitlab_shell_secret \
@@ -84,7 +85,6 @@ touch-examples:
 	grafana/grafana.ini.example \
 	influxdb/influxdb.conf.example \
 	redis/redis.conf.example \
-	redis/resque.yml.example \
 	registry/config.yml.example \
 	support/templates/*.erb
 
@@ -141,7 +141,7 @@ gitlab/.git/pull:
 gitlab/.git:
 	$(Q)git clone ${git_depth_param} ${gitlab_repo} ${gitlab_clone_dir} $(if $(realpath ${gitlab_repo}),--shared)
 
-gitlab-config: gitlab/config/gitlab.yml gitlab/config/database.yml gitlab/config/unicorn.rb gitlab/config/resque.yml gitlab/public/uploads gitlab/config/puma.rb
+gitlab-config: gitlab/config/gitlab.yml gitlab/config/database.yml gitlab/config/unicorn.rb gitlab/config/cable.yml gitlab/config/resque.yml gitlab/public/uploads gitlab/config/puma.rb
 
 .PHONY: gitlab/config/gitlab.yml
 gitlab/config/gitlab.yml:
@@ -164,6 +164,10 @@ gitlab/config/unicorn.rb: gitlab/config/unicorn.rb.example.development
 	$(Q)bin/safe-sed "$@" \
 		-e "s|/home/git|${gitlab_development_root}|g" \
 		"$<"
+
+.PHONY: gitlab/config/cable.yml
+gitlab/config/cable.yml:
+	$(Q)rake $@
 
 .PHONY: gitlab/config/resque.yml
 gitlab/config/resque.yml:
