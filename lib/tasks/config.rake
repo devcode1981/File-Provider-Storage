@@ -82,6 +82,11 @@ file 'gitlab/config/gitlab.yml' => ['support/templates/gitlab.yml.erb'] do |t|
   GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
 end
 
+desc 'Generate the gitlab-shell config.yml file'
+file 'gitlab-shell/config.yml' => ['support/templates/gitlab-shell.config.yml.erb'] do |t|
+  GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
+end
+
 desc 'Generate the gitlab-workhorse config file'
 file 'gitlab-workhorse/config.toml' => ['support/templates/gitlab-workhorse.config.toml.erb'] do |t|
   GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!

@@ -713,7 +713,7 @@ production: &base
 
   ## GitLab Shell settings
   gitlab_shell:
-    path: <%= config.gdk_root.join("gitlab-shell") %>
+    path: <%= config.gitlab_shell.dir %>
     authorized_keys_file: <%= config.gdk_root.join(".ssh", "authorized_keys") %>
 
     # Git over HTTP
