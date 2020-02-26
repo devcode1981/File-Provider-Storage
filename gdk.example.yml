@@ -13,8 +13,7 @@ gdk:
   ask_to_restart_after_update: true
   debug: false
   overwrite_changes: false
-  protected_config_files:
-  - "*"
+  protected_config_files: []
 gdk_root: "/home/git/gdk"
 geo:
   enabled: false

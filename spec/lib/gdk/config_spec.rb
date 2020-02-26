@@ -3,7 +3,7 @@ require 'spec_helper'
 describe GDK::Config do
   let(:auto_devops_enabled) { false }
   let(:nginx_enabled) { false }
-  let(:protected_config_files) { ['*'] }
+  let(:protected_config_files) { [] }
   let(:overwrite_changes) { false }
   let(:yaml) do
     {

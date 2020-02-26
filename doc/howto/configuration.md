@@ -33,10 +33,7 @@ dump_config`, which will print all applied settings in a YAML structure.
 
 #### Overwriting config files
 
-> The current default is still to _not_ overwrite config files but this will change soon.
-> https://gitlab.com/gitlab-org/gitlab-development-kit/issues/780
-
-Soon, any config file managed by GDK will be overwritten
+Any config file managed by GDK will be overwritten
 whenever there are changes in its source (a `.example` or `.erb`
 file). When GDK overwrites a config file it moves the original file
 into the `.backups` subdirectory of your GDK installation.
@@ -51,13 +48,8 @@ gdk:
   - 'gitaly/*.toml'
 ```
 
-If you want to force GDK to overwrite all config files (which will soon be the default):
-
-```yaml
-# in gdk.yml
-gdk:
-  protected_config_files: []
-```
+> Note that `gdk.yml` is not managed by GDK, and GDK will
+never overwrite it.
 
 #### Notable settings
 
@@ -80,7 +72,7 @@ There are also a few settings that configure the behavior of GDK itself:
 | `gdk.ask_to_restart_after_update` | `true`  | Set this to `false` if you do not wish to be prompted to restart your GDK after an update. |
 | `gdk.debug`                       | `false` | Set this to `true` to enable increased output. |
 | `gdk.overwrite_changes`           | `false` | When set to `true` `gdk reconfigure` will overwrite files and move the old version to `.backups`.|
-| `gdk.protected_config_files`           | `['*']` | Contains file names / globs of config files GDK should not overwrite|
+| `gdk.protected_config_files`           | `[]` | Contains file names / globs of config files GDK should not overwrite|
 
 ### Loose files (deprecated)
 
