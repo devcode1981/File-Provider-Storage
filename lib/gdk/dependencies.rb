@@ -103,12 +103,27 @@ module GDK
       end
 
       def check_bundler_version
-        unless system("bundle _#{expected_bundler_version}_ --version >/dev/null 2>&1")
-          @error_messages << <<~BUNDLER_VERSION_NOT_MET
-            Please install Bundler version #{expected_bundler_version}.
-            gem install bundler -v '= #{expected_bundler_version}'
-          BUNDLER_VERSION_NOT_MET
-        end
+        return if bundler_version_ok? || alt_bundler_version_ok?
+
+        @error_messages << <<~BUNDLER_VERSION_NOT_MET
+          Please install Bundler version #{expected_bundler_version}.
+          gem install bundler -v '= #{expected_bundler_version}'
+        BUNDLER_VERSION_NOT_MET
+      end
+
+      def bundler_version_ok?
+        return system("bundle _#{expected_bundler_version}_ --version >/dev/null 2>&1")
+      end
+
+      def alt_bundler_version_ok?
+        # On some systems, most notably Gentoo, Ruby Gems get patched to use a
+        # custom wrapper. Because of this, we cannot use the `bundle
+        # _$VERSION_` syntax and need to fall back to using `bundle --version`
+        # on a best effort basis.
+        actual = Shellout.new('bundle --version').try_run
+        actual = actual[/Bundler version (\d+\.\d+.\d+)/, 1]
+
+        Gem::Version.new(actual) == Gem::Version.new(expected_bundler_version)
       end
 
       def check_go_version
