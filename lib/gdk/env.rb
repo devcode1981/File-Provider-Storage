@@ -37,8 +37,6 @@ module GDK
             'PGHOST' => config.postgresql.dir.to_s,
             'PGPORT' => config.postgresql.port.to_s,
           }
-        when 'gitlab-workhorse'
-          { 'GOPATH' => File.join($gdk_root, 'gitlab-workhorse') }
         when 'gitlab-shell', 'go-gitlab-shell'
           { 'GOPATH' => File.join($gdk_root, 'go-gitlab-shell') }
         else
