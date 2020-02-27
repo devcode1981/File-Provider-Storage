@@ -31,9 +31,6 @@ gitlab-development-kit/**
 /gitlab-openldap/sbin/
 /gitlab-openldap/share/
 /.vagrant/
-/gitlab-workhorse/pkg
-/gitlab-workhorse/bin
-/gitlab-workhorse/src
 /gitlab-pages/pkg
 /gitlab-pages/bin
 /gitlab-pages/src
@@ -106,3 +103,4 @@ gitlab-development-kit/**
 /log/
 /gitlab-elasticsearch-indexer
 /env.runit
+/gitlab-workhorse

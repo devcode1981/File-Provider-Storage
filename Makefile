@@ -10,7 +10,7 @@ include $(shell rake gdk-config.mk)
 
 gitlab_clone_dir = gitlab
 gitlab_shell_clone_dir = go-gitlab-shell/src/gitlab.com/gitlab-org/gitlab-shell
-gitlab_workhorse_clone_dir = gitlab-workhorse/src/gitlab.com/gitlab-org/gitlab-workhorse
+gitlab_workhorse_clone_dir = gitlab-workhorse
 gitaly_gopath = $(abspath ./gitaly)
 gitaly_clone_dir = gitaly
 gitlab_pages_clone_dir = gitlab-pages/src/gitlab.com/gitlab-org/gitlab-pages
@@ -237,7 +237,6 @@ gitlab-shell/.gitlab_shell_secret:
 gitaly-setup: gitaly/bin/gitaly gitaly/gitaly.config.toml gitaly/praefect.config.toml
 
 ${gitaly_clone_dir}/.git:
-	mkdir -p .backups
 	if [ -e gitaly ]; then mv gitaly .backups/$(shell date +gitaly.old.%Y-%m-%d_%H.%M.%S); fi
 	git clone --quiet --branch "${gitaly_version}" ${git_depth_param} ${gitaly_repo} ${gitaly_clone_dir}
 
@@ -350,23 +349,23 @@ geo-secondary-update:
 # gitlab-workhorse
 ##############################################################
 
-gitlab-workhorse-setup: gitlab-workhorse/bin/gitlab-workhorse gitlab-workhorse/config.toml
+gitlab-workhorse-setup: gitlab-workhorse/gitlab-workhorse gitlab-workhorse/config.toml
 
 .PHONY: gitlab-workhorse/config.toml
 gitlab-workhorse/config.toml:
 	$(Q)rake $@
 
-gitlab-workhorse-update: ${gitlab_workhorse_clone_dir}/.git gitlab-workhorse/.git/pull gitlab-workhorse-clean-bin gitlab-workhorse/bin/gitlab-workhorse
+gitlab-workhorse-update: ${gitlab_workhorse_clone_dir}/.git gitlab-workhorse/.git/pull gitlab-workhorse-clean-bin gitlab-workhorse-setup
 
 gitlab-workhorse-clean-bin:
-	$(Q)rm -rf gitlab-workhorse/bin
+	$(Q)$(MAKE) -C ${gitlab_workhorse_clone_dir} clean
 
-.PHONY: gitlab-workhorse/bin/gitlab-workhorse
-gitlab-workhorse/bin/gitlab-workhorse: ${gitlab_workhorse_clone_dir}/.git
-	$(Q)$(MAKE) -C ${gitlab_workhorse_clone_dir} install PREFIX=${gitlab_development_root}/gitlab-workhorse ${QQ}
+.PHONY: gitlab-workhorse/gitlab-workhorse
+gitlab-workhorse/gitlab-workhorse: ${gitlab_workhorse_clone_dir}/.git
+	$(Q)$(MAKE) -C ${gitlab_workhorse_clone_dir} ${QQ}
 
 ${gitlab_workhorse_clone_dir}/.git:
-	$(Q)git clone --quiet --branch "${workhorse_version}" ${git_depth_param} ${gitlab_workhorse_repo} ${gitlab_workhorse_clone_dir}
+	$(Q)support/move-existing-workhorse-directory || git clone --quiet --branch "${workhorse_version}" ${git_depth_param} ${gitlab_workhorse_repo} ${gitlab_workhorse_clone_dir}
 
 gitlab-workhorse/.git/pull:
 	@echo
