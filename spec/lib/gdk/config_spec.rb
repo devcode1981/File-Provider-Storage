@@ -143,4 +143,43 @@ describe GDK::Config do
       end
     end
   end
+
+  describe 'runner' do
+    context 'when config_file exists' do
+      let(:file_contents) do
+        <<~eos
+        concurrent = 1
+        check_interval = 0
+
+        [session_server]
+          session_timeout = 1800
+
+        [[runners]]
+          name = "MyRunner"
+          url = "http://example.com"
+          token = "XXXXXXXXXX"
+          executor = "docker"
+          [runners.custom_build_dir]
+          [runners.docker]
+            tls_verify = false
+            image = "ruby:2.6"
+            privileged = false
+            disable_entrypoint_overwrite = false
+            oom_kill_disable = false
+            disable_cache = false
+            volumes = ["/cache"]
+            shm_size = 0
+          [runners.cache]
+            [runners.cache.s3]
+            [runners.cache.gcs]
+        eos
+      end
+
+      it 'returns true' do
+        allow_any_instance_of(GDK::ConfigSettings).to receive(:read!).with(config.runner.config_file) { file_contents }
+
+        expect(config.runner.enabled).to be true
+      end
+    end
+  end
 end
