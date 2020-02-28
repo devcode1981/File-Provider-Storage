@@ -275,7 +275,7 @@ module GDK
 
     settings :runner do
       path(:config_file) { config.gdk_root.join('gitlab-runner-config.toml') }
-      bool(:enabled) { read!(config.runner.config_file) || false }
+      bool(:enabled) { !!read!(config.runner.config_file) || false }
     end
 
     settings :influxdb do
