@@ -16,6 +16,11 @@ describe GDK::Config do
 
   subject(:config) { described_class.new(yaml: yaml) }
 
+  before do
+    # Ensure a developer's local gdk.yml does not affect tests
+    allow_any_instance_of(GDK::ConfigSettings).to receive(:read!).and_return(nil)
+  end
+
   describe 'workhorse' do
     describe '#__active_host' do
       context 'when AutoDevOps and nginx are not enabled' do
