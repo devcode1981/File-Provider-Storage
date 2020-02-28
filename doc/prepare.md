@@ -55,7 +55,7 @@ We are using PostgreSQL 10 in the following example. If you want to use another 
 | We recommend manual installation of Node.js 12.10 instead of using Homebrew to avoid breaking your development setup when you run `brew upgrade`. Install Node.js 12.10 [manually](https://nodejs.org/en/download/) or use a tool like [NVM](https://github.com/creationix/nvm). If you want to use Homebrew, you can prevent it from upgrading the current Node.js formula by pinning it with `brew pin node@12`. |
 
 ```
-brew install git git-lfs redis postgresql@10 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@12 gpg runit icu4c exiftool minio/stable/minio
+brew install git git-lfs redis postgresql@10 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@12 gpg runit icu4c exiftool sqlite minio/stable/minio
 brew install yarn --ignore-dependencies
 brew link pkg-config
 brew pin node@12 icu4c readline
@@ -72,7 +72,7 @@ brew cask install google-chrome chromedriver
 [MacPorts](https://www.macports.org/) is another package manager for macOS. Visit their website for installation details.
 
 ```
-sudo port install git git-lfs redis libiconv postgresql10-server icu pkgconfig cmake nodejs12 go openssl npm5 yarn coreutils re2 GraphicsMagick runit exiftool minio
+sudo port install git git-lfs redis libiconv postgresql10-server icu pkgconfig cmake nodejs12 go openssl npm5 yarn coreutils re2 GraphicsMagick runit exiftool minio sqlite3
 bundle config build.eventmachine --with-cppflags=-I/opt/local/include/openssl
 if [ ${ZSH_VERSION} ]; then shell_file="${HOME}/.zshrc"; else shell_file="${HOME}/.bash_profile"; fi
 echo 'export PATH=/opt/local/lib/postgresql10/bin/:$PATH' >> ${shell_file}
@@ -122,7 +122,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 
 ```
 pacman -S postgresql redis postgresql-libs icu npm ed cmake openssh git git-lfs go re2 \
-  unzip graphicsmagick runit perl-image-exiftool rsync yarn minio
+  unzip graphicsmagick runit perl-image-exiftool rsync yarn minio sqlite
 ```
 
 #### Debian
@@ -132,7 +132,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 ```sh
 sudo apt-get install postgresql postgresql-contrib libpq-dev redis-server \
   libicu-dev cmake g++ libkrb5-dev libre2-dev ed pkg-config graphicsmagick \
-  runit libimage-exiftool-perl rsync
+  runit libimage-exiftool-perl rsync libsqlite3-dev
 sudo curl https://dl.min.io/server/minio/release/linux-amd64/minio --output /usr/local/bin/minio
 sudo chmod +x /usr/local/bin/minio
 ```
@@ -198,7 +198,7 @@ sudo yum install https://download.fedoraproject.org/pub/epel/6/x86_64/epel-relea
 sudo yum install postgresql10-server postgresql10-devel libicu-devel git git-lfs cmake \
   gcc-c++ redis ed fontconfig freetype libfreetype.so.6 libfontconfig.so.1 \
   libstdc++.so.6 nodejs npm re2 re2-devel GraphicsMagick runit perl-Image-ExifTool \
-  rsync
+  rsync sqlite-devel
 sudo curl https://dl.min.io/server/minio/release/linux-amd64/minio --output /usr/local/bin/minio
 sudo chmod +x /usr/local/bin/minio
 
@@ -232,7 +232,7 @@ sudo zypper dup
 sudo zypper install libxslt-devel  postgresql postgresql-devel libpqxx-devel redis libicu-devel nodejs git git-lfs ed cmake \
         rpm-build gcc-c++ krb5-devel postgresql-server postgresql-contrib \
         libxml2-devel libxml2-devel-32bit findutils-locate re2 GraphicsMagick \
-        runit exiftool rsync
+        runit exiftool rsync sqlite3-devel
 sudo curl https://dl.min.io/server/minio/release/linux-amd64/minio --output /usr/local/bin/minio
 sudo chmod +x /usr/local/bin/minio
 ```
@@ -266,7 +266,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 
 ```sh
 sudo pkg install postgresql10-server postgresql10-contrib postgresql-libpqxx \
-redis go node icu krb5 gmake re2 GraphicsMagick p5-Image-ExifTool git-lfs minio
+redis go node icu krb5 gmake re2 GraphicsMagick p5-Image-ExifTool git-lfs minio sqlite3
 ```
 
 ### Windows 10
