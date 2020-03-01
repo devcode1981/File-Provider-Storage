@@ -18,8 +18,8 @@ metadata:
 spec:
   strategy:
     type: Recreate
-  selector: 
-    matchLabels: 
+  selector:
+    matchLabels:
       app: gdk
   template:
     metadata:
