@@ -31,7 +31,7 @@ module GDK
       bool(:ask_to_restart_after_update) { true }
       bool(:debug) { false }
       bool(:overwrite_changes) { false }
-      array(:protected_config_files) { ['*'] }
+      array(:protected_config_files) { [] }
     end
 
     path(:repositories_root) { config.gdk_root.join('repositories') }
