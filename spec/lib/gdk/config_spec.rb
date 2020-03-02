@@ -150,6 +150,10 @@ describe GDK::Config do
   end
 
   describe 'runner' do
+    before do
+      allow_any_instance_of(GDK::ConfigSettings).to receive(:read!).with(config.runner.config_file) { file_contents }
+    end
+
     context 'when config_file exists' do
       let(:file_contents) do
         <<~eos
@@ -181,9 +185,15 @@ describe GDK::Config do
       end
 
       it 'returns true' do
-        allow_any_instance_of(GDK::ConfigSettings).to receive(:read!).with(config.runner.config_file) { file_contents }
-
         expect(config.runner.enabled).to be true
+      end
+    end
+
+    context 'when config_file does not exist' do
+      let(:file_contents) { nil }
+
+      it 'returns false' do
+        expect(config.runner.enabled).to be false
       end
     end
   end
