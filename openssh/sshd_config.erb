@@ -11,6 +11,8 @@ UseLogin no
 UsePAM no
 UsePrivilegeSeparation no
 
+AcceptEnv GIT_PROTOCOL
+
 Match User <%= config.sshd.user %>
 AuthorizedKeysFile <%= config.sshd.authorized_keys_file %>
 
