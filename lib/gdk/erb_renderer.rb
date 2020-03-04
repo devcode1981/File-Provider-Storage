@@ -77,7 +77,7 @@ module GDK
     end
 
     def warn_overwritten!
-      GDK::Output.warn "'#{target}' bas been overwritten. To recover the previous version, run:"
+      GDK::Output.warn "'#{target}' has been overwritten. To recover the previous version, run:"
       puts <<~EOF
         cp -f '#{backup_file}' '#{target}'
 
