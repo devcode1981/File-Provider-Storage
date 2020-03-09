@@ -9,7 +9,7 @@ export GOPROXY ?= https://proxy.golang.org
 include $(shell rake gdk-config.mk)
 
 gitlab_clone_dir = gitlab
-gitlab_shell_clone_dir = go-gitlab-shell/src/gitlab.com/gitlab-org/gitlab-shell
+gitlab_shell_clone_dir = gitlab-shell
 gitlab_workhorse_clone_dir = gitlab-workhorse
 gitaly_gopath = $(abspath ./gitaly)
 gitaly_clone_dir = gitaly
@@ -201,7 +201,7 @@ gitlab/public/uploads:
 # gitlab-shell
 ##############################################################
 
-gitlab-shell-setup: symlink-gitlab-shell ${gitlab_shell_clone_dir}/.git gitlab-shell/config.yml .gitlab-shell-bundle gitlab-shell/.gitlab_shell_secret
+gitlab-shell-setup: ${gitlab_shell_clone_dir}/.git gitlab-shell/config.yml .gitlab-shell-bundle gitlab-shell/.gitlab_shell_secret
 	$(Q)make -C gitlab-shell build ${QQ}
 
 gitlab-shell-update: gitlab-shell/.git/pull gitlab-shell-setup
@@ -213,11 +213,12 @@ gitlab-shell/.git/pull:
 	@echo "-------------------------------------------------------"
 	$(Q)support/component-git-update gitlab_shell "${gitlab_development_root}/gitlab-shell" "${gitlab_shell_version}"
 
-symlink-gitlab-shell:
-	$(Q)support/symlink gitlab-shell ${gitlab_shell_clone_dir}
-
+# This task is phony to allow
+# support/move-existing-gitlab-shell-directory to remove the legacy
+# symlink, if necessary. See https://gitlab.com/gitlab-org/gitlab-development-kit/-/merge_requests/1086
+.PHONY: ${gitlab_shell_clone_dir}/.git
 ${gitlab_shell_clone_dir}/.git:
-	$(Q)git clone --quiet --branch "${gitlab_shell_version}" ${git_depth_param} ${gitlab_shell_repo} ${gitlab_shell_clone_dir}
+	$(Q)support/move-existing-gitlab-shell-directory || git clone --quiet --branch "${gitlab_shell_version}" ${git_depth_param} ${gitlab_shell_repo} ${gitlab_shell_clone_dir}
 
 .PHONY: gitlab-shell/config.yml
 gitlab-shell/config.yml: ${gitlab_shell_clone_dir}/.git

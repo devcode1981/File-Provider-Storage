@@ -71,7 +71,6 @@ gitlab-development-kit/**
 /gitaly/
 /gitlab-workhorse/config.toml
 /gitlab-workhorse/.cache
-/go-gitlab-shell
 /.gitaly-ruby-bundle
 /gitlab-docs
 /bootstrap-rails.log
