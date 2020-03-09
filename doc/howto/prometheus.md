@@ -236,6 +236,8 @@ Prometheus](https://docs.gitlab.com/ee/administration/monitoring/prometheus/) in
 the GDK, the process is simpler:
 
 1. [Download Prometheus](https://prometheus.io/download/).
+1. If you want to scrape metrics from Sidekiq, ensure
+   `monitoring.sidekiq_exporter` is `enabled` in `config/gitlab.yml`.
 1. Add this to the included `prometheus.yml` under the `scrape_configs`
    key. `$health_check_token` is available from
    [http://localhost:3000/admin/health_check](http://localhost:3000/admin/health_check). Change
@@ -248,6 +250,11 @@ the GDK, the process is simpler:
          token: ['$health_check_access_token']
        static_configs:
        - targets: ['localhost:3000']
+     - job_name: 'gitlab-sidekiq'
+       metrics_path: '/metrics'
+       static_configs:
+       - targets: ['localhost:8082']
+
    ```
 
 1. Start Prometheus.
