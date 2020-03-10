@@ -47,7 +47,7 @@ geo:
   enabled: true
   node_name: gdk-geo
 gitlab_pages:
-  enabled: enabled
+  enabled: true
   port: 3011
 tracer:
   jaeger:
