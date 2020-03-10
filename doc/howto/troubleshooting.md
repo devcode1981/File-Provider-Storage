@@ -29,6 +29,19 @@ extensions:
 gem pristine charlock_holmes
 ```
 
+Or for example `re2` on MacOS:
+
+```shell
+/Users/user/gitlab-development-kit/gitlab/lib/gitlab/untrusted_regexp.rb:25:  [BUG] Segmentation fault at 0x0000000000000000
+ruby 2.6.5p114 (2019-10-01 revision 67812) [x86_64-darwin19]
+```
+
+In which case you would run:
+
+```sh
+gem pristine re2
+```
+
 ## An error occurred while installing gpgme on macOS
 
 Check if you have `gawk` installed >= 5.0.0 and uninstall it.
