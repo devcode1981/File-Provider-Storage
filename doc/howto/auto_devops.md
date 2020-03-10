@@ -9,25 +9,31 @@ IMPORTANT: These steps are currently only applicable to GitLab team members as i
 depends on our infrastructure. For non-GitLab team members you can see
 [Alternatives](#alternatives) below.
 
-1. Request GCP permission and SSH tunnel by
-  [creating an access request](https://gitlab.com/gitlab-com/access-requests/issues/new?issuable_template=Single%20Person%20Access%20Request).
-
-   You need to request:
-
-   - GCP Project `gitlab-internal-153318`. Create an access request to be added to the Google group `gcp-sandbox-gitlab-internal-kubernetes-admin-sg@gitlab.com` for the correct access to work with GKE. This access is part of baseline entitlements but if you do not have it, include it in your access request.
-   - server access for `qa-tunnel.gitlab.info` and provide
-  them with your SSH public key.
-
-1. Once your account has been created, configure your SSH config `~/.ssh/config` to set the correct username.
-
-    ```
-    Host qa-tunnel.gitlab.info
-      User <username>
-    ```
-
-    Your `<username>` may be associated with your GitLab email instead of your GitLab username.
-    For example, if your email is `myname@gitlab.com` then your username would be `myname`.
-
+1. Ensure you have access GKE and the SSH tunnel. It is a baseline entitlement for
+   backend engineers, but you may not have it for historical reasons or don't qualify
+   to have it as a baseline. If you require access:
+   1. [Create an access request](https://gitlab.com/gitlab-com/access-requests/issues/new?issuable_template=Single%20Person%20Access%20Request).
+   1. Ask to be added to:
+      - The Google group `gcp-sandbox-gitlab-internal-kubernetes-admin-sg@gitlab.com`
+        for permissions to work with GKE.
+      - The `GitLab - ASA - QA Tunnel` group in Okta to provision your account on the
+        server for SSH access.
+1. Install the [Okta ASA client](https://help.okta.com/en/prod/Content/Topics/Adv_Server_Access/docs/client.htm)
+   on your workstation. After software installation, it will ask you to "enroll"
+   your client (which will open a browser):
+   1. To enroll your client, either:
+      - Run `sft enroll --team gitlab-poc` on the command line.
+      - Run `sft enroll` and enter the team name yourself (enter `gitlab-poc`).
+   1. On the **Client Setup** page, feel free to edit the `Client Name` to more easily
+      identify your device as yours.
+   1. Click **Approve**.
+1. Add the following to your `.ssh/config`. Replace any existing stanza for
+   `Host qa-tunnel.gitlab.info` if you have one:
+   ```plaintext
+   Host qa-tunnel.gitlab.info
+     ProxyCommand "/usr/bin/sft" proxycommand  %h
+     UserKnownHostsFile /home/cmiskell/.local/share/ScaleFT/proxycommand_known_hosts
+   ```
 1. Verify you have `ssh` access into `qa-tunnel.gitlab.info`:
 
     ```
@@ -35,14 +41,17 @@ depends on our infrastructure. For non-GitLab team members you can see
     > Welcome to Ubuntu 16.04.4 LTS (GNU/Linux 4.13.0-1019-gcp x86_64)
     ```
 
-   If you're able to log in [without entering your passphrase](doc/howto/auto_devops/tips_and_troubleshooting.md#ssh-requires-a-passphrase), it means you can move on to the next step.
+   On first try (and occasionally thereafter as Okta chooses) this will open a web
+   browser window requiring a login to Okta and clicking an **Approve** button. When
+   this log in works and you can get a shell on the server, you can proceed to the next
+   step.
 
 1. Set up the GDK for your workstation following [the preparation
   instructions](../prepare.md) and [setup instructions](../set-up-gdk.md)
 
 NOTE: Running Auto DevOps flow [downloads/uploads gigabytes of data on each
 run](#massive-bandwidth-used-by-auto-devops). For this reason it is not a good
-idea to run on 4G and is recommended you run on a cloud VM in GCP so that
+idea to run on mobile data and is recommended you run on a cloud VM in GCP so that
 everything stays in Google's network so it runs much faster.
 
 ## Setup
