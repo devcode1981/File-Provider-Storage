@@ -31,7 +31,7 @@ depends on our infrastructure. For non-GitLab team members you can see
    `Host qa-tunnel.gitlab.info` if you have one:
    ```plaintext
    Host qa-tunnel.gitlab.info
-     ProxyCommand "/usr/bin/sft" proxycommand  %h
+     ProxyCommand "sft" proxycommand  %h
      UserKnownHostsFile /home/cmiskell/.local/share/ScaleFT/proxycommand_known_hosts
    ```
 1. Verify you have `ssh` access into `qa-tunnel.gitlab.info`:
