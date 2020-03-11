@@ -4,9 +4,8 @@
 
 To test how GitLab behaves when the underlying storage system is not working
 you can simply change your local GitLab instance to use an empty directory for
-the repositories. To do so edit your `config/gitlab.yml` configuration file so
-that the `gitlab_shell.repos_path` option for your environment (e.g.
-"development") points to an empty directory.
+the repositories. To do so edit your `gdk.yml` configuration file so that the
+`git_repositories` option points to an empty directory and run `gdk reconfigure`.
 
 ## Simulating Slow Filesystems
 
