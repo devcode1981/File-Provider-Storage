@@ -23,18 +23,18 @@ gem install gitlab-development-kit
 
 1. To initialize GDK into:
 
-  - The default directory (`./gitlab-development-kit`), run:
+   - The default directory (`./gitlab-development-kit`), run:
 
-    ```sh
-    gdk init
-    ```
+     ```sh
+     gdk init
+     ```
 
-  - A custom directory, pass a directory name. For example, to initialize into
-    the `my_gitlab_development_kit` directory, run:
+   - A custom directory, pass a directory name. For example, to initialize into
+     the `my_gitlab_development_kit` directory, run:
 
-      ```sh
-      gdk init my_gitlab_development_kit
-      ```
+     ```sh
+     gdk init my_gitlab_development_kit
+     ```
 
 ## Install GDK components
 
