@@ -47,6 +47,10 @@ https:
   enabled: false
 influxdb:
   enabled: false
+mattermost:
+  enabled: false
+  image: mattermost/mattermost-preview
+  local_port: 8065
 nginx:
   bin: "/usr/sbin/nginx"
   enabled: false

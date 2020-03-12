@@ -103,3 +103,4 @@ gitlab-development-kit/**
 /gitlab-elasticsearch-indexer
 /env.runit
 /gitlab-workhorse
+/mattermost

@@ -1,0 +1,16 @@
+# Mattermost
+
+From the GDK directory, create [a `gdk.yml` configuration file](configuration.md)
+containing the following settings:
+
+```yaml
+mattermost:
+  enabled: true
+```
+
+Then you just have to re-generate your Procfile by reconfiguring:
+```
+gdk reconfigure
+```
+
+With [auto devops enabled](./auto_devops.md), Mattermost will also be served over HTTPS through your QA tunnel.
