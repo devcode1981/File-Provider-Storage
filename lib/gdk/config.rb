@@ -293,5 +293,12 @@ module GDK
     settings :openldap do
       bool(:enabled) { false }
     end
+
+    settings :mattermost do
+      bool(:enabled) { false }
+      integer(:port) { config.auto_devops.gitlab.port + 7000 }
+      string(:image) { 'mattermost/mattermost-preview' }
+      integer(:local_port) { 8065 }
+    end
   end
 end
