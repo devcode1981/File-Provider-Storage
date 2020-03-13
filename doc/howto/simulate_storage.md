@@ -22,21 +22,27 @@ This script can be used to mount a source directory at a given mount point via
 SSHFS and slow down network traffic as a way of replicating a slow NFS. Usage of
 this script is as following:
 
-    bin/mount-slow-fs path/to/actual/repositories /path/to/mountpoint
+```shell
+bin/mount-slow-fs path/to/actual/repositories /path/to/mountpoint
+```
 
 As an example, we'll use the following directories:
 
-* Source directory: ~/Projects/repositories
-* Mountpoint: /mnt/repositories
+- Source directory: `~/Projects/repositories`
+- Mountpoint: `/mnt/repositories`
 
 First create the mountpoint and set the correct permissions:
 
-    sudo mkdir /mnt/repositories
-    sudo chown $USER /mnt/repositories
+```shell
+sudo mkdir /mnt/repositories
+sudo chown $USER /mnt/repositories
+```
 
 Now we can run the script:
 
-    bin/mount-slow-fs ~/Projects/repositories /mnt/repositories
+```shell
+bin/mount-slow-fs ~/Projects/repositories /mnt/repositories
+```
 
 Terminating the script (using ^C) will automatically unmount the repositories
 and remove the created traffic shaping rules.
@@ -90,5 +96,5 @@ requires adjusting `<gdk-root>/gdk.yml` to contain the following snippet:
 
 ```yaml
 git_repositories:
-- "/mnt/gdk_repositories"
+  - "/mnt/gdk_repositories"
 ```
