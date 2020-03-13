@@ -24,7 +24,7 @@ geo:
 git:
   bin: "/home/toon/bin/git"
 git_repositories:
-- "/home/git/gdk/"
+  - "/home/git/gdk/"
 gitaly:
   address: "/home/git/gdk/gitaly.socket"
   assembly_dir: "/home/git/gdk/gitaly/assembly"
@@ -96,14 +96,14 @@ praefect:
   internal_socket_dir: "/home/git/gdk/tmp/praefect"
   node_count: 1
   nodes:
-  - address: "/home/git/gdk/gitaly-praefect-0.socket"
-    config_file: gitaly/gitaly-0.praefect.toml
-    internal_socket_dir: "/home/git/gdk/tmp/praefect/gitaly-0"
-    log_dir: "/home/git/gdk/log/praefect-gitaly-0"
-    primary: true
-    service_name: praefect-gitaly-0
-    storage: praefect-internal-0
-    storage_dir: "/home/git/gdk/repositories"
+    - address: "/home/git/gdk/gitaly-praefect-0.socket"
+      config_file: gitaly/gitaly-0.praefect.toml
+      internal_socket_dir: "/home/git/gdk/tmp/praefect/gitaly-0"
+      log_dir: "/home/git/gdk/log/praefect-gitaly-0"
+      primary: true
+      service_name: praefect-gitaly-0
+      storage: praefect-internal-0
+      storage_dir: "/home/git/gdk/repositories"
 prometheus:
   enabled: false
 registry:
