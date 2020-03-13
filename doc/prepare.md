@@ -19,7 +19,7 @@ Make sure you follow all the guidelines and resolve all the dependencies listed 
 | Node.js        | <p>Node.js **12.10** and Yarn 1.12 or newer.</p><p>Node.js and Yarn installation is covered in the instructions below. If your package manager does not have Node.js 12.10 or yarn available, visit the official websites for [Node](https://nodejs.org/en/download/) and [Yarn](https://yarnpkg.com/en/docs/install/) for installation instructions.</p> |
 | Go             | <p>Go 1.12.</p><p>Go installation is covered in the instructions below. If your package manager does not have up-to-date versions of Go available, visit the official [Go](https://golang.org/doc/install) website for installation instructions.</p>                                                                                                              |
 | Google Chrome  | [Google Chrome](https://www.google.com/chrome/) 60 or greater with [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) version 2.33 or greater. Visit the Chrome Driver [Getting started](https://sites.google.com/a/chromium.org/chromedriver/getting-started) page for more details.                                                           |
-| PostgreSQL     | <p>PostgreSQL version 10.x.</p><p>PostgreSQL installation is covered in the instructions [below](#platform-specific-setup).</p>                                                                                                                                                                                     |
+| PostgreSQL     | <p>PostgreSQL version 11.x.</p><p>PostgreSQL installation is covered in the instructions [below](#platform-specific-setup). Some instructions still pin the version of PostgreSQL to version 10. Please update the documentation steps to version 11 as you successfully install PG 11 on your platform.</p> |
 | GraphicsMagick | GraphicsMagick installation is covered in the instructions [below](#platform-specific-setup).                                                                                                                                                                                                                                                                                                           |
 | Exiftool       | Exiftool installation is covered in the instructions [below](#platform-specific-setup).                                                                                                                                                                                                                                                                                                           |
 | Runit          | Runit installation is covered in the instructions [below](#platform-specific-setup).                                                                                                                                                                                                                                                                                                           |
@@ -40,7 +40,7 @@ In OS X 10.15 the default shell changed from Bash to Zsh. The instructions below
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
-We are using PostgreSQL 10 in the following example. If you want to use another version, please adjust paths accordingly.
+We are using PostgreSQL 11 in the following example. If you want to use another version, please adjust paths accordingly.
 
 #### Install macOS prerequisites using Homebrew
 
@@ -54,14 +54,14 @@ We are using PostgreSQL 10 in the following example. If you want to use another 
 | ------------------- |
 | We recommend manual installation of Node.js 12.10 instead of using Homebrew to avoid breaking your development setup when you run `brew upgrade`. Install Node.js 12.10 [manually](https://nodejs.org/en/download/) or use a tool like [NVM](https://github.com/creationix/nvm). If you want to use Homebrew, you can prevent it from upgrading the current Node.js formula by pinning it with `brew pin node@12`. |
 
-```
-brew install git git-lfs redis postgresql@10 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@12 gpg runit icu4c exiftool sqlite minio/stable/minio
+```shell
+brew install git git-lfs redis postgresql@11 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@12 gpg runit icu4c exiftool sqlite minio/stable/minio
 brew install yarn --ignore-dependencies
 brew link pkg-config
 brew pin node@12 icu4c readline
 bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
 if [ ${ZSH_VERSION} ]; then shell_file="${HOME}/.zshrc"; else shell_file="${HOME}/.bash_profile"; fi
-echo 'export PATH="/usr/local/opt/postgresql@10/bin:/usr/local/opt/node@12/bin:$PATH"' >> ${shell_file}
+echo 'export PATH="/usr/local/opt/postgresql@11/bin:/usr/local/opt/node@12/bin:$PATH"' >> ${shell_file}
 echo 'export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"' >> ${shell_file}
 source ${shell_file}
 brew cask install google-chrome chromedriver
@@ -71,11 +71,11 @@ brew cask install google-chrome chromedriver
 
 [MacPorts](https://www.macports.org/) is another package manager for macOS. Visit their website for installation details.
 
-```
-sudo port install git git-lfs redis libiconv postgresql10-server icu pkgconfig cmake nodejs12 go openssl npm5 yarn coreutils re2 GraphicsMagick runit exiftool minio sqlite3
+```shell
+sudo port install git git-lfs redis libiconv postgresql11-server icu pkgconfig cmake nodejs12 go openssl npm5 yarn coreutils re2 GraphicsMagick runit exiftool minio sqlite3
 bundle config build.eventmachine --with-cppflags=-I/opt/local/include/openssl
 if [ ${ZSH_VERSION} ]; then shell_file="${HOME}/.zshrc"; else shell_file="${HOME}/.bash_profile"; fi
-echo 'export PATH=/opt/local/lib/postgresql10/bin/:$PATH' >> ${shell_file}
+echo 'export PATH=/opt/local/lib/postgresql11/bin/:$PATH' >> ${shell_file}
 source ${shell_file}
 ```
 
