@@ -61,6 +61,7 @@ clean-config:
 	gitlab/config/database.yml \
 	gitlab/config/unicorn.rb \
 	gitlab/config/puma.rb \
+	gitlab/config/puma_actioncable.rb \
 	gitlab/config/cable.yml \
 	gitlab/config/resque.yml \
 	gitlab-shell/config.yml \
@@ -81,6 +82,7 @@ touch-examples:
 	gitlab-shell/config.yml.example \
 	gitlab-workhorse/config.toml.example \
 	gitlab/config/puma.example.development.rb \
+	gitlab/config/puma_actioncable.example.development.rb \
 	gitlab/config/unicorn.rb.example.development \
 	grafana/grafana.ini.example \
 	influxdb/influxdb.conf.example \
@@ -141,7 +143,7 @@ gitlab/.git/pull:
 gitlab/.git:
 	$(Q)git clone ${git_depth_param} ${gitlab_repo} ${gitlab_clone_dir} $(if $(realpath ${gitlab_repo}),--shared)
 
-gitlab-config: gitlab/config/gitlab.yml gitlab/config/database.yml gitlab/config/unicorn.rb gitlab/config/cable.yml gitlab/config/resque.yml gitlab/public/uploads gitlab/config/puma.rb
+gitlab-config: gitlab/config/gitlab.yml gitlab/config/database.yml gitlab/config/unicorn.rb gitlab/config/cable.yml gitlab/config/resque.yml gitlab/public/uploads gitlab/config/puma.rb gitlab/config/puma_actioncable.rb
 
 .PHONY: gitlab/config/gitlab.yml
 gitlab/config/gitlab.yml:
@@ -156,6 +158,15 @@ gitlab/config/puma.example.development.rb:
 	$(Q)touch $@
 
 gitlab/config/puma.rb: gitlab/config/puma.example.development.rb
+	$(Q)bin/safe-sed "$@" \
+		-e "s|/home/git|${gitlab_development_root}|g" \
+		"$<"
+
+# Versions older than GitLab 12.9 won't have this file
+gitlab/config/puma_actioncable.example.development.rb:
+	$(Q)touch $@
+
+gitlab/config/puma_actioncable.rb: gitlab/config/puma_actioncable.example.development.rb
 	$(Q)bin/safe-sed "$@" \
 		-e "s|/home/git|${gitlab_development_root}|g" \
 		"$<"
