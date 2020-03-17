@@ -683,25 +683,6 @@ For example the git module in [prezto](https://github.com/sorin-ionescu/prezto)
 has an [alias](https://github.com/sorin-ionescu/prezto/blob/master/modules/git/README.md#data)
 for `gdk` that lists killed files.
 
-## Problems with Sidekiq (Cluster)
-
-GDK uses Sidekiq Cluster (running a single Sidekiq process) by default instead
-`bundle exec sidekiq` directly, which is a step towards making development a
-bit more like production.
-
-Technically, running Sidekiq Cluster with a single Sidekiq process matches the same behavior
-of running Sidekiq directly, but eventually problems may arise.
-
-If you're experiencing performance issues or jobs not being picked up, try disabling
-Sidekiq Cluster by:
-
-1. First stopping all running processes with `gdk stop`
-1. Going to `$GDKROOT/Procfile`
-1. Removing the `SIDEKIQ_WORKERS` environment variable from `rails-background-jobs`
-1. Booting GDK again with `gdk start`
-
-When doing so, please create an issue describing what happened.
-
 ## Jaeger Issues
 
 If you're seeing errors such as:
