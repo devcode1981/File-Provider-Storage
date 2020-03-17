@@ -276,7 +276,17 @@ pipelines.
    Get https://your.local.ip:5000/v2/: http: server gave HTTP response to HTTPS client
    ```
 
-   You'll need to ensure you add `your.local.ip` as an insecure registry for your local Docker installation.  This can be achieved with [Docker Desktop on Mac](https://www.docker.com/products/docker-desktop) by clicking the `Docker` icon in the menubar, then clicking on `Preferences...`. Click on the `Daemon` tab, then the `Basic` tab and add your `your.local.ip:5000` in the `Insecure registries` section, then click on the `Apply & Restart` button.
+   You'll need to ensure you add your local IP as an insecure registry for your local
+   Docker installation. This can be achieved with [Docker Desktop on Mac](https://www.docker.com/products/docker-desktop) as follows:
+   1. Click on the Docker icon in the menubar.
+   1. Click on **Preferences...**.
+   1. Click on the **Docker Engine** menu item.
+   1. Extend the Docker daemon configuration JSON with the following:
+
+      ```json
+      "insecure-registries": ["<your_local_ip>:5000"]
+      ```
+   1. Click on the **Apply & Restart** button.
 
    See [this note](https://nickjanetakis.com/blog/docker-tip-50-running-an-insecure-docker-registry) for details on how to configure an insecure registry for other operating systems.
 
