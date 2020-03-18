@@ -1,5 +1,10 @@
 # Using Prometheus with GDK
 
+This page details how to work with the [Prometheus integration](#prometheus-integration) in GDK as well as
+how to [monitor the GDK with Prometheus](#monitoring-the-gdk-with-prometheus).
+
+## Prometheus integration
+
 Testing the [Prometheus
 integration](https://docs.gitlab.com/ee/user/project/integrations/prometheus.html)
 with the GitLab Development Kit requires some additional components. This is
@@ -14,11 +19,11 @@ Setting it up locally with [Minikube](https://github.com/kubernetes/minikube)
 is often easier, as you do not have to worry about Runners in GKE requiring
 network access to your local GDK instance.
 
-## Instructions for Minikube
+### Instructions for Minikube
 
 The following steps will help you set up Mnikube locally.
 
-### Install kubectl if you do not have it
+#### Install kubectl if you do not have it
 
 Kubectl is required for Minikube to function. You can also use `homebrew` to install it using `brew install kubernetes-cli`.
 
@@ -39,7 +44,7 @@ Kubectl is required for Minikube to function. You can also use `homebrew` to ins
     sudo mv ./kubectl /usr/local/bin/
     ```
 
-### Install Minikube
+#### Install Minikube
 
 For macOS with homebrew, run `brew install minikube`.
 
@@ -60,15 +65,14 @@ For macOS with homebrew, run `brew install minikube`.
     sudo mv ./minikube /usr/local/bin/
     ```
 
-## Install a virtualization driver
-
+### Install a virtualization driver
 
 Minikube requires virtualization. Install the appropriate driver for your operation system:
 
 - [macOS](https://minikube.sigs.k8s.io/docs/reference/drivers/hyperkit/)
 - [Linux](https://minikube.sigs.k8s.io/docs/reference/drivers/kvm2/)
 
-### Start Minikube
+#### Start Minikube
 
 **Note:** If you are using a network filter such as [LittleSnitch](https://www.obdev.at/products/littlesnitch/index.html) you may need to disable it or permit `minikube`,
 as minikube needs to download multiple ISO's to operate correctly.
@@ -90,7 +94,7 @@ For Linux:
 minikube start --vm-driver kvm2 --disk-size=20g --kubernetes-version=v1.15.4
 ```
 
-### Open the Kubernetes Dashboard
+#### Open the Kubernetes Dashboard
 
 Once Minikube starts, open the Kubernetes dashboard to ensure things are working
 You can use this for future troubleshooting.
@@ -99,12 +103,12 @@ You can use this for future troubleshooting.
 minikube dashboard
 ```
 
-## Configure GDK to listen to more than localhost
+### Configure GDK to listen to more than localhost
 
 Follow [the instructions](local_network.md) to make your GDK
 accessible to other devices in the local network.
 
-## Edit GitLab's `gitlab.yml`
+### Edit GitLab's `gitlab.yml`
 
 We need to configure GDK to inform it of the real IP address of your computer.
 This is because GDK returns this information to the Runner, and if it is wrong,
@@ -119,7 +123,7 @@ pipelines will fail.
 You should now be able to access GitLab by the external URL
 (e.g., `http://192.168.1.1` not `localhost`), otherwise it may not work correctly.
 
-## Create a Project
+### Create a Project
 
 Now that we have GDK running, we need to go and create a project with CI/CD
 set up. The easiest way to do this, is to simply import from an existing project
@@ -128,7 +132,7 @@ with a simplified `gitlab-ci.yml`.
 Import `https://gitlab.com/joshlambert/autodevops-deploy.git` as a public project, to use a very simple
 CI/CD pipeline with no requirements, based on AutoDevOps. It contains just the `deploy` stages and uses a static image, since the GDK does not contain a registry.
 
-## Allow requests to the local network
+### Allow requests to the local network
 
 We have CSRF protection in place on the cluster url, so if we try to connect minikube now, we'll get
 a `Requests to the local network are not allowed` error. The below steps will disable this protection
@@ -137,7 +141,7 @@ for use with minikube.
 1. As root user, navigate to **Admin Area** (the little wrench in the top nav) > **Settings** > **Network**.
 1. Expand the **Outbound requests** section, check the box to *Allow requests to the local network from hooks and services*, and save your changes.
 
-## Connect your cluster
+### Connect your cluster
 
 1. In a terminal, run `minikube ip` to get the API endpoint of your cluster.
 
@@ -157,7 +161,7 @@ for use with minikube.
 
 1. Save your changes.
 
-## Disable RBAC
+### Disable RBAC
 
 AutoDevOps and Kubernetes app deployments do not yet support RBAC. To disable RBAC in your cluster, run the following command:
 
@@ -169,7 +173,7 @@ kubectl create clusterrolebinding permissive-binding \
   --group=system:serviceaccounts
 ```
 
-## Deploy Helm Tiller, Prometheus, and GitLab Runner
+### Deploy Helm Tiller, Prometheus, and GitLab Runner
 
 Back in the GDK on the cluster screen, you should now be able to deploy Helm Tiller. Once complete, also deploy a Runner and Prometheus.
 
@@ -181,7 +185,7 @@ If installing Helm Tiller fails with 'Kubernetes error', you may have an existin
 kubectl delete configmap values-content-configuration-helm -n gitlab-managed-apps
 ```
 
-## Run a Pipeline to deploy to an Environment
+### Run a Pipeline to deploy to an Environment
 
 Now that we have a Runner configured, we need to kick off a Pipeline. This is
 because the Prometheus integration only looks for environments which GitLab
@@ -197,14 +201,14 @@ To retrieve the URL:
 minikube service production
 ```
 
-## View Performance metrics
+### View Performance metrics
 
 Go to **Operations ➔ Environments** then click on an Environment. You should see
 a new button appearing that looks like a chart. Click on it to view the metrics.
 
 It may take 30-60 seconds for the Prometheus server to get a few sets of data points.
 
-## Configuring multiple Minikube instances
+### Configuring multiple Minikube instances
 
 Use the `--profile` or `-p` flag to define the minikube machine name. This allows multiple instances to run simultaneously. For instance, running a minikube instance for working in GitLab CE and GitLab EE at the same time can be accomplished by using all of the same commands outlined above with the additional `--profile` flag added:
 
