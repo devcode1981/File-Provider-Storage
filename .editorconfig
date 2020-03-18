@@ -58,7 +58,7 @@ insert_final_newline = unset
 # ----------------------------------------------------------------------
 
 # Don't apply these rules to any nested projects
-[{gitlab,go-gitlab-shell,gitaly,gitlab-docs,gitlab-workhorse,gitlab-pages}/**]
+[{go-gitlab-shell,gitaly,gitlab-docs,gitlab-workhorse,gitlab-pages}/**]
 indent_style = unset
 indent_size = unset
 tab_width = unset
