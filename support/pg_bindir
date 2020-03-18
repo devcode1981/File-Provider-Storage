@@ -4,7 +4,7 @@ require 'pathname'
 
 require_relative '../lib/shellout.rb'
 
-POSTGRESQL_VERSIONS = [ 10, 9.6 ].freeze
+POSTGRESQL_VERSIONS = [ 11, 10, 9.6 ].freeze
 
 def brew_linked_discover
   dirname_if_exists_for('/usr/local/bin/postgres')
