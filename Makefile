@@ -130,7 +130,7 @@ gitlab/.git/pull:
 	@echo "Updating gitlab to current master"
 	@echo "-------------------------------------------------------"
 	$(Q)cd ${gitlab_development_root}/gitlab && \
-		git checkout -- Gemfile.lock db/schema.rb ${QQ} && \
+		git checkout -- Gemfile.lock $$(git ls-tree HEAD --name-only db/structure.sql db/schema.rb) ${QQ} && \
 		git stash ${QQ} && \
 		git checkout master ${QQ} && \
 		git pull --ff-only ${QQ}
@@ -333,7 +333,7 @@ geo-primary-migrate: ensure-databases-running
 	$(Q)cd ${gitlab_development_root}/gitlab && \
 		bundle install && \
 		bundle exec rake db:migrate db:test:prepare geo:db:migrate geo:db:test:prepare && \
-		git checkout -- db/schema.rb ee/db/geo/schema.rb
+		git checkout -- $$(git ls-tree HEAD --name-only db/structure.sql db/schema.rb) ee/db/geo/schema.rb
 	$(Q)$(MAKE) postgresql/geo-fdw/test/rebuild ${QQ}
 
 .PHONY: geo-primary-update
