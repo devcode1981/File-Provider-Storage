@@ -33,6 +33,12 @@ module GDK
       def detail
         ''
       end
+
+      private
+
+      def config
+        @config ||= GDK::Config.new
+      end
     end
 
     class DiagnoseDependencies < Base
