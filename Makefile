@@ -310,7 +310,15 @@ gitlab-docs-update: gitlab-docs/.git/pull gitlab-docs-bundle gitlab-docs/nanoc.y
 ##############################################################
 
 .PHONY: geo-setup geo-cursor
-geo-setup: Procfile geo-cursor gitlab/config/database_geo.yml postgresql/geo
+geo-setup: geo-setup-check Procfile geo-cursor gitlab/config/database_geo.yml postgresql/geo
+
+geo-setup-check:
+ifneq ($(geo_enabled),true)
+	$(Q)echo 'ERROR: geo.enabled is not set to true in your gdk.yml'
+	@exit 1
+else
+	@true
+endif
 
 geo-cursor:
 	$(Q)grep '^geo-cursor:' Procfile || (printf ',s/^#geo-cursor/geo-cursor/\nwq\n' | ed -s Procfile)
