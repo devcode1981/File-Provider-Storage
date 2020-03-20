@@ -94,7 +94,9 @@ For Linux:
 minikube start --vm-driver kvm2 --disk-size=20g --kubernetes-version=v1.15.4
 ```
 
-#### Open the Kubernetes Dashboard
+**Note:** If running Linux, you may need to install a handful of extra packages alongside minikube, like `ebtables`, `dnsmasq`, `libvirtd`, `virt-manager`, and then ensure `libvirtd` is running correctly with `sudo systemctl restart libvirtd`.
+
+### Open the Kubernetes Dashboard
 
 Once Minikube starts, open the Kubernetes dashboard to ensure things are working
 You can use this for future troubleshooting.
@@ -114,14 +116,20 @@ We need to configure GDK to inform it of the real IP address of your computer.
 This is because GDK returns this information to the Runner, and if it is wrong,
 pipelines will fail.
 
-1. Get your local IP address by running `ifconfig` or opening up Network Settings
-    if on macOS. On Linux you can also use `ip addr show`.
-1. Open `gitlab/config/gitlab.yml` and change the `host: localhost` line to
-    reflect the IP of the previous step.
-1. Save the file and restart GDK to apply this change.
+1. Get your local IP address by running `ifconfig` or opening up Network Settings if on macOS. On Linux, you can also use `ip addr show`, or `ip -o route get to 8.8.8.8 | sed -n 's/.*src \([0-9.]\+\).*/\1/p'`
 
-You should now be able to access GitLab by the external URL
-(e.g., `http://192.168.1.1` not `localhost`), otherwise it may not work correctly.
+2. Open `gitlab/config/gitlab.yml` and change the Gitlab settings web server host line from either `localhost` or `127.0.0.1`  to reflect the IP of the previous step:
+
+   ```yaml
+   ## GitLab settings
+   gitlab:
+     ## Web server settings (note: host is the FQDN, do not include http://)
+     host: 192.168.1.9
+     port: 3000
+     https: false
+   ```
+
+3. Save the file and run `gdk restart` to apply this change. You should now be able to access GitLab by the external URL (e.g., `http://192.168.1.9:3000` not `localhost`), otherwise it may not work correctly.
 
 ### Create a Project
 
@@ -185,7 +193,15 @@ If installing Helm Tiller fails with 'Kubernetes error', you may have an existin
 kubectl delete configmap values-content-configuration-helm -n gitlab-managed-apps
 ```
 
-### Run a Pipeline to deploy to an Environment
+## Check that your Runner is connected
+
+Once you have installed the Runner via the cluster screen (known as a GitLab managed app), we want to make sure it's reachable. If it's not, the jobs will become stuck. To check it's connected:
+
+1. As an admin, navigate to **Admin Area** (the little wrench in the top nav) **Overview** > **Runners**.
+1. To know your Runner is connected you should see: _Runners currently online: 1_, with the actual Runner listed below holding a valid IP such as `192.168.122.14` etc.
+1. If you do not see the runner IP, then it is not connected and something has been missed from your network configuration and this is where you will need to begin debugging. You can use `minikube logs` to see the pod logs for the managed runner which should give you an idea of whats going wrong.
+
+## Run a Pipeline to deploy to an Environment
 
 Now that we have a Runner configured, we need to kick off a Pipeline. This is
 because the Prometheus integration only looks for environments which GitLab
