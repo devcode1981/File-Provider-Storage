@@ -190,7 +190,7 @@ version of Postgres:
 1. Rename/remove the gdk/postgresql/data directory: `mv postgresql/data{,.old}`
 1. Run `make`
 1. Build pg gem native extensions: `gem pristine pg`
-1. (optional) Restore your gitlab backup
+1. (optional) Restore your GitLab backup
 
 If things are working, you may remove the `postgresql/data.old` directory
 completely.
@@ -517,7 +517,7 @@ deleted from the database.
 
 ## Webpack
 
-Since webpack has been added as a new background process which gitlab depends on
+Since webpack has been added as a new background process which GitLab depends on
 in development, the [GDK must be updated and reconfigured](../update-gdk.md) in
 order to work properly again.
 
@@ -530,10 +530,10 @@ If you still encounter some errors, see the troubleshooting FAQ below:
     make: *** [gitlab/config/gitlab.yml] Error 1
     ```
 
-    This is likely because you have not updated your gitlab CE/EE repository to
-    the latest master yet.  It has a template for gitlab.yml in it which the GDK
+    This is likely because you have not updated your GitLab CE/EE repository to
+    the latest master yet.  It has a template for `gitlab.yml` in it which the GDK
     needs to update.  The `gdk update` step should have taken care of this for
-    you, but you can also manually go to your gitlab ce/ee directory and run
+    you, but you can also manually go to your GitLab ce/ee directory and run
     `git checkout master && git pull origin master`
 
     ---
@@ -553,7 +553,7 @@ If you still encounter some errors, see the troubleshooting FAQ below:
     ```
 
     This probably means that the webpack dev server isn't running or that your
-    gitlab.yml isn't properly configured. Ensure that you have run
+    `gitlab.yml` isn't properly configured. Ensure that you have run
     `gdk reconfigure` **AND** `gdk restart webpack`.
 
     ---
@@ -569,7 +569,7 @@ If you still encounter some errors, see the troubleshooting FAQ below:
     ...
     ```
 
-    This means your gitlab CE or EE instance is not running the current master
+    This means your GitLab CE or EE instance is not running the current master
     branch.  If you are running a branch which hasn't been rebased on master
     since Saturday, Feb 4th then you should rebase it on master.  If you are
     running the master branch, ensure it is up to date (`git pull`).
@@ -587,7 +587,7 @@ If you still encounter some errors, see the troubleshooting FAQ below:
     ...
     ```
 
-    This means you have not run `yarn install` since updating your gitlab/gitlab-foss
+    This means you have not run `yarn install` since updating your `gitlab/gitlab-foss`
     repository.  The `gdk update` command should have done this for you, but you
     can do so manually as well.
 
@@ -615,7 +615,7 @@ If you still encounter some errors, see the troubleshooting FAQ below:
 There may be times when running spinach feature tests or rspec tests
 steps such as `sign-up` or `log-out` will fail for no apparent reason.
 
-In that case what you need to do is run the following command inside the gitlab directory:
+In that case what you need to do is run the following command inside the `gitlab` directory:
 
 ```
 RAILS_ENV=test bundle exec rake db:reset

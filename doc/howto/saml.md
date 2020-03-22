@@ -1,13 +1,13 @@
 # SAML
 
 You can run a test SAML identity provider using the [jamedjo/test-saml-idp](https://hub.docker.com/r/jamedjo/test-saml-idp/)
-docker image, both to test instance-wide SAML and the multi-tenant Group SAML used on GitLab.com
+docker image, both to test instance-wide SAML and the multi-tenant Group SAML used on GitLab.com.
 
 ## Group SAML
 
 ### GitLab configuration
 
-Group SAML requires [HTTPS](https.md) to be set up for GitLab and you'll also need to enable Group SAML in [gitlab/config/gitlab.yml](https://gitlab.com/gitlab-org/gitlab/blob/d8ef45c25ef3f08e5fcda703185f36203bfecd6b/config/gitlab.yml.example#L693):
+Group SAML requires [HTTPS](https.md) to be set up for GitLab and you'll also need to enable Group SAML in [`gitlab/config/gitlab.yml`](https://gitlab.com/gitlab-org/gitlab/blob/d8ef45c25ef3f08e5fcda703185f36203bfecd6b/config/gitlab.yml.example#L693):
 
 ```yaml
 omniauth:

@@ -318,7 +318,7 @@ pipelines.
 ### Configuring the GitLab Docker runner to automatically pull images
 
 In order to avoid having to push the Docker image after every change, it's
-possible to configure the Gitlab Runner to automatically pull the image
+possible to configure the GitLab Runner to automatically pull the image
 if it isn't present. This can be done by setting `pull_policy = "if-not-present"`
 in the Runner's config.
 

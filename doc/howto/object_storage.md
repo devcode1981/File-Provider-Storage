@@ -33,5 +33,5 @@ Upgrading minio to the latest version will fix it.
 
 ## Creating a new bucket
 
-In order to start using minio from your gitlab instance you have to create buckets first.
+In order to start using minio from your GitLab instance you have to create buckets first.
 You can create a new bucket by accessing http://127.0.0.1:9000/ (default configuration).
