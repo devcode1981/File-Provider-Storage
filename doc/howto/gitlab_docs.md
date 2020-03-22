@@ -15,6 +15,12 @@ to run the relative links checks locally or preview the changes, do the followin
    cd gitlab-docs/
    ```
 
+1. Install Node dependencies:
+
+   ```sh
+   yarn install
+   ```
+
 1. Create the HTML files:
 
    ```sh
