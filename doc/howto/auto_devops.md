@@ -96,7 +96,7 @@ Finally, run the below command to start all the services:
 gdk start
 ```
 
-Now login as root using the Gitlab tunnel URL (`https://[PORT].qa-tunnel.gitlab.info`) and the default password. Once you are logged in, change the default password.
+Now login as root using the GitLab tunnel URL (`https://[PORT].qa-tunnel.gitlab.info`) and the default password. Once you are logged in, change the default password.
 
 Check [the troubleshooting guide](auto_devops/tips_and_troubleshooting.md) if you're still facing some problems.
 
@@ -120,7 +120,7 @@ Since your GitLab instance is now internet accessible, you should secure it by c
 ## Google OAuth2
 
 To be able to create a new GKE Cluster via GitLab, you need to configure
-Gitlab to be able to authenticate with Google. To get an OAuth token
+GitLab to be able to authenticate with Google. To get an OAuth token
 that works with your server add your redirect URLs for the generated
 GitLab tunnel URL to [the shared OAuth
 client](https://console.cloud.google.com/apis/credentials/oauthclient/696404988091-a80933t1dpfu38khu8o4mfrt32pad0ij.apps.googleusercontent.com?project=gitlab-internal-153318).
@@ -217,7 +217,7 @@ GITLAB_PASSWORD=<root-user-password> GCLOUD_REGION=us-central1 CHROME_HEADLESS=f
 More information about running QA tests can be found in
 [qa/README.md](https://gitlab.com/gitlab-org/gitlab/blob/master/qa/README.md#how-can-i-use-it).
 There are also other ways of running the QA specs that are documented in the
-[gitlab-qa project](https://gitlab.com/gitlab-org/gitlab-qa) but using the
+[`gitlab-qa` project](https://gitlab.com/gitlab-org/gitlab-qa) but using the
 above approach is recommended as it will allow you to debug and iterate on the
 spec without rebuilding any docker images and since the above command runs the
 spec in your environment rather than in docker it requires less configuration

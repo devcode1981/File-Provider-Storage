@@ -116,7 +116,7 @@ The clone will be done using [`git clone --depth=1`](https://www.git-scm.com/doc
 
 The `set-gitlab-upstream` script creates a remote named `upstream` for
 [the canonical GitLab repository](https://gitlab.com/gitlab-org/gitlab). It also
-modifies `gdk update` (See [Update gitlab and gitlab-shell repositories](./howto/gdk_commands.md#update-gitlab-and-gitlab-shell-repositories))
+modifies `gdk update` (See [Update `gitlab` and `gitlab-shell` repositories](howto/gdk_commands.md#update-gitlab-and-gitlab-shell-repositories))
 to pull down from the upstream repository instead of your fork, making it easier
 to keep up-to-date with the project.
 
@@ -132,7 +132,7 @@ During `gdk install` process, you may encounter some dependencies related errors
 Instructions to generate a developer license can be found in the
 onboarding document: https://about.gitlab.com/handbook/developer-onboarding/#working-on-gitlab-ee
 
-The license key generator is only available for GitLab team members, who should use the "Sign in with GitLab" link using their dev.gitlab.org account.
+The license key generator is only available for GitLab team members, who should use the "Sign in with GitLab" link using their `dev.gitlab.org` account.
 
 ## Post-installation
 

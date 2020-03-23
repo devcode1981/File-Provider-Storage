@@ -210,7 +210,7 @@ There isn't a convenient rake task to add the secondary node because the relevan
 data is on the secondary, but we can only write to the primary database. So we
 must get the values from the secondary, and then manually add the node.
 
-1. In a terminal, change to the gitlab directory of the secondary node:
+1. In a terminal, change to the `gitlab` directory of the secondary node:
 
    ```bash
    cd gdk-geo/gitlab

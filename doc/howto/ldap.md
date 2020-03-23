@@ -16,7 +16,7 @@ openldap:
   enabled: true
 ```
 
-in the gitlab repository edit config/gitlab.yml;
+In the `gitlab` repository edit `config/gitlab.yml`:
 
 ```yaml
 ldap:
@@ -45,7 +45,7 @@ ldap:
     #   admin_group: ''
 ```
 
-The second database is optional, and will only work with Gitlab-EE.
+The second database is optional, and will only work with GitLab EE.
 
 The following users are added to the LDAP server:
 

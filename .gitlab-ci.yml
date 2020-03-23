@@ -81,7 +81,7 @@ build:image:
 
 test:docs_lint:
   extends: .docs-changes
-  image: ruby:2.6
+  image: "registry.gitlab.com/gitlab-org/gitlab-docs:lint"
   stage: test
   services: []
   script:

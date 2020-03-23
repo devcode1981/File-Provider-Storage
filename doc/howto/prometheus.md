@@ -118,7 +118,7 @@ pipelines will fail.
 
 1. Get your local IP address by running `ifconfig` or opening up Network Settings if on macOS. On Linux, you can also use `ip addr show`, or `ip -o route get to 8.8.8.8 | sed -n 's/.*src \([0-9.]\+\).*/\1/p'`
 
-2. Open `gitlab/config/gitlab.yml` and change the Gitlab settings web server host line from either `localhost` or `127.0.0.1`  to reflect the IP of the previous step:
+2. Open `gitlab/config/gitlab.yml` and change the GitLab settings web server host line from either `localhost` or `127.0.0.1`  to reflect the IP of the previous step:
 
    ```yaml
    ## GitLab settings

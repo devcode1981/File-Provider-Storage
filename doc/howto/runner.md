@@ -115,13 +115,13 @@ Run `gitlab-runner register --run-untagged --config <path-to-gdk>/gitlab-runner-
   - `http://localhost:3000/`
   - `http://<custom_IP_address>:3000/`, if you customized your IP address using
     [Advanced Configuration](#advanced-configuration).
-- **gitlab-ci token**
+- **token**
 
   `Registration token` (copied from `admin/runners`)
-- **gitlab-ci description** (optional)
+- **description** (optional)
 
   A description of the Runner. Defaults to the hostname of the machine.
-- **gitlab-ci tags** (optional)
+- **tags** (optional)
 
   Comma-separated tags. Jobs can be set up to use only Runners with specific tags.
 
@@ -151,7 +151,7 @@ builds, so run it in its own terminal session.
 
 The Runners pane in the administration panel will now list the Runners. Create a
 project in the GitLab web interface and add a
-[.gitlab-ci.yml](https://docs.gitlab.com/ce/ci/examples/) file,
+[`.gitlab-ci.yml`](https://docs.gitlab.com/ce/ci/examples/) file,
 or clone an [example project](https://gitlab.com/groups/gitlab-examples), and
 watch as the Runner processes the builds just as it would on a "real" install!
 
@@ -179,7 +179,7 @@ different configuration files:
    127.0.0.1   host.docker.internal
    ```
 
-1. In the GitLab runner config (e.g. `~/.gitlab-runner/config.toml`), set the coordinator
+1. In the GitLab Runner config (e.g. `~/.gitlab-runner/config.toml`), set the coordinator
    URL with this hostname:
 
    ```toml
@@ -222,7 +222,7 @@ container.  Here's how:
 
 1. In `config/gitlab.yml`, set the `host` parameter to `172.16.123.1`.
 
-1. In the GitLab runner config (e.g. `~/.gitlab-runner/config.toml`), set the coordinator
+1. In the GitLab Runner config (e.g. `~/.gitlab-runner/config.toml`), set the coordinator
    URL with this hostname:
 
    ```toml
