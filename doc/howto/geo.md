@@ -17,7 +17,7 @@ You can use an existing `gdk` instance based on the [Set up GDK](../set-up-gdk.m
 
 Add the following to `gdk.yml` file on the primary node:
 
-```yml
+```yaml
 ---
 geo:
   enabled: true

@@ -71,9 +71,9 @@ The installation of the `charlock_holmes` gem (`0.7.3` or greater) during
 A working solution is to configure the `--with-cxxflags=-std=c++11` flag
 in the Rubygems global build options for this gem:
 
-```
-$ bundle config --global build.charlock_holmes "--with-cxxflags=-std=c++11"
-$ bundle install
+```shell
+bundle config --global build.charlock_holmes "--with-cxxflags=-std=c++11"
+bundle install
 ```
 
 The solution can be found at
@@ -82,8 +82,8 @@ https://github.com/brianmario/charlock_holmes/issues/117#issuecomment-329798280.
 **Note:** If you get installation problems related to `icu4c`, make sure to also
 set the `--with-icu-dir=/usr/local/opt/icu4c` option:
 
-```
-$ bundle config --global build.charlock_holmes "--with-icu-dir=/usr/local/opt/icu4c --with-cxxflags=-std=c++11"
+```shell
+bundle config --global build.charlock_holmes "--with-icu-dir=/usr/local/opt/icu4c --with-cxxflags=-std=c++11"
 ```
 
 [Gitaly]: https://gitlab.com/gitlab-org/gitaly/blob/14fd3b2e3adae00f0a792516e74a4bac29a5b5c1/Makefile#L58
@@ -136,7 +136,6 @@ No pg_config... trying anyway. If building fails, please try again with
 
 An error occurred while installing pg (0.18.4), and Bundler cannot continue.
 Make sure that `gem install pg -v '0.18.4'` succeeds before bundling.
-
 ```
 
 This is because the script fails to find the PostgreSQL instance in the path.
@@ -169,7 +168,7 @@ After running the GitLab Development Kit using `gdk start` and browsing to `http
 To fix this error, the pending migration must be resolved. Perform the following steps in your terminal:
 
 1. Change to the `gitlab` directory using `cd gitlab`
-2. Run the following command to perform the migration: `rails db:migrate RAILS_ENV=development`
+1. Run the following command to perform the migration: `rails db:migrate RAILS_ENV=development`
 
 Once the operation is complete, refresh the page.
 
@@ -332,7 +331,6 @@ In file included from binder.cpp:20:
 make: *** [binder.o] Error 1
 
 make failed, exit code 2
-
 ```
 
 To fix it:
@@ -370,21 +368,21 @@ If building `gpgme` gem fails with an `Undefined symbols for architecture x86_64
 
 1. Ensure necessary dependencies are installed:
 
-    ```sh
-    brew install gpgme
-    ```
+   ```sh
+   brew install gpgme
+   ```
 
 1. (optional) Try building the `gpgme` gem manually to ensure it compiles. If it fails, debug the failure with the error messages. To compile the `gpgme` gem manually run:
 
-    ```sh
-    gem install gpgme -- --use-system-libraries
-    ```
+   ```sh
+   gem install gpgme -- --use-system-libraries
+   ```
 
 1. Configure Bundler to use system libraries for the `gpgme` gem:
 
-    ```sh
-    bundle config build.gpgme --use-system-libraries
-    ```
+   ```sh
+   bundle config build.gpgme --use-system-libraries
+   ```
 
 You can now run `gdk install` or `bundle` again.
 
@@ -425,9 +423,9 @@ A solution is to:
 
 1. Instruct Bundler to use the system libraries when building `nokogumbo`:
 
-    ```sh
-    bundle config build.nokogumbo --use-system-libraries
-    ```
+   ```sh
+   bundle config build.nokogumbo --use-system-libraries
+   ```
 
 2. Re-run `gdk install`
 
@@ -470,7 +468,7 @@ A solution on macOS is to:
     export LDFLAGS="$LDFLAGS:-L$(brew --prefix)/opt/libffi/lib"
     ```
 
-2. Re-run `gdk install`
+1. Re-run `gdk install`
 
 ## LoadError due to readline
 
@@ -498,19 +496,19 @@ If for some reason you end up having database migrations that no longer exist
 but are present in your database, you might want to remove them.
 
 1. Find the non-existent migrations with `rake db:migrate:status`. You should
-    see some entries like:
+   see some entries like:
 
-    ```
-    up     20160727191041  ********** NO FILE **********
-    up     20160727193336  ********** NO FILE **********
-    ```
+   ```
+   up     20160727191041  ********** NO FILE **********
+   up     20160727193336  ********** NO FILE **********
+   ```
 
 1. Open a rails database console with `rails dbconsole`.
 1. Delete the migrations you want with:
 
-    ```sql
-    DELETE FROM schema_migrations WHERE version='20160727191041';
-    ```
+   ```sql
+   DELETE FROM schema_migrations WHERE version='20160727191041';
+   ```
 
 You can now run `rake db:migrate:status` again to verify that the entries are
 deleted from the database.
@@ -523,92 +521,92 @@ order to work properly again.
 
 If you still encounter some errors, see the troubleshooting FAQ below:
 
-* I'm getting an error when I run `gdk reconfigure`:
+- I'm getting an error when I run `gdk reconfigure`:
 
-    ```
-    Makefile:30: recipe for target 'gitlab/config/gitlab.yml' failed
-    make: *** [gitlab/config/gitlab.yml] Error 1
-    ```
+  ```
+  Makefile:30: recipe for target 'gitlab/config/gitlab.yml' failed
+  make: *** [gitlab/config/gitlab.yml] Error 1
+  ```
 
-    This is likely because you have not updated your GitLab CE/EE repository to
-    the latest master yet.  It has a template for `gitlab.yml` in it which the GDK
-    needs to update.  The `gdk update` step should have taken care of this for
-    you, but you can also manually go to your GitLab ce/ee directory and run
-    `git checkout master && git pull origin master`
-
-    ---
-
-* I'm getting an error when I attempt to access my local GitLab in a browser:
-
-    ```
-    Webpack::Rails::Manifest::ManifestLoadError at /
-    Could not load manifest from webpack-dev-server at http://localhost:3808/assets/webpack/manifest.json - is it running, and is stats-webpack-plugin loaded?
-    ```
-
-    or
-
-    ```
-    Webpack::Rails::Manifest::ManifestLoadError at /
-    Could not load compiled manifest from /path/to/gitlab-development-kit/gitlab/public/assets/webpack/manifest.json - have you run `rake webpack:compile`?
-    ```
-
-    This probably means that the webpack dev server isn't running or that your
-    `gitlab.yml` isn't properly configured. Ensure that you have run
-    `gdk reconfigure` **AND** `gdk restart webpack`.
+  This is likely because you have not updated your GitLab CE/EE repository to
+  the latest master yet. It has a template for `gitlab.yml` in it which the GDK
+  needs to update. The `gdk update` step should have taken care of this for
+  you, but you can also manually go to your GitLab ce/ee directory and run
+  `git checkout master && git pull origin master`
 
     ---
 
-* I see the following error when run `gdk tail` or `gdk tail webpack`:
+- I'm getting an error when I attempt to access my local GitLab in a browser:
 
-    ```
-    09:46:05 webpack.1               | npm ERR! argv "/usr/local/bin/node" "/usr/local/bin/npm" "run" "dev-server"
-    09:46:05 webpack.1               | npm ERR! node v5.8.0
-    09:46:05 webpack.1               | npm ERR! npm  v3.10.7
-    09:46:05 webpack.1               |
-    09:46:05 webpack.1               | npm ERR! missing script: dev-server
-    ...
-    ```
+  ```
+  Webpack::Rails::Manifest::ManifestLoadError at /
+  Could not load manifest from webpack-dev-server at http://localhost:3808/assets/webpack/manifest.json - is it running, and is stats-webpack-plugin loaded?
+  ```
 
-    This means your GitLab CE or EE instance is not running the current master
-    branch.  If you are running a branch which hasn't been rebased on master
-    since Saturday, Feb 4th then you should rebase it on master.  If you are
-    running the master branch, ensure it is up to date (`git pull`).
+  or
 
-    ---
+  ```
+  Webpack::Rails::Manifest::ManifestLoadError at /
+  Could not load compiled manifest from /path/to/gitlab-development-kit/gitlab/public/assets/webpack/manifest.json - have you run `rake webpack:compile`?
+  ```
 
-* I see the following error when run `gdk tail` or `gdk tail webpack`:
+  This probably means that the webpack dev server isn't running or that your
+  `gitlab.yml` isn't properly configured. Ensure that you have run
+  `gdk reconfigure` **AND** `gdk restart webpack`.
 
-    ```
-    09:54:15 webpack.1               | > @ dev-server /Users/mike/Projects/gitlab-development-kit/gitlab
-    09:54:15 webpack.1               | > webpack-dev-server --config config/webpack.config.js
-    09:54:15 webpack.1               |
-    09:54:15 webpack.1               | sh: webpack-dev-server: command not found
-    09:54:15 webpack.1               |
-    ...
-    ```
+  ---
 
-    This means you have not run `yarn install` since updating your `gitlab/gitlab-foss`
-    repository.  The `gdk update` command should have done this for you, but you
-    can do so manually as well.
+- I see the following error when run `gdk tail` or `gdk tail webpack`:
 
-* I see the following error when run `gdk tail` or `gdk tail webpack`:
+  ```
+  09:46:05 webpack.1               | npm ERR! argv "/usr/local/bin/node" "/usr/local/bin/npm" "run" "dev-server"
+  09:46:05 webpack.1               | npm ERR! node v5.8.0
+  09:46:05 webpack.1               | npm ERR! npm  v3.10.7
+  09:46:05 webpack.1               |
+  09:46:05 webpack.1               | npm ERR! missing script: dev-server
+  ...
+  ```
 
-    ```
-    14:52:22 webpack.1               | [nodemon] starting `node ./node_modules/.bin/webpack-dev-server --config config/webpack.config.js`
-    14:52:22 webpack.1               | events.js:160
-    14:52:22 webpack.1               |       throw er; // Unhandled 'error' event
-    14:52:22 webpack.1               |       ^
-    14:52:22 webpack.1               |
-    14:52:22 webpack.1               | Error: listen EADDRINUSE 127.0.0.1:3808
-    ...
-    ```
+  This means your GitLab CE or EE instance is not running the current master
+  branch. If you are running a branch which hasn't been rebased on master
+  since Saturday, Feb 4th then you should rebase it on master. If you are
+  running the master branch, ensure it is up to date (`git pull`).
 
-    This means the port is already in use, probably because webpack failed to
-    terminate correctly when the GDK was last shutdown. You can find out the pid
-    of the process using the port with the command `lsof -i :3808`. If you are
-    using Vagrant the `lsof` command is not available. Instead you can use the
-    command `ss -pntl 'sport = :3808'`. The left over process can be killed with
-    the command `kill PID`.
+  ---
+
+- I see the following error when run `gdk tail` or `gdk tail webpack`:
+
+  ```
+  09:54:15 webpack.1               | > @ dev-server /Users/mike/Projects/gitlab-development-kit/gitlab
+  09:54:15 webpack.1               | > webpack-dev-server --config config/webpack.config.js
+  09:54:15 webpack.1               |
+  09:54:15 webpack.1               | sh: webpack-dev-server: command not found
+  09:54:15 webpack.1               |
+  ...
+  ```
+
+  This means you have not run `yarn install` since updating your `gitlab/gitlab-foss`
+  repository. The `gdk update` command should have done this for you, but you
+  can do so manually as well.
+
+- I see the following error when run `gdk tail` or `gdk tail webpack`:
+
+  ```
+  14:52:22 webpack.1               | [nodemon] starting `node ./node_modules/.bin/webpack-dev-server --config config/webpack.config.js`
+  14:52:22 webpack.1               | events.js:160
+  14:52:22 webpack.1               |       throw er; // Unhandled 'error' event
+  14:52:22 webpack.1               |       ^
+  14:52:22 webpack.1               |
+  14:52:22 webpack.1               | Error: listen EADDRINUSE 127.0.0.1:3808
+  ...
+  ```
+
+  This means the port is already in use, probably because webpack failed to
+  terminate correctly when the GDK was last shutdown. You can find out the pid
+  of the process using the port with the command `lsof -i :3808`. If you are
+  using Vagrant the `lsof` command is not available. Instead you can use the
+  command `ss -pntl 'sport = :3808'`. The left over process can be killed with
+  the command `kill PID`.
 
 ## Testing environment database problems
 
@@ -623,11 +621,11 @@ RAILS_ENV=test bundle exec rake db:reset
 
 ## Windows 10 WSL common issues
 
-* `gdk run db` fails with exit code X
+- `gdk run db` fails with exit code X
 
-    If you have restarted your computer recently, don't forget to start PostgreSQL server manually; init.d scripts don't work currently as of build 15063.138:
+  If you have restarted your computer recently, don't forget to start PostgreSQL server manually; init.d scripts don't work currently as of build 15063.138:
 
-    `sudo service postgresql start`
+  `sudo service postgresql start`
 
 ## Homebrew: Postgres 10.0: "database files are incompatible with server"
 
@@ -662,7 +660,6 @@ Variable | Type | Description
 -------- | ---- | -----------
 `GITLAB_RAILS_RACK_TIMEOUT` | integer | Sets `service_timeout`
 `GITLAB_RAILS_WAIT_TIMEOUT` | integer | Sets `wait_timeout`
-
 
 For Unicorn: edit `gitlab/config/unicorn.rb`:
 
@@ -797,7 +794,6 @@ The full error you might be getting is:
 ```
 Makefile:134: recipe for target '.gitlab-yarn' failed
 make: *** [.gitlab-yarn] Error 2
-
 ```
 
 This is likely to happen if you installed `yarn` using `apt install cmdtest`.
@@ -807,7 +803,6 @@ To fix this, install yarn using npm instead:
 ```
 npm install --global yarn`
 ```
-
 
 ## Other problems
 

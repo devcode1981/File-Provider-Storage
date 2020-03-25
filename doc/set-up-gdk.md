@@ -51,7 +51,7 @@ gem install gitlab-development-kit
    configuration) using `gdk install`.
 
    - For those who have write access to the [GitLab.org group](https://gitlab.com/gitlab-org)
-   we recommend [Develop against the GitLab project](#develop-against-the-gitlab-project-default) (default)
+     we recommend [Develop against the GitLab project](#develop-against-the-gitlab-project-default) (default)
 
    - Other options in order of recommendation:
 

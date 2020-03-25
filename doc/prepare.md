@@ -90,6 +90,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 1. Install **Node.js 12.10** from the [official Node.js binary distribution](https://github.com/nodesource/distributions/blob/master/README.md#debinstall).
 1. Install **Yarn** from the [Yarn Debian package repository](https://yarnpkg.com/lang/en/docs/install/#debian-stable).
 1. Install remaining dependencies; modify the `GDK_GO_VERSION` with the major.minor version number (currently 1.12) as needed:
+
    ```sh
    # Add apt-add-repository helper script
    sudo apt-get update
@@ -112,7 +113,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
    > ℹ️ Ubuntu 18.04 (Bionic Beaver) and beyond doesn't have python-software-properties as a separate package.
 
    > ℹ️ Ubuntu 14.04 (Trusty Tahr) doesn't have the `libre2-dev` package available, but
-you can [install re2 manually](https://github.com/google/re2/wiki/Install).
+   > you can [install re2 manually](https://github.com/google/re2/wiki/Install).
 
 1. You're all set now. [Go to next steps](#next-steps).
 
@@ -176,6 +177,7 @@ You will also need to install [runit](http://smarden.org/runit) manually.
 The following instructions worked for runit version 2.1.2 - but please make sure you read the up to date installation instructions on [the website](http://smarden.org/runit) before continuing.
 
 1. Download and extract the runit source code to a local folder to compile it:
+
    ```sh
    wget http://smarden.org/runit/runit-2.1.2.tar.gz
    tar xzf runit-2.1.2.tar.gz
@@ -184,6 +186,7 @@ The following instructions worked for runit version 2.1.2 - but please make sure
    ./package/compile
    ./package/check
    ```
+
 1. Make sure all binaries in `command/` are accessible from your `PATH` (e.g. symlink / copy them to `/usr/local/bin`)
 
 #### CentOS
@@ -226,7 +229,6 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 
 This was tested on OpenSUSE LEAP 42.1, and Tumbleweed (20161109)
 
-
 ```sh
 sudo zypper dup
 sudo zypper install libxslt-devel  postgresql postgresql-devel libpqxx-devel redis libicu-devel nodejs git git-lfs ed cmake \
@@ -238,24 +240,27 @@ sudo chmod +x /usr/local/bin/minio
 ```
 
 On leap 42.1 you also need:
+
 ```
 sudo zypper install ld.charlock_holmes "--with-icu-dir=/usr/local" --globalnpm4
 ```
 
 Install `go` manually using [go] official installation instructions.
 
-
 The following `bundle config` options are recommended before you run `gdk install` in order to avoid problems with the embedded libraries inside nokogiri:
 
 ```
 bundle config build.nokogiri "--use-system-libraries" --global
 ```
+
 for tumbleweed only:
+
 ```
 bundle config build.charlock_holmes "--with-icu-dir=/usr/local" --global
 ```
 
 Manual fix required on OpenSUSE LEAP to place redis-server in the path for non-root users:
+
 ```
 sudo ln -s /usr/sbin/redis-server /usr/bin/redis-server
 ```
@@ -276,18 +281,20 @@ redis go node icu krb5 gmake re2 GraphicsMagick p5-Image-ExifTool git-lfs minio 
 **Setting up the Windows Subsystem for Linux:**
 
 Open PowerShell as Administrator and run:
+
 ```
 Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
 ```
+
 Restart your computer when prompted.
 
 Install your Linux Distribution of Choice via the Windows Store. Currently the distro options are:
 
-    Ubuntu
-    OpenSUSE
-    SLES
-    Kali Linux
-    Debian GNU/Linux
+- Ubuntu
+- OpenSUSE
+- SLES
+- Kali Linux
+- Debian GNU/Linux
 
 Launch the distro of choice.
 
@@ -329,6 +336,7 @@ sudo apt-get update && sudo apt-get install yarn
 ```
 
 Install the remainder of the prerequisites
+
 ```
 # Add apt-add-repository helper script
 sudo apt-get install software-properties-common python-software-properties
@@ -349,7 +357,6 @@ Start the PostgreSQL database (SystemD)
 sudo systemctl enable postgresql
 sudo systemctl start postgresql
 ```
-
 
 For some common troubleshooting steps for Windows 10 GDK installs please refer to [Troubleshooting](./howto/troubleshooting.md)
 

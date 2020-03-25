@@ -6,13 +6,13 @@ application then:
 
 - In your `gdk.yml` write:
 
-    ```yaml
-    hostname: 0.0.0.0
-    ```
+  ```yaml
+  hostname: 0.0.0.0
+  ```
 
 - Reconfigure and restart
 
-    ```sh
-    gdk reconfigure
-    gdk restart
-    ```
+  ```sh
+  gdk reconfigure
+  gdk restart
+  ```
