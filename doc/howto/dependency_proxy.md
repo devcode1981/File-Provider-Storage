@@ -37,7 +37,7 @@ in the output.
 
 ### MacOS
 
-#### Use an IP address with your GDK installation, `localhost` will not work.
+#### Use an IP address with your GDK installation, `localhost` will not work
 
 This can be accomplished by [updating the GDK configuration](configuration.md) by
 creating or updating the `gdk.yml` file in the root of your GDK directory.
@@ -51,7 +51,7 @@ host: 0.0.0.0
 Run `gdk reconfigure` and `gdk restart` to envoke the changes and visit the IP
 (`0.0.0.0:3000`) to check if GitLab is accessible through the new IP.
 
-#### Add this IP address and port to the list of insecure registries and restart Docker.
+#### Add this IP address and port to the list of insecure registries and restart Docker
 
 ##### Old Docker for Mac (< 2.2.0.0)
 

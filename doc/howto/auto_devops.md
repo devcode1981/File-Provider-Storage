@@ -29,10 +29,12 @@ depends on our infrastructure. For non-GitLab team members you can see
    1. Click **Approve**.
 1. Add the following to your `.ssh/config`. Replace any existing stanza for
    `Host qa-tunnel.gitlab.info` if you have one:
+
    ```plaintext
    Host qa-tunnel.gitlab.info
      ProxyCommand "sft" proxycommand  %h
    ```
+
 1. Verify you have `ssh` access into `qa-tunnel.gitlab.info`:
 
     ```
@@ -153,7 +155,7 @@ spec](https://gitlab.com/gitlab-org/gitlab/blob/master/qa/qa/specs/features/brow
 Before you can run the spec, you will need `gcloud` and `kubectl`
 installed.
 
-Follow the instructions at https://cloud.google.com/sdk/docs/quickstarts
+Follow the instructions at <https://cloud.google.com/sdk/docs/quickstarts>
 for the operating system that you are using to install `gcloud`.
 Alternatively, if you are using Homebrew on MacOS, you can install
 `gcloud` with :
@@ -208,7 +210,7 @@ GITLAB_PASSWORD=<root-user-password> GCLOUD_REGION=us-central1 CHROME_HEADLESS=f
 
 You can also run single tests with RSpec line number arguments. As the
 `orchestrated` tag is normally excluded, we will also need to include a
-`--tag ` argument to override the exclusion:
+`--tag` argument to override the exclusion:
 
 ```bash
 GITLAB_PASSWORD=<root-user-password> GCLOUD_REGION=us-central1 CHROME_HEADLESS=false bundle exec bin/qa Test::Instance::All https://<gitlab-number>.qa-tunnel.gitlab.info/ -- qa/specs/features/browser_ui/7_configure/auto_devops/create_project_with_auto_devops_spec.rb:71 --tag orchestrated
@@ -299,7 +301,7 @@ which creates smaller docker images on the order of 20-50MB.
 
 If you want you can just manually configure a reverse proxy in front of your
 GDK instance that does SSL termination for you. A good approach to this would
-be to use nginx for SSL termination on a VM with a static IP address. It is
+be to use NGINX for SSL termination on a VM with a static IP address. It is
 also necessary to have a different external hostname for the container registry
 so your reverse proxy will need two virtual hosts configured and both will need
 SSL termination.
@@ -327,11 +329,11 @@ from your reverse proxy settings and edit `registry/config.yml` like so:
       realm: https://<gitlab-hostname>/jwt/auth
 ```
 
-NOTE: You should ensure your nginx (or other proxy) is configured to allow up
+NOTE: You should ensure your NGINX (or other proxy) is configured to allow up
 to 1GB files transferred since the docker images uploaded and downloaded
 can be quite large.
 
-Below you can find an example on how to configure reverse proxy using Nginx
+Below you can find an example on how to configure reverse proxy using NGINX
 with a valid SSL certificate generated using Let's Encrypt on Debian.
 
 The example below allows you to install packages from Debian Sid (unstable)
@@ -339,11 +341,12 @@ in order to use latest versions. APT pinning can be configured to make it
 possible to install packages from unstable Debian distribution on a stable
 version of Debian GNU/Linux.
 
-1. Install Nginx
+1. Install NGINX
 
     ```bash
     sudo apt-get install -t unstable nginx
     ```
+
 1. Install `certbot` to manage your certificates easier
 
     ```bash
@@ -384,14 +387,14 @@ version of Debian GNU/Linux.
     Certificates generated with `--manual` option will not be renewed
     automatically.
 
-1. Configure Nginx
+1. Configure NGINX
 
     Cerbot is going to pre-configure your files, what is useful because you
     do not need to add certificates manually, however you will need to adjust
     a few things in the configuration.
 
     You can find an example of how to configure reverse proxy with SSL
-    termination with Nginx to proxy requests to GitLab Registry and GDK.
+    termination with NGINX to proxy requests to GitLab Registry and GDK.
 
     ```
     server {
@@ -492,7 +495,7 @@ console. If you see one of your clusters you are no longer using then simply
 delete it from this page.
 
 Unfortunately deleting a cluster is not enough to fully clean up after yourself
-on GCP. When creating a cluster and installing helm apps on that cluster you
+on GCP. When creating a cluster and installing Helm apps on that cluster you
 actually end up creating other GCP resources that are not deleted when the
 cluster is deleted. As such it is important to also periodically find and
 delete these unused (orphaned) GCP resources. Please read on for how to do
