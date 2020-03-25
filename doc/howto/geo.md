@@ -215,11 +215,13 @@ must get the values from the secondary, and then manually add the node.
    ```bash
    cd gdk-geo/gitlab
    ```
+
 1. Output the secondary node's **Name** and **URL**:
 
    ```bash
    bundle exec rails runner 'puts "Name: #{GeoNode.current_node_name}"; puts "URL: #{GeoNode.current_node_url}"'
    ```
+
 1. Visit the **primary** node's **Admin Area > Geo > Nodes** (`/admin/geo/nodes`)
    in your browser.
 1. Click the **New node** button.
@@ -238,7 +240,7 @@ Use the following commands to keep Geo-enabled GDK installations up to date.
 
 ## Troubleshooting
 
-### postgresql-geo/data exists but is not empty
+### `postgresql-geo/data` exists but is not empty
 
 If you see this error during setup because you have already run `make geo-setup` once:
 

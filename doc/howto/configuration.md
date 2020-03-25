@@ -149,11 +149,11 @@ class ExampleConfig < GDK::ConfigSettings
 end
 ```
 
-* `foo`: (literal value) This is just a literal value, it can be any
+- `foo`: (literal value) This is just a literal value, it can be any
   type (e.g. Number, Boolean, String).
-* `bar`: (block without argument) This is using a block to set a
+- `bar`: (block without argument) This is using a block to set a
   value. It evaluates the Ruby code to dynamically calculate a value.
-* `fuz`: (block with argument) When the block takes a single argument,
+- `fuz`: (block with argument) When the block takes a single argument,
   it expects you'll be setting child settings.
 
 If you'd dump this config with `rake dump_config` you'll get something

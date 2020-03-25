@@ -108,4 +108,3 @@ If you do not have an S/MIME key pair for testing, you can either create your
 own self-signed one, or purchase one. MozillaZine keeps a nice collection
 of [S/MIME-capable signing authorities](http://kb.mozillazine.org/Getting_an_SMIME_certificate)
 and some of them generate keys for free.
-

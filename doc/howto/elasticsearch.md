@@ -8,12 +8,13 @@ environment.
 
 1. Install OpenJDK 8 (Elasticsearch dependency)
 
-    - You can get a prebuilt OpenJDK Binary for free from [AdoptOpenJDK](https://adoptopenjdk.net)
-    - You can also install OpenJDK using [Homebrew](https://github.com/AdoptOpenJDK/homebrew-openjdk)
-    ```
-    brew tap AdoptOpenJDK/openjdk
-    brew cask install adoptopenjdk8
-    ```
+   - You can get a prebuilt OpenJDK Binary for free from [AdoptOpenJDK](https://adoptopenjdk.net)
+   - You can also install OpenJDK using [Homebrew](https://github.com/AdoptOpenJDK/homebrew-openjdk)
+
+   ```shell
+   brew tap AdoptOpenJDK/openjdk
+   brew cask install adoptopenjdk8
+   ```
 
 1. Enable Elasticsearch in the GDK
 
