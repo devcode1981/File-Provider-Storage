@@ -12,8 +12,10 @@ and Grafana.
 
 First make sure you do not have `gdk run` active anywhere. Then run:
 
-    rm Procfile
-    make performance-metrics-setup
+```shell
+rm Procfile
+make performance-metrics-setup
+```
 
 This will download and compile InfluxDB and Grafana from source; this
 takes a while.

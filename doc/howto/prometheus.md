@@ -29,20 +29,20 @@ Kubectl is required for Minikube to function. You can also use `homebrew` to ins
 
 1. First, download it:
 
-    ```
-    ## For macOS
-    curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/darwin/amd64/kubectl
+   ```
+   ## For macOS
+   curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/darwin/amd64/kubectl
 
-    ## For Linux
-    curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-    ```
+   ## For Linux
+   curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+   ```
 
 1. Then, add it to your path:
 
-    ```
-    chmod +x ./kubectl
-    sudo mv ./kubectl /usr/local/bin/
-    ```
+   ```
+   chmod +x ./kubectl
+   sudo mv ./kubectl /usr/local/bin/
+   ```
 
 #### Install Minikube
 
@@ -50,20 +50,20 @@ For macOS with homebrew, run `brew install minikube`.
 
 1. First, download it:
 
-    ```
-    ## For macOS
-    curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-amd64
+   ```
+   ## For macOS
+   curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-amd64
 
-    ## For Linux
-    curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-    ```
+   ## For Linux
+   curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+   ```
 
 1. Then, add it to your path:
 
-    ```
-    chmod +x ./minikube
-    sudo mv ./minikube /usr/local/bin/
-    ```
+   ```
+   chmod +x ./minikube
+   sudo mv ./minikube /usr/local/bin/
+   ```
 
 ### Install a virtualization driver
 
@@ -118,7 +118,7 @@ pipelines will fail.
 
 1. Get your local IP address by running `ifconfig` or opening up Network Settings if on macOS. On Linux, you can also use `ip addr show`, or `ip -o route get to 8.8.8.8 | sed -n 's/.*src \([0-9.]\+\).*/\1/p'`
 
-2. Open `gitlab/config/gitlab.yml` and change the GitLab settings web server host line from either `localhost` or `127.0.0.1`  to reflect the IP of the previous step:
+1. Open `gitlab/config/gitlab.yml` and change the GitLab settings web server host line from either `localhost` or `127.0.0.1`  to reflect the IP of the previous step:
 
    ```yaml
    ## GitLab settings
@@ -129,7 +129,7 @@ pipelines will fail.
      https: false
    ```
 
-3. Save the file and run `gdk restart` to apply this change. You should now be able to access GitLab by the external URL (e.g., `http://192.168.1.9:3000` not `localhost`), otherwise it may not work correctly.
+1. Save the file and run `gdk restart` to apply this change. You should now be able to access GitLab by the external URL (e.g., `http://192.168.1.9:3000` not `localhost`), otherwise it may not work correctly.
 
 ### Create a Project
 
@@ -274,7 +274,6 @@ the GDK, the process is simpler:
        metrics_path: '/metrics'
        static_configs:
        - targets: ['localhost:8082']
-
    ```
 
 1. Start Prometheus.

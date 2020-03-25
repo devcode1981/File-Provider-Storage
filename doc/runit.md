@@ -12,18 +12,18 @@ Foreman was the tool behind `gdk run`; it was configured via the
 `Procfile`. While Foreman is easy to get started with, we find it has a
 number of drawbacks in GDK:
 
--  Foreman is attached to a terminal window. If that terminal window
-    gets closed abruptly, Foreman is not able to cleanly shut down the
-    processes it was supervising, leaving them running in the
-    background. This is a problem because the next time you start
-    Foreman, most of its services will fail to start because they need
-    resources (network ports) still being used by the old processes that
-    never got cleaned up.
--  There is no good way to start / stop / restart individual processes
-    in the Procfile. This is not so noticeable when you work with Ruby
-    or JavaScript because of live code reload features, but for Go
-    programs (e.g. `gitaly`) this does not work well. There you really
-    need to stop an old binary and start a new binary.
+- Foreman is attached to a terminal window. If that terminal window
+  gets closed abruptly, Foreman is not able to cleanly shut down the
+  processes it was supervising, leaving them running in the
+  background. This is a problem because the next time you start
+  Foreman, most of its services will fail to start because they need
+  resources (network ports) still being used by the old processes that
+  never got cleaned up.
+- There is no good way to start / stop / restart individual processes
+  in the Procfile. This is not so noticeable when you work with Ruby
+  or JavaScript because of live code reload features, but for Go
+  programs (e.g. `gitaly`) this does not work well. There you really
+  need to stop an old binary and start a new binary.
 
 ## Why Runit
 
@@ -34,11 +34,11 @@ administration tool than a developer tool.
 The reason we use Runit and not the native OS supervisor (launchd on
 macOS, systemd on Linux) is that:
 
--   Runit works the same on macOS and Linux so we don't need to handle
-    them separately
--   Runit does not mind running next to the official OS supervisor
--   it is easy to run more than one Runit supervision tree (e.g. if you
-    have multiple GDK installations)
+- Runit works the same on macOS and Linux so we don't need to handle
+  them separately
+- Runit does not mind running next to the official OS supervisor
+- It is easy to run more than one Runit supervision tree (e.g. if you
+  have multiple GDK installations)
 
 ## Solving the closed terminal window problem
 
@@ -85,9 +85,9 @@ GDK will update the Runit service configuration from the Procfile.
 
 If you want to remove a service `foo`:
 
--   comment out or delete `foo: exec bar` from Procfile
--   run `gdk stop foo`
--   `rm services/foo`
+- Comment out or delete `foo: exec bar` from Procfile
+- Run `gdk stop foo`
+- `rm services/foo`
 
 ## Modifying environment configuration for services
 

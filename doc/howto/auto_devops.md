@@ -37,10 +37,10 @@ depends on our infrastructure. For non-GitLab team members you can see
 
 1. Verify you have `ssh` access into `qa-tunnel.gitlab.info`:
 
-    ```
-    ssh qa-tunnel.gitlab.info
-    > Welcome to Ubuntu 16.04.4 LTS (GNU/Linux 4.13.0-1019-gcp x86_64)
-    ```
+   ```shell
+   $ ssh qa-tunnel.gitlab.info
+   > Welcome to Ubuntu 16.04.4 LTS (GNU/Linux 4.13.0-1019-gcp x86_64)
+   ```
 
    On first try (and occasionally thereafter as Okta chooses) this will open a web
    browser window requiring a login to Okta and clicking an **Approve** button. When
@@ -48,7 +48,7 @@ depends on our infrastructure. For non-GitLab team members you can see
    step.
 
 1. Set up the GDK for your workstation following [the preparation
-  instructions](../prepare.md) and [setup instructions](../set-up-gdk.md)
+   instructions](../prepare.md) and [setup instructions](../set-up-gdk.md)
 
 NOTE: Running Auto DevOps flow [downloads/uploads gigabytes of data on each
 run](#massive-bandwidth-used-by-auto-devops). For this reason it is not a good
@@ -112,12 +112,12 @@ Since your GitLab instance is now internet accessible, you should secure it by c
 
 - Change the password of all seeded users (run the following code in a Rails console):
 
-    ```ruby
-    User.where.not(username: 'root').all.each do |user|
-      user.password = user.password_confirmation = SecureRandom.hex(16)
-      user.save!
-    end
-    ```
+  ```ruby
+  User.where.not(username: 'root').all.each do |user|
+    user.password = user.password_confirmation = SecureRandom.hex(16)
+    user.save!
+  end
+  ```
 
 ## Google OAuth2
 
@@ -343,121 +343,121 @@ version of Debian GNU/Linux.
 
 1. Install NGINX
 
-    ```bash
-    sudo apt-get install -t unstable nginx
-    ```
+   ```bash
+   sudo apt-get install -t unstable nginx
+   ```
 
 1. Install `certbot` to manage your certificates easier
 
-    ```bash
-    sudo apt-get install -t unstable certbot python-certbot-nginx
-    ```
+   ```bash
+   sudo apt-get install -t unstable certbot python-certbot-nginx
+   ```
 
 1. Configure your domains
 
-    The commands the next point assume you have set up a DNS record for
-    `gdk.example.com` and `registry.example.com` and that both point to the IP
-    address of your VM. You can replace those domain names with anything of
-    your choosing.
+   The commands the next point assume you have set up a DNS record for
+   `gdk.example.com` and `registry.example.com` and that both point to the IP
+   address of your VM. You can replace those domain names with anything of
+   your choosing.
 
 1. Request a certificate for your domain or subdomains
 
-    You will need to obtain certificates for GitLab web application and for
-    Container Registry separately. You can do that using following commands:
+   You will need to obtain certificates for GitLab web application and for
+   Container Registry separately. You can do that using following commands:
 
-    ```bash
-    sudo certbot -i nginx -d gdk.example.com -d registry.example.com
-    ```
+   ```bash
+   sudo certbot -i nginx -d gdk.example.com -d registry.example.com
+   ```
 
-    certbot will attempt to verify your domain ownership, however you might
-    want to do this manually. You can append `--manual` argument in order to
-    do that.
+   Certbot will attempt to verify your domain ownership, however you might
+   want to do this manually. You can append `--manual` argument in order to
+   do that.
 
-    ```bash
-    sudo certbot --manual -i nginx -d gdk.example.com -d registry.example.com
-    ```
+   ```bash
+   sudo certbot --manual -i nginx -d gdk.example.com -d registry.example.com
+   ```
 
-    It is also possible to generate a wildcard ceriticate if you forcsee the
-    need of using more subdomains than just for GDK and Container Registry:
+   It is also possible to generate a wildcard certificate if you foresee the
+   need of using more subdomains than just for GDK and Container Registry:
 
-    ```bash
-    sudo certbot --manual -i nginx -d "*.gdk.example.com" --server https://acme-v02.api.letsencrypt.org/directory
-    ```
+   ```bash
+   sudo certbot --manual -i nginx -d "*.gdk.example.com" --server https://acme-v02.api.letsencrypt.org/directory
+   ```
 
-    Certificates generated with `--manual` option will not be renewed
-    automatically.
+   Certificates generated with `--manual` option will not be renewed
+   automatically.
 
 1. Configure NGINX
 
-    Cerbot is going to pre-configure your files, what is useful because you
-    do not need to add certificates manually, however you will need to adjust
-    a few things in the configuration.
+   Certbot is going to pre-configure your files, what is useful because you
+   do not need to add certificates manually, however you will need to adjust
+   a few things in the configuration.
 
-    You can find an example of how to configure reverse proxy with SSL
-    termination with NGINX to proxy requests to GitLab Registry and GDK.
+   You can find an example of how to configure reverse proxy with SSL
+   termination with NGINX to proxy requests to GitLab Registry and GDK.
 
-    ```
-    server {
-      server_name gdk.gcp.example.com;
+   ```nginx
+   server {
+     server_name gdk.gcp.example.com;
 
-      listen [::]:443 ssl ;
-      listen 443 ssl;
-      ssl_certificate /etc/letsencrypt/live/gcp.example.com/fullchain.pem;
-      ssl_certificate_key /etc/letsencrypt/live/gcp.example.com/privkey.pem;
-      ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
-      ssl_ciphers "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4";
+     listen [::]:443 ssl;
+     listen 443 ssl;
+     ssl_certificate /etc/letsencrypt/live/gcp.example.com/fullchain.pem;
+     ssl_certificate_key /etc/letsencrypt/live/gcp.example.com/privkey.pem;
+     ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
+     ssl_ciphers "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4";
 
-      ssl_session_cache    shared:SSL:10m;
-      ssl_session_timeout  30m;
+     ssl_session_cache    shared:SSL:10m;
+     ssl_session_timeout  30m;
 
-      client_max_body_size 1024m;
+     client_max_body_size 1024m;
 
-      location / {
-        proxy_pass http://127.0.0.1:3000;
+     location / {
+       proxy_pass http://127.0.0.1:3000;
 
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Nginx-Proxy true;
+       proxy_set_header Host $host;
+       proxy_set_header X-Real-IP $remote_addr;
+       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+       proxy_set_header X-Forwarded-Proto $scheme;
+       proxy_set_header X-Nginx-Proxy true;
 
-        proxy_redirect off;
-      }
-    }
+       proxy_redirect off;
+     }
+   }
 
-    server {
-      server_name registry.gcp.example.com;
+   server {
+     server_name registry.gcp.example.com;
 
-      listen [::]:443 ssl;
-      listen 443 ssl;
-      ssl_certificate /etc/letsencrypt/live/gcp.example.com/fullchain.pem;
-      ssl_certificate_key /etc/letsencrypt/live/gcp.example.com/privkey.pem;
-      ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
-      ssl_ciphers "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4";
+     listen [::]:443 ssl;
+     listen 443 ssl;
+     ssl_certificate /etc/letsencrypt/live/gcp.example.com/fullchain.pem;
+     ssl_certificate_key /etc/letsencrypt/live/gcp.example.com/privkey.pem;
+     ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
+     ssl_ciphers "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4";
 
-      ssl_session_cache    shared:SSL:10m;
-      ssl_session_timeout  30m;
+     ssl_session_cache    shared:SSL:10m;
+     ssl_session_timeout  30m;
 
-      client_max_body_size 1024m;
+     client_max_body_size 1024m;
 
-      location / {
-        proxy_pass http://127.0.0.1:5000;
+     location / {
+       proxy_pass http://127.0.0.1:5000;
 
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Nginx-Proxy true;
+       proxy_set_header Host $host;
+       proxy_set_header X-Real-IP $remote_addr;
+       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+       proxy_set_header X-Forwarded-Proto $scheme;
+       proxy_set_header X-Nginx-Proxy true;
 
-        proxy_redirect off;
-      }
-    }
-    ```
+       proxy_redirect off;
+     }
+   }
+   ```
 
 #### Why can't we use ngrok or localtunnel?
 
 In theory both of these tools accomplish what we need which is exposing our
-local running GitLab instance to the internet.  However, both of these
+local running GitLab instance to the internet. However, both of these
 services, at least in their hosted forms, place limitations on the number of
 open connections and the max size of files being uploaded. As such neither of
 them, even in the paid plans, will work with proxying the `docker pull` and
