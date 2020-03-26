@@ -97,3 +97,135 @@ storages:
      ```
 
 1. Restart GDK to allow the new config values to take effect: `gdk restart`
+
+#### Adding More Shards to Gitaly Storage
+
+There are situations in which we might need to configure several shards to
+store repositories.
+
+In the following example, we're creating several shards with a single
+Praefect node.
+
+1. Create the directories on disk for the new shards
+
+1. Edit the Praefect configuration file `gitaly/praefect.config.toml` to add the
+   new virtual storage.
+   - Before:
+
+     ```toml
+     [[virtual_storage]]
+     name = 'default'
+
+     [[virtual_storage.node]]
+     storage = "praefect-internal-0"
+     address = "unix:/Users/paulokstad/gitlab-development-kit/gitaly-praefect-0.socket"
+     primary = true
+     ```
+
+   - After:
+
+     ```toml
+     [[virtual_storage]]
+     name = 'default'
+
+     [[virtual_storage.node]]
+     storage = "praefect-internal-0"
+     address = "unix:/Users/paulokstad/gitlab-development-kit/gitaly-praefect-0.socket"
+     primary = true
+
+     [[virtual_storage]]
+     name = 'storage_2'
+
+     [[virtual_storage.node]]
+     storage = "praefect-internal-extra-2"
+     address = "unix:/Users/paulokstad/gitlab-development-kit/gitaly-praefect-0.socket"
+     primary = true
+
+     [[virtual_storage]]
+     name = 'storage_3'
+
+     [[virtual_storage.node]]
+     storage = "praefect-internal-extra-3"
+     address = "unix:/Users/paulokstad/gitlab-development-kit/gitaly-praefect-0.socket"
+     primary = true
+     ```
+
+1. Edit `gitaly/gitaly.config.toml` to add the new virtual storage:
+    - Before:
+
+      ```toml
+      [[storage]]
+      name = "default"
+      path = "/Users/paulokstad/gitlab-development-kit/repositories"
+      ```
+
+   - After:
+
+      ```toml
+      [[storage]]
+      name = "default"
+      path = "/Users/paulokstad/gitlab-development-kit/repositories"
+
+      [[storage]]
+      name = "storage_2"
+      path = "/mnt/storage_2"
+
+      [[storage]]
+      name = "storage_3"
+      path = "/mnt/storage_3"
+      ```
+
+1. Edit `gitaly/gitaly-0.praefect.toml` to add the new virtual storage:
+   - Before:
+
+     ```toml
+     [[storage]]
+     name = "praefect-internal-0"
+     path = "/Users/paulokstad/gitlab-development-kit/repositories"
+     ```
+
+   - After:
+
+     ```toml
+     [[storage]]
+     name = "praefect-internal-0"
+     path = "/Users/paulokstad/gitlab-development-kit/repositories"
+
+     [[storage]]
+     name = "praefect-internal-extra-2"
+     path = "/mnt/storage_2"
+
+     [[storage]]
+     name = "praefect-internal-extra-3"
+     path = "/mnt/storage_3"
+     ```
+
+1. Edit `gitlab/config/gitlab.yml` to add the new virtual storage:
+   - Before:
+
+     ```yaml
+     repositories:
+       storages: # You must have at least a `default` storage path.
+         default:
+           path: /
+           gitaly_address: unix:/Users/paulokstad/gitlab-development-kit/praefect.socket
+     ```
+
+   - After:
+
+     ```yaml
+     repositories:
+       storages: # You must have at least a `default` storage path.
+         default:
+           path: /
+           gitaly_address: unix:/Users/paulokstad/gitlab-development-kit/praefect.socket
+         storage_2:
+           path: /
+           gitaly_address: unix:/Users/paulokstad/gitlab-development-kit/praefect.socket
+         storage_3:
+           path: /
+           gitaly_address: unix:/Users/paulokstad/gitlab-development-kit/praefect.socket
+     ```
+
+1. Restart GDK to allow the new config values to take effect: `gdk restart`
+1. Enable the new shards in the [Admin Area](https://docs.gitlab.com/ee/administration/repository_storage_paths.html#choose-where-new-project-repositories-will-be-stored)

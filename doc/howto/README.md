@@ -32,6 +32,7 @@ to learn how to develop GitLab CE.
 - [NFS](nfs.md)
 - [HTTPS](https.md)
 - [SSH](ssh.md)
+- [Gitaly and Praefect](gitaly.md)
 - [Git push options](git_push_options.md)
 - [Serverless (Knative)](serverless.md)
 - [Using GitLab Runner with GDK](runner.md)
