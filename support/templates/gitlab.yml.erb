@@ -877,7 +877,7 @@ test:
     storages:
       default:
         path: tmp/tests/repositories/
-        gitaly_address: unix:tmp/tests/gitaly/<%= config.praefect? ? 'praefect':'gitaly' %>.socket
+        gitaly_address: unix:tmp/tests/gitaly/gitaly.socket
 
   gitaly:
     client_path: tmp/tests/gitaly
