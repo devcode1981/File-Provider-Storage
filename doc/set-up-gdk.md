@@ -130,7 +130,7 @@ During `gdk install` process, you may encounter some dependencies related errors
 ## GitLab Enterprise Features
 
 Instructions to generate a developer license can be found in the
-onboarding document: https://about.gitlab.com/handbook/developer-onboarding/#working-on-gitlab-ee
+onboarding document: <https://about.gitlab.com/handbook/developer-onboarding/#working-on-gitlab-ee>.
 
 The license key generator is only available for GitLab team members, who should use the "Sign in with GitLab" link using their `dev.gitlab.org` account.
 
@@ -148,7 +148,7 @@ To stop the Rails app, which saves memory (useful when running tests):
 gdk stop rails
 ```
 
-To access GitLab, you may now go to http://localhost:3000 in your browser.
+To access GitLab, you may now go to <http://localhost:3000> in your browser.
 It may take a few minutes for the Rails app to be ready. During this period you would see `dial unix /Users/.../gitlab.socket: connect: connection refused` in the browser.
 
 The development login credentials are `root` and

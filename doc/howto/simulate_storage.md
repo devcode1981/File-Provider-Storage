@@ -90,7 +90,7 @@ We can now mount it:
 sudo mount /dev/mapper/gdk_delayed /mnt/gdk_repositories
 ```
 
-To make use of the delayed device, you need to configure gitaly to use the mount
+To make use of the delayed device, you need to configure Gitaly to use the mount
 you have just set up. This can vary depending on your setup, but typically
 requires adjusting `<gdk-root>/gdk.yml` to contain the following snippet:
 

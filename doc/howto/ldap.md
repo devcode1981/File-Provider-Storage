@@ -4,7 +4,7 @@ You can run an OpenLDAP daemon inside GDK if you want to work on GitLab LDAP int
 
 To run the OpenLDAP installation included in the GitLab development kit do the following:
 
-```
+```shell
 cd gitlab-openldap
 make # will setup the databases
 ```

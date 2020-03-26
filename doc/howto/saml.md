@@ -1,6 +1,6 @@
 # SAML
 
-You can run a test SAML identity provider using the [jamedjo/test-saml-idp](https://hub.docker.com/r/jamedjo/test-saml-idp/)
+You can run a test SAML identity provider using the [`jamedjo/test-saml-idp`](https://hub.docker.com/r/jamedjo/test-saml-idp/)
 docker image, both to test instance-wide SAML and the multi-tenant Group SAML used on GitLab.com.
 
 ## Group SAML
@@ -31,7 +31,7 @@ docker run --name=gitlab_saml_idp -p 8080:8080 -p 8443:8443 \
 
 From GitLab this would then be [configured](https://docs.gitlab.com/ee/user/group/saml_sso/#how-to-configure) using:
 
-- **SSO URL:** https://localhost:8443/simplesaml/saml2/idp/SSOService.php
+- **SSO URL:** <https://localhost:8443/simplesaml/saml2/idp/SSOService.php>
 - **Certificate fingerprint:** 119b9e027959cdb7c662cfd075d9e2ef384e445f
 
 ![Group SAML Settings for Docker](img/group-saml-settings-for-docker.png)
@@ -86,7 +86,7 @@ The following users are described in the [docker image documentation](https://hu
 
 We made a video demoing SAML setup and debugging, describing key SAML concepts,
 and giving a run through of our SAML codebase. This can be found at
-https://www.youtube.com/embed/CW0SujsABrs with [slides also available](https://gitlab.com/gl-retrospectives/manage/uploads/2c057dd7fddb91512e93d006a3fc0048/SAML_Knowledge_Sharing__Manage_201s_.pdf).
+<https://www.youtube.com/embed/CW0SujsABrs> with [slides also available](https://gitlab.com/gl-retrospectives/manage/uploads/2c057dd7fddb91512e93d006a3fc0048/SAML_Knowledge_Sharing__Manage_201s_.pdf).
 
 ## Debugging tools
 

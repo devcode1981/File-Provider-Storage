@@ -53,7 +53,7 @@ Re-run the `gdk install` again and follow any on-screen instructions related to 
 The installation of the `charlock_holmes` gem (`0.7.3` or greater) during
 `bundle install` may fail on macOS Sierra with the following error:
 
-```
+```plaintext
 [SNIPPED]
 
 /usr/local/Cellar/icu4c/59.1/include/unicode/unistr.h:3025:7: error: delegating constructors are permitted only in C++11
@@ -77,7 +77,7 @@ bundle install
 ```
 
 The solution can be found at
-https://github.com/brianmario/charlock_holmes/issues/117#issuecomment-329798280.
+<https://github.com/brianmario/charlock_holmes/issues/117#issuecomment-329798280>.
 
 **Note:** If you get installation problems related to `icu4c`, make sure to also
 set the `--with-icu-dir=/usr/local/opt/icu4c` option:
@@ -93,7 +93,7 @@ bundle config --global build.charlock_holmes "--with-icu-dir=/usr/local/opt/icu4
 The installation of the `charlock_holmes` v0.7.5 gem during `bundle install`
 may fail with the following error:
 
-```
+```plaintext
 [SNIPPED]
 
 transliterator.cpp:108:3: error: no template named 'StringByteSink'; did you mean 'icu_61::StringByteSink'?
@@ -112,7 +112,7 @@ make: *** [transliterator.o] Error 1
 
 To fix this, you can run:
 
-```
+```shell
 gem install charlock_holmes -v '0.7.5' -- --with-cppflags=-DU_USING_ICU_NAMESPACE=1
 ```
 
@@ -123,7 +123,7 @@ gem install charlock_holmes -v '0.7.5' -- --with-cppflags=-DU_USING_ICU_NAMESPAC
 After installing PostgreSQL with brew you will have to set the proper path to PostgreSQL.
 You may run into the following errors on running `gdk install`
 
-```
+```plaintext
 Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
 
     current directory: /Users/janedoe/.rvm/gems/ruby-2.3.3/gems/pg-0.18.4/ext
@@ -143,7 +143,7 @@ The instructions for this may show up after installing PostgreSQL.
 The example below is from running `brew install postgresql@10` on OS X installation.
 For other versions, other platform install and other shell terminal please adjust the path accordingly.
 
-```
+```plaintext
 If you need to have this software first in your PATH run:
   echo 'export PATH="/usr/local/opt/postgresql@10/bin:$PATH"' >> ~/.bash_profile
 ```
@@ -184,9 +184,9 @@ you need to upgrade Postgres.
 This is what to do when your OS/packaging system decides to install a new minor
 version of Postgres:
 
-1. (optional) Downgrade postgres
+1. (optional) Downgrade PostgreSQL
 1. (optional) Make a sql-only GitLab backup
-1. Rename/remove the gdk/postgresql/data directory: `mv postgresql/data{,.old}`
+1. Rename/remove the `gdk/postgresql/data` directory: `mv postgresql/data{,.old}`
 1. Run `make`
 1. Build pg gem native extensions: `gem pristine pg`
 1. (optional) Restore your GitLab backup
@@ -208,7 +208,7 @@ built against an older version.
 If you are using `rvm`, you should reinstall the Ruby binary. The following
 command will fetch Ruby 2.3 and install it from source:
 
-```
+```shell
 rvm reinstall --disable-binary 2.3
 ```
 
@@ -222,7 +222,7 @@ In case you use the same database for both CE and EE development, sometimes you
 can get stuck in a situation when the migration is up in `rake db:migrate:status`,
 but in reality the database doesn't have it.
 
-For example, https://gitlab.com/gitlab-org/gitlab-foss/merge_requests/3186
+For example, <https://gitlab.com/gitlab-org/gitlab-foss/merge_requests/3186>
 introduced some changes when a few EE migrations were added to CE. If you were
 using the same db for CE and EE you would get hit by the following error:
 
@@ -256,7 +256,7 @@ rails console
 
 And run manually the migrations:
 
-```
+```plaintext
 require Rails.root.join("db/migrate/20130711063759_create_project_group_links.rb")
 CreateProjectGroupLinks.new.change
 require Rails.root.join("db/migrate/20130820102832_add_access_to_project_group_link.rb")
@@ -268,7 +268,7 @@ AddGroupShareLock.new.change
 You should now be able to continue your development. You might want to note
 that in this case we had 3 migrations happening:
 
-```
+```plaintext
 db/migrate/20130711063759_create_project_group_links.rb
 db/migrate/20130820102832_add_access_to_project_group_link.rb
 db/migrate/20150930110012_add_group_share_lock.rb
@@ -286,7 +286,7 @@ were linked against a system library that is no longer there. A typical culprit
 is Homebrew on macOS, which encourages frequent updates (`brew update && brew
 upgrade`) which may break binary compatibility.
 
-```
+```shell
 bundle exec rake db:create dev:setup
 rake aborted!
 LoadError: dlopen(/Users/janedoe/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/extensions/x86_64-darwin-13/2.1.0-static/charlock_holmes-0.6.9.4/charlock_holmes/charlock_holmes.bundle, 9): Library not loaded: /usr/local/opt/icu4c/lib/libicui18n.52.1.dylib
@@ -307,7 +307,7 @@ charlock_holmes](#rebuilding-gems-with-native-extensions).
 This can happen if you are using a system-wide Ruby installation. You can
 override the Ruby gem install path with `BUNDLE_PATH`:
 
-```
+```shell
 # Install gems in (current directory)/vendor/bundle
 make BUNDLE_PATH=$(pwd)/vendor/bundle
 ```
@@ -316,7 +316,7 @@ make BUNDLE_PATH=$(pwd)/vendor/bundle
 
 On OS X El Capitan, the eventmachine gem compilation might fail with:
 
-```
+```plaintext
 Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
 <snip>
 make "DESTDIR=" clean
@@ -335,7 +335,7 @@ make failed, exit code 2
 
 To fix it:
 
-```
+```shell
 bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
 ```
 
@@ -346,7 +346,7 @@ and then do `bundle install` once again.
 Make sure that `git` is configured correctly on your development
 machine (where GDK runs).
 
-```
+```shell
 git checkout -b can-I-commit
 git commit --allow-empty -m 'I can commit'
 ```
@@ -355,7 +355,7 @@ git commit --allow-empty -m 'I can commit'
 
 Make sure that Xcode Command Line Tools installed on your development machine. For the discussion see this [issue](https://gitlab.com/gitlab-org/gitlab-development-kit/issues/124)
 
-```
+```shell
 brew unlink gcc-4.2      # you might not need this step
 gem uninstall nokogiri
 xcode-select --install
@@ -427,7 +427,7 @@ A solution is to:
    bundle config build.nokogumbo --use-system-libraries
    ```
 
-2. Re-run `gdk install`
+1. Re-run `gdk install`
 
 ## `gem install ffi` fails
 
@@ -475,7 +475,7 @@ A solution on macOS is to:
 On macOS, GitLab may fail to start and fail with an error message about
 `libreadline`:
 
-```
+```plaintext
 LoadError:
     dlopen(/Users/janedoe/.rbenv/versions/2.6.3/lib/ruby/2.5.0/x86_64-darwin15/readline.bundle, 9): Library not loaded: /usr/local/opt/readline/lib/libreadline.7.dylib
         Referenced from: /Users/janedoe/.rbenv/versions/2.6.3/lib/ruby/2.5.0/x86_64-darwin15/readline.bundle
@@ -498,7 +498,7 @@ but are present in your database, you might want to remove them.
 1. Find the non-existent migrations with `rake db:migrate:status`. You should
    see some entries like:
 
-   ```
+   ```plaintext
    up     20160727191041  ********** NO FILE **********
    up     20160727193336  ********** NO FILE **********
    ```
@@ -523,7 +523,7 @@ If you still encounter some errors, see the troubleshooting FAQ below:
 
 - I'm getting an error when I run `gdk reconfigure`:
 
-  ```
+  ```plaintext
   Makefile:30: recipe for target 'gitlab/config/gitlab.yml' failed
   make: *** [gitlab/config/gitlab.yml] Error 1
   ```
@@ -538,14 +538,14 @@ If you still encounter some errors, see the troubleshooting FAQ below:
 
 - I'm getting an error when I attempt to access my local GitLab in a browser:
 
-  ```
+  ```plaintext
   Webpack::Rails::Manifest::ManifestLoadError at /
   Could not load manifest from webpack-dev-server at http://localhost:3808/assets/webpack/manifest.json - is it running, and is stats-webpack-plugin loaded?
   ```
 
   or
 
-  ```
+  ```plaintext
   Webpack::Rails::Manifest::ManifestLoadError at /
   Could not load compiled manifest from /path/to/gitlab-development-kit/gitlab/public/assets/webpack/manifest.json - have you run `rake webpack:compile`?
   ```
@@ -558,7 +558,7 @@ If you still encounter some errors, see the troubleshooting FAQ below:
 
 - I see the following error when run `gdk tail` or `gdk tail webpack`:
 
-  ```
+  ```plaintext
   09:46:05 webpack.1               | npm ERR! argv "/usr/local/bin/node" "/usr/local/bin/npm" "run" "dev-server"
   09:46:05 webpack.1               | npm ERR! node v5.8.0
   09:46:05 webpack.1               | npm ERR! npm  v3.10.7
@@ -576,7 +576,7 @@ If you still encounter some errors, see the troubleshooting FAQ below:
 
 - I see the following error when run `gdk tail` or `gdk tail webpack`:
 
-  ```
+  ```plaintext
   09:54:15 webpack.1               | > @ dev-server /Users/mike/Projects/gitlab-development-kit/gitlab
   09:54:15 webpack.1               | > webpack-dev-server --config config/webpack.config.js
   09:54:15 webpack.1               |
@@ -591,7 +591,7 @@ If you still encounter some errors, see the troubleshooting FAQ below:
 
 - I see the following error when run `gdk tail` or `gdk tail webpack`:
 
-  ```
+  ```plaintext
   14:52:22 webpack.1               | [nodemon] starting `node ./node_modules/.bin/webpack-dev-server --config config/webpack.config.js`
   14:52:22 webpack.1               | events.js:160
   14:52:22 webpack.1               |       throw er; // Unhandled 'error' event
@@ -615,7 +615,7 @@ steps such as `sign-up` or `log-out` will fail for no apparent reason.
 
 In that case what you need to do is run the following command inside the `gitlab` directory:
 
-```
+```shell
 RAILS_ENV=test bundle exec rake db:reset
 ```
 
@@ -629,7 +629,7 @@ RAILS_ENV=test bundle exec rake db:reset
 
 ## Homebrew: Postgres 10.0: "database files are incompatible with server"
 
-```
+```plaintext
 FATAL:  database files are incompatible with server
 DETAIL:  The data directory was initialized by PostgreSQL version 9.6, which is not compatible with this version 10.0.
 ```
@@ -638,7 +638,7 @@ GitLab is not compatible with Postgres 10.0. The following workaround
 lets you get back Postgres 9.6. TODO: find a good way to co-exist with
 Postgres 10.0 in Homebrew.
 
-```
+```shell
 brew install postgresql@9.6
 brew link --force postgresql@9.6
 ```
@@ -647,7 +647,7 @@ brew link --force postgresql@9.6
 
 Browser shows `EOF`. Logs show a timeout:
 
-```
+```plaintext
 error: GET "/users/sign_in": badgateway: failed after 62s: EOF
 ```
 
@@ -667,16 +667,16 @@ For Unicorn: edit `gitlab/config/unicorn.rb`:
 timeout 3600
 ```
 
-## fatal: not a git repository
+## `fatal: not a git repository`
 
 If `gdk init` or any other `gdk` command gives you the following error:
 
-```
+```plaintext
 fatal: not a git repository (or any of the parent directories): .git
 ```
 
 Make sure you don't have `gdk` aliased in your shell.
-For example the git module in [prezto](https://github.com/sorin-ionescu/prezto)
+For example the Git module in [prezto](https://github.com/sorin-ionescu/prezto)
 has an [alias](https://github.com/sorin-ionescu/prezto/blob/master/modules/git/README.md#data)
 for `gdk` that lists killed files.
 
@@ -773,7 +773,7 @@ To fix this for the future, add the line above to `~/.bash_profile` or `~/.zshrc
 
 In some cases, running `bin/rake karma:fixtures` might fail to generate some fixtures, you'll see this kind of errors in the console:
 
-```
+```plaintext
 Failed examples:
 
 rspec ./spec/javascripts/fixtures/blob.rb:25 # Projects::BlobController (JavaScript fixtures) blob/show.html
@@ -791,7 +791,7 @@ rm -rf tmp/tests/ && bin/rake karma:fixtures
 
 The full error you might be getting is:
 
-```
+```plaintext
 Makefile:134: recipe for target '.gitlab-yarn' failed
 make: *** [.gitlab-yarn] Error 2
 ```
@@ -800,8 +800,8 @@ This is likely to happen if you installed `yarn` using `apt install cmdtest`.
 
 To fix this, install yarn using npm instead:
 
-```
-npm install --global yarn`
+```shell
+npm install --global yarn
 ```
 
 ## Other problems

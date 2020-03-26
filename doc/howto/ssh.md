@@ -24,7 +24,7 @@ You can workaround this by updating the first line of the file above to your upd
 
 Example for `rbenv`:
 
-```
+```plaintext
 #!/Users/user/.rbenv/shims/ruby
 ```
 

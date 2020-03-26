@@ -5,11 +5,11 @@ In this document we explain how to set this up in your development
 environment.
 
 In order to take advantage of the GDK integration you must first install
-[minio](https://docs.minio.io/docs/minio-quickstart-guide) binary (no docker image).
+[MinIO](https://docs.minio.io/docs/minio-quickstart-guide) binary (no docker image).
 
 You can enable the object store by adding the following to your `gdk.yml`:
 
-```
+```yaml
 object_store:
   enabled: true
   port: 9000
@@ -19,19 +19,19 @@ The object store port defaults to `9000` but can be changed via the `object_stor
 
 Changing port number requires `gdk reconfigure`.
 
-## Minio errors
+## MinIO errors
 
-If you cannot start minio, you may have an old version not supporting the `--compat` parameter.
+If you cannot start MinIO, you may have an old version not supporting the `--compat` parameter.
 
 `gdk tail minio` will show a crash loop with the following error
 
-```
+```plaintext
 Incorrect Usage: flag provided but not defined: -compat
 ```
 
-Upgrading minio to the latest version will fix it.
+Upgrading MinIO to the latest version will fix it.
 
 ## Creating a new bucket
 
-In order to start using minio from your GitLab instance you have to create buckets first.
-You can create a new bucket by accessing http://127.0.0.1:9000/ (default configuration).
+In order to start using MinIO from your GitLab instance you have to create buckets first.
+You can create a new bucket by accessing <http://127.0.0.1:9000/> (default configuration).

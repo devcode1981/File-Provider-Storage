@@ -6,7 +6,7 @@ GitLab reading/writing data as the client.
 
 ## Ubuntu / Debian
 
-```
+```shell
 sudo apt-get install -y nfs-kernel-server
 
 # All our NFS exports (data on the 'server') is under /exports/gitlab-data

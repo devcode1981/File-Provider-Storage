@@ -4,8 +4,6 @@ This is a reference list of some useful commands one might need when contributin
 
 Be sure also to check our [Tips and Troubleshooting](./tips_and_troubleshooting) section.
 
-# GKE
-
 ## `kubectl` Config
 
 View your full `kubectl` config:

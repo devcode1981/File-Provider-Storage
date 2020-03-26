@@ -9,7 +9,8 @@ mattermost:
 ```
 
 Then you just have to re-generate your Procfile by reconfiguring:
-```
+
+```shell
 gdk reconfigure
 ```
 

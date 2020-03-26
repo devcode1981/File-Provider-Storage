@@ -17,7 +17,7 @@ Throughout this document, we'll assume that the IP address of your desktop machi
 
 You may prefer to add an entry to the `/etc/hosts` file on your local machine, changing the IP address to match your local IP address:
 
-```
+```plaintext
 # in /etc/hosts
 your.ip.address gitlab.local
 ```
@@ -151,104 +151,104 @@ The registry port defaults to `5000`. Follow these steps to change it:
 
 ### Interacting with the GitLab Local Container Registry
 
-* #### Using the Docker Client
+Using the Docker Client:
 
-  * ##### Build and tag an image
+- Build and tag an image
 
-    ```bash
-    docker build -t your.local.ip:5000/custom-docker-image .
-    ```
+  ```bash
+  docker build -t your.local.ip:5000/custom-docker-image .
+  ```
 
-  * ##### Push the image to the local registry
+- Push the image to the local registry
 
-    ```bash
-    docker push your.local.ip:5000/custom-docker-image
-    ```
+  ```bash
+  docker push your.local.ip:5000/custom-docker-image
+  ```
 
-* #### Using HTTP
+Using HTTP:
 
-  * ##### Retrieve a list of images available in the repository
+- Retrieve a list of images available in the repository
 
-    ```bash
-    curl your.local.ip:5000/v2/_catalog
-    ```
+  ```bash
+  curl your.local.ip:5000/v2/_catalog
+  ```
 
-    ```json
-    {
-      "repositories": [
-        "secure-group/docker-image-test",
-        "secure-group/klar",
-        "secure-group/tests/ruby-bundler/master",
-        "testing",
-        "ubuntu"
-      ]
-    }
-    ```
+  ```json
+  {
+    "repositories": [
+      "secure-group/docker-image-test",
+      "secure-group/klar",
+      "secure-group/tests/ruby-bundler/master",
+      "testing",
+      "ubuntu"
+    ]
+  }
+  ```
 
-  * ##### List tags for a specific image
+- List tags for a specific image
 
-    ```bash
-    curl your.local.ip:5000/v2/secure-group/tests/ruby-bundler/master/tags/list
-    ```
+  ```bash
+  curl your.local.ip:5000/v2/secure-group/tests/ruby-bundler/master/tags/list
+  ```
 
-    ```json
-    {
-      "tags": [
-        "3bf5c8efcd276bf6133ccb787e54b7020a00b99c",
-        "ca928571c661c42dbdadc090f4ef78c8f2854dd9",
-        "f7182b792a58d282ef3c69c2c6b7a22f78b2e950"
-      ], "name": "secure-group/tests/ruby-bundler/master"
-    }
-    ```
+  ```json
+  {
+    "tags": [
+      "3bf5c8efcd276bf6133ccb787e54b7020a00b99c",
+      "ca928571c661c42dbdadc090f4ef78c8f2854dd9",
+      "f7182b792a58d282ef3c69c2c6b7a22f78b2e950"
+    ], "name": "secure-group/tests/ruby-bundler/master"
+  }
+  ```
 
-  * ##### Get image manifest
+- Get image manifest
 
-    ```bash
-    curl your.local.ip:5000/v2/secure-group/tests/ruby-bundler/master/manifests/3bf5c8efcd276bf6133ccb787e54b7020a00b99c
-    ```
+  ```bash
+  curl your.local.ip:5000/v2/secure-group/tests/ruby-bundler/master/manifests/3bf5c8efcd276bf6133ccb787e54b7020a00b99c
+  ```
 
-    ```json
-    {
-      "schemaVersion": 1,
-      "name": "secure-group/tests/ruby-bundler/master",
-      "tag": "3bf5c8efcd276bf6133ccb787e54b7020a00b99c",
-      "architecture": "amd64",
-      "fsLayers": [
-          {
-            "blobSum": "sha256:f9b473be28291374820c40f9359f7f1aa014babf44aadb6b3565c84ef70c6bca"
-          },
-      "..."
-    ```
-
-  * ##### Get image layers
-
-    ```bash
-    curl -H 'Accept: application/vnd.docker.distribution.manifest.v2+json' your.local.ip:5000/v2/secure-group/tests/ruby-bundler/master/manifests/3bf5c8efcd276bf6133ccb787e54b7020a00b99c
-    ```
-
-    ```json
-    {
-        "schemaVersion": 2,
-        "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
-        "config": {
-          "mediaType": "application/vnd.docker.container.image.v1+json",
-          "size": 7682,
-          "digest": "sha256:b5c7d3594559132203ca916d26e969f7bf6492d2e80d753db046dff06a5303e6"
+  ```json
+  {
+    "schemaVersion": 1,
+    "name": "secure-group/tests/ruby-bundler/master",
+    "tag": "3bf5c8efcd276bf6133ccb787e54b7020a00b99c",
+    "architecture": "amd64",
+    "fsLayers": [
+        {
+          "blobSum": "sha256:f9b473be28291374820c40f9359f7f1aa014babf44aadb6b3565c84ef70c6bca"
         },
-        "layers": [
-          {
-              "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
-              "size": 45342599,
-              "digest": "sha256:e79bb959ec00faf01da52437df4fad4537ec669f60455a38ad583ec2b8f00498"
-          },
     "..."
-    ```
+  ```
 
-  * #### Get content of image layer
+- Get image layers
 
-    ```bash
-    curl your.local.ip:5000/v2/secure-group/tests/ruby-bundler/master/blobs/sha256:e79bb959ec00faf01da52437df4fad4537ec669f60455a38ad583ec2b8f00498
-    ```
+  ```bash
+  curl -H 'Accept: application/vnd.docker.distribution.manifest.v2+json' your.local.ip:5000/v2/secure-group/tests/ruby-bundler/master/manifests/3bf5c8efcd276bf6133ccb787e54b7020a00b99c
+  ```
+
+  ```json
+  {
+      "schemaVersion": 2,
+      "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+      "config": {
+        "mediaType": "application/vnd.docker.container.image.v1+json",
+        "size": 7682,
+        "digest": "sha256:b5c7d3594559132203ca916d26e969f7bf6492d2e80d753db046dff06a5303e6"
+      },
+      "layers": [
+        {
+            "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+            "size": 45342599,
+            "digest": "sha256:e79bb959ec00faf01da52437df4fad4537ec669f60455a38ad583ec2b8f00498"
+        },
+  "..."
+  ```
+
+- Get content of image layer
+
+  ```bash
+  curl your.local.ip:5000/v2/secure-group/tests/ruby-bundler/master/blobs/sha256:e79bb959ec00faf01da52437df4fad4537ec669f60455a38ad583ec2b8f00498
+  ```
 
 ## Using a custom Docker image as the main pipeline build image
 
@@ -276,7 +276,7 @@ pipelines.
 
    **Note:** If the above command returns the following error:
 
-   ```
+   ```plaintext
    Get https://your.local.ip:5000/v2/: http: server gave HTTP response to HTTPS client
    ```
 
@@ -298,7 +298,7 @@ pipelines.
 
    Having said that, you should follow the directions given in the [Configuring the GitLab Docker runner to automatically pull images](#configuring-the-gitlab-docker-runner-to-automatically-pull-images) section to avoid pushing images altogether.
 
-1. Create a `.gitlab-ci.yml` and add it to the the git repository for the project. Configure the `image` directive in the `.gitlab-ci.yml` file to reference the `custom-docker-image` which was tagged and pushed in steps `2.` and `3.` above:
+1. Create a `.gitlab-ci.yml` and add it to the the Git repository for the project. Configure the `image` directive in the `.gitlab-ci.yml` file to reference the `custom-docker-image` which was tagged and pushed in steps `2.` and `3.` above:
 
    ```yaml
    image: your.local.ip:5000/custom-docker-image
@@ -316,7 +316,7 @@ pipelines.
 
    ```shell
    # CI job log output
-   $ curl -I httpstat.us/201
+   curl -I httpstat.us/201
 
    HTTP/1.1 201 Created
    ```

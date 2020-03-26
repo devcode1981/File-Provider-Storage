@@ -14,15 +14,15 @@ Make sure you follow all the guidelines and resolve all the dependencies listed 
 | Ruby           | <p>Use a Ruby version manager ([RVM](https://rvm.io/), [rbenv](https://github.com/rbenv/rbenv), [chruby](https://github.com/postmodern/chruby), etc.) to install the current [`gitlab` Ruby version](https://gitlab.com/gitlab-org/gitlab/blob/master/.ruby-version).</p><p>To ensure installation of the correct version, **DO NOT** use the system Ruby.</p>                                                       |
 | Terminal       | <p>Make sure to close and reopen the Terminal after installing a Ruby version manager to read new PATH variables added for Ruby executable files.</p><p>You can check the active version with the following command: `ruby --version`.</p>                                                                                                                                                                           |
 | Bundler        | <p>Install the version of Bundler specified in this [Gemfile.lock](https://gitlab.com/gitlab-org/gitlab/blob/master/Gemfile.lock), as noted with the `BUNDLED WITH` text at the end of the file.</p><p> To install Bundler, use the following command: `gem install bundler -v <version>`. Replace `<version>` with the `BUNDLED WITH` version.</p>                                            |
-| Git            | <p>We recommend using Git version 2.24 or higher (minimal supported version is 2.22).</p><p>git installation is covered in the instructions in the [Platform-specific setup](#platform-specific-setup).</p><p>For checking out test fixtures, you will also need Git LFS.</p> |
-| Git LFS        | <p>We recommend using Git LFS version 2.10 or higher (minimal supported version is 1.0.1).</p><p>git-lfs installation is covered in the instructions in the [Platform-specific setup](#platform-specific-setup).</p> |
+| Git            | <p>We recommend using Git version 2.24 or higher (minimal supported version is 2.22).</p><p>Git installation is covered in the instructions in the [Platform-specific setup](#platform-specific-setup).</p><p>For checking out test fixtures, you will also need Git LFS.</p> |
+| Git LFS        | <p>We recommend using Git LFS version 2.10 or higher (minimal supported version is 1.0.1).</p><p>Git LFS installation is covered in the instructions in the [Platform-specific setup](#platform-specific-setup).</p> |
 | Node.js        | <p>Node.js **12.10** and Yarn 1.12 or newer.</p><p>Node.js and Yarn installation is covered in the instructions below. If your package manager does not have Node.js 12.10 or yarn available, visit the official websites for [Node](https://nodejs.org/en/download/) and [Yarn](https://yarnpkg.com/en/docs/install/) for installation instructions.</p> |
 | Go             | <p>Go 1.12.</p><p>Go installation is covered in the instructions below. If your package manager does not have up-to-date versions of Go available, visit the official [Go](https://golang.org/doc/install) website for installation instructions.</p>                                                                                                              |
 | Google Chrome  | [Google Chrome](https://www.google.com/chrome/) 60 or greater with [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) version 2.33 or greater. Visit the Chrome Driver [Getting started](https://sites.google.com/a/chromium.org/chromedriver/getting-started) page for more details.                                                           |
 | PostgreSQL     | <p>PostgreSQL version 11.x.</p><p>PostgreSQL installation is covered in the instructions [below](#platform-specific-setup). Some instructions still pin the version of PostgreSQL to version 10. Please update the documentation steps to version 11 as you successfully install PG 11 on your platform.</p> |
 | GraphicsMagick | GraphicsMagick installation is covered in the instructions [below](#platform-specific-setup).                                                                                                                                                                                                                                                                                                           |
 | Exiftool       | Exiftool installation is covered in the instructions [below](#platform-specific-setup).                                                                                                                                                                                                                                                                                                           |
-| Runit          | Runit installation is covered in the instructions [below](#platform-specific-setup).                                                                                                                                                                                                                                                                                                           |
+| runit          | runit installation is covered in the instructions [below](#platform-specific-setup).                                                                                                                                                                                                                                                                                                           |
 | MinIO          | MinIO installation is covered in the instructions [below](#platform-specific-setup).                                                                                                                                                                                                                                                                                                           |
 
 ### Platform-specific setup
@@ -110,8 +110,8 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
    sudo chmod +x /usr/local/bin/minio
    ```
 
-   > ℹ️ Ubuntu 18.04 (Bionic Beaver) and beyond doesn't have python-software-properties as a separate package.
-
+   > ℹ️ Ubuntu 18.04 (Bionic Beaver) and beyond doesn't have `python-software-properties` as a separate package.
+   >
    > ℹ️ Ubuntu 14.04 (Trusty Tahr) doesn't have the `libre2-dev` package available, but
    > you can [install re2 manually](https://github.com/google/re2/wiki/Install).
 
@@ -121,7 +121,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
-```
+```shell
 pacman -S postgresql redis postgresql-libs icu npm ed cmake openssh git git-lfs go re2 \
   unzip graphicsmagick runit perl-image-exiftool rsync yarn minio sqlite
 ```
@@ -216,7 +216,7 @@ sudo usermod -a -G rvm <username>
 
 Install `go` manually using [go] official installation instructions.
 
-Git 1.7.1-3 is the latest git binary for CentOS 6.5 and GitLab. Spinach tests
+Git 1.7.1-3 is the latest Git binary for CentOS 6.5 and GitLab. Spinach tests
 will fail due to a higher version requirement by GitLab. You can follow the
 instructions found [in the GitLab recipes repository][puias] to install a newer
 binary version of Git.
@@ -241,7 +241,7 @@ sudo chmod +x /usr/local/bin/minio
 
 On leap 42.1 you also need:
 
-```
+```shell
 sudo zypper install ld.charlock_holmes "--with-icu-dir=/usr/local" --globalnpm4
 ```
 
@@ -249,19 +249,19 @@ Install `go` manually using [go] official installation instructions.
 
 The following `bundle config` options are recommended before you run `gdk install` in order to avoid problems with the embedded libraries inside nokogiri:
 
-```
+```shell
 bundle config build.nokogiri "--use-system-libraries" --global
 ```
 
 for tumbleweed only:
 
-```
+```shell
 bundle config build.charlock_holmes "--with-icu-dir=/usr/local" --global
 ```
 
-Manual fix required on OpenSUSE LEAP to place redis-server in the path for non-root users:
+Manual fix required on OpenSUSE LEAP to place `redis-server` in the path for non-root users:
 
-```
+```shell
 sudo ln -s /usr/sbin/redis-server /usr/bin/redis-server
 ```
 
@@ -282,7 +282,7 @@ redis go node icu krb5 gmake re2 GraphicsMagick p5-Image-ExifTool git-lfs minio 
 
 Open PowerShell as Administrator and run:
 
-```
+```shell
 Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
 ```
 
@@ -312,7 +312,7 @@ cd node-v12.10.0
 
 Build the Node.js library. The following instructions are copied from the Node.js BUILDING.md document:
 
-```
+```shell
 sudo apt-get install build-essential
 ./configure
 make -j4 # adjust according to your available CPU capacity
@@ -321,7 +321,7 @@ sudo make install
 
 Install the current `gitlab` Ruby version using [RVM](https://rvm.io/):
 
-```
+```shell
 # This example uses Ruby 2.6.5. Substitute with the current version if different.
 rvm install 2.6.5
 rvm use 2.6.5
@@ -329,7 +329,7 @@ rvm use 2.6.5
 
 Install yarn
 
-```
+```shell
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 sudo apt-get update && sudo apt-get install yarn
@@ -337,7 +337,7 @@ sudo apt-get update && sudo apt-get install yarn
 
 Install the remainder of the prerequisites
 
-```
+```shell
 # Add apt-add-repository helper script
 sudo apt-get install software-properties-common python-software-properties
 sudo apt-get update
@@ -347,13 +347,13 @@ sudo apt-get install git git-lfs postgresql postgresql-contrib libpq-dev redis-s
 
 Start the PostgreSQL database (SystemV)
 
-```
+```shell
 sudo service postgresql start
 ```
 
 Start the PostgreSQL database (SystemD)
 
-```
+```shell
 sudo systemctl enable postgresql
 sudo systemctl start postgresql
 ```

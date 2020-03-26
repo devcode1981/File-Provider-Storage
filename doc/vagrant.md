@@ -85,7 +85,7 @@ OSes like Windows/OSX you will have to run the entire Docker hypervisor in a VM
 - If you have continuous problems starting Vagrant, you can uncomment
   `vb.gui = true` to view any error messages.
 - If you have problems running `support/edit-gitlab.yml` (bash script despite
-  file extension), see https://stackoverflow.com/a/5514351/1233435.
+  file extension), see <https://stackoverflow.com/a/5514351/1233435>.
 - If you have errors with symlinks or Ruby during initialization, make sure you
   ran `vagrant up` from an elevated command prompt (Windows users).
 

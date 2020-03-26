@@ -20,14 +20,14 @@ make performance-metrics-setup
 This will download and compile InfluxDB and Grafana from source; this
 takes a while.
 
-Next, go to http://localhost:3000/admin/application_settings/metrics_and_profiling , look for
+Next, go to <http://localhost:3000/admin/application_settings/metrics_and_profiling>, look for
 the 'Metrics' section, and select 'Enable InfluxDB metrics'. InfluxDB is
 using the default host and port (localhost:8089).
 
 After that, you have to run `gdk restart` to start sending metrics to
 InfluxDB.
 
-You can access Grafana at http://localhost:9999 using the credentials
+You can access Grafana at <http://localhost:9999> using the credentials
 `admin` / `admin`.
 
 ## Caveats

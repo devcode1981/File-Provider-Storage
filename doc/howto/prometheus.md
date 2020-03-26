@@ -29,7 +29,7 @@ Kubectl is required for Minikube to function. You can also use `homebrew` to ins
 
 1. First, download it:
 
-   ```
+   ```shell
    ## For macOS
    curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/darwin/amd64/kubectl
 
@@ -39,7 +39,7 @@ Kubectl is required for Minikube to function. You can also use `homebrew` to ins
 
 1. Then, add it to your path:
 
-   ```
+   ```shell
    chmod +x ./kubectl
    sudo mv ./kubectl /usr/local/bin/
    ```
@@ -50,7 +50,7 @@ For macOS with homebrew, run `brew install minikube`.
 
 1. First, download it:
 
-   ```
+   ```shell
    ## For macOS
    curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-amd64
 
@@ -60,7 +60,7 @@ For macOS with homebrew, run `brew install minikube`.
 
 1. Then, add it to your path:
 
-   ```
+   ```shell
    chmod +x ./minikube
    sudo mv ./minikube /usr/local/bin/
    ```
@@ -80,17 +80,17 @@ as minikube needs to download multiple ISO's to operate correctly.
 The following command will start minikube, running the first few containers
 with Kubernetes components.
 
-**Compatibility Note:** We are not yet supporting Kubernetes 1.16, please use 1.15 the following until https://gitlab.com/gitlab-org/gitlab/issues/32721 is resolved.
+**Compatibility Note:** We are not yet supporting Kubernetes 1.16, please use 1.15 the following until <https://gitlab.com/gitlab-org/gitlab/issues/32721> is resolved.
 
 For MacOS:
 
-```
+```shell
 minikube start --vm-driver hyperkit --disk-size=20g --kubernetes-version=v1.15.4
 ```
 
 For Linux:
 
-```
+```shell
 minikube start --vm-driver kvm2 --disk-size=20g --kubernetes-version=v1.15.4
 ```
 
@@ -101,7 +101,7 @@ minikube start --vm-driver kvm2 --disk-size=20g --kubernetes-version=v1.15.4
 Once Minikube starts, open the Kubernetes dashboard to ensure things are working
 You can use this for future troubleshooting.
 
-```
+```shell
 minikube dashboard
 ```
 
@@ -173,7 +173,7 @@ for use with minikube.
 
 AutoDevOps and Kubernetes app deployments do not yet support RBAC. To disable RBAC in your cluster, run the following command:
 
-```
+```shell
 kubectl create clusterrolebinding permissive-binding \
   --clusterrole=cluster-admin \
   --user=admin \
@@ -189,7 +189,7 @@ If you get an error about an API token not yet being created, wait a minute or t
 
 If installing Helm Tiller fails with 'Kubernetes error', you may have an existing config. To remove it:
 
-```
+```shell
 kubectl delete configmap values-content-configuration-helm -n gitlab-managed-apps
 ```
 
@@ -213,7 +213,7 @@ accessing the URL.
 
 To retrieve the URL:
 
-```
+```shell
 minikube service production
 ```
 
@@ -230,20 +230,20 @@ Use the `--profile` or `-p` flag to define the minikube machine name. This allow
 
 For macOS:
 
-```
+```shell
 minikube start --vm-driver hyperkit --disk-size=20g --profile ce-instance
 minikube start --vm-driver hyperkit --disk-size=20g --profile ee-instance
 ```
 
 To get the CE instance IP:
 
-```
+```shell
 minikube ip --profile ce-instance
 ```
 
 To look at the EE instance dashboard:
 
-```
+```shell
 minikube dashboard --profile ee-instance
 ```
 

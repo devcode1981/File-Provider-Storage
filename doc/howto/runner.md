@@ -178,7 +178,7 @@ different configuration files:
 1. In `config/gitlab.yml`, set the `host` parameter to `host.docker.internal`.
 1. In `/etc/hosts`, add an entry:
 
-   ```
+   ```plaintext
    127.0.0.1   host.docker.internal
    ```
 
