@@ -136,3 +136,11 @@ config.praefect.nodes.each do |node|
     FileUtils.mkdir_p(node['internal_socket_dir'])
   end
 end
+
+file 'registry/config.yml' => ['support/templates/registry.config.yml.erb'] do |t|
+  GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
+end
+
+file 'gitlab-runner-config.toml' => ['support/templates/gitlab-runner-config.toml.erb'] do |t|
+  GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
+end

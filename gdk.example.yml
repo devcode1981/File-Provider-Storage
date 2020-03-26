@@ -112,6 +112,8 @@ registry:
   host: 127.0.0.1
   image: registry:2
   port: 5000
+  self_signed: false
+  auth_enabled: true
 relative_url_root: "/"
 repositories:
   gitaly: https://gitlab.com/gitlab-org/gitaly.git
@@ -125,6 +127,7 @@ repositories_root: "/home/git/gdk/repositories"
 runner:
   config_file: "/home/git/gdk/gitlab-runner-config.toml"
   enabled: false
+  token: 'Register your runner to get a token'
 sshd:
   additional_config: ''
   authorized_keys_file: "/home/git/gdk/.ssh/authorized_keys"

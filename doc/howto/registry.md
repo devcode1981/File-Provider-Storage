@@ -1,256 +1,310 @@
 # Registry
 
-## Warning
+To run the registry, you need [Docker](https://docker.com) installed.
 
-This document describes how to set up an [Insecure Local Docker Registry](https://docs.docker.com/registry/insecure/) by removing authentication from the registry. It should only be used for development purposes on your local machine.
+## Enabling the registry
 
-## Prerequisites
+In your `gdk.yml`, set
 
-1. Install either
-   - [Docker Desktop on Mac](https://www.docker.com/products/docker-desktop) or
-   - [Docker Machine](https://docs.docker.com/machine/install-machine/)
-1. Ensure you have a [docker executor runner](https://docs.gitlab.com/runner/executors/docker.html) configured and enabled
+```yaml
+registry:
+  enabled: true
+  # See gdk.example.yml for a full set of options
+```
 
-## IP address configuration
+and run `gdk reconfigure` to create or update the necessary configuration files.
 
-Throughout this document, we'll assume that the IP address of your desktop machine is `your.local.ip`. You'll need to change this value to match your actual IP address. If you're using `docker-machine`, you'll need to replace this IP address with the one returned from the `docker-machine ip default` command. For details on how to determine whether you're using `docker-machine` and how to switch between `docker-machine` and `docker-desktop-for-mac`, please see the section [Switching Between docker-desktop-on-mac and docker-machine](#switching-between-docker-desktop-on-mac-and-docker-machine).
+You should now be able to run the registry with the `gdk start registry` command,
+but for the changes to get picked up by your Rails environment, you must also run
+the `gdk restart rails` command.
 
-You may prefer to add an entry to the `/etc/hosts` file on your local machine, changing the IP address to match your local IP address:
+## Configuring the registry
+
+### With the Auto DevOps QA tunnel
+
+If you've previously followed the [Auto DevOps configuration steps](auto_devops.md),
+you will have a secure registry *accessible from the internet* after you run the
+`gdk restart tunnel` command.
+
+Since the registry is on the internet, it should work with any runner registered with your GDK without additional steps.
+
+### Configuring a local-only registry
+
+If you do not want to use the tunnel-based workflow due to bandwidth restrictions
+or lack of internet access, then you can use a local registry:
+
+1. Update `gdk.yml` as follows:
+
+    ```yaml
+    auto_devops:
+      enabled: false
+
+    hostname: gitlab.local
+
+    registry:
+      enabled: true
+      host: gitlab.local
+      self_signed: true  # or false, see below for details (default is false)
+      auth_enabled: true # or false, see below for details (default is true)
+    ```
+
+    where `gdk.local` points to your computer's local, non-loopback address. For more
+    information, see [Obtaining a usable hostname](#obtaining-a-usable-hostname).
+
+1. Run `gdk reconfigure` to update the configuration and generate certificate files
+   for the local registry (`registry_host.crt` and `registry_host.key`) if needed.
+
+1. If you set `registry.self_signed` to `true`, you should now:
+    1. Configure Docker to [trust the registry's certificate](#trusting-the-registrys-self-signed-certificate).
+    1. Configure any local runner to [mount the trusted certificates](#configuring-a-local-docker-based-runner).
+
+1. If you set either `registry.self_signed` or `registry.auth_enabled` to `false`, your
+   registry will be considered *insecure* by Docker and you must
+   [explicitly whitelist it](https://docs.docker.com/registry/insecure/). For information
+   on [using an insecure registry](#using-an-insecure-registry-from-gitlab-ci) using
+   Docker-in-Docker, see the documentation.
+
+**Note:** When changing the hostname for a self-signed registry, you must run `gdk reconfigure` and [update the trusted certificates in Docker](trusting-the-registry-self-signed-certificate).
+
+After completing these instructions, you should be ready to work with the registry locally. See the
+[Interacting with the local container registry](#interacting-with-the-local-container-registry)
+section for examples of how to query the registry manually using `curl`.
+
+## Tips and Tricks
+
+### Obtaining a usable hostname
+
+Since `localhost` and `127.0.0.1` have different meanings inside a Docker-based runner
+than from your computer, a different host is required to access your GitLab instance and your registry.
+
+The simplest solution is to alias your local IP address (*not* `127.0.0.1`) to
+`gitlab.local`  in `/etc/hosts`:
 
 ```plaintext
 # in /etc/hosts
 your.ip.address gitlab.local
 ```
 
-This will allow you to use `gitlab.local` instead of your actual IP address in configuration files.
+**Notes:**
 
-## Enabling the GitLab Local Container Registry
+1. `gitlab.local` is arbitrary. You can set it to anything, but the documentation
+   assumes `gitlab.local`.
+1. You can also use the IP address directly, but it is easier to only edit `/etc/hosts`
+   instead of reconfiguring GDK when the IP address changes.
+1. If you're using `docker-machine`, you must replace this IP address with
+   the one returned from `docker-machine ip default`. See the
+   [information about switching Docker runtimes](#switching-between-docker-desktop-on-mac-and-docker-machine)
+   for details).
 
-1. Write `true` in the `registry_enabled` file
+### Trusting the registry's self-signed certificate
 
-   ```bash
-   echo true > registry_enabled
-   gdk reconfigure
-   ```
+Since the registry is self-signed, Docker treats it as *insecure*. The certificate must be in your GDK root, called `registry_host.crt`, and must be copied as `ca.crt` to the [appropriate docker configuration location](https://docs.docker.com/registry/insecure/#use-self-signed-certificates).
 
-1. Generate a private `rsa:2048` key in the root of the `gdk` project
+If you are using Docker Desktop for Mac, GDK includes the shorthand
 
-   ```bash
-   openssl req -nodes -newkey rsa:2048 -keyout localhost.key -subj "/CN=gitlab-issuer"
-   ```
+```shell
+make trust-docker-registry
+```
 
-1. Uncomment the [registry block](https://gitlab.com/gitlab-org/gitlab/blob/6f1bf83acdb68dc7eb2d83ec59c53ed5069b6a8e/config/gitlab.yml.example#L430-438) from your `gdk/gitlab/config/gitlab.yml` file
+which will place the certificate under `~/.docker/certs.d/$REGISTRY_HOST:$REGISRY_PORT/ca.crt`, *overwriting any existing certificate* at that path.
 
-   ```yaml
-   registry:
-     enabled: true
-     host: your.local.ip
-     port: 5000
-     api_url: http://your.local.ip:5000
-     key: ../localhost.key
-     path: ../registry/storage/
-     issuer: gitlab-issuer
-   ```
+Afterwards, you **must restart Docker** to apply the changes.
 
-1. Copy the [registry/config.yml.example](https://gitlab.com/gitlab-org/gitlab-development-kit/blob/932ba8f6bf0dc69634ac478f5bc9d3bdc213dff7/registry/config.yml.example) file to `gdk/registry/config.yml`, and make sure to **remove or comment out** the [auth block](https://gitlab.com/gitlab-org/gitlab-development-kit/blob/932ba8f6bf0dc69634ac478f5bc9d3bdc213dff7/registry/config.yml.example#L26-32) from the file
+### Using an insecure registry from GitLab CI
 
-   ```yaml
-   version: 0.1
-   <snip>
-   health:
-     storagedriver:
-       enabled: true
-       interval: 10s
-       threshold: 3
-   # auth:
-   #   token:
-   #     realm: http://127.0.0.1:3000/jwt/auth
-   #     service: container_registry
-   #     issuer: gitlab-issuer
-   #     rootcertbundle: /root/certs/certbundle
-   #     autoredirect: false
-   validation:
-     disabled: true
-   ```
+If trusting the self-signed certificate is not an option, you can instruct Docker to consider the registry as insecure. For example, Docker-in-Docker builds require an additional flag, `--insecure-registry`:
 
-1. At this point, you can execute `gdk start` and a local container registry should now be running:
+```yaml
+services:
+  - name: docker:stable-dind
+    command: ["--insecure-registry=gitlab.local:5000"]
+```
 
-   - Docker shows no running registry
+### Configuring a local Docker-based runner
 
-     ```bash
-     docker ps
+For Docker-in-Docker builds to work in a local runner, you must also make the nested Docker
+service trust the certificates by editing `volumes` under `[[runners.docker]]` in your
+runner's `.toml` configuration to include:
 
-     CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-     ```
+```shell
+$HOME/.docker/certs.d:/etc/docker/certs.d
+```
 
-   - Execute `gdk start`, notice the registry process has been started and the pid value is displayed:
+replacing `$HOME` with the expanded path. For example
 
-     ```bash
-     ok: run: ./services/registry: (pid 36343) 0s, normally down
-     ```
+```toml
+volumes = ["/Users/hfyngvason/.docker/certs.d:/etc/docker/certs.d", "/certs/client", "/cache"]
+```
 
-   - Execute `gdk tail` and notice the `registry` entries in the log output
+### Observing the registry
 
-     ```bash
-     gdk start
+Execute `gdk tail` and notice the `registry` entries in the log output, for example:
 
-     <snip>
-     registry   : level=warning msg="No HTTP secret provided - generated random secret ...
-     registry   : level=info msg="redis not configured" go.version=go1.11.2 ...
-     registry   : level=info msg="Starting upload purge in 13m0s" go.version=go1.11.2 ...
-     registry   : level=info msg="using inmemory blob descriptor cache" go.version=go1.11.2 ...
-     registry   : level=info msg="listening on [::]:5000" go.version=go1.11.2 ...
-     <snip>
-     ```
+```plaintext
+registry   : level=warning msg="No HTTP secret provided - generated random secret ...
+registry   : level=info msg="redis not configured" go.version=go1.11.2 ...
+registry   : level=info msg="Starting upload purge in 13m0s" go.version=go1.11.2 ...
+registry   : level=info msg="using inmemory blob descriptor cache" go.version=go1.11.2 ...
+registry   : level=info msg="listening on [::]:5000" go.version=go1.11.2 ...
+```
 
-   - **Docker now shows running registry**
+Use `docker ps` to see if there is a registry container running:
 
-     ```bash
-     docker ps
+```shell
+$ docker ps
 
-     CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
-     61b7b150be33        registry:2          "/entrypoint.sh /etc…"   2 minutes ago       Up 2 minutes        0.0.0.0:5000->5000/tcp   priceless_hoover
-     ```
 
-1. The local container registry is now running, see
-   [Interacting with the GitLab Local Container Registry](#interacting-with-the-gitlab-local-container-registry)
-   for details on interacting with the registry, but as a quick-start, the following should now work:
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
+61b7b150be33        registry:2          "/entrypoint.sh /etc…"   2 minutes ago       Up 2 minutes        0.0.0.0:5000->5000/tcp   priceless_hoover
+```
 
-   ```bash
-   curl your.local.ip:5000/v2/_catalog
+Visit `$REGISTRY_HOST:$REGISTRY_PORT` (such as `gitlab.local:5000`) in your browser.
+Any response, even a blank page, means that the registry is probably running. If the
+registry is running, the output of `gdk tail` changes.
 
-   {"repositories":[]}
-   ```
+### Interacting with the local container registry
 
-### Changing the port number of the GitLab Local Container Registry
+In this section, we assume you have obtained a [Personal Access Token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html) with all permissions, and exported it as `GITLAB_TOKEN` in your environment:
 
-The registry port defaults to `5000`. Follow these steps to change it:
+```bash
+export GITLAB_TOKEN=...
+```
 
-1. Write the desired port number to a `registry_port` file in your GDK root:
+#### Using the Docker Client
 
-   ```bash
-   echo 5010 > registry_port
-   gdk reconfigure
-   ```
+- If you have authentication enabled, logging in is required.
+- If you have a self-signed local registry, trusting the registry's certificates is required.
 
-1. Update the `port` and `api_url` directives in the
-   [registry block](https://gitlab.com/gitlab-org/gitlab/blob/6f1bf83acdb68dc7eb2d83ec59c53ed5069b6a8e/config/gitlab.yml.example#L430-438)
-   from your `gdk/gitlab/config/gitlab.yml` file:
+##### Log in to the registry
 
-   ```yaml
-   registry:
-     enabled: true
-     host: your.local.ip
-     # change the port value in the following two directives
-     port: 5010
-     api_url: http://your.local.ip:5010
-     key: ../localhost.key
-     path: ../registry/storage/
-     issuer: gitlab-issuer
-   ```
+```bash
+docker login gitlab.local:5000 -u gitlab-token -p "$GITLAB_TOKEN"
+```
 
-### Interacting with the GitLab Local Container Registry
+##### Build and tag an image
 
-Using the Docker Client:
+```bash
+docker build -t gitlab.local:5000/custom-docker-image .
+```
 
-- Build and tag an image
+##### Push the image to the local registry
+
+```bash
+docker push gitlab.local:5000/custom-docker-image
+```
+
+#### Using HTTP
+
+- If you have a self-signed certificate, you can add `--cacert registry_host.crt` or `-k` to the `curl` comands.
+- If you have authentication enabled, you need to obtain a bearer token for your requests:
 
   ```bash
-  docker build -t your.local.ip:5000/custom-docker-image .
+  export GITLAB_REGISTRY_JWT=`curl "http://gitlab-token:$GITLAB_TOKEN@gitlab.local:3000/jwt/auth?service=container_registry&scope=$SCOPE" | jq -r .token`
   ```
 
-- Push the image to the local registry
+  where `$SCOPE` should be
+  - `registry:catalog:*` to interact with the catalog
+  - `repository:your/project/path:*` to interact with the images associated with a particular project
+
+  To use the token, append it as a header flag to the `curl` command:
 
   ```bash
-  docker push your.local.ip:5000/custom-docker-image
+  -H "Authorization: Bearer $GITLAB_REGISTRY_JWT"
   ```
 
-Using HTTP:
+The commands below assume a self-signed registry with authentication enabled, as this is the most complicated use case.
 
-- Retrieve a list of images available in the repository
+##### Retrieve a list of images available in the repository
 
-  ```bash
-  curl your.local.ip:5000/v2/_catalog
-  ```
+```bash
+curl --cacert registry_host.crt -H "Authorization: Bearer $GITLAB_REGISTRY_JWT" \
+  gitlab.local:5000/v2/_catalog
+```
 
-  ```json
-  {
-    "repositories": [
-      "secure-group/docker-image-test",
-      "secure-group/klar",
-      "secure-group/tests/ruby-bundler/master",
-      "testing",
-      "ubuntu"
-    ]
-  }
-  ```
+```json
+{
+  "repositories": [
+    "secure-group/docker-image-test",
+    "secure-group/klar",
+    "secure-group/tests/ruby-bundler/master",
+    "testing",
+    "ubuntu"
+  ]
+}
+```
 
-- List tags for a specific image
+##### List tags for a specific image
 
-  ```bash
-  curl your.local.ip:5000/v2/secure-group/tests/ruby-bundler/master/tags/list
-  ```
+```bash
+curl --cacert registry_host.crt -H "Authorization: Bearer $GITLAB_REGISTRY_JWT" \
+  gitlab.local:5000/v2/secure-group/tests/ruby-bundler/master/tags/list
+```
 
-  ```json
-  {
-    "tags": [
-      "3bf5c8efcd276bf6133ccb787e54b7020a00b99c",
-      "ca928571c661c42dbdadc090f4ef78c8f2854dd9",
-      "f7182b792a58d282ef3c69c2c6b7a22f78b2e950"
-    ], "name": "secure-group/tests/ruby-bundler/master"
-  }
-  ```
+```json
+{
+  "tags": [
+    "3bf5c8efcd276bf6133ccb787e54b7020a00b99c",
+    "ca928571c661c42dbdadc090f4ef78c8f2854dd9",
+    "f7182b792a58d282ef3c69c2c6b7a22f78b2e950"
+  ], "name": "secure-group/tests/ruby-bundler/master"
+}
+```
 
-- Get image manifest
+##### Get image manifest
 
-  ```bash
-  curl your.local.ip:5000/v2/secure-group/tests/ruby-bundler/master/manifests/3bf5c8efcd276bf6133ccb787e54b7020a00b99c
-  ```
+```bash
+curl --cacert registry_host.crt -H "Authorization: Bearer $GITLAB_REGISTRY_JWT" \
+  gitlab.local:5000/v2/secure-group/tests/ruby-bundler/master/manifests/3bf5c8efcd276bf6133ccb787e54b7020a00b99c
+```
 
-  ```json
-  {
-    "schemaVersion": 1,
-    "name": "secure-group/tests/ruby-bundler/master",
-    "tag": "3bf5c8efcd276bf6133ccb787e54b7020a00b99c",
-    "architecture": "amd64",
-    "fsLayers": [
-        {
-          "blobSum": "sha256:f9b473be28291374820c40f9359f7f1aa014babf44aadb6b3565c84ef70c6bca"
-        },
-    "..."
-  ```
-
-- Get image layers
-
-  ```bash
-  curl -H 'Accept: application/vnd.docker.distribution.manifest.v2+json' your.local.ip:5000/v2/secure-group/tests/ruby-bundler/master/manifests/3bf5c8efcd276bf6133ccb787e54b7020a00b99c
-  ```
-
-  ```json
-  {
-      "schemaVersion": 2,
-      "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
-      "config": {
-        "mediaType": "application/vnd.docker.container.image.v1+json",
-        "size": 7682,
-        "digest": "sha256:b5c7d3594559132203ca916d26e969f7bf6492d2e80d753db046dff06a5303e6"
+```json
+{
+  "schemaVersion": 1,
+  "name": "secure-group/tests/ruby-bundler/master",
+  "tag": "3bf5c8efcd276bf6133ccb787e54b7020a00b99c",
+  "architecture": "amd64",
+  "fsLayers": [
+      {
+        "blobSum": "sha256:f9b473be28291374820c40f9359f7f1aa014babf44aadb6b3565c84ef70c6bca"
       },
-      "layers": [
-        {
-            "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
-            "size": 45342599,
-            "digest": "sha256:e79bb959ec00faf01da52437df4fad4537ec669f60455a38ad583ec2b8f00498"
-        },
   "..."
-  ```
+```
 
-- Get content of image layer
+##### Get image layers
 
-  ```bash
-  curl your.local.ip:5000/v2/secure-group/tests/ruby-bundler/master/blobs/sha256:e79bb959ec00faf01da52437df4fad4537ec669f60455a38ad583ec2b8f00498
-  ```
+```bash
+curl --cacert registry_host.crt \
+  -H "Authorization: Bearer $GITLAB_REGISTRY_JWT" \
+  -H 'Accept: application/vnd.docker.distribution.manifest.v2+json' \
+  gitlab.local:5000/v2/secure-group/tests/ruby-bundler/master/manifests/3bf5c8efcd276bf6133ccb787e54b7020a00b99c
+```
 
-## Using a custom Docker image as the main pipeline build image
+```json
+{
+  "schemaVersion": 2,
+  "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+  "config": {
+    "mediaType": "application/vnd.docker.container.image.v1+json",
+    "size": 7682,
+    "digest": "sha256:b5c7d3594559132203ca916d26e969f7bf6492d2e80d753db046dff06a5303e6"
+  },
+  "layers": [
+    {
+        "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+        "size": 45342599,
+        "digest": "sha256:e79bb959ec00faf01da52437df4fad4537ec669f60455a38ad583ec2b8f00498"
+    },
+    "..."
+```
+
+##### Get content of image layer
+
+```bash
+curl --cacert registry_host.crt -H "Authorization: Bearer $GITLAB_REGISTRY_JWT" \
+  gitlab.local:5000/v2/secure-group/tests/ruby-bundler/master/blobs/sha256:e79bb959ec00faf01da52437df4fad4537ec669f60455a38ad583ec2b8f00498
+```
+
+### Using a custom Docker image as the main pipeline build image
 
 It's possible to use the local GitLab container registry as the source of the build image in
 pipelines.
@@ -265,43 +319,21 @@ pipelines.
 1. Build and tag an image from within the same directory as the `Dockerfile` for the project.
 
    ```bash
-   docker build -t your.local.ip:5000/custom-docker-image .
+   docker build -t gitlab.local:5000/custom-docker-image .
    ```
 
-1. Push the image to the registry. (**Note:** see [Configuring the GitLab Docker runner to automatically pull images](#configuring-the-gitlab-docker-runner-to-automatically-pull-images) for the preferred method which doesn't require you to constantly push the image after each change)
+1. Push the image to the registry. (**Note:** See [Configuring the GitLab Docker runner to automatically pull images](#configuring-the-gitlab-docker-runner-to-automatically-pull-images) for the preferred method which doesn't require you to constantly push the image after each change.)
 
    ```bash
-   docker push your.local.ip:5000/custom-docker-image
+   docker push gitlab.local:5000/custom-docker-image
    ```
 
-   **Note:** If the above command returns the following error:
+   You should follow the directions given in the [Configuring the GitLab Docker runner to automatically pull images](#configuring-the-gitlab-docker-runner-to-automatically-pull-images) section to avoid pushing images altogether.
 
-   ```plaintext
-   Get https://your.local.ip:5000/v2/: http: server gave HTTP response to HTTPS client
-   ```
-
-   You'll need to ensure you add your local IP as an insecure registry for your local
-   Docker installation. This can be achieved with [Docker Desktop on Mac](https://www.docker.com/products/docker-desktop) as follows:
-
-   1. Click on the Docker icon in the menubar.
-   1. Click on **Preferences...**.
-   1. Click on the **Docker Engine** menu item.
-   1. Extend the Docker daemon configuration JSON with the following:
-
-      ```json
-      "insecure-registries": ["<your_local_ip>:5000"]
-      ```
-
-   1. Click on the **Apply & Restart** button.
-
-   See [this note](https://nickjanetakis.com/blog/docker-tip-50-running-an-insecure-docker-registry) for details on how to configure an insecure registry for other operating systems.
-
-   Having said that, you should follow the directions given in the [Configuring the GitLab Docker runner to automatically pull images](#configuring-the-gitlab-docker-runner-to-automatically-pull-images) section to avoid pushing images altogether.
-
-1. Create a `.gitlab-ci.yml` and add it to the the Git repository for the project. Configure the `image` directive in the `.gitlab-ci.yml` file to reference the `custom-docker-image` which was tagged and pushed in steps `2.` and `3.` above:
+1. Create a `.gitlab-ci.yml` and add it to the the Git repository for the project. Configure the `image` directive in the `.gitlab-ci.yml` file to reference the `custom-docker-image` which was tagged and pushed in previous steps:
 
    ```yaml
-   image: your.local.ip:5000/custom-docker-image
+   image: gitlab.local:5000/custom-docker-image
 
    stages:
      - test
@@ -333,7 +365,7 @@ in the Runner's config.
 
 [[runners]]
   name = "docker-executor"
-  url = "http://your.local.ip:3001/"
+  url = "http://gitlab.local:3000/"
   token = "<my-token>"
   executor = "docker"
   [runners.custom_build_dir]
@@ -345,7 +377,7 @@ in the Runner's config.
     pull_policy = "if-not-present"
 ```
 
-## Building and pushing images to your local GitLab container registry in a build step
+### Building and pushing images to your local GitLab container registry in a build step
 
 It's sometimes necessary to use the local GitLab container registry in a pipeline. For
 example, the [container scanning](https://docs.gitlab.com/ee/user/application_security/container_scanning/#example)
@@ -359,7 +391,7 @@ image: docker:stable
 
 services:
   - name: docker:stable-dind
-    command: ["--insecure-registry=your.local.ip:5000"]
+    command: ["--insecure-registry=gitlab.local:5000"] # Only required if the registry is insecure
 
 stages:
   - build
@@ -369,6 +401,7 @@ build:
   variables:
     DOCKER_TLS_CERTDIR: ""
   script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
     - docker pull $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA || true
     - docker build -t $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA .
     - docker push $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA
@@ -379,9 +412,9 @@ To verify that the build stage has successfully pushed an image to your local Gi
 **Some notes about the above `.gitlab-yml.ci` configuration file:**
 
 - The variable `DOCKER_TLS_CERTDIR: ""` is required in the `build` stage because of a breaking change introduced by Docker 19.03, described [here](https://about.gitlab.com/2019/07/31/docker-in-docker-with-docker-19-dot-03/)
-- It's necessary to set `--insecure-registry=your.local.ip:5000` for the `docker:stable-dind` service because the `docker` client is expecting our registry to be running over `HTTPS`, however, since we removed the `auth` block back in step `4.` of [Enabling the GitLab Local Container Registry](#enabling-the-gitlab-local-container-registry), we're now running an [insecure-registry](https://docs.docker.com/registry/insecure/) over `HTTP`, which means we need to configure the `docker` service to allow `HTTP` access.
+- It's only necessary to set `--insecure-registry=gitlab.local:5000` for the `docker:stable-dind` if you have not set up a [trusted self-signed registry](#trusting-the-registrys-self-signed-certificate).
 
-## Running container scanning on a local docker image created by a build step in your pipeline
+### Running container scanning on a local docker image created by a build step in your pipeline
 
 It's possible to use a `build` step to create a custom docker image and then execute a [container scan](https://gitlab.com/gitlab-org/security-products/analyzers/klar) against this newly built docker image. This can be achieved by using the following `.gitlab-ci.yml`:
 
@@ -394,7 +427,7 @@ image: docker:stable
 
 services:
   - name: docker:stable-dind
-    command: ["--insecure-registry=your.local.ip:5000"]
+    command: ["--insecure-registry=gitlab.local:5000"] # Only required if the registry is insecure
 
 stages:
   - build
@@ -405,6 +438,7 @@ build:
   variables:
     DOCKER_TLS_CERTDIR: ""
   script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
     - docker pull $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA || true
     - docker build -t $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA .
     - docker push $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA
@@ -417,7 +451,7 @@ container_scanning:
 
 **Note:** It's necessary to set `REGISTRY_INSECURE: "true"` in the `container_scanning` job because the [container scanning tool](https://gitlab.com/gitlab-org/security-products/analyzers/klar/) uses [klar](https://github.com/optiopay/klar) under the hood, and `klar` will attempt to fetch the image from our registry using `HTTPS`, meanwhile our registry is running insecurely over `HTTP`. Setting the `REGISTRY_INSECURE` flag of klar, documented in the klar repo [here](https://github.com/optiopay/klar#usage) and also in the GitLab container scanning repo [here](https://gitlab.com/gitlab-org/security-products/analyzers/klar/#environment-variables) will force the `klar` tool to use `HTTP` when fetching the container image from our insecure registry.
 
-## Switching Between `docker-desktop-on-mac` and `docker-machine`
+### Switching Between `docker-desktop-on-mac` and `docker-machine`
 
 To determine if you're using `docker-machine`, execute the following command:
 
@@ -438,7 +472,7 @@ To switch from `docker-machine` to `docker-desktop-for-mac`, simply unset the ab
 unset DOCKER_CERT_PATH DOCKER_HOST DOCKER_MACHINE_NAME DOCKER_TLS_VERIFY
 ```
 
-## Using a Development Image of the Container Registry
+### Using a Development Image of the Container Registry
 
 To test development versions of the container registry against GDK:
 
