@@ -1,8 +1,9 @@
 # Preparing your computing environment for GDK
 
-## Native installation setup
+Before [setting up GDK](set-up-gdk.md), your local environment must have
+prerequsite software installed and configured.
 
-### Prerequisites for all platforms
+## Prerequisites for all platforms
 
 _TLDR: see sample package manager commands (`brew`, `apt`, and so on) listed in [Platform-specific setup](#platform-specific-setup) below for quick installation._
 
@@ -25,7 +26,7 @@ Make sure you follow all the guidelines and resolve all the dependencies listed 
 | runit          | runit installation is covered in the instructions [below](#platform-specific-setup).                                                                                                                                                                                                                                                                                                           |
 | MinIO          | MinIO installation is covered in the instructions [below](#platform-specific-setup).                                                                                                                                                                                                                                                                                                           |
 
-### Platform-specific setup
+## Platform-specific setup
 
 To start preparing the GDK installation, pick your platform of choice:
 
@@ -360,14 +361,9 @@ sudo systemctl start postgresql
 
 For some common troubleshooting steps for Windows 10 GDK installs please refer to [Troubleshooting](./howto/troubleshooting.md)
 
-### Other platforms
+## Next Steps
 
-If you got GDK running an another platform please send a merge request to add
-it here.
-
-### Next Steps
-
-After you have completed everything here, please proceed to [setting up the GDK](./set-up-gdk.md)
+After you have completed everything here, [set up GDK](set-up-gdk.md).
 
 [puias]: https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/install/centos#add-puias-computational-repository
 [docker engine]: https://docs.docker.com/engine/installation/

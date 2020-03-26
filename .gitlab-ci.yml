@@ -85,7 +85,7 @@ test:docs_lint:
   stage: test
   services: []
   script:
-    - echo "Coming soon..."
+    - markdownlint --config .markdownlint.json 'doc/**/*.md'
 
 test:static-analysis:
   extends: .docs-or-code-changes
