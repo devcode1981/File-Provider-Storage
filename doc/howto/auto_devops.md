@@ -160,21 +160,21 @@ for the operating system that you are using to install `gcloud`.
 Alternatively, if you are using Homebrew on MacOS, you can install
 `gcloud` with :
 
-```
+```shell
 brew cask install google-cloud-sdk
 ```
 
 After you have installed `gcloud`, run the
-[init](https://cloud.google.com/sdk/docs/quickstart-macos#initialize_the_sdk) step :
+[init](https://cloud.google.com/sdk/docs/quickstart-macos#initialize_the_sdk) step:
 
-```
+```shell
 gcloud init
 ```
 
 This init command will help you setup your default zone and project. It will
 also prompt you to log in with your Google account.
 
-```
+```plaintext
 To continue, you must log in. Would you like to log in (Y/n)? Y
 ```
 
@@ -183,7 +183,7 @@ Developers should use the GCP project called `gitlab-internal-153318` for develo
 
 Next, install `kubectl` as a component of `gcloud` :
 
-```
+```shell
 gcloud components install kubectl
 ```
 
@@ -191,10 +191,10 @@ NOTE: If you have installed `gcloud` via Homebrew Cask, as described
 above, you need to add the following lines in your `~/.bash_profile`
 to set the correct PATH to be able to run the `kubectl` binary.
 
-```
-  # Add to ~/.bash_profile
-  source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.bash.inc'
-  source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.bash.inc'
+```shell
+# Add to ~/.bash_profile
+source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.bash.inc'
+source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.bash.inc'
 ```
 
 Make sure to close and reopen your terminal after making these changes.
@@ -310,7 +310,7 @@ You will need to replace `<gitlab-hostname>` and `<registry-hostname>` below
 with the appropriate values from your reverse proxy settings and run the
 following commmands:
 
-```
+```shell
 echo <gitlab-hostname> > hostname
 echo 443 > port
 echo true > https_enabled

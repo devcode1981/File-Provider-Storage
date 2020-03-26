@@ -12,7 +12,7 @@ If you:
 own OAuth credentials:
 
   1. Go to [API & Services](https://console.cloud.google.com/apis/credentials).
-  1. Click **+ CREATE CREDENTIALS > Oauth Client ID**.
+  1. Click **+ CREATE CREDENTIALS > OAuth client ID**.
   1. Choose **Web application** as Application type.
   1. Fill the form with application name.
   1. Fill in following URLs in **Authorized redirect URIs**:

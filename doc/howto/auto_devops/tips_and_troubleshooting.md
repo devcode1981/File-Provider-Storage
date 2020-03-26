@@ -113,7 +113,7 @@ If your Ingress is never assigned an IP address and you've waited for the IP add
 When [creating a new GKE cluster](https://docs.gitlab.com/ee/user/project/clusters/#creating-the-cluster), GKE will create persistent disks for you. If you are
 running into the following error:
 
-```
+```plaintext
 ResponseError: code=403, message=Insufficient regional quota to satisfy request: resource "DISKS_TOTAL_GB"
 ```
 

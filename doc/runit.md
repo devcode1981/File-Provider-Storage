@@ -1,7 +1,7 @@
-# Runit process supervision
+# runit process supervision
 
 We have replaced
-[Foreman](https://github.com/ddollar/foreman) with [Runit](http://smarden.org/runit/).
+[Foreman](https://github.com/ddollar/foreman) with [runit](http://smarden.org/runit/).
 
 `gdk run` is no longer available. Instead, use `gdk start`, `gdk stop`,
 and `gdk tail`.
@@ -25,24 +25,24 @@ number of drawbacks in GDK:
   programs (e.g. `gitaly`) this does not work well. There you really
   need to stop an old binary and start a new binary.
 
-## Why Runit
+## Why runit
 
-Runit is a process supervision system that we also use in
+runit is a process supervision system that we also use in
 Omnibus-GitLab. Compared to Foreman, it is more of a system
 administration tool than a developer tool.
 
-The reason we use Runit and not the native OS supervisor (launchd on
+The reason we use runit and not the native OS supervisor (launchd on
 macOS, systemd on Linux) is that:
 
-- Runit works the same on macOS and Linux so we don't need to handle
+- runit works the same on macOS and Linux so we don't need to handle
   them separately
-- Runit does not mind running next to the official OS supervisor
-- It is easy to run more than one Runit supervision tree (e.g. if you
+- runit does not mind running next to the official OS supervisor
+- It is easy to run more than one runit supervision tree (e.g. if you
   have multiple GDK installations)
 
 ## Solving the closed terminal window problem
 
-Runit takes its configuration from a directory tree; in our case this is
+runit takes its configuration from a directory tree; in our case this is
 `/path/to/gdk/services`. We start a `runsvdir` process
 anchored to this directory tree once, and never stop it (until you shut
 down your computer).
@@ -67,7 +67,7 @@ reclaim some memory while not using `localhost:3000`.
 
 ## Logs
 
-Because Runit is not attached to a terminal, the logs of the services
+Because runit is not attached to a terminal, the logs of the services
 you're running must go to files. If you want to see this logs in your
 terminal, like they show up with Foreman, then run `gdk tail`. Note that
 unlike with Foreman, if you press Ctrl-C into `gdk tail`, the logs stop,
@@ -81,7 +81,7 @@ You can also look at the logs for a subset of services:
 
 To modify the actual commands used to start services, use the `Procfile`
 just like with Foreman. Every time you run `gdk start`, `gdk stop` etc.
-GDK will update the Runit service configuration from the Procfile.
+GDK will update the runit service configuration from the Procfile.
 
 If you want to remove a service `foo`:
 
