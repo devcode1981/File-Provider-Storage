@@ -85,6 +85,7 @@ test:docs_lint:
   stage: test
   services: []
   script:
+    - vale --minAlertLevel error doc
     - markdownlint --config .markdownlint.json 'doc/**/*.md'
 
 test:static-analysis:

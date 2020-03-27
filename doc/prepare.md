@@ -361,6 +361,16 @@ sudo systemctl start postgresql
 
 For some common troubleshooting steps for Windows 10 GDK installs please refer to [Troubleshooting](./howto/troubleshooting.md)
 
+## Documentation tools
+
+Linting for GDK documentation is performed by:
+
+- markdownlint.
+- Vale.
+
+For more information and instructions on installing tooling and plugins for editors, see
+[Linting](https://docs.gitlab.com/ee/development/documentation/#linting).
+
 ## Next Steps
 
 After you have completed everything here, [set up GDK](set-up-gdk.md).
