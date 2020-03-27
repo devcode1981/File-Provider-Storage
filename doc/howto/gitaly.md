@@ -159,7 +159,7 @@ Praefect node.
       path = "/Users/paulokstad/gitlab-development-kit/repositories"
       ```
 
-   - After:
+    - After:
 
       ```toml
       [[storage]]
