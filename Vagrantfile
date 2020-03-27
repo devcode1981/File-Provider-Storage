@@ -96,10 +96,6 @@ $user_setup = <<EOT
   echo '/vagrant' > /vagrant/.gdk-install-root
   sudo -u $DEV_USER -i bash -c "gem install gitlab-development-kit"
   sudo -u $DEV_USER -i bash -c "gdk trust /vagrant"
-
-  # set git defaults
-  sudo -u $DEV_USER -i bash -c "git config --global user.name 'GitLab Development'"
-  sudo -u $DEV_USER -i bash -c "git config --global user.email gitlab@local.local"
 EOT
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
