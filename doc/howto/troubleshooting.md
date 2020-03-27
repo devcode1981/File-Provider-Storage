@@ -179,10 +179,10 @@ node-gyp may fail to build on macOS Catalina installations. Follow [the node-gyp
 ## Upgrading PostgreSQL
 
 In case you are hit by `FATAL: database files are incompatible with server`,
-you need to upgrade Postgres.
+you need to upgrade PostgreSQL.
 
 This is what to do when your OS/packaging system decides to install a new minor
-version of Postgres:
+version of PostgreSQL:
 
 1. (optional) Downgrade PostgreSQL
 1. (optional) Make a sql-only GitLab backup
@@ -627,16 +627,16 @@ RAILS_ENV=test bundle exec rake db:reset
 
   `sudo service postgresql start`
 
-## Homebrew: Postgres 10.0: "database files are incompatible with server"
+## Homebrew: PostgreSQL 10.0: "database files are incompatible with server"
 
 ```plaintext
 FATAL:  database files are incompatible with server
 DETAIL:  The data directory was initialized by PostgreSQL version 9.6, which is not compatible with this version 10.0.
 ```
 
-GitLab is not compatible with Postgres 10.0. The following workaround
-lets you get back Postgres 9.6. TODO: find a good way to co-exist with
-Postgres 10.0 in Homebrew.
+GitLab is not compatible with PostgreSQL 10.0. The following workaround
+lets you get back PostgreSQL 9.6. TODO: find a good way to co-exist with
+PostgreSQL 10.0 in Homebrew.
 
 ```shell
 brew install postgresql@9.6

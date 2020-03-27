@@ -38,7 +38,7 @@ gem install gitlab-development-kit
 
 ## Install GDK components
 
-1. Change into the newly created GDK directory.  For example:
+1. Change into the newly created GDK directory. For example:
 
    ```sh
    cd gitlab-development-kit

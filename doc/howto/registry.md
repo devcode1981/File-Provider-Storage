@@ -2,7 +2,7 @@
 
 ## Warning
 
-This document describes how to set up an [Insecure Local Docker Registry](https://docs.docker.com/registry/insecure/) by removing authentication from the registry.  It should only be used for development purposes on your local machine.
+This document describes how to set up an [Insecure Local Docker Registry](https://docs.docker.com/registry/insecure/) by removing authentication from the registry. It should only be used for development purposes on your local machine.
 
 ## Prerequisites
 
@@ -415,7 +415,7 @@ container_scanning:
     REGISTRY_INSECURE: "true"
 ```
 
-**Note:** It's necessary to set `REGISTRY_INSECURE: "true"` in the `container_scanning` job because the [container scanning tool](https://gitlab.com/gitlab-org/security-products/analyzers/klar/) uses [klar](https://github.com/optiopay/klar) under the hood, and `klar` will attempt to fetch the image from our registry using `HTTPS`, meanwhile our registry is running insecurely over `HTTP`.  Setting the `REGISTRY_INSECURE` flag of klar, documented in the klar repo [here](https://github.com/optiopay/klar#usage) and also in the GitLab container scanning repo [here](https://gitlab.com/gitlab-org/security-products/analyzers/klar/#environment-variables) will force the `klar` tool to use `HTTP` when fetching the container image from our insecure registry.
+**Note:** It's necessary to set `REGISTRY_INSECURE: "true"` in the `container_scanning` job because the [container scanning tool](https://gitlab.com/gitlab-org/security-products/analyzers/klar/) uses [klar](https://github.com/optiopay/klar) under the hood, and `klar` will attempt to fetch the image from our registry using `HTTPS`, meanwhile our registry is running insecurely over `HTTP`. Setting the `REGISTRY_INSECURE` flag of klar, documented in the klar repo [here](https://github.com/optiopay/klar#usage) and also in the GitLab container scanning repo [here](https://gitlab.com/gitlab-org/security-products/analyzers/klar/#environment-variables) will force the `klar` tool to use `HTTP` when fetching the container image from our insecure registry.
 
 ## Switching Between `docker-desktop-on-mac` and `docker-machine`
 
