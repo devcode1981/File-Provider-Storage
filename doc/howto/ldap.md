@@ -9,7 +9,13 @@ cd gitlab-openldap
 make # will setup the databases
 ```
 
-Then edit `gdk.yml` (in the GDK top level directory) and add:
+Then run the daemon:
+
+```bash
+./run-slapd # stays attached in the current terminal
+```
+
+In `gdk.yml` (in the GDK top level directory) add:
 
 ```yaml
 openldap:
@@ -70,3 +76,13 @@ For testing of GitLab Enterprise Edition the following groups are created.
 | group-10000-0 | `cn=group-10000-0,ou=groups,dc=example,dc=com`  | 10,000  | group-10000-1 |
 | group-a       | `cn=group-a,ou=groups,dc=example-alt,dc=com`    | 2       |               |
 | group-b       | `cn=group-b,ou=groups,dc=example-alt,dc=com`    | 1       |               |
+
+## macOS Setup
+
+On macOS run the daemon with the alt script:
+
+```bash
+./run-slapd-alt
+```
+
+and use port `3891` in `gitlab.yml` for the LDAP server.

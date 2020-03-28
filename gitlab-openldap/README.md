@@ -6,6 +6,11 @@ This is an attempt to set up an OpenLDAP server for GitLab development.
 
 ```bash
 make # compile openldap and bootstrap an LDAP server to run out of slapd.d
+```
+
+Then run the daemon:
+
+```bash
 ./run-slapd # stays attached in the current terminal
 ```
 
@@ -16,7 +21,7 @@ make clean default
 
 ## Configuring gitlab
 
-in gitlab.yml do the following;
+In `gitlab.yml` do the following;
 
 ```yaml
 ldap:
@@ -70,6 +75,15 @@ ldap:
       password: 'password'
       #...
 ```
+## macOS Setup
+
+On macOS run the daemon with the alt script:
+
+```bash
+./run-slapd-alt
+```
+
+and use port `3891` in `gitlab.yml` for the LDAP server.
 
 # TODO
 
