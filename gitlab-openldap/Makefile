@@ -39,7 +39,7 @@ disable_bind_anon:
 	bin/ldapmodify -H ldap://127.0.0.1:3890/ -D "cn=admin,cn=config" -w password -f disable_bind_anon.ldif
 
 openldap-2.4.44:
-	curl -O http://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-2.4.44.tgz
+	curl -OL http://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-2.4.44.tgz
 	echo 'd7de6bf3c67009c95525dde3a0212cc110d0a70b92af2af8e3ee800e81b88400  openldap-2.4.44.tgz' | shasum -a256 -c -
 	tar zxf openldap-2.4.44.tgz
 
