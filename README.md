@@ -70,6 +70,9 @@ is available on the [architecture components list](https://docs.gitlab.com/ee/de
 - No easy upgrades
 - Need to download and compile new gems (`bundle install`) on each upgrade
 
+Note that for some changes to some configuration and routes, run
+`gdk restart rails-web` so the running configuration reflects the change.
+
 ## License
 
 The GitLab Development Kit is distributed under the MIT license,
