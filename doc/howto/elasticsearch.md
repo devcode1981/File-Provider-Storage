@@ -37,8 +37,6 @@ environment.
 
 1. Go to **Admin Area > License** and ensure you have a [license](https://about.gitlab.com/handbook/developer-onboarding/#working-on-gitlab-ee) installed as this is required for Elasticsearch.
 
-1. Go to **Admin Area > Settings > Integrations** to enable Elasticsearch.
-
 1. Start Elasticsearch by either running `elasticsearch` in a new terminal, or
    by starting the GDK service:
 
@@ -51,6 +49,8 @@ environment.
    ```sh
    cd gitlab && bundle exec rake gitlab:elastic:index
    ```
+
+1. Go to **Admin Area > Settings > Integrations** to enable Elasticsearch.
 
 ## Tips and Tricks
 
