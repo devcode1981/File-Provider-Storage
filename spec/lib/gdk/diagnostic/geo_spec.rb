@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe GDK::Diagnostic::DiagnoseGeo do
+describe GDK::Diagnostic::Geo do
   let(:gdk_config) { double('GDK::Config', gdk_root: Pathname.new('/tmp/non-existent-dir')) }
   let(:non_existent_database_geo_yml_file) { '/tmp/non-existent-dir/gitlab/config/database_geo.yml' }
 
