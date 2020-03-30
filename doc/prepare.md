@@ -57,6 +57,7 @@ We are using PostgreSQL 11 in the following example. If you want to use another 
 
 ```shell
 brew install git git-lfs redis postgresql@11 libiconv pkg-config cmake go openssl coreutils re2 graphicsmagick node@12 gpg runit icu4c exiftool sqlite minio/stable/minio
+ln -ns /usr/local/opt/node@12 /usr/local/opt/node || true # otherwise yarn installation cannot find node
 brew install yarn --ignore-dependencies
 brew link pkg-config
 brew pin node@12 icu4c readline
