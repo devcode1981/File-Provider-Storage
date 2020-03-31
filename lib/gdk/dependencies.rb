@@ -43,7 +43,6 @@ module GDK
     end
 
     class Checker
-      EXPECTED_GIT_VERSION = '2.22'
       EXPECTED_GO_VERSION = '1.14'
       EXPECTED_YARN_VERSION = '1.12'
       EXPECTED_NODEJS_VERSION = '12.10'
@@ -56,7 +55,6 @@ module GDK
       end
 
       def check_all
-        check_git_version
         check_ruby_version
         check_bundler_version
         check_go_version
@@ -75,19 +73,6 @@ module GDK
           unless result
             @error_messages << "#{binary} does not exist. You may need to check your PATH or install a missing package."
           end
-        end
-      end
-
-      def check_git_version
-        return unless check_binary('git')
-
-        current_git_version = `git version`[/git version (\d+\.\d+.\d+)/, 1]
-
-        actual = Gem::Version.new(current_git_version)
-        expected = Gem::Version.new(EXPECTED_GIT_VERSION)
-
-        if actual < expected
-          @error_messages << require_minimum_version('Git', actual, expected)
         end
       end
 
