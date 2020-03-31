@@ -216,6 +216,20 @@ production: &base
         endpoint: 'http://<%= config.hostname %>:<%= config.object_store.port %>'
         path_style: true
 
+  ## Terraform state
+  terraform_state:
+    enabled: true
+    object_store:
+      enabled: <%= config.object_store? %>
+      remote_directory: terraform_state
+      connection:
+        provider: AWS
+        aws_access_key_id: minio
+        aws_secret_access_key: gdk-minio
+        region: gdk
+        endpoint: 'http://<%= config.hostname %>:<%= config.object_store.port %>'
+        path_style: true
+
   ## GitLab Pages
   pages:
     enabled: true
@@ -851,6 +865,17 @@ test:
     storage_path: tmp/tests/public
     object_store:
       enabled: false
+      connection:
+        provider: AWS # Only AWS supported at the moment
+        aws_access_key_id: AWS_ACCESS_KEY_ID
+        aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+        region: us-east-1
+  terraform_state:
+    enabled: true
+    storage_path: tmp/tests/terraform_state
+    object_store:
+      enabled: false
+      remote_directory: terraform_state
       connection:
         provider: AWS # Only AWS supported at the moment
         aws_access_key_id: AWS_ACCESS_KEY_ID
