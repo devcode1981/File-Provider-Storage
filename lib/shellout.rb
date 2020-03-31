@@ -29,6 +29,8 @@ class Shellout
   end
 
   def success?
+    return false unless @status
+
     @status.success?
   end
 
