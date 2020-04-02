@@ -125,7 +125,13 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 
 ```shell
 pacman -S postgresql redis postgresql-libs icu npm ed cmake openssh git git-lfs go re2 \
-  unzip graphicsmagick runit perl-image-exiftool rsync yarn minio sqlite
+  unzip graphicsmagick perl-image-exiftool rsync yarn minio sqlite
+```
+
+>**Note:** The Arch Linux core repository does not contain anymore the `runit` package. It is required to install `runit-systemd` from the Arch User Repository (AUR) with an AUR package manager like `pacaur` ([https://github.com/E5ten/pacaur](https://github.com/E5ten/pacaur)) or `pikaur` ([https://github.com/actionless/pikaur](https://github.com/actionless/pikaur)). See [Arch Linux Wiki page AUR_helpers](https://wiki.archlinux.org/index.php/AUR_helpers) for more information.
+
+```shell
+pikaur -S runit-systemd
 ```
 
 #### Debian
