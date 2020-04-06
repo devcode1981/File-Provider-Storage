@@ -44,7 +44,7 @@ rails-web: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_ROOT=$rela
 #
 <%= '#' unless config.influxdb? %>influxdb: exec influxdb/bin/influxd -config influxdb/influxdb.conf
 <%= '#' unless config.grafana? %>grafana: exec support/exec-cd grafana bin/grafana-server -config grafana.ini
-<%= '#' unless config.prometheus? %>prometheus: exec docker run --net host -p 9090:9090 -v <%= config.gdk_root.join('prometheus', 'prometheus.yml') %>:/etc/prometheus/prometheus.yml prom/prometheus:v2.8.1
+<%= '#' unless config.prometheus? %>prometheus: exec docker run -p 9090:9090 -v <%= config.gdk_root.join('prometheus', 'prometheus.yml') %>:/etc/prometheus/prometheus.yml prom/prometheus:v2.8.1
 <%= '#' unless config.tracer.jaeger? %>jaeger: exec jaeger/jaeger-<%= config.tracer.jaeger.version %>/jaeger-all-in-one --memory.max-traces 512
 
 # Additional services
