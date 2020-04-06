@@ -196,7 +196,7 @@ to set up [SSH](ssh.md), including [SSH key lookup from database](ssh.md#ssh-key
 
 ### Add primary node
 
-There is a rake task that can add the primary node:
+There is a Rake task that can add the primary node:
 
 ```bash
 cd gdk/gitlab
@@ -206,7 +206,7 @@ bundle exec rake geo:set_primary_node
 
 ### Add secondary node
 
-There isn't a convenient rake task to add the secondary node because the relevant
+There isn't a convenient Rake task to add the secondary node because the relevant
 data is on the secondary, but we can only write to the primary database. So we
 must get the values from the secondary, and then manually add the node.
 

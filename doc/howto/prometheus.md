@@ -77,9 +77,9 @@ Minikube requires virtualization. Install the appropriate driver for your operat
 #### Start Minikube
 
 **Note:** If you are using a network filter such as [LittleSnitch](https://www.obdev.at/products/littlesnitch/index.html) you may need to disable it or permit `minikube`,
-as minikube needs to download multiple ISO's to operate correctly.
+as Minikube needs to download multiple ISO's to operate correctly.
 
-The following command will start minikube, running the first few containers
+The following command will start Minikube, running the first few containers
 with Kubernetes components.
 
 **Compatibility Note:** We are not yet supporting Kubernetes 1.16, please use 1.15 the following until <https://gitlab.com/gitlab-org/gitlab/issues/32721> is resolved.
@@ -96,7 +96,7 @@ For Linux:
 minikube start --vm-driver kvm2 --disk-size=20g --kubernetes-version=v1.15.4
 ```
 
-**Note:** If running Linux, you may need to install a handful of extra packages alongside minikube, like `ebtables`, `dnsmasq`, `libvirtd`, `virt-manager`, and then ensure `libvirtd` is running correctly with `sudo systemctl restart libvirtd`.
+**Note:** If running Linux, you may need to install a handful of extra packages alongside Minikube, like `ebtables`, `dnsmasq`, `libvirtd`, `virt-manager`, and then ensure `libvirtd` is running correctly with `sudo systemctl restart libvirtd`.
 
 ### Open the Kubernetes Dashboard
 
@@ -144,9 +144,9 @@ CI/CD pipeline with no requirements, based on AutoDevOps. It contains just the `
 
 ### Allow requests to the local network
 
-We have CSRF protection in place on the cluster url, so if we try to connect minikube now, we'll get
+We have CSRF protection in place on the cluster url, so if we try to connect Minikube now, we'll get
 a `Requests to the local network are not allowed` error. The below steps will disable this protection
-for use with minikube.
+for use with Minikube.
 
 1. As root user, navigate to **Admin Area** (the little wrench in the top nav) > **Settings** > **Network**.
 1. Expand the **Outbound requests** section, check the box to *Allow requests to the local network from hooks and services*, and save your changes.
@@ -228,7 +228,8 @@ It may take 30-60 seconds for the Prometheus server to get a few sets of data po
 
 ### Configuring multiple Minikube instances
 
-Use the `--profile` or `-p` flag to define the minikube machine name. This allows multiple instances to run simultaneously. For instance, running a minikube instance for working in GitLab CE and GitLab EE at the same time can be accomplished by using all of the same commands outlined above with the additional `--profile` flag added:
+Use the `--profile` or `-p` flag to define the Minikube machine name. This allows multiple instances to run simultaneously.
+For instance, running a Minikube instance for working in GitLab CE and GitLab EE at the same time can be accomplished by using all of the same commands outlined above with the additional `--profile` flag added:
 
 For macOS:
 
@@ -249,7 +250,8 @@ To look at the EE instance dashboard:
 minikube dashboard --profile ee-instance
 ```
 
-Electing to use a specified machine name will mean appending the `--profile` flag and name to each minikube command you would like to execute. Without the flag, minikube will assume you mean the default instance named `minikube`. All machines are stored by default in `~/.minikube/machines`.
+Electing to use a specified machine name will mean appending the `--profile` flag and name to each Minikube command you would like to execute.
+Without the flag, Minikube will assume you mean the default instance named `minikube`. All machines are stored by default in `~/.minikube/machines`.
 
 ## Monitoring the GDK with Prometheus
 
