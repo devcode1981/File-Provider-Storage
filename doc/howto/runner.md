@@ -183,10 +183,10 @@ different configuration files:
    ```
 
 1. In the GitLab Runner config (e.g. `~/.gitlab-runner/config.toml`), set the coordinator
-   URL with this hostname:
+   URL with this hostname and the port used by GDK (`3001` if `EE`):
 
    ```toml
-    url = "http://host.docker.internal:3001/"
+    url = "http://host.docker.internal:3000/"
    ```
 
 Note that all three settings must be set to ensure a number of items
