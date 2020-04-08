@@ -8,6 +8,7 @@ require_relative 'diagnostic/status'
 require_relative 'diagnostic/pending_migrations'
 require_relative 'diagnostic/configuration'
 require_relative 'diagnostic/geo'
+require_relative 'diagnostic/git'
 
 module GDK
   module Diagnostic
