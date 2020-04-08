@@ -104,8 +104,13 @@ test:rspec:
   stage: test
   services: []
   script:
-    - gem install rspec
-    - rspec
+    - gem install rspec rspec_junit_formatter
+    - rspec --format progress --format RspecJunitFormatter --out rspec.xml
+  artifacts:
+    paths:
+      - rspec.xml
+    reports:
+      junit: rspec.xml
 
 test:code_quality:
   extends: .code-changes
