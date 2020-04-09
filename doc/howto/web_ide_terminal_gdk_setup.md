@@ -47,8 +47,8 @@ To configure GDK for Web IDE terminals:
 
 ## Minikube setup
 
-1. Add the following to a [`role.yml`](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#role-and-clusterrole)
-   file:
+1. Create a [`role.yml`](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#role-and-clusterrole)
+   file somewhere and add the following to it:
 
    ```yml
    apiVersion: rbac.authorization.k8s.io/v1
@@ -62,8 +62,8 @@ To configure GDK for Web IDE terminals:
      verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
    ```
 
-1. Add the following to a [`role-binding.yml`](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding)
-   file:
+1. Create a [`role-binding.yml`](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding)
+   file somewhere and add the following to it:
 
    ```yml
    apiVersion: rbac.authorization.k8s.io/v1
