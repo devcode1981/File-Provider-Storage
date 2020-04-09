@@ -151,10 +151,10 @@ The following is required to configure GitLab Runner for Web IDE terminals.
      listen_address = "<local IP address>:8080"
    ```
 
-1. Restart the Runner:
+1. Stop the Runner and run it again:
 
    ```shell
-   gitlab-runner restart
+   gitlab-runner run
    ```
 
 ## Starting the Web IDE terminal
