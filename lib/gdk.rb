@@ -5,21 +5,27 @@
 # This file is loaded by the 'gdk' command in the gem. This file is NOT
 # part of the gitlab-development-kit gem so that we can iterate faster.
 
+$LOAD_PATH.unshift(__dir__)
+
 require 'pathname'
-require_relative 'gdk/output'
-require_relative 'gdk/env'
-require_relative 'gdk/config'
-require_relative 'gdk/command'
-require_relative 'gdk/dependencies'
-require_relative 'gdk/diagnostic'
-require_relative 'gdk/erb_renderer'
-require_relative 'gdk/logo'
 require_relative 'runit'
-require_relative 'shellout'
+autoload :Shellout, 'shellout'
 
 module GDK
   PROGNAME = 'gdk'.freeze
   MAKE = RUBY_PLATFORM =~ /bsd/ ? 'gmake' : 'make'
+
+  # dependencies are always declared via autoload
+  # this allows for any dependent project require only `lib/gdk`
+  # and load only what it really needs
+  autoload :Output, 'gdk/output'
+  autoload :Env, 'gdk/env'
+  autoload :Config, 'gdk/config'
+  autoload :Command, 'gdk/command'
+  autoload :Dependencies, 'gdk/dependencies'
+  autoload :Diagnostic, 'gdk/diagnostic'
+  autoload :ErbRenderer, 'gdk/erb_renderer'
+  autoload :Logo, 'gdk/logo'
 
   # This function is called from bin/gdk. It must return true/false or
   # an exit code.
