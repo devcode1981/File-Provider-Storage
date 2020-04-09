@@ -50,7 +50,7 @@ module GDK
         end
 
         def file_path
-          @file_path ||= File.join(GDK.root, file)
+          @file_path ||= GDK.root.join(file)
         end
 
         private

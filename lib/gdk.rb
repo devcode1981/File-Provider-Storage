@@ -5,6 +5,7 @@
 # This file is loaded by the 'gdk' command in the gem. This file is NOT
 # part of the gitlab-development-kit gem so that we can iterate faster.
 
+require 'pathname'
 require_relative 'gdk/output'
 require_relative 'gdk/env'
 require_relative 'gdk/config'
@@ -74,7 +75,7 @@ module GDK
       pg_port = Config.new.postgresql.port
       args = ARGV.empty? ? ['-d', 'gitlabhq_development'] : ARGV
 
-      exec('psql', '-h', File.join(root, 'postgresql'), '-p', pg_port.to_s, *args, chdir: root)
+      exec('psql', '-h', root.join('postgresql'), '-p', pg_port.to_s, *args, chdir: root)
     when 'redis-cli'
       exec('redis-cli', '-s', GDK::Config.new.redis_socket.to_s, *ARGV, chdir: root)
     when 'env'
@@ -102,7 +103,7 @@ module GDK
       exec(
         { 'RAILS_ENV' => 'development' },
         *%W[bundle exec thin --socket=#{root}/gitlab.socket start],
-        chdir: File.join(root, 'gitlab')
+        chdir: root.join('gitlab')
       )
     when 'doctor'
       GDK::Command::Doctor.new.run
@@ -118,8 +119,8 @@ module GDK
   end
 
   def self.install_root_ok?
-    expected_root = File.read(File.join(root, ROOT_CHECK_FILE)).chomp
-    File.realpath(expected_root) == root
+    expected_root = root.join(ROOT_CHECK_FILE).read.chomp
+    Pathname.new(expected_root).realpath == root
   rescue => ex
     warn ex
     false
@@ -127,8 +128,8 @@ module GDK
 
   # Return the path to the GDK base path
   #
-  # @return [String] path to GDK base path
+  # @return [Pathname] path to GDK base directory
   def self.root
-    $gdk_root || File.realpath(File.join(__dir__, '../'))
+    Pathname.new($gdk_root || File.realpath(File.join(__dir__, '../')))
   end
 end

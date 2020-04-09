@@ -51,7 +51,7 @@ module Runit
   end
 
   def self.runsvdir_base_args
-    ['runsvdir', '-P', File.join(GDK.root, 'services')]
+    ['runsvdir', '-P', GDK.root.join('services').to_s]
   end
 
   def self.runsvdir_pid(args)
