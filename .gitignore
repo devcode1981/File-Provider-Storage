@@ -21,15 +21,6 @@ gitlab-development-kit/**
 /postgresql-replica/.s.*
 /redis/*.conf*
 .bundle/
-/gitlab-openldap/bin/
-/gitlab-openldap/etc/
-/gitlab-openldap/include/
-/gitlab-openldap/lib/
-/gitlab-openldap/libexec/
-/gitlab-openldap/openldap-*.tgz
-/gitlab-openldap/openldap-*/
-/gitlab-openldap/sbin/
-/gitlab-openldap/share/
 /.vagrant/
 /gitlab-pages/pkg
 /gitlab-pages/bin
