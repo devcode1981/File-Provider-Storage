@@ -26,7 +26,7 @@ gitlab-development-kit/**
 /gitlab-openldap/include/
 /gitlab-openldap/lib/
 /gitlab-openldap/libexec/
-/gitlab-openldap/openldap-*.tg*
+/gitlab-openldap/openldap-*.tgz
 /gitlab-openldap/openldap-*/
 /gitlab-openldap/sbin/
 /gitlab-openldap/share/
