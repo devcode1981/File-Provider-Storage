@@ -30,7 +30,7 @@ ldap:
     main:
       label: LDAP
       host: 127.0.0.1
-      port: 3890
+      port: 3890  # on macOS: 3891
       uid: 'uid'
       method: 'plain' # "tls" or "ssl" or "plain"
       base: 'dc=example,dc=com'
@@ -48,7 +48,7 @@ ldap:
     alt:
       label: LDAP-alt
       host: 127.0.0.1
-      port: 3891
+      port: 3891  # on macOS: 3892
       uid: 'uid'
       method: 'plain' # "tls" or "ssl" or "plain"
       base: 'dc=example-alt,dc=com'
@@ -75,17 +75,7 @@ ldap:
       password: 'password'
       #...
 ```
-## macOS Setup
-
-On macOS run the daemon with the alt script:
-
-```bash
-./run-slapd-alt
-```
-
-and use port `3891` in `gitlab.yml` for the LDAP server.
 
 # TODO
 
 - integrate into the development kit
-- figure out how to detect the location of `slapd`; on macOS there is `/usr/libexec/slapd`.
