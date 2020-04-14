@@ -21,22 +21,19 @@ make clean default
 
 ## Configuring gitlab
 
-In `gitlab.yml` do the following;
+In `gitlab.yml` under `production:` and `ldap:`, change the following keys to the below values ([defaults: `gitlab/config/gitlab.yml.example`](https://gitlab.com/gitlab-org/gitlab/-/blob/master/config/gitlab.yml.example#L550-769):
 
 ```yaml
-ldap:
   enabled: true
   servers:
     main:
-      label: LDAP
+      # ...
       host: 127.0.0.1
       port: 3890  # on macOS: 3891
       uid: 'uid'
-      method: 'plain' # "tls" or "ssl" or "plain"
+      # ...
       base: 'dc=example,dc=com'
-      user_filter: ''
-      group_base: 'ou=groups,dc=example,dc=com'
-      admin_group: ''
+      group_base: 'ou=groups,dc=example,dc=com'  # Insert this
 ```
 
 alternative database (just using a different base)
@@ -57,13 +54,16 @@ ldap:
       admin_group: ''
 ```
 
-*Note:* We don't use a bind user for this setup, keeping it as simple as possible, but if you want to disable anonymous binding and require authentication run:
+### Optional: disable anonymous binding
+
+The above config doesn't use a bind user, to keeps it as simple as possible.
+If you want to disable anonymous binding and require authentication run:
 
 ```bash
 make disable_bind_anon
 ```
 
-change your gitlab.yml with the following credentials:
+and update `gitlab.yml` also with the following credentials:
 
 ```yaml
 ldap:
