@@ -47,19 +47,19 @@ module GDK
         Use 'gdk start', 'gdk stop', and 'gdk tail' instead.
       MSG
     when 'install'
-      exec(MAKE, *ARGV, chdir: root)
+      exec(MAKE, *ARGV, chdir: GDK.root)
     when 'update'
       # Otherwise we would miss it and end up in a weird state.
       puts "-------------------------------------------------------"
       puts "Running `make self-update`.."
       puts "-------------------------------------------------------"
       puts "Running separately in case the Makefile is updated.\n"
-      system(MAKE, 'self-update', chdir: root)
+      system(MAKE, 'self-update', chdir: GDK.root)
 
       puts "\n-------------------------------------------------------"
       puts "Running `make self-update update`.."
       puts "-------------------------------------------------------"
-      exec(MAKE, 'self-update', 'update', chdir: root)
+      exec(MAKE, 'self-update', 'update', chdir: GDK.root)
     when 'diff-config'
       GDK::Command::DiffConfig.new.run
 
@@ -75,15 +75,15 @@ module GDK
         abort "Cannot get config for #{ARGV.join('.')}"
       end
     when 'reconfigure'
-      remember!(root)
-      exec(MAKE, 'touch-examples', 'unlock-dependency-installers', 'postgresql-sensible-defaults', 'all', chdir: root)
+      remember!(GDK.root)
+      exec(MAKE, 'touch-examples', 'unlock-dependency-installers', 'postgresql-sensible-defaults', 'all', chdir: GDK.root)
     when 'psql'
       pg_port = Config.new.postgresql.port
       args = ARGV.empty? ? ['-d', 'gitlabhq_development'] : ARGV
 
-      exec('psql', '-h', root.join('postgresql'), '-p', pg_port.to_s, *args, chdir: root)
+      exec('psql', '-h', GDK.root.join('postgresql'), '-p', pg_port.to_s, *args, chdir: GDK.root)
     when 'redis-cli'
-      exec('redis-cli', '-s', GDK::Config.new.redis_socket.to_s, *ARGV, chdir: root)
+      exec('redis-cli', '-s', GDK::Config.new.redis_socket.to_s, *ARGV, chdir: GDK.root)
     when 'env'
       GDK::Env.exec(ARGV)
     when 'start', 'status'
@@ -108,8 +108,8 @@ module GDK
       system('gdk', 'stop', 'rails-web')
       exec(
         { 'RAILS_ENV' => 'development' },
-        *%W[bundle exec thin --socket=#{root}/gitlab.socket start],
-        chdir: root.join('gitlab')
+        *%W[bundle exec thin --socket=#{GDK.root}/gitlab.socket start],
+        chdir: GDK.root.join('gitlab')
       )
     when 'doctor'
       GDK::Command::Doctor.new.run
@@ -125,8 +125,8 @@ module GDK
   end
 
   def self.install_root_ok?
-    expected_root = root.join(ROOT_CHECK_FILE).read.chomp
-    Pathname.new(expected_root).realpath == root
+    expected_root = GDK.root.join(ROOT_CHECK_FILE).read.chomp
+    Pathname.new(expected_root).realpath == GDK.root
   rescue => ex
     warn ex
     false
@@ -136,6 +136,6 @@ module GDK
   #
   # @return [Pathname] path to GDK base directory
   def self.root
-    Pathname.new($gdk_root || File.realpath(File.join(__dir__, '../')))
+    Pathname.new($gdk_root || Pathname.new(__dir__).parent)
   end
 end
