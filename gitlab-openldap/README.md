@@ -50,7 +50,7 @@ ldap:
       host: 127.0.0.1
       port: 3891  # on macOS: 3892
       uid: 'uid'
-      method: 'plain' # "tls" or "ssl" or "plain"
+      encryption: 'plain' # "tls" or "ssl" or "plain"
       base: 'dc=example-alt,dc=com'
       user_filter: ''
       group_base: 'ou=groups,dc=example-alt,dc=com'
