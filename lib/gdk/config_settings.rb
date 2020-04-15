@@ -119,7 +119,7 @@ module GDK
     def read_or_write!(filename, value)
       sanitized_read!(filename)
     rescue Errno::ENOENT
-      File.write(filename, value)
+      File.write(GDK.root.join(filename), value)
       value
     end
 
@@ -224,7 +224,7 @@ module GDK
     end
 
     def sanitized_read!(filename)
-      File.read(filename).chomp
+      File.read(GDK.root.join(filename)).chomp
     end
   end
 end

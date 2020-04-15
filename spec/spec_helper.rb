@@ -6,6 +6,10 @@ RSpec.configure do |config|
   config.before(:each) do
     allow($stdout).to receive(:puts)
     allow($stdout).to receive(:write)
+
+    # isolate configs for the testing environment
+    allow(GDK).to receive(:root) { Pathname.new(temp_path) }
+    stub_const('GDK::Config::FILE', 'gdk.example.yml')
   end
 end
 

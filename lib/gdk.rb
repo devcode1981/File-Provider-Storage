@@ -1,24 +1,31 @@
 # frozen_string_literal: true
-#
+
 # GitLab Development Kit CLI parser / executor
 #
 # This file is loaded by the 'gdk' command in the gem. This file is NOT
 # part of the gitlab-development-kit gem so that we can iterate faster.
 
-require_relative 'gdk/output'
-require_relative 'gdk/env'
-require_relative 'gdk/config'
-require_relative 'gdk/command'
-require_relative 'gdk/dependencies'
-require_relative 'gdk/diagnostic'
-require_relative 'gdk/erb_renderer'
-require_relative 'gdk/logo'
+$LOAD_PATH.unshift(__dir__)
+
+require 'pathname'
 require_relative 'runit'
-require_relative 'shellout'
+autoload :Shellout, 'shellout'
 
 module GDK
   PROGNAME = 'gdk'.freeze
   MAKE = RUBY_PLATFORM =~ /bsd/ ? 'gmake' : 'make'
+
+  # dependencies are always declared via autoload
+  # this allows for any dependent project require only `lib/gdk`
+  # and load only what it really needs
+  autoload :Output, 'gdk/output'
+  autoload :Env, 'gdk/env'
+  autoload :Config, 'gdk/config'
+  autoload :Command, 'gdk/command'
+  autoload :Dependencies, 'gdk/dependencies'
+  autoload :Diagnostic, 'gdk/diagnostic'
+  autoload :ErbRenderer, 'gdk/erb_renderer'
+  autoload :Logo, 'gdk/logo'
 
   # This function is called from bin/gdk. It must return true/false or
   # an exit code.
@@ -40,19 +47,19 @@ module GDK
         Use 'gdk start', 'gdk stop', and 'gdk tail' instead.
       MSG
     when 'install'
-      exec(MAKE, *ARGV, chdir: $gdk_root)
+      exec(MAKE, *ARGV, chdir: GDK.root)
     when 'update'
       # Otherwise we would miss it and end up in a weird state.
       puts "-------------------------------------------------------"
       puts "Running `make self-update`.."
       puts "-------------------------------------------------------"
       puts "Running separately in case the Makefile is updated.\n"
-      system(MAKE, 'self-update', chdir: $gdk_root)
+      system(MAKE, 'self-update', chdir: GDK.root)
 
       puts "\n-------------------------------------------------------"
       puts "Running `make self-update update`.."
       puts "-------------------------------------------------------"
-      exec(MAKE, 'self-update', 'update', chdir: $gdk_root)
+      exec(MAKE, 'self-update', 'update', chdir: GDK.root)
     when 'diff-config'
       GDK::Command::DiffConfig.new.run
 
@@ -68,15 +75,15 @@ module GDK
         abort "Cannot get config for #{ARGV.join('.')}"
       end
     when 'reconfigure'
-      remember!($gdk_root)
-      exec(MAKE, 'touch-examples', 'unlock-dependency-installers', 'postgresql-sensible-defaults', 'all', chdir: $gdk_root)
+      remember!(GDK.root)
+      exec(MAKE, 'touch-examples', 'unlock-dependency-installers', 'postgresql-sensible-defaults', 'all', chdir: GDK.root)
     when 'psql'
       pg_port = Config.new.postgresql.port
       args = ARGV.empty? ? ['-d', 'gitlabhq_development'] : ARGV
 
-      exec('psql', '-h', File.join($gdk_root, 'postgresql'), '-p', pg_port.to_s, *args, chdir: $gdk_root)
+      exec('psql', '-h', GDK.root.join('postgresql'), '-p', pg_port.to_s, *args, chdir: GDK.root)
     when 'redis-cli'
-      exec('redis-cli', '-s', GDK::Config.new.redis_socket.to_s, *ARGV, chdir: $gdk_root)
+      exec('redis-cli', '-s', GDK::Config.new.redis_socket.to_s, *ARGV, chdir: GDK.root)
     when 'env'
       GDK::Env.exec(ARGV)
     when 'start', 'status'
@@ -101,8 +108,8 @@ module GDK
       system('gdk', 'stop', 'rails-web')
       exec(
         { 'RAILS_ENV' => 'development' },
-        *%W[bundle exec thin --socket=#{$gdk_root}/gitlab.socket start],
-        chdir: File.join($gdk_root, 'gitlab')
+        *%W[bundle exec thin --socket=#{GDK.root}/gitlab.socket start],
+        chdir: GDK.root.join('gitlab')
       )
     when 'doctor'
       GDK::Command::Doctor.new.run
@@ -118,10 +125,17 @@ module GDK
   end
 
   def self.install_root_ok?
-    expected_root = File.read(File.join($gdk_root, ROOT_CHECK_FILE)).chomp
-    File.realpath(expected_root) == File.realpath($gdk_root)
+    expected_root = GDK.root.join(ROOT_CHECK_FILE).read.chomp
+    Pathname.new(expected_root).realpath == GDK.root
   rescue => ex
     warn ex
     false
+  end
+
+  # Return the path to the GDK base path
+  #
+  # @return [Pathname] path to GDK base directory
+  def self.root
+    Pathname.new($gdk_root || Pathname.new(__dir__).parent)
   end
 end

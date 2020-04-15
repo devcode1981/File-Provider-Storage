@@ -69,9 +69,14 @@ clean-config:
 	redis/redis.conf \
 	.ruby-version \
 	Procfile \
+	gitlab-runner-config.toml \
 	gitlab-workhorse/config.toml \
 	gitaly/gitaly.config.toml \
 	nginx/conf/nginx.conf \
+	registry_host.crt \
+	registry_host.key \
+	localhost.crt \
+	localhost.key \
 	registry/config.yml \
 	jaeger
 
@@ -86,7 +91,6 @@ touch-examples:
 	gitlab/config/unicorn.rb.example.development \
 	grafana/grafana.ini.example \
 	influxdb/influxdb.conf.example \
-	registry/config.yml.example \
 	support/templates/*.erb
 
 unlock-dependency-installers:
@@ -456,7 +460,7 @@ performance-metrics-setup: Procfile influxdb-setup grafana-setup
 # gitlab support setup
 ##############################################################
 
-support-setup: Procfile redis gitaly-setup jaeger-setup postgresql openssh-setup nginx-setup registry-setup elasticsearch-setup
+support-setup: Procfile redis gitaly-setup jaeger-setup postgresql openssh-setup nginx-setup registry-setup elasticsearch-setup runner-setup
 	@echo
 	@echo "-------------------------------------------------------"
 	@echo "Setup finished!"
@@ -701,21 +705,44 @@ registry-setup: registry/storage registry/config.yml localhost.crt
 localhost.crt: localhost.key
 
 localhost.key:
-	$(Q)openssl req -new -subj "/CN=localhost/" -x509 -days 365 -newkey rsa:2048 -nodes -keyout "localhost.key" -out "localhost.crt"
+	$(Q)openssl req -new -subj "/CN=${registry_host}/" -x509 -days 365 -newkey rsa:2048 -nodes -keyout "localhost.key" -out "localhost.crt"
+	$(Q)chmod 600 $@
+
+registry_host.crt: registry_host.key
+
+registry_host.key:
+	$(Q)openssl req -new -subj "/CN=${registry_host}/" -x509 -days 365 -newkey rsa:2048 -nodes -keyout "registry_host.key" -out "registry_host.crt"
 	$(Q)chmod 600 $@
 
 registry/storage:
 	$(Q)mkdir -p $@
 
-registry/config.yml:
-	$(Q)cp registry/config.yml.example $@
-	if ${auto_devops_enabled}; then \
-		protocol='https' gitlab_host=${hostname} gitlab_port=${port} registry_port=${registry_port} \
-		support/edit-registry-config.yml $@; \
-	else \
-		gitlab_host=${gitlab_from_container} gitlab_port=${port} registry_port=${registry_port} \
-		support/edit-registry-config.yml $@; \
-	fi
+.PHONY: registry/config.yml
+registry/config.yml: registry_host.crt
+	$(Q)rake $@
+
+.PHONY: trust-docker-registry
+trust-docker-registry: registry_host.crt
+	$(Q)mkdir -p "${HOME}/.docker/certs.d/${registry_host}:${registry_port}"
+	$(Q)rm -f "${HOME}/.docker/certs.d/${registry_host}:${registry_port}/ca.crt"
+	$(Q)cp registry_host.crt "${HOME}/.docker/certs.d/${registry_host}:${registry_port}/ca.crt"
+	$(Q)echo "Certificates have been copied to ~/.docker/certs.d/"
+	$(Q)echo "Don't forget to restart Docker!"
+
+##############################################################
+# runner
+##############################################################
+
+runner-setup: gitlab-runner-config.toml
+
+.PHONY: gitlab-runner-config.toml
+ifeq ($(runner_enabled),true)
+gitlab-runner-config.toml:
+	$(Q)rake $@
+else
+gitlab-runner-config.toml:
+	@true
+endif
 
 ##############################################################
 # jaeger

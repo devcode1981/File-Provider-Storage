@@ -15,19 +15,6 @@ Procfile commented out.
 You can check that SSH works by cloning any project (e.g. `Project.first.ssh_url_to_repo`).
 This will also update your `known_hosts` file.
 
-### Note for Mac users
-
-You may have to edit `<gdk-root>/go-gitlab-shell/src/gitlab.com/gitlab-org/gitlab-shell/bin/gitlab-shell`,
-in case you encounter a Ruby error due to a system Ruby version being used.
-
-You can workaround this by updating the first line of the file above to your updated Ruby binary.
-
-Example for `rbenv`:
-
-```plaintext
-#!/Users/user/.rbenv/shims/ruby
-```
-
 ## SSH key lookup from database
 
 To enable SSH key lookup from the database, check the

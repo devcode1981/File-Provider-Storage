@@ -15,20 +15,27 @@ storage:
       interval: 1h
       dryrun: false
 http:
-  addr: :5000
+  addr: :<%= config.registry.port %>
   headers:
     X-Content-Type-Options: [nosniff]
+  <%- if config.registry.self_signed -%>
+  tls:
+    certificate: /root/certs/registry_host.crt
+    key: /root/certs/registry_host.key
+  <%- end -%>
 health:
   storagedriver:
     enabled: true
     interval: 10s
     threshold: 3
+<%- if config.registry.auth_enabled -%>
 auth:
   token:
-    realm: http://127.0.0.1:3000/jwt/auth
+    realm: <%= "#{(config.https? ? 'https' : 'http')}://#{config.hostname}:#{config.port}/jwt/auth" %>
     service: container_registry
     issuer: gitlab-issuer
-    rootcertbundle: /root/certs/certbundle
+    rootcertbundle: /root/certs/localhost.crt
     autoredirect: false
+<%- end -%>
 validation:
   disabled: true
