@@ -91,7 +91,6 @@ touch-examples:
 	gitlab/config/unicorn.rb.example.development \
 	grafana/grafana.ini.example \
 	influxdb/influxdb.conf.example \
-	redis/redis.conf.example \
 	support/templates/*.erb
 
 unlock-dependency-installers:
