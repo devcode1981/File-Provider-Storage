@@ -10,15 +10,16 @@ describe GDK::Diagnostic do
 
     it 'contains only diagnostic classes' do
       diagnostic_classes = [
-        GDK::Diagnostic::Dependencies,
         GDK::Diagnostic::Version,
-        GDK::Diagnostic::Status,
+        GDK::Diagnostic::Configuration,
+        GDK::Diagnostic::Git,
+        GDK::Diagnostic::Dependencies,
         GDK::Diagnostic::PendingMigrations,
         GDK::Diagnostic::Geo,
-        GDK::Diagnostic::Configuration,
+        GDK::Diagnostic::Status
       ]
 
-      expect(described_class.all.map(&:class)).to include(*diagnostic_classes)
+      expect(described_class.all.map(&:class)).to eq(diagnostic_classes)
     end
   end
 end

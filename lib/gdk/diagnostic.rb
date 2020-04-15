@@ -13,7 +13,15 @@ require_relative 'diagnostic/git'
 module GDK
   module Diagnostic
     def self.all
-      klasses = constants - [:Base]
+      klasses = [
+          :Version,
+          :Configuration,
+          :Git,
+          :Dependencies,
+          :PendingMigrations,
+          :Geo,
+          :Status
+        ]
 
       klasses.map do |const|
         const_get(const).new
