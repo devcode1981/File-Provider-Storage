@@ -15,11 +15,11 @@ module Runit
   }.freeze
 
   def self.start_runsvdir
-    Dir.chdir($gdk_root)
+    Dir.chdir(GDK.root)
 
     runit_installed!
 
-    Runit::Config.new($gdk_root).render
+    Runit::Config.new(GDK.root).render
 
     # It is important that we use an absolute path with `runsvdir`: this
     # allows us to distinguish processes belonging to different GDK
@@ -51,7 +51,7 @@ module Runit
   end
 
   def self.runsvdir_base_args
-    ['runsvdir', '-P', File.join($gdk_root, 'services')]
+    ['runsvdir', '-P', GDK.root.join('services').to_s]
   end
 
   def self.runsvdir_pid(args)
@@ -119,7 +119,7 @@ module Runit
   end
 
   def self.sv(cmd, services)
-    Dir.chdir($gdk_root)
+    Dir.chdir(GDK.root)
     start_runsvdir
     services = service_args(services)
     services.each { |svc| wait_runsv!(svc) }
@@ -170,7 +170,7 @@ module Runit
   end
 
   def self.tail(services)
-    Dir.chdir($gdk_root)
+    Dir.chdir(GDK.root)
 
     tails = log_files(services).map do |log|
       # It looks like 'tail -F' is a non-standard flag that exists in GNU tail

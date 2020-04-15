@@ -2,7 +2,7 @@
 require 'socket'
 require 'fileutils'
 
-require_relative '../lib/gdk/config'
+require_relative '../lib/gdk'
 require_relative '../lib/gdk/postgresql'
 
 LOG_FILE = 'bootstrap-rails.log'.freeze
