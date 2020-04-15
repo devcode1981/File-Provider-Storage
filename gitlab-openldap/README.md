@@ -83,7 +83,7 @@ For testing of GitLab Enterprise Edition the following groups are created.
 
 ### Optional: disable anonymous binding
 
-The above config doesn't use a bind user, to keeps it as simple as possible.
+The above config doesn't use a bind user, to keep it as simple as possible.
 If you want to disable anonymous binding and require authentication:
 
 1. Run the following command:
