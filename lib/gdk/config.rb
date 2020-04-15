@@ -139,6 +139,9 @@ module GDK
 
         5000
       end
+
+      bool(:self_signed) { false }
+      bool(:auth_enabled) { true }
     end
 
     settings :object_store do
@@ -276,6 +279,7 @@ module GDK
     settings :runner do
       path(:config_file) { config.gdk_root.join('gitlab-runner-config.toml') }
       bool(:enabled) { !!read!(config.runner.config_file) }
+      string(:token) { 'DEFAULT TOKEN: Register your runner to get a valid token' }
     end
 
     settings :influxdb do
