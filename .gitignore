@@ -19,7 +19,7 @@ gitlab-development-kit/**
 /postgresql-primary
 /postgresql-replica/data
 /postgresql-replica/.s.*
-/redis/*.conf*
+/redis/*.conf
 .bundle/
 /.vagrant/
 /gitlab-pages/pkg

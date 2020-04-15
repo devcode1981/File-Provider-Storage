@@ -86,7 +86,6 @@ touch-examples:
 	gitlab/config/unicorn.rb.example.development \
 	grafana/grafana.ini.example \
 	influxdb/influxdb.conf.example \
-	redis/redis.conf.example \
 	registry/config.yml.example \
 	support/templates/*.erb
 
