@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'thread'
+
 module GDK
   module Command
     class Doctor
@@ -24,10 +26,20 @@ module GDK
       attr_reader :diagnostics, :stdout, :stderr
 
       def diagnostic_results
-        @diagnostic_results ||= diagnostics.each_with_object([]) do |diagnostic, results|
-          diagnostic.diagnose
-          results << diagnostic.message unless diagnostic.success?
+        @diagnostic_results ||= jobs.map { |x| x.join[:results] }.compact
+      end
+
+      def jobs
+        diagnostics.map do |diagnostic|
+          Thread.new do
+            Thread.current[:results] = perform_diagnosis_for(diagnostic)
+          end
         end
+      end
+
+      def perform_diagnosis_for(diagnostic)
+        diagnostic.diagnose
+        diagnostic.message unless diagnostic.success?
       end
 
       def start_necessary_services
