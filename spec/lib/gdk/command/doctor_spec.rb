@@ -12,12 +12,12 @@ describe GDK::Command::Doctor do
   subject { described_class.new(diagnostics: diagnostics, stdout: mock_stdout, stderr: mock_stderr) }
 
   before do
-    allow(subject).to receive(:gdk_start)
+    allow(subject).to receive(:start_necessary_services)
     allow(subject).to receive(:warning).and_return(warning_message)
   end
 
-  it 'starts gdk' do
-    expect(subject).to receive(:gdk_start)
+  it 'starts necessary services' do
+    expect(subject).to receive(:start_necessary_services)
     subject.run
   end
 

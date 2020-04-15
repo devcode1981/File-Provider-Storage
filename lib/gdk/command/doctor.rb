@@ -10,7 +10,7 @@ module GDK
       end
 
       def run
-        gdk_start
+        start_necessary_services
 
         if diagnostic_results.empty?
           show_healthy
@@ -30,8 +30,8 @@ module GDK
         end
       end
 
-      def gdk_start
-        Shellout.new('gdk start').run
+      def start_necessary_services
+        Shellout.new('gdk start postgresql').run
       end
 
       def show_healthy
