@@ -21,7 +21,8 @@ make clean default
 
 ## Configuring gitlab
 
-In `gitlab.yml` under `production:` and `ldap:`, change the following keys to the below values ([defaults: `gitlab/config/gitlab.yml.example`](https://gitlab.com/gitlab-org/gitlab/-/blob/master/config/gitlab.yml.example#L550-769):
+In `gitlab.yml` under `production:` and `ldap:`, change the following keys to the values
+given below (see [defaults](https://gitlab.com/gitlab-org/gitlab/-/blob/master/config/gitlab.yml.example#L550-769)):
 
 ```yaml
   enabled: true
@@ -36,7 +37,7 @@ In `gitlab.yml` under `production:` and `ldap:`, change the following keys to th
       group_base: 'ou=groups,dc=example,dc=com'  # Insert this
 ```
 
-alternative database (just using a different base)
+For an alternative database (just using a different base):
 
 ```yaml
 ldap:
@@ -57,25 +58,26 @@ ldap:
 ### Optional: disable anonymous binding
 
 The above config doesn't use a bind user, to keeps it as simple as possible.
-If you want to disable anonymous binding and require authentication run:
+If you want to disable anonymous binding and require authentication:
 
-```bash
-make disable_bind_anon
-```
+1. Run the following command:
 
-and update `gitlab.yml` also with the following credentials:
+   ```bash
+   make disable_bind_anon
+   ```
 
-```yaml
-ldap:
-  enabled: true
-  servers:
-    main:
-      # ...
-      bind_dn: 'cn=admin,dc=example,dc=com'
-      password: 'password'
-      #...
-```
+1. Update `gitlab.yml` also with the following:
 
+   ```yaml
+   ldap:
+     enabled: true
+     servers:
+       main:
+         # ...
+         bind_dn: 'cn=admin,dc=example,dc=com'
+         password: 'password'
+         #...
+   ```
 # TODO
 
 - integrate into the development kit
