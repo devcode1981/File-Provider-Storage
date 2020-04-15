@@ -81,7 +81,7 @@ module GDK
       pg_port = Config.new.postgresql.port
       args = ARGV.empty? ? ['-d', 'gitlabhq_development'] : ARGV
 
-      exec('psql', '-h', GDK.root.join('postgresql'), '-p', pg_port.to_s, *args, chdir: GDK.root)
+      exec('psql', '-h', GDK.root.join('postgresql').to_s, '-p', pg_port.to_s, *args, chdir: GDK.root)
     when 'redis-cli'
       exec('redis-cli', '-s', GDK::Config.new.redis_socket.to_s, *ARGV, chdir: GDK.root)
     when 'env'
