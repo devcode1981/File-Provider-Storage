@@ -16,7 +16,7 @@ Then run the daemon:
 
 ## Repopulate the database
 
-```
+```bash
 make clean default
 ```
 
