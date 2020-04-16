@@ -14,4 +14,4 @@ Then you just have to re-generate your Procfile by reconfiguring:
 gdk reconfigure
 ```
 
-With [auto devops enabled](./auto_devops.md), Mattermost will also be served over HTTPS through your QA tunnel.
+With [Auto DevOps enabled](auto_devops.md), Mattermost will also be served over HTTPS through your QA tunnel.

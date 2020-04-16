@@ -30,7 +30,7 @@ DevOps](./auto_devops.md) before following any steps in here.
   pointing to this IP address. Assuming you used `example.com` as the domain
   for Knative and the IP address is `1.2.3.4` then you need to create an `A`
   record like `*.example.com -> 1.2.3.4`.
-1. Now clone [this minimal example ruby
+1. Now clone [this minimal example Ruby
   app](https://gitlab.com/gitlab-org/cluster-integration/knative-examples/knative-ruby-app-kubectl)
   and push to your project to deploy a Knative service
 
@@ -38,7 +38,7 @@ DevOps](./auto_devops.md) before following any steps in here.
 
 Unfortunately we cannot use the same technique we use with Auto DevOps to avoid
 buying a domain name (ie. using `nip.io`) since the IP address loads after
-setting the hostname and we have no way to to update the hostname.
+setting the hostname and we have no way to update the hostname.
 
 Some other options for avoiding buying a domain name include:
 

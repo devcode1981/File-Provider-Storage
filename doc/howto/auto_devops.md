@@ -292,7 +292,7 @@ dramatically you can run everything on a VM on GCP. This will ensure that all
 data is staying inside Google's network and things move a lot faster.
 
 If you don't need a full-fledged application, consider testing with the
-[minimal-ruby-app](https://gitlab.com/auto-devops-examples/minimal-ruby-app) project
+[`minimal-ruby-app`](https://gitlab.com/auto-devops-examples/minimal-ruby-app) project
 which creates smaller docker images on the order of 20-50MB.
 
 ### Alternatives
@@ -554,4 +554,4 @@ Be sure to check out:
 - [Auto DevOps - Tips and Troubleshooting](doc/howto/auto_devops/tips_and_troubleshooting.md)
 - [Auto DevOps - Useful Commands](doc/howto/auto_devops/useful_commands.md)
 
-They might save you a lot of time time during work.
+They might save you a lot of time during work.
