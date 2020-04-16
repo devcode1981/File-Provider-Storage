@@ -15,6 +15,7 @@ Then run the daemon:
 ```
 
 ## Repopulate the database
+
 ```
 make clean default
 ```
@@ -104,6 +105,7 @@ If you want to disable anonymous binding and require authentication:
          password: 'password'
          #...
    ```
-# TODO
+
+## TODO
 
 - integrate into the development kit
