@@ -27,7 +27,7 @@ to learn how to develop GitLab CE.
 - [Simulate slow or broken repository storage](simulate_storage.md)
 - [PostgreSQL](postgresql.md)
 - [GitLab Geo](geo.md)
-- [LDAP](../../gitlab-openldap/README.md#set-up-an-openldap-server-for-gitlab-development)
+- [LDAP](ldap.md)
 - [Elasticsearch](elasticsearch.md)
 - [NFS](nfs.md)
 - [HTTPS](https.md)
