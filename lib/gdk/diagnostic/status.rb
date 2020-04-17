@@ -10,7 +10,7 @@ module GDK
         shell.run
         status = shell.read_stdout
 
-        @down_services = status.split("\n").select { |svc| svc.start_with?('down') }
+        @down_services = status.split("\n").select { |svc| svc.match?(/\Adown: .+, want up;.+\z/) }
       end
 
       def success?
@@ -19,7 +19,7 @@ module GDK
 
       def detail
         <<~MESSAGE
-          The following services are not running:
+          The following services are not running but should be:
 
           #{@down_services.join("\n")}
         MESSAGE
