@@ -6,32 +6,61 @@ environment.
 
 ## Installation
 
-1. Install OpenJDK 8 (Elasticsearch dependency)
+### Install OpenJDK 8 (Elasticsearch dependency)
 
-   - You can get a prebuilt OpenJDK Binary for free from [AdoptOpenJDK](https://adoptopenjdk.net)
-   - You can also install OpenJDK using [Homebrew](https://github.com/AdoptOpenJDK/homebrew-openjdk)
+- You can get a prebuilt OpenJDK Binary for free from [AdoptOpenJDK](https://adoptopenjdk.net).
+- You can also install OpenJDK using [Homebrew](https://github.com/AdoptOpenJDK/homebrew-openjdk):
 
-   ```shell
-   brew tap AdoptOpenJDK/openjdk
-   brew cask install adoptopenjdk8
+  ```shell
+  brew tap AdoptOpenJDK/openjdk
+  brew cask install adoptopenjdk8
+  ```
+
+### Enable Elasticsearch in the GDK
+
+The default version of Elasticsearch is automatically downloaded into your GDK root under `/elasticsearch`.
+
+To enable the service and make it run as part of `gdk start`:
+
+1. Add these lines to your [`gdk.yml`](configuration.md):
+
+   ```yaml
+   elasticsearch:
+     enabled: true
    ```
 
-1. Enable Elasticsearch in the GDK
+1. Run `gdk reconfigure`.
+1. Uncomment the `elasticsearch:` service in your `Procfile` file.
 
-   The correct version of Elasticsearch should already be installed into your GDK root under `/elasticsearch`.
+### Using other Elasticsearch versions
 
-   To make the service run as part of `gdk start`:
+The default Elasticsearch version is defined in [`lib/gdk/config.rb`](../../lib/gdk/config.rb).
 
-   1. Add these lines to your [`gdk.yml`](configuration.md):
+To use a different version:
 
-      ```yaml
-      elasticsearch:
-        enabled: true
-      ```
+1. Add the `version` and `checksum` keys to your [`gdk.yml`](configuration.md):
 
-   1. Run `gdk reconfigure`
+   ```yaml
+   elasticsearch:
+     enabled: true
+     version: 6.5.1
+     checksum: 5903e1913a7c96aad96a8227517c40490825f672
+   ```
 
-   1. Uncomment the `elasticsearch:` service in your `Procfile` file
+1. Delete your existing Elasticsearch installation (this will also remove all data):
+
+   ```shell
+   rm -r elasticsearch
+   ```
+
+1. Install the selected version:
+
+   ```shell
+   make elasticsearch-setup
+   ```
+
+**Note:** Starting with Elasticsearch 7.x, the download URLs have a different format which is not supported by our `Makefile` yet,
+see [this issue](https://gitlab.com/gitlab-org/gitlab-development-kit/-/issues/824).
 
 ## Setup
 
