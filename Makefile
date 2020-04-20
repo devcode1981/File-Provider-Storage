@@ -211,7 +211,7 @@ gitlab/public/uploads:
 	@echo "-------------------------------------------------------"
 	@echo "Generating Rails translations"
 	@echo "-------------------------------------------------------"
-	$(Q)cd ${gitlab_development_root}/gitlab && bundle exec rake gettext:compile > ${gitlab_development_root}/gitlab/log/gettext.log 2>&1
+	$(Q)cd ${gitlab_development_root}/gitlab && bundle exec rake gettext:compile > ${gitlab_development_root}/gitlab/log/gettext.log
 	$(Q)git -C ${gitlab_development_root}/gitlab checkout locale/*/gitlab.po
 	$(Q)touch $@
 
