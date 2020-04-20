@@ -5,7 +5,7 @@ require_relative 'config_settings'
 
 module GDK
   class Config < ConfigSettings
-    FILE = 'gdk.yml'
+    GDK_ROOT = Pathname.new(__dir__).parent.parent
 
     settings :repositories do
       string(:gitlab) { 'https://gitlab.com/gitlab-org/gitlab.git' }
@@ -25,7 +25,7 @@ module GDK
         .select { |d| Dir.exist?(d) }
     end
 
-    path(:gdk_root) { Pathname.new(__dir__).parent.parent }
+    path(:gdk_root) { GDK_ROOT }
 
     settings :gdk do
       bool(:ask_to_restart_after_update) { true }

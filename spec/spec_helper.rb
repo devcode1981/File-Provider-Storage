@@ -9,6 +9,7 @@ RSpec.configure do |config|
 
     # isolate configs for the testing environment
     allow(GDK).to receive(:root) { Pathname.new(temp_path) }
+    stub_const('GDK::Config::GDK_ROOT', '/home/git/gdk')
     stub_const('GDK::Config::FILE', 'gdk.example.yml')
   end
 end
