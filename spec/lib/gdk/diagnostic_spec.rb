@@ -10,6 +10,7 @@ describe GDK::Diagnostic do
 
     it 'contains only diagnostic classes' do
       diagnostic_classes = [
+        GDK::Diagnostic::RubyGems,
         GDK::Diagnostic::Version,
         GDK::Diagnostic::Configuration,
         GDK::Diagnostic::Git,
