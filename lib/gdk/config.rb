@@ -6,6 +6,7 @@ require_relative 'config_settings'
 module GDK
   class Config < ConfigSettings
     GDK_ROOT = Pathname.new(__dir__).parent.parent
+    FILE = File.join(GDK_ROOT, 'gdk.yml')
 
     settings :repositories do
       string(:gitlab) { 'https://gitlab.com/gitlab-org/gitlab.git' }
