@@ -305,5 +305,9 @@ module GDK
       string(:image) { 'mattermost/mattermost-preview' }
       integer(:local_port) { 8065 }
     end
+
+    settings :gitlab do
+      path(:dir) { config.gdk_root.join('gitlab') }
+    end
   end
 end

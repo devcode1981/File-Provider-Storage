@@ -32,6 +32,8 @@ gitaly:
   config_file: "/home/git/gdk/gitaly/gitaly.config.toml"
   internal_socket_dir: "/home/git/gdk/tmp/gitaly"
   log_dir: "/home/git/gdk/log/gitaly"
+gitlab:
+  dir: "/home/git/gdk/gitlab"
 gitlab_elasticsearch_indexer:
   auto_update: true
 gitlab_pages:
