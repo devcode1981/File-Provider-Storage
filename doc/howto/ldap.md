@@ -5,6 +5,7 @@ You can run an OpenLDAP daemon inside GDK if you want to work on GitLab LDAP int
 ## Getting it running
 
 ```bash
+cd <gdk-directory>/gitlab-openldap
 make # compile openldap and bootstrap an LDAP server to run out of slapd.d
 ```
 
