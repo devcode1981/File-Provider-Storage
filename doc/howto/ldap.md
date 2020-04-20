@@ -1,6 +1,6 @@
 # Set up an OpenLDAP server for GitLab development
 
-This is an attempt to set up an OpenLDAP server for GitLab development.
+You can run an OpenLDAP daemon inside GDK if you want to work on GitLab LDAP integration.
 
 ## Getting it running
 
