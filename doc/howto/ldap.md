@@ -39,12 +39,11 @@ given below (see [defaults](https://gitlab.com/gitlab-org/gitlab/-/blob/master/c
       group_base: 'ou=groups,dc=example,dc=com'  # Insert this
 ```
 
-For an alternative database (just using a different base):
+In GitLab EE, an alternative database can optionally be added as follows:
 
 ```yaml
-ldap:
-  enabled: true
-  servers:
+    main:
+      # ...
     alt:
       label: LDAP-alt
       host: 127.0.0.1
@@ -56,8 +55,6 @@ ldap:
       group_base: 'ou=groups,dc=example-alt,dc=com'
       admin_group: ''
 ```
-
-The second database is optional, and will only work with GitLab EE.
 
 The following users are added to the LDAP server:
 
