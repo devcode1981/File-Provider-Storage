@@ -15,12 +15,6 @@ Then run the daemon:
 ./run-slapd # stays attached in the current terminal
 ```
 
-## Repopulate the database
-
-```bash
-make clean default
-```
-
 ## Configuring GitLab
 
 In `gitlab.yml` under `production:` and `ldap:`, change the following keys to the values
@@ -79,6 +73,12 @@ For testing of GitLab Enterprise Edition the following groups are created.
 | group-10000-0 | `cn=group-10000-0,ou=groups,dc=example,dc=com`  | 10,000  | group-10000-1 |
 | group-a       | `cn=group-a,ou=groups,dc=example-alt,dc=com`    | 2       |               |
 | group-b       | `cn=group-b,ou=groups,dc=example-alt,dc=com`    | 1       |               |
+
+## Repopulate the database
+
+```bash
+make clean default
+```
 
 ### Optional: disable anonymous binding
 
