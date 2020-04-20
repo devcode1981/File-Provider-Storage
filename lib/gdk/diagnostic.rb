@@ -14,16 +14,16 @@ require_relative 'diagnostic/ruby_gems'
 module GDK
   module Diagnostic
     def self.all
-      klasses = [
-          :RubyGems,
-          :Version,
-          :Configuration,
-          :Git,
-          :Dependencies,
-          :PendingMigrations,
-          :Geo,
-          :Status
-        ]
+      klasses = %i[
+        RubyGems
+        Version
+        Configuration
+        Git
+        Dependencies
+        PendingMigrations
+        Geo
+        Status
+      ]
 
       klasses.map do |const|
         const_get(const).new

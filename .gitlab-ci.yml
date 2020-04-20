@@ -152,6 +152,8 @@ test:code_quality:
   artifacts:
     reports:
       codequality: [gl-code-quality-report.json]
+    paths:
+      - gl-code-quality-report.json
 
 test:container_scanning:
   extends:
