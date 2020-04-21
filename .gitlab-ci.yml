@@ -178,6 +178,13 @@ test:container_scanning:
   artifacts:
     paths: [gl-sast-container-report.json]
 
+test:shellcheck:
+  stage: test
+  extends: .rules:code-changes
+  image: koalaman/shellcheck-alpine:stable
+  script:
+    - shellcheck bin/* support/**/*
+
 .verify_job:
   stage: verify
   extends: .rules:code-changes
