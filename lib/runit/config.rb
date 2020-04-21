@@ -8,21 +8,6 @@ module Runit
 
     Service = Struct.new(:name, :command)
 
-    COLORS = {
-      red: '31',
-      green: '32',
-      yellow: '33',
-      blue: '34',
-      magenta: '35',
-      cyan: '36',
-      bright_red: '31;1',
-      bright_green: '32;1',
-      bright_yellow: '33;1',
-      bright_blue: '34;1',
-      bright_magenta: '35;1',
-      bright_cyan: '36;1'
-    }.freeze
-
     TERM_SIGNAL = {
       'webpack' => 'KILL'
     }.freeze
@@ -158,14 +143,16 @@ module Runit
       log_run_path = File.join(dir(service), 'log/run')
       write_file(log_run_path, ERB.new(log_run_template).result(binding), 0o755)
 
+      log_prefix = GDK::Output.ansi(GDK::Output.color(index))
       log_label = sprintf("%-#{max_service_length}s : ", service.name)
+      reset_color = GDK::Output.reset_color
 
       # See http://smarden.org/runit/svlogd.8.html#sect6 for documentation of the svlogd config file
       log_config_template = <<~TEMPLATE
         # zip old log files
         !gzip
         # custom log prefix for <%= service.name %>
-        p<%= ansi(color(index)) + log_label + ansi(0) %>
+        p<%= log_prefix + log_label + reset_color %>
         # keep at most 1 old log file
         n1
       TEMPLATE
@@ -187,14 +174,6 @@ module Runit
       FileUtils.mkdir_p(File.dirname(path))
       File.open(path, 'w') { |f| f.write(content) }
       File.chmod(perm, path)
-    end
-
-    def color(index)
-      COLORS.values[index % COLORS.size]
-    end
-
-    def ansi(code)
-      "\e[#{code}m"
     end
   end
 end
