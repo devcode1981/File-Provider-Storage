@@ -17,5 +17,5 @@ fi
 set -x
 
 mv ${old_workhorse_dir} gitlab-workhorse.new
-mv gitlab-workhorse $(date +.backups/gitlab-workhorse.%Y-%m-%d_%H.%M.%S)
+mv gitlab-workhorse "$(date +.backups/gitlab-workhorse.%Y-%m-%d_%H.%M.%S)"
 mv gitlab-workhorse.new gitlab-workhorse

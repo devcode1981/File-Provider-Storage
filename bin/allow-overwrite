@@ -2,7 +2,6 @@
 #
 # allow-overwrite is a helper for safe-sed
 #
-
 require_relative '../lib/gdk'
 
 abort 'Usage: allow-overwrite TARGET' unless ARGV.count == 1

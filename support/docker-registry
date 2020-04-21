@@ -9,12 +9,12 @@ if [[ "${registry_enabled}" == "true" ]]; then
     run_opts="--net host"
   fi
 
-  exec docker run --rm -p ${registry_port:-5000}:5000 ${run_opts} \
-      -v $(pwd)/registry/config.yml:/etc/docker/registry/config.yml \
-      -v $(pwd)/registry/storage:/var/lib/registry \
-      -v $(pwd)/localhost.crt:/root/certs/localhost.crt \
-      -v $(pwd)/registry_host.crt:/root/certs/registry_host.crt \
-      -v $(pwd)/registry_host.key:/root/certs/registry_host.key \
+  exec docker run --rm -p "${registry_port:-5000}":5000 "${run_opts}" \
+      -v "$(pwd)/registry/config.yml:/etc/docker/registry/config.yml" \
+      -v "$(pwd)/registry/storage:/var/lib/registry" \
+      -v "$(pwd)/localhost.crt:/root/certs/localhost.crt" \
+      -v "$(pwd)/registry_host.crt:/root/certs/registry_host.crt" \
+      -v "$(pwd)/registry_host.key:/root/certs/registry_host.key" \
       "${registry_image:-registry:2}"
 else
   echo "Docker registry disabled."
