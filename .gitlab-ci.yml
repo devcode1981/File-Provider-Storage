@@ -183,7 +183,7 @@ test:shellcheck:
   extends: .rules:code-changes
   image: koalaman/shellcheck-alpine:stable
   script:
-    - shellcheck bin/* support/**/*
+    - support/ci/shellcheck
 
 .verify_job:
   stage: verify
