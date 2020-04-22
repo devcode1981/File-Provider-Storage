@@ -32,21 +32,9 @@ module Runit
       @run_env ||= GDK::Config.new.dump_run_env!
     end
 
-    def render
+    def render(services: services_from_procfile)
       FileUtils.mkdir_p(services_dir)
       FileUtils.mkdir_p(log_dir)
-
-      services = File.read('Procfile').lines.map do |line|
-        line.chomp!
-        next if line.start_with?('#')
-
-        name, command = line.split(': ', 2)
-        next unless name && command
-
-        delete_exec_prefix!(name, command)
-
-        Service.new(name, command)
-      end.compact
 
       max_service_length = services.map { |svc| svc.name.size }.max
 
@@ -75,6 +63,20 @@ module Runit
     end
 
     private
+
+    def services_from_procfile
+      File.read('Procfile').lines.map do |line|
+        line.chomp!
+        next if line.start_with?('#')
+
+        name, command = line.split(': ', 2)
+        next unless name && command
+
+        delete_exec_prefix!(name, command)
+
+        Service.new(name, command)
+      end.compact
+    end
 
     def delete_exec_prefix!(service, command)
       exec_prefix = 'exec '

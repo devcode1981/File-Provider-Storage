@@ -19,7 +19,14 @@ module Runit
 
     runit_installed!
 
-    Runit::Config.new(GDK.root).render
+    config = GDK::Config.new
+    runit_config = Runit::Config.new(GDK.root)
+
+    if config.gdk.experimental.ruby_services?
+      runit_config.render(services: GDK::Services.all)
+    else
+      runit_config.render
+    end
 
     # It is important that we use an absolute path with `runsvdir`: this
     # allows us to distinguish processes belonging to different GDK
