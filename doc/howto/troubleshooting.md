@@ -610,7 +610,7 @@ If you still encounter some errors, see the troubleshooting FAQ below:
 
 ## Testing environment database problems
 
-There may be times when running spinach feature tests or rspec tests
+There may be times when running spinach feature tests or RSpec tests
 steps such as `sign-up` or `log-out` will fail for no apparent reason.
 
 In that case what you need to do is run the following command inside the `gitlab` directory:
