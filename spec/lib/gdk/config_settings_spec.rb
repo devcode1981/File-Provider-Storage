@@ -27,6 +27,13 @@ describe GDK::ConfigSettings do
       expect(config.foo).to be_falsy
     end
 
+    it 'accepts a bool?' do
+      described_class.bool(:foo) { 'false' }
+
+      expect { config.foo? }.not_to raise_error
+      expect(config.foo?).to be_falsy
+    end
+
     it 'fails on non-bool value' do
       described_class.bool(:foo) { 'hello' }
 
