@@ -17,3 +17,9 @@ AllCops:
     - 'grafana/**/*'
     - 'influxdb/**/*'
     - 'tmp/**/*'
+
+Rails:
+  Enabled: false
+
+RSpec/ContextWording:
+  Enabled: false
