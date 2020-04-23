@@ -33,21 +33,21 @@ module GDK
   # an exit code.
   def self.main
     if !install_root_ok? && ARGV.first != 'reconfigure'
-      puts <<-EOS.gsub(/^\s+\|/, '')
+      puts <<-GDK_MOVED.gsub(/^\s+\|/, '')
         |According to #{ROOT_CHECK_FILE} this gitlab-development-kit
         |installation was moved. Run 'gdk reconfigure' to update hard-coded
         |paths.
-      EOS
+      GDK_MOVED
       return false
     end
 
     case subcommand = ARGV.shift
     when 'run'
-      abort <<~MSG
+      abort <<~GDK_RUN_NO_MORE
         'gdk run' is no longer available; see doc/runit.md.
 
         Use 'gdk start', 'gdk stop', and 'gdk tail' instead.
-      MSG
+      GDK_RUN_NO_MORE
     when 'install'
       exec(MAKE, *ARGV, chdir: GDK.root)
     when 'update'

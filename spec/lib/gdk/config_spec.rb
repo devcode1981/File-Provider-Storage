@@ -172,7 +172,7 @@ describe GDK::Config do
 
     context 'when config_file exists' do
       let(:file_contents) do
-        <<~eos
+        <<~CONTENTS
         concurrent = 1
         check_interval = 0
 
@@ -197,7 +197,7 @@ describe GDK::Config do
           [runners.cache]
             [runners.cache.s3]
             [runners.cache.gcs]
-        eos
+        CONTENTS
       end
 
       it 'returns true' do

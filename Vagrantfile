@@ -46,7 +46,7 @@ required_plugins.each do |plugin|
   exec "vagrant #{ARGV.join(' ')}" if need_restart
 end
 
-$apt_reqs = <<EOT
+$apt_reqs = <<COMMANDS
   apt-add-repository -y ppa:rael-gc/rvm
   apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
   add-apt-repository -y ppa:longsleep/golang-backports
@@ -62,10 +62,10 @@ $apt_reqs = <<EOT
   apt-get -y install git graphicsmagick postgresql postgresql-contrib libpq-dev libimage-exiftool-perl redis-server libicu-dev cmake g++ nodejs libkrb5-dev curl ruby ed nginx libgmp-dev rvm yarn libre2-dev docker.io runit
   curl https://dl.min.io/server/minio/release/linux-amd64/minio --output /usr/local/bin/minio && chmod +x /usr/local/bin/minio
   apt-get -y upgrade
-EOT
+COMMANDS
 
 # Set up swap when using a full VM
-$swap_setup = <<EOT
+$swap_setup = <<COMMANDS
   # create a swapfile
   sudo fallocate -l 4G /swapfile
   sudo chmod 600 /swapfile
@@ -74,9 +74,9 @@ $swap_setup = <<EOT
   sudo swapon /swapfile
   # and on reboot
   echo '/swapfile   none    swap    sw    0   0' | sudo tee --append /etc/fstab
-EOT
+COMMANDS
 
-$user_setup = <<EOT
+$user_setup = <<COMMANDS
   DEV_USER=$(stat -c %U /vagrant)
   echo "$DEV_USER ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/$DEV_USER
   sudo addgroup $DEV_USER rvm
@@ -97,7 +97,7 @@ $user_setup = <<EOT
   echo '/vagrant' > /vagrant/.gdk-install-root
   sudo -u $DEV_USER -i bash -c "gem install gitlab-development-kit"
   sudo -u $DEV_USER -i bash -c "gdk trust /vagrant"
-EOT
+COMMANDS
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "shell", inline: $apt_reqs

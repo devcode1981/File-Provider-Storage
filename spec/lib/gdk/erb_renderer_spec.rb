@@ -6,9 +6,6 @@ describe GDK::ErbRenderer do
   let(:protected_config_files) { [] }
   let(:erb_file) { fixture_path.join('example.erb') }
   let(:out_file) { Pathname.new('tmp/example.out') }
-
-  subject(:renderer) { described_class.new(erb_file.to_s, out_file.to_s, config: config) }
-
   let(:config) { config_klass.new(yaml: { 'gdk' => { 'protected_config_files' => protected_config_files } }) }
 
   let(:config_klass) do
@@ -22,6 +19,8 @@ describe GDK::ErbRenderer do
       end
     end
   end
+
+  subject(:renderer) { described_class.new(erb_file.to_s, out_file.to_s, config: config) }
 
   before do
     allow(renderer).to receive(:wait!)

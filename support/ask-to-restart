@@ -10,7 +10,7 @@ def ask_to_restart?
 end
 
 def display_banner
-  puts <<~EOS
+  puts <<~RESTART
   -------------------------------------------------------
   Would you like to restart your GDK?
 
@@ -18,7 +18,7 @@ def display_banner
   interrupted if you say yes.
   -------------------------------------------------------
 
-  EOS
+  RESTART
 end
 
 def restart_gdk?

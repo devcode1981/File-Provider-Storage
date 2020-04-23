@@ -277,10 +277,10 @@ module GDK
           path(:address) { config.gdk_root.join("gitaly-praefect-#{i}.socket") }
           string(:config_file) { "gitaly/gitaly-#{i}.praefect.toml" }
           path(:log_dir) { config.gdk_root.join("log", "praefect-gitaly-#{i}") }
-          bool(:primary) { i == 0 }
+          bool(:primary) { i.zero? }
           string(:service_name) { "praefect-gitaly-#{i}" }
           string(:storage) { "praefect-internal-#{i}" }
-          path(:storage_dir) { i == 0 ? config.repositories_root : File.join(config.repositories_root, storage) }
+          path(:storage_dir) { i.zero? ? config.repositories_root : File.join(config.repositories_root, storage) }
           path(:internal_socket_dir) { config.gdk_root.join('tmp', 'praefect', "gitaly-#{i}") }
         end
       end

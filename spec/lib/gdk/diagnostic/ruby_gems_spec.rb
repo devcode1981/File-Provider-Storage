@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe GDK::Diagnostic::RubyGems do
   before do
-    stub_const('GDK::Diagnostic::RubyGems::GEMS_TO_CHECK', %w{bad_gem})
+    stub_const('GDK::Diagnostic::RubyGems::GEMS_TO_CHECK', %w[bad_gem])
   end
 
   describe '#diagnose' do

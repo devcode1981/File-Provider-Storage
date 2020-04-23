@@ -163,7 +163,7 @@ module Runit
 
     50.times do
       begin
-        open(File.join(dir, 'supervise/ok'), File::WRONLY | File::NONBLOCK).close
+        File.open(File.join(dir, 'supervise/ok'), File::WRONLY | File::NONBLOCK).close
       rescue StandardError
         sleep 0.1
         next
