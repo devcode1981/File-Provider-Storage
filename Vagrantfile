@@ -40,7 +40,7 @@ end
 required_plugins.each do |plugin|
   need_restart = false
   unless Vagrant.has_plugin? plugin
-    system "vagrant plugin install #{plugin}"
+    system('vagrant', 'plugin', 'install', plugin)
     need_restart = true
   end
   exec "vagrant #{ARGV.join(' ')}" if need_restart

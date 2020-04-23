@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require_relative '../lib/shellout'
+
 if ARGV.length != 2
   puts "Illegal number of parameters"
   exit 1
@@ -16,12 +18,17 @@ unless File.file?(config_file)
   exit 1
 end
 
+args = nil
+
 case host_os
 when /darwin/i
-  system(%(sed -E -i ".{#{timestamp}}.bak" "s/([# \\t]*)(port[ \\t]=[ \\t])([0-9]{4,6})/\\2#{postgres_port}/g" #{config_file}))
+  args = '-E'
 when /linux/i
-  system(%(sed -i".{#{timestamp}}.bak" -r "s/([# \\t]*)(port[ \\t]=[ \\t])([0-9]{4,6})/\\2#{postgres_port}/g" #{config_file}))
+  args = '-r'
 else
   puts "Unsupported platform: #{host_os.inspect}"
   exit 1
 end
+
+cmd = %(sed #{args} -i ".#{timestamp}.bak" "s/([# \\t]*)(port[ \\t]=[ \\t])([0-9]{4,6})/\\2#{postgres_port}/g" #{config_file})
+Shellout.new(cmd).run

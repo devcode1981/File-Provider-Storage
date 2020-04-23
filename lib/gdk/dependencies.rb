@@ -93,7 +93,9 @@ module GDK
       end
 
       def bundler_version_ok?
-        system("bundle _#{expected_bundler_version}_ --version >/dev/null 2>&1")
+        cmd = Shellout.new("bundle _#{expected_bundler_version}_ --version >/dev/null 2>&1")
+        cmd.try_run
+        cmd.success?
       end
 
       def alt_bundler_version_ok?
