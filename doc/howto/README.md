@@ -36,7 +36,7 @@ to learn how to develop GitLab CE.
 - [Git push options](git_push_options.md)
 - [Serverless (Knative)](serverless.md)
 - [Using GitLab Runner with GDK](runner.md)
-- [Using Prometheus with GDK](prometheus.md)
+- [Using Prometheus with GDK](prometheus/index.md)
 - [Using Container Registry with GDK](registry.md)
 - [Preview and test the docs site locally](gitlab_docs.md)
 - [Auto DevOps](auto_devops.md)
