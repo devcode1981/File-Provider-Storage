@@ -18,7 +18,7 @@ module GDK
   ROOT_CHECK_FILE = '.gdk-install-root'
   DEFAULT_INIT_DIRECTORY = File.join(Dir.pwd, 'gitlab-development-kit')
 
-  def self.launcher_main
+  def self.launcher_main # rubocop:disable Metrics/CyclomaticComplexity
     case ARGV.first
     when 'version'
       puts "GitLab Development Kit gem version #{GDK::GEM_VERSION}"

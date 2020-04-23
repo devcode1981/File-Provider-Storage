@@ -31,7 +31,7 @@ module GDK
 
   # This function is called from bin/gdk. It must return true/false or
   # an exit code.
-  def self.main
+  def self.main # rubocop:disable Metrics/CyclomaticComplexity
     if !install_root_ok? && ARGV.first != 'reconfigure'
       puts <<-GDK_MOVED.gsub(/^\s+\|/, '')
         |According to #{ROOT_CHECK_FILE} this gitlab-development-kit
