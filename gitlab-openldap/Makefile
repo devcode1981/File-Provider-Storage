@@ -1,9 +1,9 @@
 gitlab_openldap_root = $(shell pwd)
 
 default: slapd.d/bootstrap contents alt_contents
+large: default slapd.d/large-db
 
 contents: slapd.d/schema slapd.d/example-com
-large: slapd.d/schema slapd.d/example-com slapd.d/large-db
 alt_contents: slapd.d/schema slapd.d/alt-example-com
 
 slapd.d:

@@ -9,6 +9,12 @@ cd <gdk-directory>/gitlab-openldap
 make # compile openldap and bootstrap an LDAP server to run out of slapd.d
 ```
 
+We can also simulate a large instance with many users and groups:
+
+```bash
+make large
+```
+
 Then run the daemon:
 
 ```bash
