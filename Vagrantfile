@@ -9,9 +9,9 @@ VAGRANTFILE_API_VERSION = "2".freeze
 
 def enable_shares(config, nfs)
   # paths must be listed as shortest to longest per bug: https://github.com/GM-Alex/vagrant-winnfsd/issues/12#issuecomment-78195957
-  config.vm.synced_folder ".", "/vagrant", type: "rsync",
-                                          rsync__exclude: ['gitlab', 'postgresql', 'gitlab-shell', 'gitlab-runner', 'gitlab-workhorse'],
-                                          rsync__auto: false
+  config.vm.synced_folder ".", "/vagrant",  type: "rsync",
+                                            rsync__exclude: %w[gitlab postgresql gitlab-shell gitlab-runner gitlab-workhorse],
+                                            rsync__auto: false
   config.vm.synced_folder "gitlab/", "/vagrant/gitlab", create: true, nfs: nfs
   config.vm.synced_folder "go-gitlab-shell/", "/vagrant/go-gitlab-shell", create: true, nfs: nfs
   config.vm.synced_folder "gitlab-runner/", "/vagrant/gitlab-runner", create: true, nfs: nfs
@@ -24,9 +24,7 @@ def running_in_admin_mode?
   (`reg query HKU\\S-1-5-19 2>&1` =~ /ERROR/).nil?
 end
 
-if Vagrant::Util::Platform.windows? && !running_in_admin_mode?
-  raise Vagrant::Errors::VagrantError.new, "You must run the GitLab Vagrant from an elevated command prompt"
-end
+raise Vagrant::Errors::VagrantError.new, "You must run the GitLab Vagrant from an elevated command prompt" if Vagrant::Util::Platform.windows? && !running_in_admin_mode?
 
 required_plugins = %w[vagrant-share vagrant-disksize]
 required_plugins_non_windows = %w[facter]
@@ -148,7 +146,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
 
       # disables NFS on macOS to prevent UID / GID issues with mounted shares
-      enable_nfs = Vagrant::Util::Platform.platform =~ /darwin/ ? false : true
+      enable_nfs = /darwin/.match?(Vagrant::Util::Platform.platform) ? false : true
       enable_shares(override, enable_nfs)
     end
 

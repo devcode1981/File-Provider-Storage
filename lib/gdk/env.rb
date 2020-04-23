@@ -27,7 +27,7 @@ module GDK
 
       def exec_env(argv)
         # Use Kernel:: namespace to avoid recursive method call
-        Kernel::exec(env, *argv)
+        Kernel.exec(env, *argv)
       end
 
       def env
@@ -35,7 +35,7 @@ module GDK
         when 'gitaly'
           {
             'PGHOST' => config.postgresql.dir.to_s,
-            'PGPORT' => config.postgresql.port.to_s,
+            'PGPORT' => config.postgresql.port.to_s
           }
         else
           {}

@@ -28,7 +28,7 @@ describe GDK::Diagnostic::Git do
       it 'returns false' do
         stub_version('', success: false)
 
-        expect(subject.success?).to be_falsy
+        expect(subject).not_to be_success
       end
     end
 
@@ -39,7 +39,7 @@ describe GDK::Diagnostic::Git do
 
           stub_version(installed_version)
 
-          expect(subject.success?).to be_falsy
+          expect(subject).not_to be_success
         end
       end
 
@@ -49,7 +49,7 @@ describe GDK::Diagnostic::Git do
 
           stub_version(installed_version)
 
-          expect(subject.success?).to be_falsy
+          expect(subject).not_to be_success
         end
       end
 
@@ -59,7 +59,7 @@ describe GDK::Diagnostic::Git do
 
           stub_version(installed_version)
 
-          expect(subject.success?).to be_truthy
+          expect(subject).to be_success
         end
       end
 
@@ -69,7 +69,7 @@ describe GDK::Diagnostic::Git do
 
           stub_version(installed_version)
 
-          expect(subject.success?).to be_truthy
+          expect(subject).to be_success
         end
       end
     end

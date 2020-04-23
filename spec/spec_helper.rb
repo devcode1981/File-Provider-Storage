@@ -3,7 +3,7 @@
 require_relative '../lib/gdk'
 
 RSpec.configure do |config|
-  config.before(:each) do
+  config.before do
     allow($stdout).to receive(:puts)
     allow($stdout).to receive(:write)
 

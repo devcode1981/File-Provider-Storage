@@ -64,26 +64,24 @@ module GDK
     def dump!(file = nil)
       base_methods = ConfigSettings.new.methods
 
-      yaml = (methods - base_methods).sort.inject({}) do |hash, method|
+      yaml = (methods - base_methods).sort.each_with_object({}) do |method, hash|
         # If a config starts with a double underscore,
         # it's an internal config so don't dump it out
         next hash if method.to_s.start_with?('__')
 
         value = fetch(method)
-        if value.is_a?(ConfigSettings)
-          hash[method.to_s] = value.dump!
-        elsif value.is_a?(Enumerable) && value.first.is_a?(ConfigSettings)
-          hash[method.to_s] = value.map(&:dump!)
-        elsif value.is_a?(Pathname)
-          hash[method.to_s] = value.to_s
-        else
-          hash[method.to_s] = value
-        end
-
-        hash
+        hash[method.to_s] = if value.is_a?(ConfigSettings)
+                              value.dump!
+                            elsif value.is_a?(Enumerable) && value.first.is_a?(ConfigSettings)
+                              value.map(&:dump!)
+                            elsif value.is_a?(Pathname)
+                              value.to_s
+                            else
+                              value
+                            end
       end
 
-      file.puts(yaml.to_yaml) if file
+      file&.puts(yaml.to_yaml)
 
       yaml
     end
@@ -101,7 +99,7 @@ module GDK
     def cmd!(cmd)
       # Passing an array to IO.popen guards against sh -c.
       # https://gitlab.com/gitlab-org/gitlab/blob/master/doc/development/shell_commands.md#bypass-the-shell-by-splitting-commands-into-separate-tokens
-      raise ::ArgumentError.new('Command must be an array') unless cmd.is_a?(Array)
+      raise ::ArgumentError, 'Command must be an array' unless cmd.is_a?(Array)
 
       IO.popen(cmd, &:read).chomp
     end
@@ -136,11 +134,11 @@ module GDK
     end
 
     def fetch(slug, *args)
-      raise ::ArgumentError.new(%Q[Wrong number of arguments (#{args.count + 1} for 1..2)]) if args.count > 1
+      raise ::ArgumentError, %[Wrong number of arguments (#{args.count + 1} for 1..2)] if args.count > 1
 
       return public_send(slug) if respond_to?(slug)
 
-      raise SettingUndefined.new(%Q[Could not fetch the setting '#{slug}' in '#{self.slug || '<root>'}']) if args.empty?
+      raise SettingUndefined, %(Could not fetch the setting '#{slug}' in '#{self.slug || '<root>'}') if args.empty?
 
       args.first
     end

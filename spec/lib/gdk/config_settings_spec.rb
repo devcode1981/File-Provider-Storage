@@ -13,7 +13,7 @@ describe GDK::ConfigSettings do
     end
 
     it 'fails on non-array value' do
-      described_class.array(:foo) { %q[a b] }
+      described_class.array(:foo) { %q(a b) }
 
       expect { config.foo }.to raise_error(GDK::ConfigType::TypeError)
     end

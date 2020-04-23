@@ -9,4 +9,4 @@ end
 
 $pid = spawn(*ARGV)
 Process.wait($pid)
-exit $?.exitstatus
+exit $CHILD_STATUS.exitstatus

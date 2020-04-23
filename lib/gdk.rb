@@ -12,8 +12,8 @@ require_relative 'runit'
 autoload :Shellout, 'shellout'
 
 module GDK
-  PROGNAME = 'gdk'.freeze
-  MAKE = RUBY_PLATFORM =~ /bsd/ ? 'gmake' : 'make'
+  PROGNAME = 'gdk'
+  MAKE = RUBY_PLATFORM.match?(/bsd/) ? 'gmake' : 'make'
 
   # dependencies are always declared via autoload
   # this allows for any dependent project require only `lib/gdk`
@@ -156,8 +156,8 @@ module GDK
   def self.install_root_ok?
     expected_root = GDK.root.join(ROOT_CHECK_FILE).read.chomp
     Pathname.new(expected_root).realpath == GDK.root
-  rescue => ex
-    warn ex
+  rescue StandardError => e
+    warn e
     false
   end
 

@@ -32,8 +32,6 @@ def debug?
   ENV.fetch('GDK_DEBUG', 'false') == 'true'
 end
 
-if ARGV.count!= 3
-  abort "usage: #{PROGNAME} COMPONENT WORKTREE REVISION"
-end
+abort "usage: #{PROGNAME} COMPONENT WORKTREE REVISION" if ARGV.count != 3
 
 main(*ARGV)

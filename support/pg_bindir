@@ -4,7 +4,7 @@ require 'pathname'
 
 require_relative '../lib/shellout.rb'
 
-POSTGRESQL_VERSIONS = [ 11, 10, 9.6 ].freeze
+POSTGRESQL_VERSIONS = [11, 10, 9.6].freeze
 
 def brew_linked_discover
   dirname_if_exists_for('/usr/local/bin/postgres')
@@ -36,7 +36,7 @@ end
 def pg_config_discover
   Shellout.new(%w[pg_config --bindir]).run
 rescue Errno::ENOENT
-  return nil
+  nil
 end
 
 def dirname_if_exists_for(path)
@@ -49,7 +49,6 @@ end
 
 dir = (brew_linked_discover || brew_symlink_discover || brew_cellar_discover || pg_config_discover)
 
-fail('ERROR: Unable to determine PostgreSQL bin directory') unless dir
+raise('ERROR: Unable to determine PostgreSQL bin directory') unless dir
 
 puts dir
-

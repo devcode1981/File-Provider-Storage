@@ -17,11 +17,11 @@ unless File.file?(config_file)
 end
 
 case host_os
-  when /darwin/i
-    system(%Q(sed -E -i ".{#{timestamp}}.bak" "s/([# \\t]*)(port[ \\t]=[ \\t])([0-9]{4,6})/\\2#{postgres_port}/g" #{config_file}))
-  when /linux/i
-    system(%Q(sed -i".{#{timestamp}}.bak" -r "s/([# \\t]*)(port[ \\t]=[ \\t])([0-9]{4,6})/\\2#{postgres_port}/g" #{config_file}))
-  else
-    puts "Unsupported platform: #{host_os.inspect}"
-    exit 1
+when /darwin/i
+  system(%(sed -E -i ".{#{timestamp}}.bak" "s/([# \\t]*)(port[ \\t]=[ \\t])([0-9]{4,6})/\\2#{postgres_port}/g" #{config_file}))
+when /linux/i
+  system(%(sed -i".{#{timestamp}}.bak" -r "s/([# \\t]*)(port[ \\t]=[ \\t])([0-9]{4,6})/\\2#{postgres_port}/g" #{config_file}))
+else
+  puts "Unsupported platform: #{host_os.inspect}"
+  exit 1
 end

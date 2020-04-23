@@ -24,11 +24,9 @@ end
 def restart_gdk?
   print "Restart GDK (will timeout after #{PROMPT_TIMEOUT} secs) [y/N]? "
 
-  if select([$stdin], nil, nil, PROMPT_TIMEOUT)
-    return gets.to_s.chomp.downcase == 'y'
-  end
+  return gets.to_s.chomp.casecmp('y').zero? if select([$stdin], nil, nil, PROMPT_TIMEOUT)
 
-  puts  # so keep the same formatting
+  puts # so keep the same formatting
   false
 end
 

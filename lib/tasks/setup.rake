@@ -3,7 +3,7 @@ task 'preflight-checks' do
   checker = GDK::Dependencies::Checker.new
   checker.check_all
 
-  if !checker.error_messages.empty?
+  unless checker.error_messages.empty?
     warn checker.error_messages
     exit 1
   end

@@ -4,6 +4,7 @@ def main
 
   loop do
     break unless pid_running?(daemon_pid)
+
     sleep 1
   end
 end

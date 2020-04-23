@@ -10,7 +10,7 @@ describe GDK::Config do
       'auto_devops' => { 'enabled' => auto_devops_enabled },
       'gdk' => { 'protected_config_files' => protected_config_files, 'overwrite_changes' => overwrite_changes },
       'nginx' => { 'enabled' => nginx_enabled },
-      'hostname' => 'gdk.example.com',
+      'hostname' => 'gdk.example.com'
     }
   end
 
@@ -83,9 +83,9 @@ describe GDK::Config do
 
   describe '#dump_config!' do
     it 'successfully dumps the config' do
-      expect {
+      expect do
         expect(config.dump!).to be_a_kind_of(Hash)
-      }.not_to raise_error
+      end.not_to raise_error
     end
   end
 

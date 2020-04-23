@@ -12,7 +12,7 @@ describe GDK::Diagnostic::Geo do
 
         subject.diagnose
 
-        expect(subject.success?).to be_truthy
+        expect(subject).to be_success
       end
     end
 
@@ -27,7 +27,7 @@ describe GDK::Diagnostic::Geo do
 
           subject.diagnose
 
-          expect(subject.success?).to be_falsey
+          expect(subject).not_to be_success
         end
       end
 
@@ -37,7 +37,7 @@ describe GDK::Diagnostic::Geo do
 
           subject.diagnose
 
-          expect(subject.success?).to be_truthy
+          expect(subject).to be_success
         end
       end
     end
@@ -51,13 +51,13 @@ describe GDK::Diagnostic::Geo do
     context 'when #diagnose has not yet be run' do
       let(:success) { nil }
 
-      it { is_expected.to_not be_success }
+      it { is_expected.not_to be_success }
     end
 
     context 'when #diagnose is unsuccessful' do
       let(:success) { false }
 
-      it { is_expected.to_not be_success }
+      it { is_expected.not_to be_success }
     end
 
     context 'when #diagnose is successful' do
