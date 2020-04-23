@@ -126,7 +126,7 @@ module GDK
     #
     # @param count [Integer] the number of settings in the array
     def settings_array!(count, &blk)
-      count.times.map do |i|
+      count.times.map do |i| # rubocop:disable Performance/TimesMap
         subconfig!(i) do
           instance_exec(i, &blk)
         end
@@ -136,7 +136,9 @@ module GDK
     def fetch(slug, *args)
       raise ::ArgumentError, %[Wrong number of arguments (#{args.count + 1} for 1..2)] if args.count > 1
 
+      # rubocop:disable GitlabSecurity/PublicSend
       return public_send(slug) if respond_to?(slug)
+      # rubocop:enable GitlabSecurity/PublicSend
 
       raise SettingUndefined, %(Could not fetch the setting '#{slug}' in '#{self.slug || '<root>'}') if args.empty?
 

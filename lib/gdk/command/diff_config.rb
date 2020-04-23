@@ -38,7 +38,7 @@ module GDK
         end
       end
 
-      private
+      private # rubocop:disable Lint/UselessAccessModifier
 
       class ConfigDiff
         attr_reader :file, :output, :make_output
