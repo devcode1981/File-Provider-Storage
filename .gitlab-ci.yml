@@ -128,8 +128,8 @@ test:rspec:
   image: ruby:2.6
   stage: test
   script:
-    - gem install rspec rspec_junit_formatter
-    - rspec --format progress --format RspecJunitFormatter --out rspec.xml
+    - bundle install --jobs 4
+    - bundle exec rspec --format progress --format RspecJunitFormatter --out rspec.xml
   artifacts:
     paths:
       - rspec.xml
