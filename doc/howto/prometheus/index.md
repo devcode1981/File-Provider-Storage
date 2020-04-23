@@ -285,3 +285,9 @@ the GDK, the process is simpler:
    status at
    [http://localhost:9090/targets](http://localhost:9090/targets). Once the
    `gitlab` target has been scraped once, its metrics are ready for querying.
+
+## Third-party integrations
+
+We support metric integrations from third-parties, such as Grafana. [Product documentation](https://docs.gitlab.com/ee/user/project/integrations/prometheus.html#embedding-grafana-charts).
+
+For instructions of how to use this functionality in GDK, see [Accessing Prometheus via external services](third_party_access.md).
