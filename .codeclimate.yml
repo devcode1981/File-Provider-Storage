@@ -10,8 +10,6 @@ engines:
   rubocop:
     enabled: true
     channel: rubocop-0-59
-    config:
-      file: gdk-rubocop.yml
   shellcheck:
     enabled: true
 ratings:
