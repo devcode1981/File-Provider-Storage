@@ -45,6 +45,7 @@ module GDK
       end
       trust!(ARGV[1])
     else
+      # rubocop:disable Style/GlobalVars
       $gdk_root = find_root(Dir.pwd)
       if $gdk_root.nil?
         warn <<~NOT_A_GDK_DIR
@@ -58,6 +59,7 @@ module GDK
         NOT_A_GDK_DIR
         return false
       end
+
       warn "(in #{$gdk_root})"
 
       unless trusted?($gdk_root)
@@ -73,6 +75,7 @@ module GDK
       end
 
       load(File.join($gdk_root, 'lib/gdk.rb'))
+      # rubocop:enable Style/GlobalVars
       GDK.main
     end
   end

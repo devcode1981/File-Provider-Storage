@@ -165,6 +165,6 @@ module GDK
   #
   # @return [Pathname] path to GDK base directory
   def self.root
-    Pathname.new($gdk_root || Pathname.new(__dir__).parent)
+    Pathname.new($gdk_root || Pathname.new(__dir__).parent) # rubocop:disable Style/GlobalVars
   end
 end

@@ -46,7 +46,7 @@ required_plugins.each do |plugin|
   exec "vagrant #{ARGV.join(' ')}" if need_restart
 end
 
-$apt_reqs = <<COMMANDS
+$apt_reqs = <<COMMANDS # rubocop:disable Style/GlobalVars
   apt-add-repository -y ppa:rael-gc/rvm
   apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
   add-apt-repository -y ppa:longsleep/golang-backports
@@ -65,7 +65,7 @@ $apt_reqs = <<COMMANDS
 COMMANDS
 
 # Set up swap when using a full VM
-$swap_setup = <<COMMANDS
+$swap_setup = <<COMMANDS # rubocop:disable Style/GlobalVars
   # create a swapfile
   sudo fallocate -l 4G /swapfile
   sudo chmod 600 /swapfile
@@ -76,7 +76,7 @@ $swap_setup = <<COMMANDS
   echo '/swapfile   none    swap    sw    0   0' | sudo tee --append /etc/fstab
 COMMANDS
 
-$user_setup = <<COMMANDS
+$user_setup = <<COMMANDS # rubocop:disable Style/GlobalVars
   DEV_USER=$(stat -c %U /vagrant)
   echo "$DEV_USER ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/$DEV_USER
   sudo addgroup $DEV_USER rvm
@@ -100,8 +100,10 @@ $user_setup = <<COMMANDS
 COMMANDS
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # rubocop:disable Style/GlobalVars
   config.vm.provision "shell", inline: $apt_reqs
   config.vm.provision "shell", inline: $user_setup
+  # rubocop:enable Style/GlobalVars
   unless Vagrant::Util::Platform.windows?
     # NFS setup
     config.vm.network "private_network", type: "dhcp"
@@ -154,7 +156,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     mem = [mem / 4, 6144].max
 
     # Set up swap
-    override.vm.provision "shell", inline: $swap_setup
+    override.vm.provision "shell", inline: $swap_setup # rubocop:disable Style/GlobalVars
 
     # performance tweaks
     # per https://www.virtualbox.org/manual/ch03.html#settings-processor set cpus to real cores, not hyperthreads
