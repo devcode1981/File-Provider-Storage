@@ -47,3 +47,5 @@ openldap-2.4.44:
 sbin/slapadd: openldap-2.4.44
 	cd openldap-2.4.44 && ./configure --prefix=${gitlab_openldap_root} --enable-bdb=no --enable-hdb=no
 	cd openldap-2.4.44 && make -j 2 install
+
+.PHONY: clean default large contents alt_contents disable_bind_anon
