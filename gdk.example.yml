@@ -150,6 +150,8 @@ username: git
 webpack:
   host: 127.0.0.1
   port: 3808
+  vendor_dll: false
+  static: false
 workhorse:
   auto_update: true
   configured_port: 3333
