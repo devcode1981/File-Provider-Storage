@@ -4,46 +4,47 @@ module GDK
   module Diagnostic
     class RubyGems < Base
       TITLE = 'Ruby Gems'
+      GEMS_TO_CHECK = %w[ffi].freeze
 
       def diagnose
         # no-op
       end
 
       def success?
-        ffi_ok?
+        failed_to_load_gems.empty?
       end
 
       def detail
-        return ffi_load_error_message unless ffi_ok?
+        return error_message unless failed_to_load_gems.empty?
       end
 
       private
 
-      def ffi_load_error_message
-        return if ffi_ok?
-
-        <<~MESSAGE
-        The ffi Ruby gem has issues:
-
-        #{ffi_load_error}
-
-        Try running the following to fix:
-
-        gem pristine ffi
-        MESSAGE
-      end
-
-      def ffi_ok?
-        ffi_load_error.nil?
-      end
-
-      def ffi_load_error
-        @ffi_load_error ||= begin
-          require 'ffi'
-          nil
-        rescue LoadError => e
-          e.message
+      def failed_to_load_gems
+        @failed_to_load_gems ||= begin
+          GEMS_TO_CHECK.reject do |name|
+            gem_ok?(name)
+          end
         end
+      end
+
+      def gem_ok?(name)
+        require name
+        true
+      rescue LoadError
+        false
+      end
+
+      def error_message
+        <<~MESSAGE
+          The following Ruby Gems have issues:
+
+          #{@failed_to_load_gems.join("\n")}
+
+          Try running the following to fix:
+
+          gem pristine #{@failed_to_load_gems.join(' ')}
+        MESSAGE
       end
     end
   end

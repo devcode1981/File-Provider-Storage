@@ -32,7 +32,7 @@ describe GDK::Diagnostic::RubyGems do
       it 'returns a message' do
         allow_any_instance_of(described_class).to receive(:require).with('ffi').and_raise(LoadError, 'failed to load')
 
-        expect(subject.detail).to match(/The ffi Ruby gem has issues/)
+        expect(subject.detail).to match(/gem pristine ffi/)
       end
     end
 
