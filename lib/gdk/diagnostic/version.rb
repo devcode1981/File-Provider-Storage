@@ -6,19 +6,29 @@ module GDK
       TITLE = 'GDK Version'
 
       def diagnose
-        @gdk_master = `git show-ref refs/remotes/origin/master -s --abbrev`
-        @head = `git rev-parse --short HEAD`
+        fetch
       end
 
       def success?
-        @head == @gdk_master
+        !behind_origin_master?
       end
 
       def detail
-        <<~MESSAGE
-          An update for GDK is available. Unless you are developing on GDK itself,
-          consider updating GDK with `gdk update`.
-        MESSAGE
+        "An update for GDK is available."
+      end
+
+      private
+
+      def fetch
+        run(%w[git fetch])
+      end
+
+      def behind_origin_master?
+        run(%w[git rev-list --left-only --count origin/master...@]).to_i > 0
+      end
+
+      def run(cmd)
+        Shellout.new(cmd, chdir: config.gdk_root).run
       end
     end
   end

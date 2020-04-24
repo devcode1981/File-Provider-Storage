@@ -197,4 +197,12 @@ describe GDK::Config do
       end
     end
   end
+
+  describe 'gitlab' do
+    describe '#dir' do
+      it 'returns the GitLab directory' do
+        expect(config.gitlab.dir).to eq(Pathname.new('/home/git/gdk/gitlab'))
+      end
+    end
+  end
 end

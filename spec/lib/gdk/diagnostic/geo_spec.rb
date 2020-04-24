@@ -3,36 +3,28 @@
 require 'spec_helper'
 
 describe GDK::Diagnostic::Geo do
-  let(:gdk_config) { double('GDK::Config', gdk_root: Pathname.new('/tmp/non-existent-dir')) }
-  let(:non_existent_database_geo_yml_file) { '/tmp/non-existent-dir/gitlab/config/database_geo.yml' }
-
-  before do
-    allow(GDK::Config).to receive(:new).and_return(gdk_config)
-  end
+  let(:database_geo_yml_file) { '/home/git/gdk/gitlab/config/database_geo.yml' }
 
   describe '#diagnose' do
-    context "when Geo YML file doesn't exist" do
+    context "when Geo database YAML file doesn't exist" do
       it 'sets @success to true' do
+        stub_database_geo_yml_file(false)
+
         subject.diagnose
 
         expect(subject.success?).to be_truthy
       end
     end
 
-    context 'when Geo YML file does exist' do
-      let(:geo_enabled) { nil }
-
+    context 'when Geo database YAML file does exist' do
       before do
-        gdk_geo_config = double('geo config', enabled: geo_enabled)
-
-        allow(gdk_config).to receive(:geo).and_return(gdk_geo_config)
-        allow(File).to receive(:exist?).with(non_existent_database_geo_yml_file).and_return(true)
+        stub_database_geo_yml_file(true)
       end
 
       context 'and geo.enabled is set to false' do
-        let(:geo_enabled) { false }
-
         it 'sets @success to false' do
+          stub_geo_enabled(false)
+
           subject.diagnose
 
           expect(subject.success?).to be_falsey
@@ -40,9 +32,9 @@ describe GDK::Diagnostic::Geo do
       end
 
       context 'and geo.enabled is set to true' do
-        let(:geo_enabled) { true }
-
         it 'sets @success to true' do
+          stub_geo_enabled(true)
+
           subject.diagnose
 
           expect(subject.success?).to be_truthy
@@ -78,16 +70,26 @@ describe GDK::Diagnostic::Geo do
   describe '#detail' do
     it 'returns a message advising how to detail with the situation' do
       expected_detail = <<~MESSAGE
-        #{non_existent_database_geo_yml_file} exists but
+        #{database_geo_yml_file} exists but
         geo.enabled is not set to true in your gdk.yml.
 
         Either update your gdk.yml to set geo.enabled to true or remove
-        #{non_existent_database_geo_yml_file}
+        #{database_geo_yml_file}
 
         https://gitlab.com/gitlab-org/gitlab-development-kit/blob/master/doc/howto/geo.md
       MESSAGE
 
       expect(subject.detail).to eq(expected_detail)
     end
+  end
+
+  def stub_database_geo_yml_file(exists)
+    allow(File).to receive(:exist?).and_call_original
+    allow(File).to receive(:exist?).with(database_geo_yml_file).and_return(exists)
+  end
+
+  def stub_geo_enabled(enabled)
+    gdk_geo_config = double('geo config', enabled: enabled)
+    allow_any_instance_of(GDK::Config).to receive(:geo).and_return(gdk_geo_config)
   end
 end

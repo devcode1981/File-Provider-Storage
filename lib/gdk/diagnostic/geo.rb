@@ -36,7 +36,7 @@ module GDK
       end
 
       def database_geo_yml_file
-        config.gdk_root.join('gitlab', 'config', 'database_geo.yml').expand_path.to_s
+        @database_geo_yml_file ||= config.gitlab.dir.join('config', 'database_geo.yml').expand_path.to_s
       end
 
       def database_geo_yml_exists?
