@@ -83,6 +83,7 @@ For testing of GitLab Enterprise Edition the following groups are created.
 ## Repopulate the database
 
 ```bash
+cd <gdk-directory>/gitlab-openldap
 make clean default
 ```
 
