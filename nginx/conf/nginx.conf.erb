@@ -62,7 +62,7 @@ http {
   server {
     listen <%= config.nginx.listen %>:<%= config.nginx.http.port %>;
 
-    return 301 https://$host$request_uri;
+    return 301 https://$host:<%= config.port %>$request_uri;
   }
 <%   end %>
 <% end %>
