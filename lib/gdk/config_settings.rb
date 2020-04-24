@@ -25,6 +25,7 @@ module GDK
 
       def bool(name, &blk)
         setting(name, ConfigType::Bool, &blk)
+        alias_method "#{name}?", name
       end
 
       def integer(name, &blk)
