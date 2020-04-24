@@ -38,7 +38,7 @@ http {
   }
 
   server {
-    listen <%= config.nginx.listen %>:<%= config.port %><%= ' ssl' if config.https? %>
+    listen <%= config.nginx.listen %>:<%= config.port %><%= ' ssl' if config.https? %><%= ' http2' if config.https? && config.nginx.http2? %>;
 <%- if config.https? -%>
 
     ssl_certificate <%= config.gdk_root.join(config.nginx.ssl.certificate) %>;

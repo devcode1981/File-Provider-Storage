@@ -99,6 +99,25 @@ ensures your browser and OS trust the certificate.
 mkcert gdk.test
 ```
 
+## Update `gdk.yml` for HTTP/2 (optional)
+
+Place the following settings in your `gdk.yml`:
+
+```yaml
+---
+hostname: gdk.test
+port: 3443
+https:
+  enabled: true
+nginx:
+  enabled: true
+  http2:
+    enabled: true
+  ssl:
+    certificate: gdk.test.pem
+    key: gdk.test-key.pem
+```
+
 ## Configure GDK
 
 Run the following to apply these changes:

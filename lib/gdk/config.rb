@@ -209,6 +209,9 @@ module GDK
         bool(:enabled) { false }
         integer(:port) { 8080 }
       end
+      settings :http2 do
+        bool(:enabled) { false }
+      end
     end
 
     settings :postgresql do

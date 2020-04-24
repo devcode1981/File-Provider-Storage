@@ -59,6 +59,8 @@ nginx:
   http:
     enabled: false
     port: 8080
+  http2:
+    enabled: false
   listen: 127.0.0.1
   ssl:
     certificate: localhost.crt
