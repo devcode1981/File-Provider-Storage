@@ -207,7 +207,7 @@ module GDK
       end
       settings :http do
         bool(:enabled) { false }
-        integer(:port) { 80 }
+        integer(:port) { 8080 }
       end
     end
 
