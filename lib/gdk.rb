@@ -50,15 +50,15 @@ module GDK
       exec(MAKE, *ARGV, chdir: GDK.root)
     when 'update'
       # Otherwise we would miss it and end up in a weird state.
-      puts "-------------------------------------------------------"
+      puts_separator
       puts "Running `make self-update`.."
-      puts "-------------------------------------------------------"
+      puts_separator
       puts "Running separately in case the Makefile is updated.\n"
       system(MAKE, 'self-update', chdir: GDK.root)
 
-      puts "\n-------------------------------------------------------"
+      puts
+      puts_separator
       puts "Running `make self-update update`.."
-      puts "-------------------------------------------------------"
       exec(MAKE, 'self-update', 'update', chdir: GDK.root)
     when 'diff-config'
       GDK::Command::DiffConfig.new.run
@@ -122,6 +122,10 @@ module GDK
       GDK::Output.notice "See 'gdk help' for more detail."
       false
     end
+  end
+
+  def self.puts_separator
+    puts "-------------------------------------------------------"
   end
 
   def self.install_root_ok?
