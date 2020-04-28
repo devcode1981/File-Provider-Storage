@@ -31,21 +31,23 @@ depends on our infrastructure. For non-GitLab team members you can see
    `Host qa-tunnel.gitlab.info` if you have one:
 
    ```plaintext
-   Host qa-tunnel.gitlab.info
+   Match host "qa-tunnel.gitlab.info" exec "sft resolve -q %h"
      ProxyCommand "sft" proxycommand  %h
    ```
 
+1. Run `sft login`. This will open a web browser window requiring a login to
+   Okta and clicking an **Approve** button.
+
+   By default, you will remain logged in for 9 hours and will have to re-run
+   `sft login` after that. SSH requests from your GDK will fail silently
+   until you do. Administrators can change the session expiration time on the ASA
+   dashboard.
 1. Verify you have `ssh` access into `qa-tunnel.gitlab.info`:
 
    ```shell
    $ ssh qa-tunnel.gitlab.info
    > Welcome to Ubuntu 16.04.4 LTS (GNU/Linux 4.13.0-1019-gcp x86_64)
    ```
-
-   On first try (and occasionally thereafter as Okta chooses) this will open a web
-   browser window requiring a login to Okta and clicking an **Approve** button. When
-   this log in works and you can get a shell on the server, you can proceed to the next
-   step.
 
 1. Set up the GDK for your workstation following [the preparation
    instructions](../prepare.md) and [setup instructions](../set-up-gdk.md)
