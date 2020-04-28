@@ -131,6 +131,14 @@ Run `gitlab-runner register --run-untagged --config <path-to-gdk>/gitlab-runner-
 The Runner will write its configuration file to `gitlab-runner-config.toml`,
 which is in GDK's `.gitignore` file.
 
+To ensure the Runner token persists between subsequent runs of `gdk reconfigure`, add
+the token to your `gdk.yml` file:
+
+```yaml
+runner:
+  token: <runner-token>
+```
+
 If Docker is installed and you followed the special setup instructions above,
 choose `docker` as the executor. Otherwise, choose `shell` - but remember that
 builds will then be run directly on the host computer! Don't use random
