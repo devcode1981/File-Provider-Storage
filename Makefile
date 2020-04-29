@@ -125,9 +125,7 @@ ensure-databases-running: Procfile postgresql/data gitaly-setup
 
 gitlab-setup: gitlab/.git .ruby-version gitlab-config .gitlab-bundle .gitlab-yarn .gettext
 
-gitlab-update: ensure-databases-running postgresql gitlab/.git/pull gitlab-setup
-	$(Q)cd ${gitlab_development_root}/gitlab && \
-		bundle exec rake db:migrate db:test:prepare
+gitlab-update: ensure-databases-running postgresql gitlab/.git/pull gitlab-setup gitlab-db-migrate
 
 gitlab/.git/pull:
 	@echo
@@ -139,6 +137,14 @@ gitlab/.git/pull:
 		git stash ${QQ} && \
 		git checkout master ${QQ} && \
 		git pull --ff-only ${QQ}
+
+gitlab-db-migrate:
+	@echo
+	@echo "-------------------------------------------------------"
+	@echo "Processing gitlab-org/gitlab Rails DB migrations"
+	@echo "-------------------------------------------------------"
+	$(Q)cd ${gitlab_development_root}/gitlab && \
+		bundle exec rake db:migrate db:test:prepare
 
 .ruby-version:
 	$(Q)ln -s ${gitlab_development_root}/gitlab/.ruby-version ${gitlab_development_root}/$@
