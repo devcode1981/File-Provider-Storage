@@ -219,4 +219,30 @@ describe GDK::Config do
       end
     end
   end
+
+  describe 'registry' do
+    describe '#external_port' do
+      it 'returns 5000' do
+        expect(config.registry.external_port).to eq(5000)
+      end
+    end
+
+    describe '#api_host' do
+      it 'returns the default hostname' do
+        expect(config.registry.api_host).to eq('gdk.example.com')
+      end
+    end
+
+    describe '#tunnel_host' do
+      it 'returns the default hostname' do
+        expect(config.registry.tunnel_host).to eq('gdk.example.com')
+      end
+    end
+
+    describe '#tunnel_port' do
+      it 'returns 5000' do
+        expect(config.registry.tunnel_port).to eq(5000)
+      end
+    end
+  end
 end

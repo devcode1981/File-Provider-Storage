@@ -114,6 +114,9 @@ registry:
   enabled: false
   external_port: 5000
   host: 127.0.0.1
+  api_host: 127.0.0.1
+  tunnel_host: 127.0.0.1
+  tunnel_port: 5000
   image: registry:2
   port: 5000
   self_signed: false
