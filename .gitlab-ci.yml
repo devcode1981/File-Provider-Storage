@@ -152,6 +152,8 @@ test:code_quality:
   artifacts:
     reports:
       codequality: [gl-code-quality-report.json]
+    paths:
+      - gl-code-quality-report.json
 
 test:container_scanning:
   extends:
@@ -175,6 +177,13 @@ test:container_scanning:
     - ./clair-scanner -c http://docker:6060 --ip $(hostname -i) -r gl-sast-container-report.json -l clair.log -w clair-whitelist.yml ${TEST_IMAGE} || true
   artifacts:
     paths: [gl-sast-container-report.json]
+
+test:shellcheck:
+  stage: test
+  extends: .rules:code-changes
+  image: koalaman/shellcheck-alpine:stable
+  script:
+    - support/ci/shellcheck
 
 .verify_job:
   stage: verify

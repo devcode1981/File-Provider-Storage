@@ -1,6 +1,7 @@
 _gdk_root()
 {
-  local root=$(realpath .)
+  local root
+  root=$(realpath .)
 
   while [ "$root" != "/" ]; do
     if [ -e "$root/GDK_ROOT" ]; then
@@ -21,7 +22,7 @@ _gdk()
   root=$(_gdk_root)
 
   if [ -z "$root" ]; then
-    COMPREPLY=( $(compgen -W "version init trust" -- "$cur") )
+    mapfile -t COMPREPLY < <(compgen -W "version init trust" -- "$cur")
     return
   fi
 
@@ -49,7 +50,7 @@ _gdk()
       ;;
   esac
 
-  COMPREPLY=( $(compgen -W "$words" -- "$cur") )
+  mapfile -t COMPREPLY < <(compgen -W "$words" -- "$cur")
 }
 
 complete -F _gdk gdk

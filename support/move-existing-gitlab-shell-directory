@@ -28,4 +28,4 @@ fi
 set -x
 
 mv ${old_gitlab_shell_dir} gitlab-shell
-mv go-gitlab-shell $(date +.backups/go-gitlab-shell.%Y-%m-%d_%H.%M.%S)
+mv go-gitlab-shell "$(date +.backups/go-gitlab-shell.%Y-%m-%d_%H.%M.%S)"

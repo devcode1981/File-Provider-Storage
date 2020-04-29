@@ -1,4 +1,5 @@
 #!/bin/sh
+
 postgres_dir=$(gdk config get postgresql.dir 2>/dev/null)
 pg_port=$(gdk config get postgresql.port 2>/dev/null)
 
@@ -7,4 +8,4 @@ for db in gitlabhq_development gitlabhq_test; do
 \connect ${db}
 CREATE EXTENSION pg_trgm;
 EOF
-done | psql -h "$(postgres_dir)" -d template1 -p "$pg_port"
+done | psql -h "${postgres_dir}" -d template1 -p "${pg_port}"

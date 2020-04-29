@@ -10,7 +10,7 @@ BACKUP_DIR=.backups
 dest_file=$1
 shift
 
-OVERWRITE=$(bin/allow-overwrite $dest_file)
+OVERWRITE=$(bin/allow-overwrite "$dest_file")
 
 temp_file=$(mktemp)
 function finish {
@@ -28,7 +28,7 @@ if [[ -f "$dest_file" ]]; then
     echo "-------------------------------------------------------------------------------------------------------------"
 
     [[ $(tput colors) -ge 8 ]] && color_arg="--color" || color_arg=""
-    git --no-pager diff --no-index ${color_arg} -u "${dest_file}" "${temp_file}" || true
+    git --no-pager diff --no-index "${color_arg}" -u "${dest_file}" "${temp_file}" || true
 
     echo "-------------------------------------------------------------------------------------------------------------"
     if $OVERWRITE; then
