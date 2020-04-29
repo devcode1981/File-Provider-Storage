@@ -205,4 +205,18 @@ describe GDK::Config do
       end
     end
   end
+
+  describe 'webpack' do
+    describe '#vendor_dll' do
+      it 'is false by default' do
+        expect(config.webpack.vendor_dll).to be false
+      end
+    end
+
+    describe '#static' do
+      it 'is false by default' do
+        expect(config.webpack.static).to be false
+      end
+    end
+  end
 end
