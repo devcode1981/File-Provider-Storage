@@ -1,15 +1,18 @@
 #!/usr/bin/env bash
 
+set -e
+
 registry_enabled=$(gdk config get registry.enabled 2>/dev/null)
 registry_port=$(gdk config get registry.port 2>/dev/null)
 registry_image=$(gdk config get registry.image 2>/dev/null)
 
+run_opts=()
 if [[ "${registry_enabled}" == "true" ]]; then
   if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    run_opts="--net host"
+    run_opts+=("--net host")
   fi
 
-  exec docker run --rm -p "${registry_port:-5000}":5000 "${run_opts}" \
+  exec docker run --rm -p "${registry_port:-5000}":5000 "${run_opts[@]}" \
       -v "$(pwd)/registry/config.yml:/etc/docker/registry/config.yml" \
       -v "$(pwd)/registry/storage:/var/lib/registry" \
       -v "$(pwd)/localhost.crt:/root/certs/localhost.crt" \
