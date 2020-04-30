@@ -75,6 +75,8 @@ module GDK
 
         read!('webpack_host') || config.hostname
       end
+      bool(:static) { false }
+      bool(:vendor_dll) { false }
 
       integer(:port) { read!('webpack_port') || 3808 }
     end
