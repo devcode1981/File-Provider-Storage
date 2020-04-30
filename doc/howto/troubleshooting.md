@@ -769,6 +769,36 @@ export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 To fix this for the future, add the line above to `~/.bash_profile` or `~/.zshrc`.
 
+### Elasticsearch indexer looks for the wrong version of icu4c
+
+You might get the following error when updating the application:
+
+```plaintext
+# gitlab.com/gitlab-org/gitlab-elasticsearch-indexer
+/usr/local/Cellar/go/1.14.2_1/libexec/pkg/tool/darwin_amd64/link: running clang failed: exit status 1
+ld: warning: directory not found for option '-L/usr/local/Cellar/icu4c/64.2/lib'
+ld: library not found for -licui18n
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+make[1]: *** [build] Error 2
+make: *** [gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer] Error 2
+```
+
+This means Go is trying to link to brew's version of `icu4c` (`64.2` in the example), and failing.
+This can happen when `icu4c` is not pinned and got updated. Verify the version with:
+
+```shell
+$ ls /usr/local/Cellar/icu4c
+66.1
+```
+
+Clean Go's cache to fix this error. From the GDK's root directory:
+
+```shell
+cd gitlab-elasticsearch-indexer/
+go clean -cache
+```
+
 ## Failures when generating Karma fixtures
 
 In some cases, running `bin/rake karma:fixtures` might fail to generate some fixtures, you'll see this kind of errors in the console:
