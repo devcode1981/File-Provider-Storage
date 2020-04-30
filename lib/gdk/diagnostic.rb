@@ -10,6 +10,7 @@ require_relative 'diagnostic/configuration'
 require_relative 'diagnostic/geo'
 require_relative 'diagnostic/git'
 require_relative 'diagnostic/ruby_gems'
+require_relative 'diagnostic/re2'
 
 module GDK
   module Diagnostic
@@ -23,6 +24,7 @@ module GDK
         PendingMigrations
         Geo
         Status
+        Re2
       ]
 
       klasses.map do |const|
