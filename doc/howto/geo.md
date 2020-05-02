@@ -13,6 +13,21 @@ instances. For more, see
 Development on GitLab Geo requires two GDK instances running side-by-side.
 You can use an existing `gdk` instance based on the [Set up GDK](../set-up-gdk.md#develop-against-the-gitlab-project-default) documentation as the primary node.
 
+### Primary
+
+Add the following to `gdk.yml` file on the primary node:
+
+```yaml
+---
+geo:
+  enabled: true
+```
+
+Though this setting normally indicates the node is a secondary, many scripts and `make` targets
+assume they can run secondary-specific logic on any node. That is, rather than the scripts being
+node-type aware, this ensures the primary can act "like a secondary" in some cases
+such as when running tests.
+
 ### Secondary
 
 Now we'll create a secondary instance in a `gdk-geo` folder to act as
@@ -32,7 +47,7 @@ geo:
   enabled: true
   node_name: gdk-geo
 gitlab_pages:
-  enabled: enabled
+  enabled: true
   port: 3011
 tracer:
   jaeger:
@@ -108,6 +123,8 @@ make postgresql-replication-secondary
 
 ### Running tests
 
+#### On a primary
+
 The secondary has a read-write tracking database, which is necessary for some
 Geo tests to run. However, its copy of the replicated database is read-only, so
 tests will fail to run.
@@ -129,6 +146,38 @@ stubbed.
 To ensure the tracking database is started, restart GDK. You will need to use
 `gdk start` to be able to run the tests.
 
+#### On a secondary
+
+When you try to run tests on a GDK configured as a Geo secondary, tests
+might fail because the main database is read-only.
+
+You can work around this by using the PostgreSQL instance that is used
+for the tracking database (i.e. the one running in
+`<secondary-gdk-root>/postgresql-geo`) for both the tracking and the
+main database.
+
+Add or replace the `test:` block with the following to `<secondary-gdk-root>/gitlab/config/database.yml`:
+
+```yaml
+test: &test
+  adapter: postgresql
+  encoding: unicode
+  database: gitlabhq_test
+  host: /home/<secondary-gdk-root>/postgresql-geo
+  port: 5432
+  pool: 10
+```
+
+Now run the following to ensure the database and FDW schema are setup:
+
+```sh
+# Within the <secondary-gdk-root>/gitlab folder:
+bin/rake db:test:prepare
+
+# Within the <secondary-gdk-root> folder:
+make postgresql/geo-fdw/test/rebuild
+```
+
 ## Copy database encryption key
 
 The primary and the secondary nodes will be using the same secret key
@@ -147,7 +196,7 @@ to set up [SSH](ssh.md), including [SSH key lookup from database](ssh.md#ssh-key
 
 ### Add primary node
 
-There is a rake task that can add the primary node:
+There is a Rake task that can add the primary node:
 
 ```bash
 cd gdk/gitlab
@@ -157,21 +206,23 @@ bundle exec rake geo:set_primary_node
 
 ### Add secondary node
 
-There isn't a convenient rake task to add the secondary node because the relevant
+There isn't a convenient Rake task to add the secondary node because the relevant
 data is on the secondary, but we can only write to the primary database. So we
 must get the values from the secondary, and then manually add the node.
 
-1. In a terminal, change to the gitlab directory of the secondary node:
+1. In a terminal, change to the `gitlab` directory of the secondary node:
 
    ```bash
    cd gdk-geo/gitlab
    ```
+
 1. Output the secondary node's **Name** and **URL**:
 
    ```bash
-   bundle exec rails runner 'puts "Name: \"GeoNode.current_node_name\"; puts "URL: \"GeoNode.current_node_url\"'
+   bundle exec rails runner 'puts "Name: #{GeoNode.current_node_name}"; puts "URL: #{GeoNode.current_node_url}"'
    ```
-1. Visit the **primary** node's **Admin Area ➔ Geo Nodes** (`/admin/geo/nodes`)
+
+1. Visit the **primary** node's **Admin Area > Geo > Nodes** (`/admin/geo/nodes`)
    in your browser.
 1. Click the **New node** button.
 1. Fill in the **Name** and **URL** fields for the **secondary** node, using the *exact* values from step 2.
@@ -182,46 +233,18 @@ must get the values from the secondary, and then manually add the node.
 
 ## Geo-specific GDK commands
 
-### `make geo-primary-migrate`
+Use the following commands to keep Geo-enabled GDK installations up to date.
 
-Use this when your checked out files have changed, and e.g. your instance or
-tests are now erroring. For example, after you pull master, but you don't care
-to update dependencies right now. Or maybe you checked out someone else's
-branch.
-
-* Bundle installs to ensure gems are up-to-date
-* Migrates main DB and tracking DB (be sure to run `make geo-secondary-migrate` on
-your secondary if you have Geo migrations)
-* Prepares main and tracking test DBs
-* Checks out schemas to get rid of irrelevant diffs (not done in
-   `make geo-primary-migrate` because you may have created a migration)
-
-### `make geo-primary-update`
-
-Same as `make geo-primary-migrate`, but also:
-
-* Does `gdk update`
-* Checks out and pulls master
-* Updates dependencies (e.g. if Gitaly is erroring)
-* Rebuilds FDW tables in test DB
-* Finally does `gdk diff-config` so you can see a summary of how your configs
-  differ from a fresh install
-
-### `make geo-secondary-migrate`
-
-Similar to `make geo-primary-migrate` but for your local secondary.
-
-### `make geo-secondary-update`
-
-Similar to `make geo-primary-update` but for your local secondary.
+- `make geo-primary-update`, run on the primary GDK node.
+- `make geo-secondary-update`, run on any secondary GDK nodes.
 
 ## Troubleshooting
 
-### postgresql-geo/data exists but is not empty
+### `postgresql-geo/data` exists but is not empty
 
 If you see this error during setup because you have already run `make geo-setup` once:
 
-```
+```plaintext
 initdb: directory "postgresql-geo/data" exists but is not empty
 If you want to create a new database system, either remove or empty
 the directory "postgresql-geo/data" or run initdb
@@ -232,7 +255,7 @@ make: *** [postgresql/geo] Error 1
 Then you may delete or move that data in order to run `make geo-setup` again.
 
 ```bash
-$ mv postgresql-geo/data postgresql-geo/data.backup
+mv postgresql-geo/data postgresql-geo/data.backup
 ```
 
 ### GDK update command error on secondaries

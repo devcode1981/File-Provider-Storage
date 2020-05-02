@@ -40,17 +40,17 @@ gdk update
 
 It will also perform any possible migrations.
 
-You can update gitlab separately by running `make gitlab-update`, or
-update for example gitlab-shell with `make gitlab-shell-update`.
+You can update GitLab separately by running `make gitlab-update`, or
+update for example `gitlab-shell` with `make gitlab-shell-update`.
 
 If there are changes in the local repositories or/and a different
 branch than `master` is checked out, the `make update` commands will
 stash any uncommitted changes and change to `master` branch prior to
 updating the remote repositories.
 
-## Update configuration files created by gitlab-development-kit
+## Update configuration files created by `gitlab-development-kit`
 
-Sometimes there are changes in gitlab-development-kit that require
+Sometimes there are changes in `gitlab-development-kit` that require
 you to regenerate configuration files with `make`. You can always
 remove an individual file (e.g. `rm Procfile`) and rebuild it by
 running `make`. If you want to rebuild _all_ configuration files
@@ -71,3 +71,20 @@ gdk config get <setting>
 ```
 
 More information can be found in the [configuration documentation](configuration.md).
+
+## Shell completion
+
+To enable tab completion for the `gdk` command in Bash, add the following to your `~/.bash_profile`:
+
+```bash
+source ~/path/to/your/gdk/support/completions/gdk.bash
+```
+
+For Zsh, you can enable Bash completion support in your `~/.zshrc`:
+
+```bash
+autoload bashcompinit
+bashcompinit
+
+source ~/path/to/your/gdk/support/completions/gdk.bash
+```

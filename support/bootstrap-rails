@@ -2,7 +2,7 @@
 require 'socket'
 require 'fileutils'
 
-require_relative '../lib/gdk/config'
+require_relative '../lib/gdk'
 require_relative '../lib/gdk/postgresql'
 
 LOG_FILE = 'bootstrap-rails.log'.freeze
@@ -19,10 +19,8 @@ def main
     FileUtils.rm_f(LOG_FILE)
 
     try_connect!(config.praefect? ? 'praefect' : 'gitaly')
-    [
-      %w[support/exec-cd gitlab bundle exec rake db:create],
-      %w[support/exec-cd gitlab bundle exec rake dev:setup]
-    ].each do |cmd|
+
+    bootstrap_commands.each do |cmd|
       success &&= system({ 'force' => 'yes', 'BOOTSTRAP' => '1' }, *cmd)
     end
   end
@@ -30,6 +28,12 @@ def main
   exit true if success
 
   abort "#{$PROGRAM_NAME} failed"
+end
+
+def bootstrap_commands
+  [
+    %w[support/exec-cd gitlab bundle exec rake dev:setup]
+  ]
 end
 
 def config

@@ -2,12 +2,12 @@
 gitlab_include="include 'gitlab.conf'"
 postgres_dir=$(gdk config get postgresql.data_dir 2>/dev/null)
 
-if ! grep -Fxq "$gitlab_include" $postgres_dir/postgresql.conf; then
-  echo $gitlab_include >> $postgres_dir/postgresql.conf
+if ! grep -Fxq "$gitlab_include" "$postgres_dir"/postgresql.conf; then
+  echo "$gitlab_include" >> "$postgres_dir"/postgresql.conf
 fi
 
 if [ ! -f "$postgres_dir/gitlab.conf" ]; then
-  cat <<EOF > $postgres_dir/gitlab.conf
+  cat <<EOF > "$postgres_dir"/gitlab.conf
 random_page_cost = '1'
 work_mem = '16MB'
 maintenance_work_mem = '64MB'

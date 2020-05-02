@@ -31,6 +31,26 @@ that these values may not be the default that GDK will use.
 If you want to check which settings are in place, you can run `rake
 dump_config`, which will print all applied settings in a YAML structure.
 
+#### Overwriting config files
+
+Any config file managed by GDK will be overwritten
+whenever there are changes in its source (a `.example` or `.erb`
+file). When GDK overwrites a config file it moves the original file
+into the `.backups` subdirectory of your GDK installation.
+
+If you have local changes that you don't want GDK to touch you can
+protect individual config files. For example:
+
+```yaml
+# in gdk.yml
+gdk:
+  protected_config_files:
+  - 'gitaly/*.toml'
+```
+
+> Note that `gdk.yml` is not managed by GDK, and GDK will
+never overwrite it.
+
 #### Notable settings
 
 Here are a few settings worth mentioning:
@@ -38,7 +58,7 @@ Here are a few settings worth mentioning:
 | Setting                | Default | Description                                                                                |
 |------------------------|---------|--------------------------------------------------------------------------------------------|
 | `port`                 | `3000`  | Select the port to run GDK on, useful when running multiple GDKs in parallel.              |
-| `webpack.port`         | `3808`  | Also useful to configure when running GDKs in parallel.                                    |
+| `webpack.port`         | `3808`  | Also useful to configure when running GDKs in parallel. [See below for more webpack options](#webpack-settings) |
 | `gitlab_pages.port`    | `3010`  | Specify on which port GitLab Pages should run. See also the [Pages guide](pages.md).       |
 | `relative_url_root`    | `/`     | When you want to test GitLab being available on a different path than `/`, e.g. `/gitlab`. |
 | `object_store.enabled` | `false` | Set this to `true` to enable Object Storage with MinIO.                                    |
@@ -52,6 +72,7 @@ There are also a few settings that configure the behavior of GDK itself:
 | `gdk.ask_to_restart_after_update` | `true`  | Set this to `false` if you do not wish to be prompted to restart your GDK after an update. |
 | `gdk.debug`                       | `false` | Set this to `true` to enable increased output. |
 | `gdk.overwrite_changes`           | `false` | When set to `true` `gdk reconfigure` will overwrite files and move the old version to `.backups`.|
+| `gdk.protected_config_files`           | `[]` | Contains file names / globs of config files GDK should not overwrite|
 
 ### Loose files (deprecated)
 
@@ -128,11 +149,11 @@ class ExampleConfig < GDK::ConfigSettings
 end
 ```
 
-* `foo`: (literal value) This is just a literal value, it can be any
+- `foo`: (literal value) This is just a literal value, it can be any
   type (e.g. Number, Boolean, String).
-* `bar`: (block without argument) This is using a block to set a
+- `bar`: (block without argument) This is using a block to set a
   value. It evaluates the Ruby code to dynamically calculate a value.
-* `fuz`: (block with argument) When the block takes a single argument,
+- `fuz`: (block with argument) When the block takes a single argument,
   it expects you'll be setting child settings.
 
 If you'd dump this config with `rake dump_config` you'll get something
@@ -171,6 +192,54 @@ When you add a new setting:
 1. Commit both files.
 
 ## Webpack Settings
+
+### Webpack `gdk.yml` settings
+
+Under the webpack key you can define the following settings with their defaults:
+
+```yaml
+webpack:
+  host: 127.0.0.1
+  port: 3808
+  static: false
+  vendor_dll: false
+```
+
+| Setting | Default | Description |
+| --- | ------ | ----- |
+| `host` | `127.0.0.1` | The host your webpack dev server is running on. Usually no need to change. |
+| `port` | `3808` | The port your webpack dev server is running on. You should change this if you are running multiple GDKs |
+| `static` | `false` | Setting this to `true` will replace the webpack dev server with a lightweight Ruby server. See below for more information |
+| `vendor_dll` | `false` | Setting this to `true` will move certain dependencies to a webpack DLL. See below for more information |
+
+#### Saving memory on the webpack dev server
+
+By default webpack will run a dev server which watches file changes and keeps all the frontend assets in memory.
+This allows for very quick recompile times, but is very memory demanding.
+There are two settings from above which can help with this.
+
+If you do not require frequent frontend asset recompiles, for example you are a backend
+developer who rarely changes frontend files, you can enable `webpack.static: true` in
+your `gdk.yml`. All frontend assets will be compiled once when GDK starts and
+again, from scratch, if any frontend source or dependency file changes (for example,
+branch switches).
+
+This means you pay a high upfront cost of a single compile (a lot of memory and CPU),
+but if you do not change any frontend files, you will just have a lightweight Ruby
+server running.
+
+The `webpack.vendor_dll: true` mode is an alternate memory saving mode, which takes
+infrequently updated dependencies and combines them into one long-lived bundle that is
+written to disk and does not reside in memory. We have seen around 200 to 300 MB in
+memory savings.
+
+This mode is recommended for everyone. It is still disabled by default, because we want
+to get more real usage data. One of the side-effects could be an increasingly large
+`gitlab/tmp` directory. We will eventually make this the default.
+
+If you experience any problems with one of the modes, you can quickly change the settings in your `gdk.yml` and regenerate the Procfile.
+
+### Webpack ENV variables
 
 The GitLab application exposes various configuration options for webpack via
 ENV variables. These can be modified to improve performance or enable debugging.

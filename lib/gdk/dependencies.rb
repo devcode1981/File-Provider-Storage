@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 require 'net/http'
+require 'mkmf'
+
+# Make the MakeMakefile logger write file output to null.
+module MakeMakefile::Logging
+  @logfile = File::NULL
+  @quiet = true
+end
 
 module GDK
   module Dependencies
@@ -36,8 +43,7 @@ module GDK
     end
 
     class Checker
-      EXPECTED_GIT_VERSION = '2.22'
-      EXPECTED_GO_VERSION = '1.12'
+      EXPECTED_GO_VERSION = '1.14'
       EXPECTED_YARN_VERSION = '1.12'
       EXPECTED_NODEJS_VERSION = '12.10'
       EXPECTED_POSTGRESQL_VERSION = '9.6.x'
@@ -49,7 +55,6 @@ module GDK
       end
 
       def check_all
-        check_git_version
         check_ruby_version
         check_bundler_version
         check_go_version
@@ -63,18 +68,17 @@ module GDK
         check_runit_installed
       end
 
-      def check_git_version
-        current_git_version = `git version`[/git version (\d+\.\d+.\d+)/, 1]
-
-        actual = Gem::Version.new(current_git_version)
-        expected = Gem::Version.new(EXPECTED_GIT_VERSION)
-
-        if actual < expected
-          @error_messages << require_minimum_version('Git', actual, expected)
+      def check_binary(binary)
+        find_executable(binary).tap do |result|
+          unless result
+            @error_messages << "#{binary} does not exist. You may need to check your PATH or install a missing package."
+          end
         end
       end
 
       def check_ruby_version
+        return unless check_binary('ruby')
+
         actual = Gem::Version.new(RUBY_VERSION)
         expected = Gem::Version.new(GitLabVersions.new.ruby_version)
 
@@ -84,15 +88,32 @@ module GDK
       end
 
       def check_bundler_version
-        unless system("bundle _#{expected_bundler_version}_ --version >/dev/null 2>&1")
-          @error_messages << <<~BUNDLER_VERSION_NOT_MET
-            Please install Bundler version #{expected_bundler_version}.
-            gem install bundler -v '= #{expected_bundler_version}'
-          BUNDLER_VERSION_NOT_MET
-        end
+        return if bundler_version_ok? || alt_bundler_version_ok?
+
+        @error_messages << <<~BUNDLER_VERSION_NOT_MET
+          Please install Bundler version #{expected_bundler_version}.
+          gem install bundler -v '= #{expected_bundler_version}'
+        BUNDLER_VERSION_NOT_MET
+      end
+
+      def bundler_version_ok?
+        return system("bundle _#{expected_bundler_version}_ --version >/dev/null 2>&1")
+      end
+
+      def alt_bundler_version_ok?
+        # On some systems, most notably Gentoo, Ruby Gems get patched to use a
+        # custom wrapper. Because of this, we cannot use the `bundle
+        # _$VERSION_` syntax and need to fall back to using `bundle --version`
+        # on a best effort basis.
+        actual = Shellout.new('bundle --version').try_run
+        actual = actual[/Bundler version (\d+\.\d+.\d+)/, 1]
+
+        Gem::Version.new(actual) == Gem::Version.new(expected_bundler_version)
       end
 
       def check_go_version
+        return unless check_binary('go')
+
         current_version = `go version`[/go((\d+.\d+)(.\d+)?)/, 1]
 
         actual = Gem::Version.new(current_version)
@@ -106,6 +127,8 @@ module GDK
       end
 
       def check_nodejs_version
+        return unless check_binary('node')
+
         current_version = `node --version`[/v(\d+\.\d+\.\d+)/, 1]
 
         actual = Gem::Version.new(current_version)
@@ -120,6 +143,8 @@ module GDK
       end
 
       def check_yarn_version
+        return unless check_binary('yarn')
+
         current_version = `yarn --version`
 
         actual = Gem::Version.new(current_version)
@@ -134,6 +159,8 @@ module GDK
       end
 
       def check_postgresql_version
+        return unless check_binary('psql')
+
         current_postgresql_version = `psql --version`[/psql \(PostgreSQL\) (\d+\.\d+)/, 1]
 
         actual = Gem::Version.new(current_postgresql_version)

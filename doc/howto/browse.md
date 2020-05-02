@@ -3,7 +3,7 @@
 If you just want to browse your local GitLab installation this is the
 quickest way to do it.
 
-```
+```shell
 cd gitlab-development-kit
 gdk start
 ```

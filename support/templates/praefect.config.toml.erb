@@ -1,6 +1,4 @@
 # Example Praefect configuration file
-virtual_storage_name = "default"
-
 # # TCP address to listen on
 # listen_addr = "<%= config.hostname %>:2305"
 
@@ -18,13 +16,16 @@ socket_path = "<%= config.gdk_root.join('praefect.socket') %>"
 # # Defaults to "info"
 #   level = "warn"
 
+[[virtual_storage]]
+name = 'default'
+
 # # One or more Gitaly servers need to be configured to be managed. The names
 # of each server are used to link multiple nodes, or `gitaly_server`s together
 # as shard. listen_addr should be unique for all nodes.
 # Requires the protocol to be defined, e.g. tcp://host.tld:1234
 
 <% config.praefect.nodes.each do |praefect_node| %>
-[[node]]
+[[virtual_storage.node]]
   storage = "<%= praefect_node[:storage] %>"
   address = "unix:<%= praefect_node[:address] %>"
   primary = <%= praefect_node[:primary] %>

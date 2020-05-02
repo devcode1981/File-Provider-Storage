@@ -46,21 +46,29 @@ describe Shellout do
   end
 
   describe '#success?' do
-    before do
-      subject.run
-    end
-
-    context 'when command is successful' do
-      it 'returns true' do
-        expect(subject.success?).to be true
+    context '#run has not yet been executed' do
+      it 'returns false' do
+        expect(subject.success?).to be false
       end
     end
 
-    context 'when command is not successful' do
-      let(:command) { 'echo error 1>&2; exit 1' }
+    context '#run has been executed' do
+      before do
+        subject.run
+      end
 
-      it 'returns false' do
-        expect(subject.success?).to be false
+      context 'when command is successful' do
+        it 'returns true' do
+          expect(subject.success?).to be true
+        end
+      end
+
+      context 'when command is not successful' do
+        let(:command) { 'echo error 1>&2; exit 1' }
+
+        it 'returns false' do
+          expect(subject.success?).to be false
+        end
       end
     end
   end

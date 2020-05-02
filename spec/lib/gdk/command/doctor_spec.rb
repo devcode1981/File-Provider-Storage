@@ -8,16 +8,18 @@ describe GDK::Command::Doctor do
   let(:failing_diagnostic) { double(GDK::Diagnostic, success?: false, diagnose: 'error', message: 'check failed') }
   let(:diagnostics) { [] }
   let(:warning_message) { 'This is a warning' }
+  let(:shellout) { double(Shellout, run: nil) }
 
   subject { described_class.new(diagnostics: diagnostics, stdout: mock_stdout, stderr: mock_stderr) }
 
   before do
-    allow(subject).to receive(:gdk_start)
+    allow(Shellout).to receive(:new).with('gdk start postgresql').and_return(shellout)
     allow(subject).to receive(:warning).and_return(warning_message)
   end
 
-  it 'starts gdk' do
-    expect(subject).to receive(:gdk_start)
+  it 'starts necessary services' do
+    expect(shellout).to receive(:run)
+
     subject.run
   end
 

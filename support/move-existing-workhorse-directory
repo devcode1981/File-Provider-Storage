@@ -1,0 +1,21 @@
+#!/bin/sh
+
+set -e
+
+old_workhorse_dir=gitlab-workhorse/src/gitlab.com/gitlab-org/gitlab-workhorse
+
+if ! [ -d ${old_workhorse_dir}/.git ]; then
+  # There is no "old" workhorse checkout so there is nothing for us to do.
+  # Exit with a non-zero code to signal to the caller that a regular git
+  # clone is needed.
+  exit 1
+fi
+
+# We are going to make changes. It's good to be explicit about that, and
+# if something fails, it helps the user to see what failed. With "set
+# -x" we get a cheap kind of verbose mode.
+set -x
+
+mv ${old_workhorse_dir} gitlab-workhorse.new
+mv gitlab-workhorse "$(date +.backups/gitlab-workhorse.%Y-%m-%d_%H.%M.%S)"
+mv gitlab-workhorse.new gitlab-workhorse

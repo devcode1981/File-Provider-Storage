@@ -3,13 +3,14 @@
 set -euo pipefail
 IFS=$'\n\t'
 BACKUP_DIR=.backups
-OVERWRITE=$(gdk config get gdk.overwrite_changes 2>/dev/null)
 
 # Usage: safe-sed [dest-file-name] [sed-params]...
 # The first parameter is the destination file
 # The remaining parameters are sent to sed
 dest_file=$1
 shift
+
+OVERWRITE=$(bin/allow-overwrite "$dest_file")
 
 temp_file=$(mktemp)
 function finish {
@@ -27,7 +28,7 @@ if [[ -f "$dest_file" ]]; then
     echo "-------------------------------------------------------------------------------------------------------------"
 
     [[ $(tput colors) -ge 8 ]] && color_arg="--color" || color_arg=""
-    git --no-pager diff --no-index ${color_arg} -u "${dest_file}" "${temp_file}" || true
+    git --no-pager diff --no-index "${color_arg}" -u "${dest_file}" "${temp_file}" || true
 
     echo "-------------------------------------------------------------------------------------------------------------"
     if $OVERWRITE; then
@@ -38,16 +39,20 @@ if [[ -f "$dest_file" ]]; then
 
       echo "'${dest_file}' bas been overwritten. To recover the previous version, run:"
       echo "  cp -f '${backup_file}' '${dest_file}'"
+      echo
+      echo 'If you want to protect this file from being overwritten, see:'
+      echo 'https://gitlab.com/gitlab-org/gitlab-development-kit/blob/master/doc/howto/configuration.md#overwriting-config-files'
+      echo "-------------------------------------------------------------------------------------------------------------"
     else
       echo "The changes have not been applied."
       echo " - To apply these changes, run:"
       echo "   rm ${dest_file} && make ${dest_file}"
       echo " - To silence this warning (at your own peril):"
       echo "   touch ${dest_file}"
+      echo "-------------------------------------------------------------------------------------------------------------"
+      echo "... Waiting 5 seconds for previous warning to be noticed."
+      sleep 5
     fi
-    echo "-------------------------------------------------------------------------------------------------------------"
-    echo "... Waiting 5 seconds for previous warning to be noticed."
-    sleep 5
   fi
 else
   mv "${temp_file}" "${dest_file}"

@@ -1,3 +1,6 @@
+v0.2.6
+- Add required ruby version to gemspec
+
 v0.2.5
 - Add experimental support for Puma in GitLab Rails
 - Warn user if they are not using the proper Ruby version during GDK installation

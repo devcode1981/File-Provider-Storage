@@ -1,8 +1,9 @@
 gitlab_openldap_root = $(shell pwd)
 
 default: slapd.d/bootstrap contents alt_contents
+large: default slapd.d/large-db
 
-contents: slapd.d/schema slapd.d/example-com slapd.d/large-db
+contents: slapd.d/schema slapd.d/example-com
 alt_contents: slapd.d/schema slapd.d/alt-example-com
 
 slapd.d:
@@ -39,10 +40,12 @@ disable_bind_anon:
 	bin/ldapmodify -H ldap://127.0.0.1:3890/ -D "cn=admin,cn=config" -w password -f disable_bind_anon.ldif
 
 openldap-2.4.44:
-	curl -O http://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-2.4.44.tgz
+	curl -OL http://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-2.4.44.tgz
 	echo 'd7de6bf3c67009c95525dde3a0212cc110d0a70b92af2af8e3ee800e81b88400  openldap-2.4.44.tgz' | shasum -a256 -c -
 	tar zxf openldap-2.4.44.tgz
 
 sbin/slapadd: openldap-2.4.44
 	cd openldap-2.4.44 && ./configure --prefix=${gitlab_openldap_root} --enable-bdb=no --enable-hdb=no
 	cd openldap-2.4.44 && make -j 2 install
+
+.PHONY: clean default large contents alt_contents disable_bind_anon

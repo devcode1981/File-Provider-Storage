@@ -23,22 +23,22 @@ gem install gitlab-development-kit
 
 1. To initialize GDK into:
 
-  - The default directory (`./gitlab-development-kit`), run:
+   - The default directory (`./gitlab-development-kit`), run:
 
-    ```sh
-    gdk init
-    ```
+     ```sh
+     gdk init
+     ```
 
-  - A custom directory, pass a directory name. For example, to initialize into
-    the `my_gitlab_development_kit` directory, run:
+   - A custom directory, pass a directory name. For example, to initialize into
+     the `my_gitlab_development_kit` directory, run:
 
-      ```sh
-      gdk init my_gitlab_development_kit
-      ```
+     ```sh
+     gdk init my_gitlab_development_kit
+     ```
 
 ## Install GDK components
 
-1. Change into the newly created GDK directory.  For example:
+1. Change into the newly created GDK directory. For example:
 
    ```sh
    cd gitlab-development-kit
@@ -51,7 +51,7 @@ gem install gitlab-development-kit
    configuration) using `gdk install`.
 
    - For those who have write access to the [GitLab.org group](https://gitlab.com/gitlab-org)
-   we recommend [Develop against the GitLab project](#develop-against-the-gitlab-project-default) (default)
+     we recommend [Develop against the GitLab project](#develop-against-the-gitlab-project-default) (default)
 
    - Other options in order of recommendation:
 
@@ -116,7 +116,7 @@ The clone will be done using [`git clone --depth=1`](https://www.git-scm.com/doc
 
 The `set-gitlab-upstream` script creates a remote named `upstream` for
 [the canonical GitLab repository](https://gitlab.com/gitlab-org/gitlab). It also
-modifies `gdk update` (See [Update gitlab and gitlab-shell repositories](./howto/gdk_commands.md#update-gitlab-and-gitlab-shell-repositories))
+modifies `gdk update` (See [Update `gitlab` and `gitlab-shell` repositories](howto/gdk_commands.md#update-gitlab-and-gitlab-shell-repositories))
 to pull down from the upstream repository instead of your fork, making it easier
 to keep up-to-date with the project.
 
@@ -130,9 +130,9 @@ During `gdk install` process, you may encounter some dependencies related errors
 ## GitLab Enterprise Features
 
 Instructions to generate a developer license can be found in the
-onboarding document: https://about.gitlab.com/handbook/developer-onboarding/#working-on-gitlab-ee
+onboarding document: <https://about.gitlab.com/handbook/developer-onboarding/#working-on-gitlab-ee>.
 
-The license key generator is only available for GitLab employees, who should use the "Sign in with GitLab" link using their dev.gitlab.org account.
+The license key generator is only available for GitLab team members, who should use the "Sign in with GitLab" link using their `dev.gitlab.org` account.
 
 ## Post-installation
 
@@ -148,7 +148,7 @@ To stop the Rails app, which saves memory (useful when running tests):
 gdk stop rails
 ```
 
-To access GitLab, you may now go to http://localhost:3000 in your browser.
+To access GitLab, you may now go to <http://localhost:3000> in your browser.
 It may take a few minutes for the Rails app to be ready. During this period you would see `dial unix /Users/.../gitlab.socket: connect: connection refused` in the browser.
 
 The development login credentials are `root` and

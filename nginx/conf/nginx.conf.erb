@@ -33,37 +33,37 @@ http {
   }
 
   map $http_upgrade $connection_upgrade {
-      default upgrade;
-      ''      close;
+    default upgrade;
+    ''      close;
   }
 
-<% if config.https? %>
   server {
-    listen <%= config.nginx.listen %>:<%= config.port %> ssl;
+    listen <%= config.nginx.listen %>:<%= config.port %><%= ' ssl' if config.https? %><%= ' http2' if config.https? && config.nginx.http2? %>;
+<%- if config.https? -%>
 
     ssl_certificate <%= config.gdk_root.join(config.nginx.ssl.certificate) %>;
     ssl_certificate_key <%= config.gdk_root.join(config.nginx.ssl.key) %>;
+<%- end -%>
 
     location / {
-        proxy_set_header    Host                $http_host;
-        proxy_set_header    X-Real-IP           $remote_addr;
-        proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
-        proxy_set_header    X-Forwarded-Proto   $scheme;
-        proxy_set_header    Upgrade             $http_upgrade;
-        proxy_set_header    Connection          $connection_upgrade;
+      proxy_set_header    Host                $http_host;
+      proxy_set_header    X-Real-IP           $remote_addr;
+      proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
+      proxy_set_header    X-Forwarded-Proto   $scheme;
+      proxy_set_header    Upgrade             $http_upgrade;
+      proxy_set_header    Connection          $connection_upgrade;
 
-        proxy_read_timeout 300;
+      proxy_read_timeout 300;
 
-        proxy_pass http://gitlab-workhorse;
+      proxy_pass http://gitlab-workhorse;
     }
   }
+<%- if config.https? -%>
 
-<% if config.nginx.http? %>
   server {
     listen <%= config.nginx.listen %>:<%= config.nginx.http.port %>;
 
-    return 301 https://$host$request_uri;
+    return 301 https://$host:<%= config.port %>$request_uri;
   }
-<%   end %>
-<% end %>
+<%- end -%>
 }

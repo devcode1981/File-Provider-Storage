@@ -31,8 +31,8 @@ ARG RUBY_BUILD_REVISION=v20191225
 RUN git clone --branch $RUBY_BUILD_REVISION --depth 1 https://github.com/rbenv/ruby-build
 
 FROM fetch AS go
-ARG GO_SHA256=aea86e3c73495f205929cfebba0d63f1382c8ac59be081b6351681415f4063cf
-ARG GO_VERSION=1.12.5
+ARG GO_SHA256=2f49eb17ce8b48c680cdb166ffd7389702c0dec6effa090c324804a5cac8a7f8
+ARG GO_VERSION=1.14.1
 RUN curl --silent --location --output go.tar.gz https://dl.google.com/go/go$GO_VERSION.linux-amd64.tar.gz
 RUN echo "$GO_SHA256  go.tar.gz" | sha256sum -c -
 RUN tar -C /usr/local -xzf go.tar.gz

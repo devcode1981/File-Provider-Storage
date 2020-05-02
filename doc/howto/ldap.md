@@ -1,51 +1,60 @@
-# LDAP
+# Set up an OpenLDAP server for GitLab development
 
 You can run an OpenLDAP daemon inside GDK if you want to work on GitLab LDAP integration.
 
-To run the OpenLDAP installation included in the GitLab development kit do the following:
+## Getting it running
 
-```
-cd gitlab-openldap
-make # will setup the databases
+```bash
+cd <gdk-directory>/gitlab-openldap
+make # compile openldap and bootstrap an LDAP server to run out of slapd.d
 ```
 
-Then edit `gdk.yml` (in the GDK top level directory) and add:
+We can also simulate a large instance with many users and groups:
+
+```bash
+make large
+```
+
+Then run the daemon:
+
+```bash
+./run-slapd # stays attached in the current terminal
+```
+
+## Configuring GitLab
+
+In `gitlab.yml` under `production:` and `ldap:`, change the following keys to the values
+given below (see [defaults](https://gitlab.com/gitlab-org/gitlab/-/blob/master/config/gitlab.yml.example#L550-769)):
 
 ```yaml
-openldap:
-  enabled: true
-```
-
-in the gitlab repository edit config/gitlab.yml;
-
-```yaml
-ldap:
   enabled: true
   servers:
     main:
-      label: LDAP
+      # ...
       host: 127.0.0.1
-      port: 3890
+      port: 3890  # on macOS: 3891
       uid: 'uid'
-      encryption: 'plain' # "tls" or "ssl" or "plain"
+      # ...
       base: 'dc=example,dc=com'
-      user_filter: ''
-      group_base: 'ou=groups,dc=example,dc=com'
-      admin_group: ''
-    # Alternative server, multiple LDAP servers only work with GitLab-EE
-    # alt:
-    #   label: LDAP-alt
-    #   host: 127.0.0.1
-    #   port: 3890
-    #   uid: 'uid'
-    #   encryption: 'plain' # "tls" or "ssl" or "plain"
-    #   base: 'dc=example-alt,dc=com'
-    #   user_filter: ''
-    #   group_base: 'ou=groups,dc=example-alt,dc=com'
-    #   admin_group: ''
+      group_base: 'ou=groups,dc=example,dc=com'  # Insert this
 ```
 
-The second database is optional, and will only work with Gitlab-EE.
+In GitLab EE, an alternative database can optionally be added as follows:
+
+```yaml
+    main:
+      # ...
+    alt:
+      label: LDAP-alt
+      host: 127.0.0.1
+      port: 3891  # on macOS: 3892
+      uid: 'uid'
+      encryption: 'plain' # "tls" or "ssl" or "plain"
+      base: 'dc=example-alt,dc=com'
+      user_filter: ''
+      group_base: 'ou=groups,dc=example-alt,dc=com'
+      admin_group: ''
+```
 
 The following users are added to the LDAP server:
 
@@ -70,3 +79,38 @@ For testing of GitLab Enterprise Edition the following groups are created.
 | group-10000-0 | `cn=group-10000-0,ou=groups,dc=example,dc=com`  | 10,000  | group-10000-1 |
 | group-a       | `cn=group-a,ou=groups,dc=example-alt,dc=com`    | 2       |               |
 | group-b       | `cn=group-b,ou=groups,dc=example-alt,dc=com`    | 1       |               |
+
+## Repopulate the database
+
+```bash
+cd <gdk-directory>/gitlab-openldap
+make clean default
+```
+
+### Optional: disable anonymous binding
+
+The above config does not use a bind user, to keep it as simple as possible.
+If you want to disable anonymous binding and require authentication:
+
+1. Run the following command:
+
+   ```bash
+   make disable_bind_anon
+   ```
+
+1. Update `gitlab.yml` also with the following:
+
+   ```yaml
+   ldap:
+     enabled: true
+     servers:
+       main:
+         # ...
+         bind_dn: 'cn=admin,dc=example,dc=com'
+         password: 'password'
+         #...
+   ```
+
+## TODO
+
+- integrate into the development kit

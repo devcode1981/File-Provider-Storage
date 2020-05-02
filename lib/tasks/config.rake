@@ -57,13 +57,38 @@ file 'openssh/sshd_config' => ['openssh/sshd_config.erb', GDK::Config::FILE] do 
   GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
 end
 
+desc 'Generate redis configuration'
+file 'redis/redis.conf' => ['support/templates/redis.conf.erb', GDK::Config::FILE] do |t|
+  GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
+end
+
 desc 'Generate the database.yml config file'
 file 'gitlab/config/database.yml' => ['support/templates/database.yml.erb', GDK::Config::FILE] do |t|
   GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
 end
 
+desc 'Generate the cable.yml config file'
+file 'gitlab/config/cable.yml' => ['support/templates/cable.yml.erb', GDK::Config::FILE] do |t|
+  GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
+end
+
+desc 'Generate the resque.yml config file'
+file 'gitlab/config/resque.yml' => ['support/templates/resque.yml.erb', GDK::Config::FILE] do |t|
+  GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
+end
+
 desc 'Generate the gitlab.yml config file'
 file 'gitlab/config/gitlab.yml' => ['support/templates/gitlab.yml.erb'] do |t|
+  GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
+end
+
+desc 'Generate the gitlab-shell config.yml file'
+file 'gitlab-shell/config.yml' => ['support/templates/gitlab-shell.config.yml.erb'] do |t|
+  GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
+end
+
+desc 'Generate the gitlab-workhorse config file'
+file 'gitlab-workhorse/config.toml' => ['support/templates/gitlab-workhorse.config.toml.erb'] do |t|
   GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
 end
 
@@ -104,9 +129,18 @@ config.praefect.nodes.each do |node|
       storage: node['storage'],
       log_dir: node['log_dir'],
       socket_path: node['address'],
-      internal_socket_dir: config.praefect.internal_socket_dir
+      internal_socket_dir: node['internal_socket_dir']
     ).render!
     FileUtils.mkdir_p(node['storage_dir'])
     FileUtils.mkdir_p(node['log_dir'])
+    FileUtils.mkdir_p(node['internal_socket_dir'])
   end
+end
+
+file 'registry/config.yml' => ['support/templates/registry.config.yml.erb'] do |t|
+  GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
+end
+
+file 'gitlab-runner-config.toml' => ['support/templates/gitlab-runner-config.toml.erb'] do |t|
+  GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
 end

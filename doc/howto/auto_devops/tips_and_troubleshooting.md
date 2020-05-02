@@ -12,9 +12,9 @@
 ### QA
 
 - Consider adding `require 'pry'; binding.pry` breakpoint before [the last
-assertion about
-builds](https://gitlab.com/gitlab-org/gitlab-foss/blob/eb146e9abe08c3991b5a54237c24d15312c70ee8/qa/qa/specs/features/browser_ui/7_configure/auto_devops/create_project_with_auto_devops_spec.rb#L61)
-to save yourself from setting up a full working Auto DevOps project.
+  assertion about
+  builds](https://gitlab.com/gitlab-org/gitlab-foss/blob/eb146e9abe08c3991b5a54237c24d15312c70ee8/qa/qa/specs/features/browser_ui/7_configure/auto_devops/create_project_with_auto_devops_spec.rb#L61)
+  to save yourself from setting up a full working Auto DevOps project.
 
 - Set the environment variable `CHROME_REUSE_PROFILE` to `true` which
   will allow QA to re-use the same user profile so that slow files such
@@ -66,8 +66,7 @@ This way you can switch between using `*gitlab_localhost` for other
 development and `*gitlab_auto_devops` for Auto-DevOps development.
 Remember to restart your GDK after editing `config/gitlab.yml`.
 
-NOTE: You will have to reapply the edits above after each `gdk
-reconfigure`.
+NOTE: You must reapply these edits after each `gdk reconfigure` step.
 
 ## Using an external virtual machine for the development
 
@@ -114,7 +113,7 @@ If your Ingress is never assigned an IP address and you've waited for the IP add
 When [creating a new GKE cluster](https://docs.gitlab.com/ee/user/project/clusters/#creating-the-cluster), GKE will create persistent disks for you. If you are
 running into the following error:
 
-```
+```plaintext
 ResponseError: code=403, message=Insufficient regional quota to satisfy request: resource "DISKS_TOTAL_GB"
 ```
 
@@ -134,7 +133,6 @@ For GDK to run, it needs to be able to SSH into `qa-tunnel.gitlab.info` without 
 
 If not set up correctly, expect `502 Bad Gateway` responses when navigating to `<gitlab-number>.qa-tunnel.gitlab.info` and the string `Enter passphrase for key '/Users/username/.ssh/id_rsa'` to pepper the GDK logs.
 
-
 #### Procfile was not updated properly
 
 After following the steps indicated in the [autodevops guide](../auto_devops.md), the Procfile located in the root of the GDK installation won’t have the tunnel configuration. If the Procfile is correct, you should find these lines:
@@ -147,3 +145,25 @@ tunnel_registry: ssh -N -R [PORT]:localhost:5000 -o ControlPath=none -o ControlM
 ```
 
 The `tunnel_gitlab` and `tunnel_registry` lines may be commented out. If that’s the case, you can either delete the Procfile file and run `gdk reconfigure` or uncomment those lines and replace `[PORT]` with the ports specified in the `auto_devops_gitlab_port` and `auto_devops_registry_port` files.
+
+#### registry/config.yml was not updated properly
+
+When deploying the Auto-DevOps project through the GitLab team member-only QA tunnel, if you see an error within the CI job logs like the following example:
+
+```plaintext
+dial tcp: lookup docker.for.mac.localhost on <ip_address>: no such host
+```
+
+The `registry/config.yml` file was not updated correctly and should look like:
+
+```yaml
+auth:
+  token:
+    realm: https://[PORT]:qa-tunnel.gitlab.info:443/jwt/auth
+```
+
+You can fix this by running:
+
+```shell
+rm registry/config.yml && make registry/config.yml
+```

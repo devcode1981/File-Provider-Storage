@@ -27,7 +27,7 @@ function sha_for_url() {
 function url_for_version() {
   # Add new architectures/operating systems in here as needed
   case "$OSTYPE" in
-    linux-gnu)
+    linux-gnu|linux-musl)
       echo "https://github.com/jaegertracing/jaeger/releases/download/v${1}/jaeger-${1}-linux-amd64.tar.gz"
       ;;
     darwin*)

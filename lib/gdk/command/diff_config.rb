@@ -11,6 +11,7 @@ module GDK
           gitlab/config/database.yml
           gitlab/config/unicorn.rb
           gitlab/config/puma.rb
+          gitlab/config/cable.yml
           gitlab/config/resque.yml
           gitlab-shell/config.yml
           gitlab-shell/.gitlab_shell_secret
@@ -49,7 +50,7 @@ module GDK
         end
 
         def file_path
-          @file_path ||= File.join($gdk_root, file)
+          @file_path ||= GDK.root.join(file)
         end
 
         private
@@ -73,7 +74,7 @@ module GDK
         end
 
         def run(*commands)
-          IO.popen(commands.join(' '), chdir: $gdk_root, &:read).chomp
+          IO.popen(commands.join(' '), chdir: GDK.root, &:read).chomp
         end
       end
     end

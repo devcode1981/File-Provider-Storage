@@ -21,19 +21,7 @@ gitlab-development-kit/**
 /postgresql-replica/.s.*
 /redis/*.conf
 .bundle/
-/gitlab-openldap/bin/
-/gitlab-openldap/etc/
-/gitlab-openldap/include/
-/gitlab-openldap/lib/
-/gitlab-openldap/libexec/
-/gitlab-openldap/openldap-2.4.40.tgz
-/gitlab-openldap/openldap-2.4.40/
-/gitlab-openldap/sbin/
-/gitlab-openldap/share/
 /.vagrant/
-/gitlab-workhorse/pkg
-/gitlab-workhorse/bin
-/gitlab-workhorse/src
 /gitlab-pages/pkg
 /gitlab-pages/bin
 /gitlab-pages/src
@@ -74,7 +62,6 @@ gitlab-development-kit/**
 /gitaly/
 /gitlab-workhorse/config.toml
 /gitlab-workhorse/.cache
-/go-gitlab-shell
 /.gitaly-ruby-bundle
 /gitlab-docs
 /bootstrap-rails.log
@@ -106,3 +93,5 @@ gitlab-development-kit/**
 /log/
 /gitlab-elasticsearch-indexer
 /env.runit
+/gitlab-workhorse
+/mattermost

@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+#
+# allow-overwrite is a helper for safe-sed
+#
+require_relative '../lib/gdk'
+
+abort 'Usage: allow-overwrite TARGET' unless ARGV.count == 1
+
+target = ARGV.shift
+is_protected = GDK::Config.new.config_file_protected?(target)
+
+# bin/safe-sed wants us to print 'true' or 'false' on stdout
+puts !is_protected

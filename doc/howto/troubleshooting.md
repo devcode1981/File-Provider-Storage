@@ -11,7 +11,7 @@ cannot open shared object file: No such file or directory - /home/user/.rvm/gems
 ```
 
 ```shell
-cd /home/user/gitlab-development-kit/gitlab && bundle exec rake gettext:compile > /home/user/gitlab-development-kit/gettext.log 2>&1
+cd /home/user/gitlab-development-kit/gitlab && bundle exec rake gettext:compile > /home/user/gitlab-development-kit/gitlab/log/gettext.log 2>&1
 make: *** [.gettext] Error 1
 ```
 
@@ -29,6 +29,19 @@ extensions:
 gem pristine charlock_holmes
 ```
 
+Or for example `re2` on MacOS:
+
+```shell
+/Users/user/gitlab-development-kit/gitlab/lib/gitlab/untrusted_regexp.rb:25:  [BUG] Segmentation fault at 0x0000000000000000
+ruby 2.6.5p114 (2019-10-01 revision 67812) [x86_64-darwin19]
+```
+
+In which case you would run:
+
+```sh
+gem pristine re2
+```
+
 ## An error occurred while installing gpgme on macOS
 
 Check if you have `gawk` installed >= 5.0.0 and uninstall it.
@@ -40,7 +53,7 @@ Re-run the `gdk install` again and follow any on-screen instructions related to 
 The installation of the `charlock_holmes` gem (`0.7.3` or greater) during
 `bundle install` may fail on macOS Sierra with the following error:
 
-```
+```plaintext
 [SNIPPED]
 
 /usr/local/Cellar/icu4c/59.1/include/unicode/unistr.h:3025:7: error: delegating constructors are permitted only in C++11
@@ -58,19 +71,19 @@ The installation of the `charlock_holmes` gem (`0.7.3` or greater) during
 A working solution is to configure the `--with-cxxflags=-std=c++11` flag
 in the Rubygems global build options for this gem:
 
-```
-$ bundle config --global build.charlock_holmes "--with-cxxflags=-std=c++11"
-$ bundle install
+```shell
+bundle config --global build.charlock_holmes "--with-cxxflags=-std=c++11"
+bundle install
 ```
 
 The solution can be found at
-https://github.com/brianmario/charlock_holmes/issues/117#issuecomment-329798280.
+<https://github.com/brianmario/charlock_holmes/issues/117#issuecomment-329798280>.
 
 **Note:** If you get installation problems related to `icu4c`, make sure to also
 set the `--with-icu-dir=/usr/local/opt/icu4c` option:
 
-```
-$ bundle config --global build.charlock_holmes "--with-icu-dir=/usr/local/opt/icu4c --with-cxxflags=-std=c++11"
+```shell
+bundle config --global build.charlock_holmes "--with-icu-dir=/usr/local/opt/icu4c --with-cxxflags=-std=c++11"
 ```
 
 [Gitaly]: https://gitlab.com/gitlab-org/gitaly/blob/14fd3b2e3adae00f0a792516e74a4bac29a5b5c1/Makefile#L58
@@ -80,7 +93,7 @@ $ bundle config --global build.charlock_holmes "--with-icu-dir=/usr/local/opt/ic
 The installation of the `charlock_holmes` v0.7.5 gem during `bundle install`
 may fail with the following error:
 
-```
+```plaintext
 [SNIPPED]
 
 transliterator.cpp:108:3: error: no template named 'StringByteSink'; did you mean 'icu_61::StringByteSink'?
@@ -99,7 +112,7 @@ make: *** [transliterator.o] Error 1
 
 To fix this, you can run:
 
-```
+```shell
 gem install charlock_holmes -v '0.7.5' -- --with-cppflags=-DU_USING_ICU_NAMESPACE=1
 ```
 
@@ -110,7 +123,7 @@ gem install charlock_holmes -v '0.7.5' -- --with-cppflags=-DU_USING_ICU_NAMESPAC
 After installing PostgreSQL with brew you will have to set the proper path to PostgreSQL.
 You may run into the following errors on running `gdk install`
 
-```
+```plaintext
 Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
 
     current directory: /Users/janedoe/.rvm/gems/ruby-2.3.3/gems/pg-0.18.4/ext
@@ -123,7 +136,6 @@ No pg_config... trying anyway. If building fails, please try again with
 
 An error occurred while installing pg (0.18.4), and Bundler cannot continue.
 Make sure that `gem install pg -v '0.18.4'` succeeds before bundling.
-
 ```
 
 This is because the script fails to find the PostgreSQL instance in the path.
@@ -131,7 +143,7 @@ The instructions for this may show up after installing PostgreSQL.
 The example below is from running `brew install postgresql@10` on OS X installation.
 For other versions, other platform install and other shell terminal please adjust the path accordingly.
 
-```
+```plaintext
 If you need to have this software first in your PATH run:
   echo 'export PATH="/usr/local/opt/postgresql@10/bin:$PATH"' >> ~/.bash_profile
 ```
@@ -149,6 +161,17 @@ error, make sure you pull the latest changes from the GDK repository and run:
 ./support/enable-postgres-extensions
 ```
 
+## ActiveRecord::PendingMigrationError at /
+
+After running the GitLab Development Kit using `gdk start` and browsing to `http://localhost:3000/`, you may see an error page that says `ActiveRecord::PendingMigrationError at /. Migrations are pending`.
+
+To fix this error, the pending migration must be resolved. Perform the following steps in your terminal:
+
+1. Change to the `gitlab` directory using `cd gitlab`
+1. Run the following command to perform the migration: `rails db:migrate RAILS_ENV=development`
+
+Once the operation is complete, refresh the page.
+
 ## Error installing node-gyp
 
 node-gyp may fail to build on macOS Catalina installations. Follow [the node-gyp troubleshooting guide](https://github.com/nodejs/node-gyp/blob/master/macOS_Catalina.md).
@@ -156,17 +179,17 @@ node-gyp may fail to build on macOS Catalina installations. Follow [the node-gyp
 ## Upgrading PostgreSQL
 
 In case you are hit by `FATAL: database files are incompatible with server`,
-you need to upgrade Postgres.
+you need to upgrade PostgreSQL.
 
 This is what to do when your OS/packaging system decides to install a new minor
-version of Postgres:
+version of PostgreSQL:
 
-1. (optional) Downgrade postgres
+1. (optional) Downgrade PostgreSQL
 1. (optional) Make a sql-only GitLab backup
-1. Rename/remove the gdk/postgresql/data directory: `mv postgresql/data{,.old}`
+1. Rename/remove the `gdk/postgresql/data` directory: `mv postgresql/data{,.old}`
 1. Run `make`
 1. Build pg gem native extensions: `gem pristine pg`
-1. (optional) Restore your gitlab backup
+1. (optional) Restore your GitLab backup
 
 If things are working, you may remove the `postgresql/data.old` directory
 completely.
@@ -185,7 +208,7 @@ built against an older version.
 If you are using `rvm`, you should reinstall the Ruby binary. The following
 command will fetch Ruby 2.3 and install it from source:
 
-```
+```shell
 rvm reinstall --disable-binary 2.3
 ```
 
@@ -199,7 +222,7 @@ In case you use the same database for both CE and EE development, sometimes you
 can get stuck in a situation when the migration is up in `rake db:migrate:status`,
 but in reality the database doesn't have it.
 
-For example, https://gitlab.com/gitlab-org/gitlab-foss/merge_requests/3186
+For example, <https://gitlab.com/gitlab-org/gitlab-foss/merge_requests/3186>
 introduced some changes when a few EE migrations were added to CE. If you were
 using the same db for CE and EE you would get hit by the following error:
 
@@ -233,7 +256,7 @@ rails console
 
 And run manually the migrations:
 
-```
+```plaintext
 require Rails.root.join("db/migrate/20130711063759_create_project_group_links.rb")
 CreateProjectGroupLinks.new.change
 require Rails.root.join("db/migrate/20130820102832_add_access_to_project_group_link.rb")
@@ -245,7 +268,7 @@ AddGroupShareLock.new.change
 You should now be able to continue your development. You might want to note
 that in this case we had 3 migrations happening:
 
-```
+```plaintext
 db/migrate/20130711063759_create_project_group_links.rb
 db/migrate/20130820102832_add_access_to_project_group_link.rb
 db/migrate/20150930110012_add_group_share_lock.rb
@@ -263,7 +286,7 @@ were linked against a system library that is no longer there. A typical culprit
 is Homebrew on macOS, which encourages frequent updates (`brew update && brew
 upgrade`) which may break binary compatibility.
 
-```
+```shell
 bundle exec rake db:create dev:setup
 rake aborted!
 LoadError: dlopen(/Users/janedoe/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/extensions/x86_64-darwin-13/2.1.0-static/charlock_holmes-0.6.9.4/charlock_holmes/charlock_holmes.bundle, 9): Library not loaded: /usr/local/opt/icu4c/lib/libicui18n.52.1.dylib
@@ -284,7 +307,7 @@ charlock_holmes](#rebuilding-gems-with-native-extensions).
 This can happen if you are using a system-wide Ruby installation. You can
 override the Ruby gem install path with `BUNDLE_PATH`:
 
-```
+```shell
 # Install gems in (current directory)/vendor/bundle
 make BUNDLE_PATH=$(pwd)/vendor/bundle
 ```
@@ -293,7 +316,7 @@ make BUNDLE_PATH=$(pwd)/vendor/bundle
 
 On OS X El Capitan, the eventmachine gem compilation might fail with:
 
-```
+```plaintext
 Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
 <snip>
 make "DESTDIR=" clean
@@ -308,12 +331,11 @@ In file included from binder.cpp:20:
 make: *** [binder.o] Error 1
 
 make failed, exit code 2
-
 ```
 
 To fix it:
 
-```
+```shell
 bundle config build.eventmachine --with-cppflags=-I/usr/local/opt/openssl/include
 ```
 
@@ -324,7 +346,7 @@ and then do `bundle install` once again.
 Make sure that `git` is configured correctly on your development
 machine (where GDK runs).
 
-```
+```shell
 git checkout -b can-I-commit
 git commit --allow-empty -m 'I can commit'
 ```
@@ -333,7 +355,7 @@ git commit --allow-empty -m 'I can commit'
 
 Make sure that Xcode Command Line Tools installed on your development machine. For the discussion see this [issue](https://gitlab.com/gitlab-org/gitlab-development-kit/issues/124)
 
-```
+```shell
 brew unlink gcc-4.2      # you might not need this step
 gem uninstall nokogiri
 xcode-select --install
@@ -346,21 +368,21 @@ If building `gpgme` gem fails with an `Undefined symbols for architecture x86_64
 
 1. Ensure necessary dependencies are installed:
 
-    ```sh
-    brew install gpgme
-    ```
+   ```sh
+   brew install gpgme
+   ```
 
 1. (optional) Try building the `gpgme` gem manually to ensure it compiles. If it fails, debug the failure with the error messages. To compile the `gpgme` gem manually run:
 
-    ```sh
-    gem install gpgme -- --use-system-libraries
-    ```
+   ```sh
+   gem install gpgme -- --use-system-libraries
+   ```
 
 1. Configure Bundler to use system libraries for the `gpgme` gem:
 
-    ```sh
-    bundle config build.gpgme --use-system-libraries
-    ```
+   ```sh
+   bundle config build.gpgme --use-system-libraries
+   ```
 
 You can now run `gdk install` or `bundle` again.
 
@@ -401,11 +423,11 @@ A solution is to:
 
 1. Instruct Bundler to use the system libraries when building `nokogumbo`:
 
-    ```sh
-    bundle config build.nokogumbo --use-system-libraries
-    ```
+   ```sh
+   bundle config build.nokogumbo --use-system-libraries
+   ```
 
-2. Re-run `gdk install`
+1. Re-run `gdk install`
 
 ## `gem install ffi` fails
 
@@ -446,14 +468,14 @@ A solution on macOS is to:
     export LDFLAGS="$LDFLAGS:-L$(brew --prefix)/opt/libffi/lib"
     ```
 
-2. Re-run `gdk install`
+1. Re-run `gdk install`
 
 ## LoadError due to readline
 
 On macOS, GitLab may fail to start and fail with an error message about
 `libreadline`:
 
-```
+```plaintext
 LoadError:
     dlopen(/Users/janedoe/.rbenv/versions/2.6.3/lib/ruby/2.5.0/x86_64-darwin15/readline.bundle, 9): Library not loaded: /usr/local/opt/readline/lib/libreadline.7.dylib
         Referenced from: /Users/janedoe/.rbenv/versions/2.6.3/lib/ruby/2.5.0/x86_64-darwin15/readline.bundle
@@ -474,149 +496,149 @@ If for some reason you end up having database migrations that no longer exist
 but are present in your database, you might want to remove them.
 
 1. Find the non-existent migrations with `rake db:migrate:status`. You should
-    see some entries like:
+   see some entries like:
 
-    ```
-    up     20160727191041  ********** NO FILE **********
-    up     20160727193336  ********** NO FILE **********
-    ```
+   ```plaintext
+   up     20160727191041  ********** NO FILE **********
+   up     20160727193336  ********** NO FILE **********
+   ```
 
 1. Open a rails database console with `rails dbconsole`.
 1. Delete the migrations you want with:
 
-    ```sql
-    DELETE FROM schema_migrations WHERE version='20160727191041';
-    ```
+   ```sql
+   DELETE FROM schema_migrations WHERE version='20160727191041';
+   ```
 
 You can now run `rake db:migrate:status` again to verify that the entries are
 deleted from the database.
 
 ## Webpack
 
-Since webpack has been added as a new background process which gitlab depends on
+Since webpack has been added as a new background process which GitLab depends on
 in development, the [GDK must be updated and reconfigured](../update-gdk.md) in
 order to work properly again.
 
 If you still encounter some errors, see the troubleshooting FAQ below:
 
-* I'm getting an error when I run `gdk reconfigure`:
+- I'm getting an error when I run `gdk reconfigure`:
 
-    ```
-    Makefile:30: recipe for target 'gitlab/config/gitlab.yml' failed
-    make: *** [gitlab/config/gitlab.yml] Error 1
-    ```
+  ```plaintext
+  Makefile:30: recipe for target 'gitlab/config/gitlab.yml' failed
+  make: *** [gitlab/config/gitlab.yml] Error 1
+  ```
 
-    This is likely because you have not updated your gitlab CE/EE repository to
-    the latest master yet.  It has a template for gitlab.yml in it which the GDK
-    needs to update.  The `gdk update` step should have taken care of this for
-    you, but you can also manually go to your gitlab ce/ee directory and run
-    `git checkout master && git pull origin master`
-
-    ---
-
-* I'm getting an error when I attempt to access my local GitLab in a browser:
-
-    ```
-    Webpack::Rails::Manifest::ManifestLoadError at /
-    Could not load manifest from webpack-dev-server at http://localhost:3808/assets/webpack/manifest.json - is it running, and is stats-webpack-plugin loaded?
-    ```
-
-    or
-
-    ```
-    Webpack::Rails::Manifest::ManifestLoadError at /
-    Could not load compiled manifest from /path/to/gitlab-development-kit/gitlab/public/assets/webpack/manifest.json - have you run `rake webpack:compile`?
-    ```
-
-    This probably means that the webpack dev server isn't running or that your
-    gitlab.yml isn't properly configured. Ensure that you have run
-    `gdk reconfigure` **AND** `gdk restart webpack`.
+  This is likely because you have not updated your GitLab CE/EE repository to
+  the latest master yet. It has a template for `gitlab.yml` in it which the GDK
+  needs to update. The `gdk update` step should have taken care of this for
+  you, but you can also manually go to your GitLab ce/ee directory and run
+  `git checkout master && git pull origin master`
 
     ---
 
-* I see the following error when run `gdk tail` or `gdk tail webpack`:
+- I'm getting an error when I attempt to access my local GitLab in a browser:
 
-    ```
-    09:46:05 webpack.1               | npm ERR! argv "/usr/local/bin/node" "/usr/local/bin/npm" "run" "dev-server"
-    09:46:05 webpack.1               | npm ERR! node v5.8.0
-    09:46:05 webpack.1               | npm ERR! npm  v3.10.7
-    09:46:05 webpack.1               |
-    09:46:05 webpack.1               | npm ERR! missing script: dev-server
-    ...
-    ```
+  ```plaintext
+  Webpack::Rails::Manifest::ManifestLoadError at /
+  Could not load manifest from webpack-dev-server at http://localhost:3808/assets/webpack/manifest.json - is it running, and is stats-webpack-plugin loaded?
+  ```
 
-    This means your gitlab CE or EE instance is not running the current master
-    branch.  If you are running a branch which hasn't been rebased on master
-    since Saturday, Feb 4th then you should rebase it on master.  If you are
-    running the master branch, ensure it is up to date (`git pull`).
+  or
 
-    ---
+  ```plaintext
+  Webpack::Rails::Manifest::ManifestLoadError at /
+  Could not load compiled manifest from /path/to/gitlab-development-kit/gitlab/public/assets/webpack/manifest.json - have you run `rake webpack:compile`?
+  ```
 
-* I see the following error when run `gdk tail` or `gdk tail webpack`:
+  This probably means that the webpack dev server isn't running or that your
+  `gitlab.yml` isn't properly configured. Ensure that you have run
+  `gdk reconfigure` **AND** `gdk restart webpack`.
 
-    ```
-    09:54:15 webpack.1               | > @ dev-server /Users/mike/Projects/gitlab-development-kit/gitlab
-    09:54:15 webpack.1               | > webpack-dev-server --config config/webpack.config.js
-    09:54:15 webpack.1               |
-    09:54:15 webpack.1               | sh: webpack-dev-server: command not found
-    09:54:15 webpack.1               |
-    ...
-    ```
+  ---
 
-    This means you have not run `yarn install` since updating your gitlab/gitlab-foss
-    repository.  The `gdk update` command should have done this for you, but you
-    can do so manually as well.
+- I see the following error when run `gdk tail` or `gdk tail webpack`:
 
-* I see the following error when run `gdk tail` or `gdk tail webpack`:
+  ```plaintext
+  09:46:05 webpack.1               | npm ERR! argv "/usr/local/bin/node" "/usr/local/bin/npm" "run" "dev-server"
+  09:46:05 webpack.1               | npm ERR! node v5.8.0
+  09:46:05 webpack.1               | npm ERR! npm  v3.10.7
+  09:46:05 webpack.1               |
+  09:46:05 webpack.1               | npm ERR! missing script: dev-server
+  ...
+  ```
 
-    ```
-    14:52:22 webpack.1               | [nodemon] starting `node ./node_modules/.bin/webpack-dev-server --config config/webpack.config.js`
-    14:52:22 webpack.1               | events.js:160
-    14:52:22 webpack.1               |       throw er; // Unhandled 'error' event
-    14:52:22 webpack.1               |       ^
-    14:52:22 webpack.1               |
-    14:52:22 webpack.1               | Error: listen EADDRINUSE 127.0.0.1:3808
-    ...
-    ```
+  This means your GitLab CE or EE instance is not running the current master
+  branch. If you are running a branch which hasn't been rebased on master
+  since Saturday, Feb 4th then you should rebase it on master. If you are
+  running the master branch, ensure it is up to date (`git pull`).
 
-    This means the port is already in use, probably because webpack failed to
-    terminate correctly when the GDK was last shutdown. You can find out the pid
-    of the process using the port with the command `lsof -i :3808`. If you are
-    using Vagrant the `lsof` command is not available. Instead you can use the
-    command `ss -pntl 'sport = :3808'`. The left over process can be killed with
-    the command `kill PID`.
+  ---
+
+- I see the following error when run `gdk tail` or `gdk tail webpack`:
+
+  ```plaintext
+  09:54:15 webpack.1               | > @ dev-server /Users/mike/Projects/gitlab-development-kit/gitlab
+  09:54:15 webpack.1               | > webpack-dev-server --config config/webpack.config.js
+  09:54:15 webpack.1               |
+  09:54:15 webpack.1               | sh: webpack-dev-server: command not found
+  09:54:15 webpack.1               |
+  ...
+  ```
+
+  This means you have not run `yarn install` since updating your `gitlab/gitlab-foss`
+  repository. The `gdk update` command should have done this for you, but you
+  can do so manually as well.
+
+- I see the following error when run `gdk tail` or `gdk tail webpack`:
+
+  ```plaintext
+  14:52:22 webpack.1               | [nodemon] starting `node ./node_modules/.bin/webpack-dev-server --config config/webpack.config.js`
+  14:52:22 webpack.1               | events.js:160
+  14:52:22 webpack.1               |       throw er; // Unhandled 'error' event
+  14:52:22 webpack.1               |       ^
+  14:52:22 webpack.1               |
+  14:52:22 webpack.1               | Error: listen EADDRINUSE 127.0.0.1:3808
+  ...
+  ```
+
+  This means the port is already in use, probably because webpack failed to
+  terminate correctly when the GDK was last shutdown. You can find out the pid
+  of the process using the port with the command `lsof -i :3808`. If you are
+  using Vagrant the `lsof` command is not available. Instead you can use the
+  command `ss -pntl 'sport = :3808'`. The left over process can be killed with
+  the command `kill PID`.
 
 ## Testing environment database problems
 
-There may be times when running spinach feature tests or rspec tests
+There may be times when running spinach feature tests or RSpec tests
 steps such as `sign-up` or `log-out` will fail for no apparent reason.
 
-In that case what you need to do is run the following command inside the gitlab directory:
+In that case what you need to do is run the following command inside the `gitlab` directory:
 
-```
+```shell
 RAILS_ENV=test bundle exec rake db:reset
 ```
 
 ## Windows 10 WSL common issues
 
-* `gdk run db` fails with exit code X
+- `gdk run db` fails with exit code X
 
-    If you have restarted your computer recently, don't forget to start PostgreSQL server manually; init.d scripts don't work currently as of build 15063.138:
+  If you have restarted your computer recently, don't forget to start PostgreSQL server manually; init.d scripts don't work currently as of build 15063.138:
 
-    `sudo service postgresql start`
+  `sudo service postgresql start`
 
-## Homebrew: Postgres 10.0: "database files are incompatible with server"
+## Homebrew: PostgreSQL 10.0: "database files are incompatible with server"
 
-```
+```plaintext
 FATAL:  database files are incompatible with server
 DETAIL:  The data directory was initialized by PostgreSQL version 9.6, which is not compatible with this version 10.0.
 ```
 
-GitLab is not compatible with Postgres 10.0. The following workaround
-lets you get back Postgres 9.6. TODO: find a good way to co-exist with
-Postgres 10.0 in Homebrew.
+GitLab is not compatible with PostgreSQL 10.0. The following workaround
+lets you get back PostgreSQL 9.6. TODO: find a good way to co-exist with
+PostgreSQL 10.0 in Homebrew.
 
-```
+```shell
 brew install postgresql@9.6
 brew link --force postgresql@9.6
 ```
@@ -625,7 +647,7 @@ brew link --force postgresql@9.6
 
 Browser shows `EOF`. Logs show a timeout:
 
-```
+```plaintext
 error: GET "/users/sign_in": badgateway: failed after 62s: EOF
 ```
 
@@ -639,25 +661,43 @@ Variable | Type | Description
 `GITLAB_RAILS_RACK_TIMEOUT` | integer | Sets `service_timeout`
 `GITLAB_RAILS_WAIT_TIMEOUT` | integer | Sets `wait_timeout`
 
-
 For Unicorn: edit `gitlab/config/unicorn.rb`:
 
 ```ruby
 timeout 3600
 ```
 
-## fatal: not a git repository
+## `fatal: not a git repository`
 
 If `gdk init` or any other `gdk` command gives you the following error:
 
-```
+```plaintext
 fatal: not a git repository (or any of the parent directories): .git
 ```
 
 Make sure you don't have `gdk` aliased in your shell.
-For example the git module in [prezto](https://github.com/sorin-ionescu/prezto)
+For example the Git module in [prezto](https://github.com/sorin-ionescu/prezto)
 has an [alias](https://github.com/sorin-ionescu/prezto/blob/master/modules/git/README.md#data)
 for `gdk` that lists killed files.
+
+## Problems with Sidekiq (Cluster)
+
+GDK uses Sidekiq Cluster (running a single Sidekiq process) by default instead
+`bundle exec sidekiq` directly, which is a step towards making development a
+bit more like production.
+
+Technically, running Sidekiq Cluster with a single Sidekiq process matches the same behavior
+of running Sidekiq directly, but eventually problems may arise.
+
+If you're experiencing performance issues or jobs not being picked up, try disabling
+Sidekiq Cluster by:
+
+1. First stopping all running processes with `gdk stop`
+1. Going to `$GDKROOT/Procfile`
+1. Removing the `SIDEKIQ_WORKERS` environment variable from `rails-background-jobs`
+1. Booting GDK again with `gdk start`
+
+When doing so, please create an issue describing what happened.
 
 ## Jaeger Issues
 
@@ -729,11 +769,41 @@ export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 To fix this for the future, add the line above to `~/.bash_profile` or `~/.zshrc`.
 
+### Elasticsearch indexer looks for the wrong version of icu4c
+
+You might get the following error when updating the application:
+
+```plaintext
+# gitlab.com/gitlab-org/gitlab-elasticsearch-indexer
+/usr/local/Cellar/go/1.14.2_1/libexec/pkg/tool/darwin_amd64/link: running clang failed: exit status 1
+ld: warning: directory not found for option '-L/usr/local/Cellar/icu4c/64.2/lib'
+ld: library not found for -licui18n
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+make[1]: *** [build] Error 2
+make: *** [gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer] Error 2
+```
+
+This means Go is trying to link to brew's version of `icu4c` (`64.2` in the example), and failing.
+This can happen when `icu4c` is not pinned and got updated. Verify the version with:
+
+```shell
+$ ls /usr/local/Cellar/icu4c
+66.1
+```
+
+Clean Go's cache to fix this error. From the GDK's root directory:
+
+```shell
+cd gitlab-elasticsearch-indexer/
+go clean -cache
+```
+
 ## Failures when generating Karma fixtures
 
 In some cases, running `bin/rake karma:fixtures` might fail to generate some fixtures, you'll see this kind of errors in the console:
 
-```
+```plaintext
 Failed examples:
 
 rspec ./spec/javascripts/fixtures/blob.rb:25 # Projects::BlobController (JavaScript fixtures) blob/show.html
@@ -751,20 +821,18 @@ rm -rf tmp/tests/ && bin/rake karma:fixtures
 
 The full error you might be getting is:
 
-```
+```plaintext
 Makefile:134: recipe for target '.gitlab-yarn' failed
 make: *** [.gitlab-yarn] Error 2
-
 ```
 
 This is likely to happen if you installed `yarn` using `apt install cmdtest`.
 
 To fix this, install yarn using npm instead:
 
+```shell
+npm install --global yarn
 ```
-npm install --global yarn`
-```
-
 
 ## Other problems
 

@@ -1,7 +1,7 @@
-# Runit process supervision
+# runit process supervision
 
 We have replaced
-[Foreman](https://github.com/ddollar/foreman) with [Runit](http://smarden.org/runit/).
+[Foreman](https://github.com/ddollar/foreman) with [runit](http://smarden.org/runit/).
 
 `gdk run` is no longer available. Instead, use `gdk start`, `gdk stop`,
 and `gdk tail`.
@@ -12,37 +12,37 @@ Foreman was the tool behind `gdk run`; it was configured via the
 `Procfile`. While Foreman is easy to get started with, we find it has a
 number of drawbacks in GDK:
 
--  Foreman is attached to a terminal window. If that terminal window
-    gets closed abruptly, Foreman is not able to cleanly shut down the
-    processes it was supervising, leaving them running in the
-    background. This is a problem because the next time you start
-    Foreman, most of its services will fail to start because they need
-    resources (network ports) still being used by the old processes that
-    never got cleaned up.
--  There is no good way to start / stop / restart individual processes
-    in the Procfile. This is not so noticeable when you work with Ruby
-    or JavaScript because of live code reload features, but for Go
-    programs (e.g. `gitaly`) this does not work well. There you really
-    need to stop an old binary and start a new binary.
+- Foreman is attached to a terminal window. If that terminal window
+  gets closed abruptly, Foreman is not able to cleanly shut down the
+  processes it was supervising, leaving them running in the
+  background. This is a problem because the next time you start
+  Foreman, most of its services will fail to start because they need
+  resources (network ports) still being used by the old processes that
+  never got cleaned up.
+- There is no good way to start / stop / restart individual processes
+  in the Procfile. This is not so noticeable when you work with Ruby
+  or JavaScript because of live code reload features, but for Go
+  programs (e.g. `gitaly`) this does not work well. There you really
+  need to stop an old binary and start a new binary.
 
-## Why Runit
+## Why runit
 
-Runit is a process supervision system that we also use in
+runit is a process supervision system that we also use in
 Omnibus-GitLab. Compared to Foreman, it is more of a system
 administration tool than a developer tool.
 
-The reason we use Runit and not the native OS supervisor (launchd on
+The reason we use runit and not the native OS supervisor (launchd on
 macOS, systemd on Linux) is that:
 
--   Runit works the same on macOS and Linux so we don't need to handle
-    them separately
--   Runit does not mind running next to the official OS supervisor
--   it is easy to run more than one Runit supervision tree (e.g. if you
-    have multiple GDK installations)
+- runit works the same on macOS and Linux so we don't need to handle
+  them separately
+- runit does not mind running next to the official OS supervisor
+- It is easy to run more than one runit supervision tree (e.g. if you
+  have multiple GDK installations)
 
 ## Solving the closed terminal window problem
 
-Runit takes its configuration from a directory tree; in our case this is
+runit takes its configuration from a directory tree; in our case this is
 `/path/to/gdk/services`. We start a `runsvdir` process
 anchored to this directory tree once, and never stop it (until you shut
 down your computer).
@@ -67,7 +67,7 @@ reclaim some memory while not using `localhost:3000`.
 
 ## Logs
 
-Because Runit is not attached to a terminal, the logs of the services
+Because runit is not attached to a terminal, the logs of the services
 you're running must go to files. If you want to see this logs in your
 terminal, like they show up with Foreman, then run `gdk tail`. Note that
 unlike with Foreman, if you press Ctrl-C into `gdk tail`, the logs stop,
@@ -81,13 +81,13 @@ You can also look at the logs for a subset of services:
 
 To modify the actual commands used to start services, use the `Procfile`
 just like with Foreman. Every time you run `gdk start`, `gdk stop` etc.
-GDK will update the Runit service configuration from the Procfile.
+GDK will update the runit service configuration from the Procfile.
 
 If you want to remove a service `foo`:
 
--   comment out or delete `foo: exec bar` from Procfile
--   run `gdk stop foo`
--   `rm services/foo`
+- Comment out or delete `foo: exec bar` from Procfile
+- Run `gdk stop foo`
+- `rm services/foo`
 
 ## Modifying environment configuration for services
 

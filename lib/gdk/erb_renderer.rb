@@ -36,17 +36,15 @@ module GDK
 
         warn_changes!(temp_file.path)
 
-        if config.gdk.overwrite_changes
-          backup!
-
-          warn_overwritten!
-          wait!
-        else
+        if config.config_file_protected?(target)
           warn_not_applied!
           wait!
 
           return
         end
+
+        backup!
+        warn_overwritten!
       end
 
       FileUtils.mv(temp_file.path, target)
@@ -79,9 +77,12 @@ module GDK
     end
 
     def warn_overwritten!
-      GDK::Output.warn "'#{target}' bas been overwritten. To recover the previous version, run:"
+      GDK::Output.warn "'#{target}' has been overwritten. To recover the previous version, run:"
       puts <<~EOF
         cp -f '#{backup_file}' '#{target}'
+
+        If you want to protect this file from being overwritten, see:
+        https://gitlab.com/gitlab-org/gitlab-development-kit/blob/master/doc/howto/configuration.md#overwriting-config-files
         -------------------------------------------------------------------------------------------------------------
       EOF
     end

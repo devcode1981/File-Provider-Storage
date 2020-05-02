@@ -7,11 +7,6 @@ engines:
       - ruby
   fixme:
     enabled: false
-  rubocop:
-    enabled: true
-    channel: rubocop-0-59
-    config:
-      file: gdk-rubocop.yml
   shellcheck:
     enabled: true
 ratings:
@@ -23,8 +18,8 @@ exclude_paths:
 - "**/vendor/**/*"
 - gitaly/
 - gitlab/
+- gitlab-elasticsearch-indexer
 - gitlab-shell/
-- go-gitlab-shell/
 - gitlab-workhorse/
 - reposities/
 - postgresql/

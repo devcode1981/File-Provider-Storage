@@ -1,0 +1,31 @@
+#!/bin/sh
+
+set -e
+
+# To help the transition away from "symlinked gitlab-shell", remove the
+# symlink if it is there.
+if [ -L gitlab-shell ]; then
+  set -x
+  rm gitlab-shell
+fi
+
+if [ -d gitlab-shell/.git ]; then
+  # A gitlab-shell checkout already exists: do nothing
+  exit 0
+fi
+
+old_gitlab_shell_dir=go-gitlab-shell/src/gitlab.com/gitlab-org/gitlab-shell
+
+if ! [ -d ${old_gitlab_shell_dir}/.git ]; then
+  # There is no "old" gitlab-shell checkout. Exit with a non-zero code to
+  # signal to the caller that a regular git clone is needed.
+  exit 1
+fi
+
+# We are going to make changes. It's good to be explicit about that, and
+# if something fails, it helps the user to see what failed. With "set
+# -x" we get a cheap kind of verbose mode.
+set -x
+
+mv ${old_gitlab_shell_dir} gitlab-shell
+mv go-gitlab-shell "$(date +.backups/go-gitlab-shell.%Y-%m-%d_%H.%M.%S)"

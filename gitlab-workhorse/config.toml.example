@@ -1,2 +1,0 @@
-[redis]
-URL = "unix:///home/git/redis/redis.socket"

@@ -3,49 +3,64 @@
 This document will instruct you to set up a working GitLab instance with
 the ability to run the full Auto DevOps workflow.
 
-## Prerequisites (For GitLab employees only)
+## Prerequisites (For GitLab team members only)
 
-IMPORTANT: These steps are currently only applicable to GitLab employees as it
-depends on our infrastructure. For non-GitLab employees you can see
+IMPORTANT: These steps are currently only applicable to GitLab team members as it
+depends on our infrastructure. For non-GitLab team members you can see
 [Alternatives](#alternatives) below.
 
-1. Request GCP permission and SSH tunnel by
-  [creating an access request](https://gitlab.com/gitlab-com/access-requests/issues/new?issuable_template=Single%20Person%20Access%20Request).
+1. Ensure you have access GKE and the SSH tunnel. It is a baseline entitlement for
+   backend engineers, but you may not have it for historical reasons or don't qualify
+   to have it as a baseline. If you require access:
+   1. [Create an access request](https://gitlab.com/gitlab-com/access-requests/issues/new?issuable_template=Single%20Person%20Access%20Request).
+   1. Ask to be added to:
+      - The Google group `gcp-sandbox-gitlab-internal-kubernetes-admin-sg@gitlab.com`
+        for permissions to work with GKE.
+      - The `GitLab - ASA - QA Tunnel` group in Okta to provision your account on the
+        server for SSH access.
+1. Install the [Okta ASA client](https://help.okta.com/en/prod/Content/Topics/Adv_Server_Access/docs/sft.htm)
+   on your workstation. After software installation, it will ask you to "enroll"
+   your client (which will open a browser):
+   1. To enroll your client, either:
+      - Run `sft enroll --team gitlab-poc` on the command line.
+      - Run `sft enroll` and enter the team name yourself (enter `gitlab-poc`).
+   1. On the **Client Setup** page, feel free to edit the `Client Name` to more easily
+      identify your device as yours.
+   1. Click **Approve**.
+1. Add the following to your `.ssh/config`. Replace any existing stanza for
+   `Host qa-tunnel.gitlab.info` if you have one:
 
-   You need to request:
+   ```plaintext
+   Match host "qa-tunnel.gitlab.info" exec "sft resolve -q %h"
+     ProxyCommand "sft" proxycommand  %h
+   ```
 
-   - GCP Project `gitlab-internal-153318`. Create an access request to be added to the Google group `gcp-sandbox-gitlab-internal-kubernetes-admin-sg@gitlab.com` for the correct access to work with GKE. This access is part of baseline entitlements but if you do not have it, include it in your access request.
-   - server access for `qa-tunnel.gitlab.info` and provide
-  them with your SSH public key.
+1. Run `sft login`. This will open a web browser window requiring a login to
+   Okta and clicking an **Approve** button.
 
-1. Once your account has been created, configure your SSH config `~/.ssh/config` to set the correct username.
-
-    ```
-    Host qa-tunnel.gitlab.info
-      User <username>
-    ```
-
+   By default, you will remain logged in for 9 hours and will have to re-run
+   `sft login` after that. SSH requests from your GDK will fail silently
+   until you do. Administrators can change the session expiration time on the ASA
+   dashboard.
 1. Verify you have `ssh` access into `qa-tunnel.gitlab.info`:
 
-    ```
-    ssh qa-tunnel.gitlab.info
-    > Welcome to Ubuntu 16.04.4 LTS (GNU/Linux 4.13.0-1019-gcp x86_64)
-    ```
-
-   If you're able to log in [without entering your passphrase](doc/howto/auto_devops/tips_and_troubleshooting.md#ssh-requires-a-passphrase), it means you can move on to the next step.
+   ```shell
+   $ ssh qa-tunnel.gitlab.info
+   > Welcome to Ubuntu 16.04.4 LTS (GNU/Linux 4.13.0-1019-gcp x86_64)
+   ```
 
 1. Set up the GDK for your workstation following [the preparation
-  instructions](../prepare.md) and [setup instructions](../set-up-gdk.md)
+   instructions](../prepare.md) and [setup instructions](../set-up-gdk.md)
 
 NOTE: Running Auto DevOps flow [downloads/uploads gigabytes of data on each
 run](#massive-bandwidth-used-by-auto-devops). For this reason it is not a good
-idea to run on 4G and is recommended you run on a cloud VM in GCP so that
+idea to run on mobile data and is recommended you run on a cloud VM in GCP so that
 everything stays in Google's network so it runs much faster.
 
 ## Setup
 
-IMPORTANT: These steps are currently only applicable to GitLab employees as it
-depends on our infrastructure. For non-GitLab employees you can see
+IMPORTANT: These steps are currently only applicable to GitLab team members as it
+depends on our infrastructure. For non-GitLab team members you can see
 [Alternatives](#alternatives) below.
 
 From the GDK directory, create [a `gdk.yml` configuration file](configuration.md)
@@ -85,7 +100,7 @@ Finally, run the below command to start all the services:
 gdk start
 ```
 
-Now login as root using the Gitlab tunnel URL (`https://[PORT].qa-tunnel.gitlab.info`) and the default password. Once you are logged in, change the default password.
+Now login as root using the GitLab tunnel URL (`https://[PORT].qa-tunnel.gitlab.info`) and the default password. Once you are logged in, change the default password.
 
 Check [the troubleshooting guide](auto_devops/tips_and_troubleshooting.md) if you're still facing some problems.
 
@@ -99,17 +114,17 @@ Since your GitLab instance is now internet accessible, you should secure it by c
 
 - Change the password of all seeded users (run the following code in a Rails console):
 
-    ```ruby
-    User.where.not(username: 'root').all.each do |user|
-      user.password = user.password_confirmation = SecureRandom.hex(16)
-      user.save!
-    end
-    ```
+  ```ruby
+  User.where.not(username: 'root').all.each do |user|
+    user.password = user.password_confirmation = SecureRandom.hex(16)
+    user.save!
+  end
+  ```
 
 ## Google OAuth2
 
 To be able to create a new GKE Cluster via GitLab, you need to configure
-Gitlab to be able to authenticate with Google. To get an OAuth token
+GitLab to be able to authenticate with Google. To get an OAuth token
 that works with your server add your redirect URLs for the generated
 GitLab tunnel URL to [the shared OAuth
 client](https://console.cloud.google.com/apis/credentials/oauthclient/696404988091-a80933t1dpfu38khu8o4mfrt32pad0ij.apps.googleusercontent.com?project=gitlab-internal-153318).
@@ -142,26 +157,26 @@ spec](https://gitlab.com/gitlab-org/gitlab/blob/master/qa/qa/specs/features/brow
 Before you can run the spec, you will need `gcloud` and `kubectl`
 installed.
 
-Follow the instructions at https://cloud.google.com/sdk/docs/quickstarts
+Follow the instructions at <https://cloud.google.com/sdk/docs/quickstarts>
 for the operating system that you are using to install `gcloud`.
 Alternatively, if you are using Homebrew on MacOS, you can install
 `gcloud` with :
 
-```
+```shell
 brew cask install google-cloud-sdk
 ```
 
 After you have installed `gcloud`, run the
-[init](https://cloud.google.com/sdk/docs/quickstart-macos#initialize_the_sdk) step :
+[init](https://cloud.google.com/sdk/docs/quickstart-macos#initialize_the_sdk) step:
 
-```
+```shell
 gcloud init
 ```
 
 This init command will help you setup your default zone and project. It will
 also prompt you to log in with your Google account.
 
-```
+```plaintext
 To continue, you must log in. Would you like to log in (Y/n)? Y
 ```
 
@@ -170,7 +185,7 @@ Developers should use the GCP project called `gitlab-internal-153318` for develo
 
 Next, install `kubectl` as a component of `gcloud` :
 
-```
+```shell
 gcloud components install kubectl
 ```
 
@@ -178,10 +193,10 @@ NOTE: If you have installed `gcloud` via Homebrew Cask, as described
 above, you need to add the following lines in your `~/.bash_profile`
 to set the correct PATH to be able to run the `kubectl` binary.
 
-```
-  # Add to ~/.bash_profile
-  source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.bash.inc'
-  source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.bash.inc'
+```shell
+# Add to ~/.bash_profile
+source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.bash.inc'
+source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.bash.inc'
 ```
 
 Make sure to close and reopen your terminal after making these changes.
@@ -197,7 +212,7 @@ GITLAB_PASSWORD=<root-user-password> GCLOUD_REGION=us-central1 CHROME_HEADLESS=f
 
 You can also run single tests with RSpec line number arguments. As the
 `orchestrated` tag is normally excluded, we will also need to include a
-`--tag ` argument to override the exclusion:
+`--tag` argument to override the exclusion:
 
 ```bash
 GITLAB_PASSWORD=<root-user-password> GCLOUD_REGION=us-central1 CHROME_HEADLESS=false bundle exec bin/qa Test::Instance::All https://<gitlab-number>.qa-tunnel.gitlab.info/ -- qa/specs/features/browser_ui/7_configure/auto_devops/create_project_with_auto_devops_spec.rb:71 --tag orchestrated
@@ -206,7 +221,7 @@ GITLAB_PASSWORD=<root-user-password> GCLOUD_REGION=us-central1 CHROME_HEADLESS=f
 More information about running QA tests can be found in
 [qa/README.md](https://gitlab.com/gitlab-org/gitlab/blob/master/qa/README.md#how-can-i-use-it).
 There are also other ways of running the QA specs that are documented in the
-[gitlab-qa project](https://gitlab.com/gitlab-org/gitlab-qa) but using the
+[`gitlab-qa` project](https://gitlab.com/gitlab-org/gitlab-qa) but using the
 above approach is recommended as it will allow you to debug and iterate on the
 spec without rebuilding any docker images and since the above command runs the
 spec in your environment rather than in docker it requires less configuration
@@ -243,8 +258,8 @@ by default.
 #### GKE K8s cluster is outside of your network
 
 You will likely want to run K8s clusters on GKE as this allows us to test our
-GCP integrations as well. You can use minikube too but there are limitations
-with this as minikube won't test our GCP integration and minikube does not
+GCP integrations as well. You can use Minikube too but there are limitations
+with this as Minikube won't test our GCP integration and Minikube does not
 simulate a real cluser (eg. internet-facing load balancers with external IP
 address are not possible). So when you do choose GKE you conclude that your
 registry running on your machine needs to be internet accessible since GKE
@@ -279,7 +294,7 @@ dramatically you can run everything on a VM on GCP. This will ensure that all
 data is staying inside Google's network and things move a lot faster.
 
 If you don't need a full-fledged application, consider testing with the
-[minimal-ruby-app](https://gitlab.com/auto-devops-examples/minimal-ruby-app) project
+[`minimal-ruby-app`](https://gitlab.com/auto-devops-examples/minimal-ruby-app) project
 which creates smaller docker images on the order of 20-50MB.
 
 ### Alternatives
@@ -288,7 +303,7 @@ which creates smaller docker images on the order of 20-50MB.
 
 If you want you can just manually configure a reverse proxy in front of your
 GDK instance that does SSL termination for you. A good approach to this would
-be to use nginx for SSL termination on a VM with a static IP address. It is
+be to use NGINX for SSL termination on a VM with a static IP address. It is
 also necessary to have a different external hostname for the container registry
 so your reverse proxy will need two virtual hosts configured and both will need
 SSL termination.
@@ -297,7 +312,7 @@ You will need to replace `<gitlab-hostname>` and `<registry-hostname>` below
 with the appropriate values from your reverse proxy settings and run the
 following commmands:
 
-```
+```shell
 echo <gitlab-hostname> > hostname
 echo 443 > port
 echo true > https_enabled
@@ -316,11 +331,11 @@ from your reverse proxy settings and edit `registry/config.yml` like so:
       realm: https://<gitlab-hostname>/jwt/auth
 ```
 
-NOTE: You should ensure your nginx (or other proxy) is configured to allow up
+NOTE: You should ensure your NGINX (or other proxy) is configured to allow up
 to 1GB files transferred since the docker images uploaded and downloaded
 can be quite large.
 
-Below you can find an example on how to configure reverse proxy using Nginx
+Below you can find an example on how to configure reverse proxy using NGINX
 with a valid SSL certificate generated using Let's Encrypt on Debian.
 
 The example below allows you to install packages from Debian Sid (unstable)
@@ -328,122 +343,123 @@ in order to use latest versions. APT pinning can be configured to make it
 possible to install packages from unstable Debian distribution on a stable
 version of Debian GNU/Linux.
 
-1. Install Nginx
+1. Install NGINX
 
-    ```bash
-    sudo apt-get install -t unstable nginx
-    ```
+   ```bash
+   sudo apt-get install -t unstable nginx
+   ```
+
 1. Install `certbot` to manage your certificates easier
 
-    ```bash
-    sudo apt-get install -t unstable certbot python-certbot-nginx
-    ```
+   ```bash
+   sudo apt-get install -t unstable certbot python-certbot-nginx
+   ```
 
 1. Configure your domains
 
-    The commands the next point assume you have set up a DNS record for
-    `gdk.example.com` and `registry.example.com` and that both point to the IP
-    address of your VM. You can replace those domain names with anything of
-    your choosing.
+   The commands the next point assume you have set up a DNS record for
+   `gdk.example.com` and `registry.example.com` and that both point to the IP
+   address of your VM. You can replace those domain names with anything of
+   your choosing.
 
 1. Request a certificate for your domain or subdomains
 
-    You will need to obtain certificates for GitLab web application and for
-    Container Registry separately. You can do that using following commands:
+   You will need to obtain certificates for GitLab web application and for
+   Container Registry separately. You can do that using following commands:
 
-    ```bash
-    sudo certbot -i nginx -d gdk.example.com -d registry.example.com
-    ```
+   ```bash
+   sudo certbot -i nginx -d gdk.example.com -d registry.example.com
+   ```
 
-    certbot will attempt to verify your domain ownership, however you might
-    want to do this manually. You can append `--manual` argument in order to
-    do that.
+   Certbot will attempt to verify your domain ownership, however you might
+   want to do this manually. You can append `--manual` argument in order to
+   do that.
 
-    ```bash
-    sudo certbot --manual -i nginx -d gdk.example.com -d registry.example.com
-    ```
+   ```bash
+   sudo certbot --manual -i nginx -d gdk.example.com -d registry.example.com
+   ```
 
-    It is also possible to generate a wildcard ceriticate if you forcsee the
-    need of using more subdomains than just for GDK and Container Registry:
+   It is also possible to generate a wildcard certificate if you foresee the
+   need of using more subdomains than just for GDK and Container Registry:
 
-    ```bash
-    sudo certbot --manual -i nginx -d "*.gdk.example.com" --server https://acme-v02.api.letsencrypt.org/directory
-    ```
+   ```bash
+   sudo certbot --manual -i nginx -d "*.gdk.example.com" --server https://acme-v02.api.letsencrypt.org/directory
+   ```
 
-    Certificates generated with `--manual` option will not be renewed
-    automatically.
+   Certificates generated with `--manual` option will not be renewed
+   automatically.
 
-1. Configure Nginx
+1. Configure NGINX
 
-    Cerbot is going to pre-configure your files, what is useful because you
-    do not need to add certificates manually, however you will need to adjust
-    a few things in the configuration.
+   Certbot is going to pre-configure your files, what is useful because you
+   do not need to add certificates manually, however you will need to adjust
+   a few things in the configuration.
 
-    You can find an example of how to configure reverse proxy with SSL
-    termination with Nginx to proxy requests to GitLab Registry and GDK.
+   You can find an example of how to configure reverse proxy with SSL
+   termination with NGINX to proxy requests to GitLab Registry and GDK.
 
-    ```
-    server {
-      server_name gdk.gcp.example.com;
+   ```nginx
+   server {
+     server_name gdk.gcp.example.com;
 
-      listen [::]:443 ssl ;
-      listen 443 ssl;
-      ssl_certificate /etc/letsencrypt/live/gcp.example.com/fullchain.pem;
-      ssl_certificate_key /etc/letsencrypt/live/gcp.example.com/privkey.pem;
-      ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
-      ssl_ciphers "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4";
+     listen [::]:443 ssl;
+     listen 443 ssl;
+     ssl_certificate /etc/letsencrypt/live/gcp.example.com/fullchain.pem;
+     ssl_certificate_key /etc/letsencrypt/live/gcp.example.com/privkey.pem;
+     ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
+     ssl_ciphers "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4";
 
-      ssl_session_cache    shared:SSL:10m;
-      ssl_session_timeout  30m;
+     ssl_session_cache    shared:SSL:10m;
+     ssl_session_timeout  30m;
 
-      client_max_body_size 1024m;
+     client_max_body_size 1024m;
 
-      location / {
-        proxy_pass http://127.0.0.1:3000;
+     location / {
+       proxy_pass http://127.0.0.1:3000;
 
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Nginx-Proxy true;
+       proxy_set_header Host $host;
+       proxy_set_header X-Real-IP $remote_addr;
+       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+       proxy_set_header X-Forwarded-Proto $scheme;
+       proxy_set_header X-Nginx-Proxy true;
 
-        proxy_redirect off;
-      }
-    }
+       proxy_redirect off;
+     }
+   }
 
-    server {
-      server_name registry.gcp.example.com;
+   server {
+     server_name registry.gcp.example.com;
 
-      listen [::]:443 ssl;
-      listen 443 ssl;
-      ssl_certificate /etc/letsencrypt/live/gcp.example.com/fullchain.pem;
-      ssl_certificate_key /etc/letsencrypt/live/gcp.example.com/privkey.pem;
-      ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
-      ssl_ciphers "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4";
+     listen [::]:443 ssl;
+     listen 443 ssl;
+     ssl_certificate /etc/letsencrypt/live/gcp.example.com/fullchain.pem;
+     ssl_certificate_key /etc/letsencrypt/live/gcp.example.com/privkey.pem;
+     ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
+     ssl_ciphers "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4";
 
-      ssl_session_cache    shared:SSL:10m;
-      ssl_session_timeout  30m;
+     ssl_session_cache    shared:SSL:10m;
+     ssl_session_timeout  30m;
 
-      client_max_body_size 1024m;
+     client_max_body_size 1024m;
 
-      location / {
-        proxy_pass http://127.0.0.1:5000;
+     location / {
+       proxy_pass http://127.0.0.1:5000;
 
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Nginx-Proxy true;
+       proxy_set_header Host $host;
+       proxy_set_header X-Real-IP $remote_addr;
+       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+       proxy_set_header X-Forwarded-Proto $scheme;
+       proxy_set_header X-Nginx-Proxy true;
 
-        proxy_redirect off;
-      }
-    }
-    ```
+       proxy_redirect off;
+     }
+   }
+   ```
 
 #### Why can't we use ngrok or localtunnel?
 
 In theory both of these tools accomplish what we need which is exposing our
-local running GitLab instance to the internet.  However, both of these
+local running GitLab instance to the internet. However, both of these
 services, at least in their hosted forms, place limitations on the number of
 open connections and the max size of files being uploaded. As such neither of
 them, even in the paid plans, will work with proxying the `docker pull` and
@@ -481,7 +497,7 @@ console. If you see one of your clusters you are no longer using then simply
 delete it from this page.
 
 Unfortunately deleting a cluster is not enough to fully clean up after yourself
-on GCP. When creating a cluster and installing helm apps on that cluster you
+on GCP. When creating a cluster and installing Helm apps on that cluster you
 actually end up creating other GCP resources that are not deleted when the
 cluster is deleted. As such it is important to also periodically find and
 delete these unused (orphaned) GCP resources. Please read on for how to do
@@ -540,4 +556,4 @@ Be sure to check out:
 - [Auto DevOps - Tips and Troubleshooting](doc/howto/auto_devops/tips_and_troubleshooting.md)
 - [Auto DevOps - Useful Commands](doc/howto/auto_devops/useful_commands.md)
 
-They might save you a lot of time time during work.
+They might save you a lot of time during work.

@@ -30,15 +30,16 @@ case you should take care to not lose the files if you destroy or update the VM.
 To avoid usage of slow VirtualBox shared folders we use NFS here.
 
 1. (optional for Windows users) [Disable Hyper-V](https://superuser.com/a/642027/143551)
-  then enable virtualization technology via the BIOS.
+   then enable virtualization technology via the BIOS.
 1. Install [VirtualBox] and [Vagrant].
 1. [Configure NFS for Vagrant](https://docs.vagrantup.com/v2/synced-folders/nfs.html)
-  if you are on Linux.
+   if you are on Linux.
 1. Run `vagrant up --provider=virtualbox --provision` in this directory (from an elevated
-  command prompt if on Windows). Vagrant will download an OS image, bring it
-  up, and install all the prerequisites.
+   command prompt if on Windows). Vagrant will download an OS image, bring it
+   up, and install all the prerequisites.
 1. Run `vagrant ssh` to SSH into the box.
-1. Continue setup at [Installation](https://gitlab.com/gitlab-org/gitlab-development-kit/blob/master/doc/set-up-gdk.md#install-gdk) below.
+1. Run `cd /vagrant`.
+1. Continue setup at [Installation](https://gitlab.com/gitlab-org/gitlab-development-kit/blob/master/doc/set-up-gdk.md#develop-against-the-gitlab-project-default) below.
 
 ### Vagrant with Docker
 
@@ -51,11 +52,11 @@ OSes like Windows/OSX you will have to run the entire Docker hypervisor in a VM
 
 1. Install [Vagrant].
 1. Install [VirtualBox]. Vagrant requires the `VBoxManage` binary included with
-  VirtualBox, even for non-VirtualBox providers.
+   VirtualBox, even for non-VirtualBox providers.
 1. Install [Docker Engine]. Don't forget to [add your user to the docker group](https://docs.docker.com/install/linux/linux-postinstall/)
-  and re-login.
+   and re-login.
 1. Run `vagrant up --provider=docker --provision` in this directory. Vagrant will build a
-  docker image and start the container.
+   docker image and start the container.
 1. Run `vagrant ssh` to SSH into the container.
 1. Continue setup at [Installation](https://gitlab.com/gitlab-org/gitlab-development-kit/blob/master/doc/set-up-gdk.md#install-gdk) below.
 
@@ -84,7 +85,7 @@ OSes like Windows/OSX you will have to run the entire Docker hypervisor in a VM
 - If you have continuous problems starting Vagrant, you can uncomment
   `vb.gui = true` to view any error messages.
 - If you have problems running `support/edit-gitlab.yml` (bash script despite
-  file extension), see https://stackoverflow.com/a/5514351/1233435.
+  file extension), see <https://stackoverflow.com/a/5514351/1233435>.
 - If you have errors with symlinks or Ruby during initialization, make sure you
   ran `vagrant up` from an elevated command prompt (Windows users).
 

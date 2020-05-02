@@ -34,7 +34,7 @@ Without this step, builds will fail with a 'connection refused' error.
 
 The `gitlab/config/gitlab.yml` configuration file also needs tweaking in the following sections:
 
- - GitLab host:
+- GitLab host:
 
 ```yaml
 production: &base
@@ -48,7 +48,7 @@ production: &base
     host: localhost
 ```
 
- - Webpack dev server host:
+- Webpack dev server host:
 
 ```yaml
   ## Webpack settings
@@ -66,6 +66,9 @@ The right one to use depends on your network, and may change from time to time,
 but an address like `10.x.x.x`, `172.16.x.x` or `192.168.x.x` is normally the
 right one.
 
+NOTE: If you want to use a Docker executor, see [the section
+below](#docker-executor).
+
 Now run GDK: `gdk start`. Navigate to `http://<ip>:3000/gitlab-org/gitlab-test`.
 If the URL doesn't work, repeat the last step and pick a different IP.
 
@@ -76,6 +79,8 @@ Finally, navigate to `http://<ip>:3000/admin/runners` (log in as root) and make
 a note of the `Registration token`.
 
 ## Download GitLab Runner
+
+### Simple configuration
 
 Unless you want to make changes to the Runner, it's easiest to install a binary
 package. Follow the
@@ -92,7 +97,13 @@ GDK doesn't manage it for you. The official GitLab Runner repository is
 
 All the methods should (eventually) create a `gitlab-runner` binary.
 
+### Advanced configuration
+
+If you followed the advanced configuration and want to install the runner as a docker service, follow the steps described in <https://docs.gitlab.com/runner/install/docker.html#docker-image-installation>.
+
 ## Setting up the Runner
+
+### Simple configuration
 
 Run `gitlab-runner register --run-untagged --config <path-to-gdk>/gitlab-runner-config.toml`
 (as your normal user), and follow the prompts. Use:
@@ -104,18 +115,29 @@ Run `gitlab-runner register --run-untagged --config <path-to-gdk>/gitlab-runner-
   - `http://localhost:3000/`
   - `http://<custom_IP_address>:3000/`, if you customized your IP address using
     [Advanced Configuration](#advanced-configuration).
-- **gitlab-ci token**
+
+- **token**
 
   `Registration token` (copied from `admin/runners`)
-- **gitlab-ci description** (optional)
+
+- **description** (optional)
 
   A description of the Runner. Defaults to the hostname of the machine.
-- **gitlab-ci tags** (optional)
+
+- **tags** (optional)
 
   Comma-separated tags. Jobs can be set up to use only Runners with specific tags.
 
 The Runner will write its configuration file to `gitlab-runner-config.toml`,
 which is in GDK's `.gitignore` file.
+
+To ensure the Runner token persists between subsequent runs of `gdk reconfigure`, add
+the token to your `gdk.yml` file:
+
+```yaml
+runner:
+  token: <runner-token>
+```
 
 If Docker is installed and you followed the special setup instructions above,
 choose `docker` as the executor. Otherwise, choose `shell` - but remember that
@@ -140,6 +162,83 @@ builds, so run it in its own terminal session.
 
 The Runners pane in the administration panel will now list the Runners. Create a
 project in the GitLab web interface and add a
-[.gitlab-ci.yml](https://docs.gitlab.com/ce/ci/examples/) file,
+[`.gitlab-ci.yml`](https://docs.gitlab.com/ce/ci/examples/) file,
 or clone an [example project](https://gitlab.com/groups/gitlab-examples), and
 watch as the Runner processes the builds just as it would on a "real" install!
+
+### Advanced configuration
+
+Register your docker-based runner by following the steps described in <https://docs.gitlab.com/runner/register/index.html#docker>.
+
+### Docker executor
+
+#### Docker for Mac
+
+Docker for Mac [has some networking
+limitations](https://docs.docker.com/docker-for-mac/networking/), but
+you can still get CI runners working with a Docker executor by using a
+hostname trick. Within a container, Docker maps the
+`host.docker.internal` hostname to the host IP address
+(e.g. 192.168.65.2). On the host network, you can map this hostname to
+the local IP address (e.g. 127.0.0.1) and use this hostname in three
+different configuration files:
+
+1. In `config/gitlab.yml`, set the `host` parameter to `host.docker.internal`.
+1. In `/etc/hosts`, add an entry:
+
+   ```plaintext
+   127.0.0.1   host.docker.internal
+   ```
+
+1. In the GitLab Runner config (e.g. `~/.gitlab-runner/config.toml`), set the coordinator
+   URL with this hostname and the port used by GDK (`3001` if `EE`):
+
+   ```toml
+    url = "http://host.docker.internal:3000/"
+   ```
+
+Note that all three settings must be set to ensure a number of items
+work with the runner:
+
+1. Registering the runner
+1. Polling for jobs on the host network
+1. Making API requests (e.g. sending artifacts) inside the container during a CI job.
+1. Cloning the repository ([`CI_REPOSITORY_URL`](https://docs.gitlab.com/ee/ci/variables/predefined_variables.html))
+
+The `/etc/hosts` parameter is needed to make the first two items work,
+since this maps `host.docker.internal` to `localhost`. The `config.toml`
+changes allow the third item to work. The `gitlab.yml` changes are used
+for the fourth item.
+
+#### Using an internal, dummy interface
+
+The trick described above is a bit of a hack and only works for Docker
+for Mac, but the "proper" way to support a Docker executor is to use an
+internal, dummy interface that can be used by both the host and the
+container. Here's how:
+
+1. Create an internal interface. On macOS, this will add an alias IP
+   172.16.123.1 to the loopback adapter:
+
+   ```sh
+   sudo ifconfig lo0 alias 172.16.123.1
+   ```
+
+   On Linux, you can create a dummy interface:
+
+   ```sh
+   sudo ip link add dummy0 type dummy
+   ifconfig dummy0 172.16.123.1
+   ```
+
+1. In `config/gitlab.yml`, set the `host` parameter to `172.16.123.1`.
+
+1. In the GitLab Runner config (e.g. `~/.gitlab-runner/config.toml`), set the coordinator
+   URL with this hostname:
+
+   ```toml
+    url = "http://172.16.123.1:3001/"
+   ```
+
+Note that for this to work across reboots, the aliased IP in step 1 needs to be run
+at startup.
