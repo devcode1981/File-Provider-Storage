@@ -121,7 +121,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 
 ```
 pacman -S postgresql redis postgresql-libs icu npm ed cmake openssh git git-lfs go re2 \
-  unzip graphicsmagick runit perl-image-exiftool rsync
+  unzip graphicsmagick runit perl-image-exiftool rsync python2
 ```
 
 #### Debian
