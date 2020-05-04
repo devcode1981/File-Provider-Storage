@@ -125,20 +125,26 @@ ensure-databases-running: Procfile postgresql/data gitaly-setup
 
 gitlab-setup: gitlab/.git .ruby-version gitlab-config .gitlab-bundle .gitlab-yarn .gettext
 
-gitlab-update: ensure-databases-running postgresql gitlab/.git/pull gitlab-setup
-	$(Q)cd ${gitlab_development_root}/gitlab && \
-		bundle exec rake db:migrate db:test:prepare
+gitlab-update: ensure-databases-running postgresql gitlab/.git/pull gitlab-setup gitlab-db-migrate
 
 gitlab/.git/pull:
 	@echo
 	@echo "-------------------------------------------------------"
-	@echo "Updating gitlab to current master"
+	@echo "Updating gitlab-org/gitlab to current master"
 	@echo "-------------------------------------------------------"
 	$(Q)cd ${gitlab_development_root}/gitlab && \
 		git checkout -- Gemfile.lock $$(git ls-tree HEAD --name-only db/structure.sql db/schema.rb) ${QQ} && \
 		git stash ${QQ} && \
 		git checkout master ${QQ} && \
 		git pull --ff-only ${QQ}
+
+gitlab-db-migrate:
+	@echo
+	@echo "-------------------------------------------------------"
+	@echo "Processing gitlab-org/gitlab Rails DB migrations"
+	@echo "-------------------------------------------------------"
+	$(Q)cd ${gitlab_development_root}/gitlab && \
+		bundle exec rake db:migrate db:test:prepare
 
 .ruby-version:
 	$(Q)ln -s ${gitlab_development_root}/gitlab/.ruby-version ${gitlab_development_root}/$@
@@ -209,7 +215,7 @@ gitlab/public/uploads:
 .gettext:
 	@echo
 	@echo "-------------------------------------------------------"
-	@echo "Generating Rails translations"
+	@echo "Generating gitlab-org/gitlab Rails translations"
 	@echo "-------------------------------------------------------"
 	$(Q)cd ${gitlab_development_root}/gitlab && bundle exec rake gettext:compile > ${gitlab_development_root}/gitlab/log/gettext.log
 	$(Q)git -C ${gitlab_development_root}/gitlab checkout locale/*/gitlab.po
@@ -227,7 +233,7 @@ gitlab-shell-update: gitlab-shell/.git/pull gitlab-shell-setup
 gitlab-shell/.git/pull:
 	@echo
 	@echo "-------------------------------------------------------"
-	@echo "Updating gitlab-shell to ${gitlab_shell_version}"
+	@echo "Updating gitlab-org/gitlab-shell to ${gitlab_shell_version}"
 	@echo "-------------------------------------------------------"
 	$(Q)support/component-git-update gitlab_shell "${gitlab_development_root}/gitlab-shell" "${gitlab_shell_version}"
 
@@ -265,7 +271,7 @@ gitaly-update: gitaly/.git/pull gitaly-clean gitaly-setup praefect-migrate
 gitaly/.git/pull: ${gitaly_clone_dir}/.git
 	@echo
 	@echo "-------------------------------------------------------"
-	@echo "Updating gitaly to ${gitaly_version}"
+	@echo "Updating gitlab-org/gitaly to ${gitaly_version}"
 	@echo "-------------------------------------------------------"
 	$(Q)support/component-git-update gitaly "${gitaly_clone_dir}" "${gitaly_version}" ${QQ}
 
@@ -300,7 +306,7 @@ gitlab-docs/.git:
 gitlab-docs/.git/pull:
 	@echo
 	@echo "-------------------------------------------------------"
-	@echo "Updating gitlab-docs"
+	@echo "Updating gitlab-org/gitlab-docs"
 	@echo "-------------------------------------------------------"
 	$(Q)cd gitlab-docs && \
 		git stash ${QQ} && \
@@ -397,7 +403,7 @@ ${gitlab_workhorse_clone_dir}/.git:
 gitlab-workhorse/.git/pull:
 	@echo
 	@echo "-------------------------------------------------------"
-	@echo "Updating gitlab-workhorse to ${workhorse_version}"
+	@echo "Updating gitlab-org/gitlab-workhorse to ${workhorse_version}"
 	@echo "-------------------------------------------------------"
 	$(Q)support/component-git-update workhorse "${gitlab_workhorse_clone_dir}" "${workhorse_version}"
 
@@ -423,7 +429,7 @@ gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer: gitlab-elasticsea
 gitlab-elasticsearch-indexer/.git/pull: gitlab-elasticsearch-indexer/.git
 	@echo
 	@echo "-------------------------------------------------------"
-	@echo "Updating gitlab-elasticsearch-indexer to ${gitlab_elasticsearch_indexer_version}"
+	@echo "Updating gitlab-org/gitlab-elasticsearch-indexer to ${gitlab_elasticsearch_indexer_version}"
 	@echo "-------------------------------------------------------"
 	$(Q)support/component-git-update gitlab_elasticsearch_indexer gitlab-elasticsearch-indexer "${gitlab_elasticsearch_indexer_version}"
 
@@ -450,7 +456,7 @@ ${gitlab_pages_clone_dir}/.git:
 gitlab-pages/.git/pull:
 	@echo
 	@echo "-------------------------------------------------------"
-	@echo "Updating gitlab-pages to ${pages_version}"
+	@echo "Updating gitlab-org/gitlab-pages to ${pages_version}"
 	@echo "-------------------------------------------------------"
 	$(Q)support/component-git-update gitlab_pages "${gitlab_pages_clone_dir}" "${pages_version}"
 
