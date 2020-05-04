@@ -15,8 +15,10 @@ module GDK
           @command = new_command
           @command.try_run
 
-          break unless @command.success?
+          return 'error' unless @command.success?
         end
+
+        nil
       end
 
       def success?
