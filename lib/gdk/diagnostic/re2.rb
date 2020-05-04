@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'open3'
-
 module GDK
   module Diagnostic
     class Re2 < Base
@@ -14,13 +12,15 @@ module GDK
         # This test doesn't always fail the first time, so repeat the test
         # several times to be sure.
         5.times do
-          @stdout, @stderr, @status = Open3.capture3('ruby', '-e', SCRIPT)
-          break unless @status.success?
+          @command = new_command
+          @command.try_run
+
+          break unless @command.success?
         end
       end
 
       def success?
-        @status.success? && @stdout.empty? && @stderr.empty?
+        @command.success? && @command.read_stdout.empty? && @command.read_stderr.empty?
       end
 
       def detail
@@ -30,6 +30,12 @@ module GDK
 
           Please run `gem pristine re2`.
         MESSAGE
+      end
+
+      private
+
+      def new_command
+        Shellout.new(['ruby', '-e', SCRIPT])
       end
     end
   end
