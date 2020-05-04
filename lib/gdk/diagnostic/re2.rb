@@ -26,6 +26,8 @@ module GDK
       end
 
       def detail
+        return if success?
+
         <<~MESSAGE
           It looks like your system re2 library may have been upgraded, and
           the re2 gem needs to be rebuilt as a result.
