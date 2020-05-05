@@ -2,6 +2,7 @@ stages:
   - build
   - test
   - verify
+  - deploy
 
 variables:
   DEFAULT_IMAGE: registry.gitlab.com/gitlab-org/gitlab-build-images:ruby-2.6.5-golang-1.14-git-2.26-lfs-2.9-chrome-73.0-node-12.x-yarn-1.21-postgresql-10-graphicsmagick-1.3.34
@@ -114,6 +115,20 @@ test:docs_lint:
   script:
     - PATH="${HOME}/go/bin:${PATH}" make lint
 
+test:yard:
+  stage: test
+  script:
+    - bundle install --jobs 4 --path vendor/bundle
+    - bundle exec yardoc
+  cache:
+      key: "ruby-2.6-bundle"
+      paths:
+        - ./vendor/bundle
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - yard/*
+
 test:static-analysis:
   extends: .rules:docs-code-changes
   stage: test
@@ -124,8 +139,12 @@ test:rspec:
   extends: .rules:code-changes
   stage: test
   script:
-    - bundle install --jobs 4
+    - bundle install --jobs 4 --path vendor/bundle
     - bundle exec rspec --format progress --format RspecJunitFormatter --out rspec.xml
+  cache:
+      key: "ruby-2.6-bundle"
+      paths:
+        - ./vendor/bundle
   artifacts:
     paths:
       - rspec.xml
@@ -202,3 +221,17 @@ verify:update:
   extends: .verify_job
   script:
     - support/ci/verify_update
+
+pages:
+  stage: deploy
+  needs:
+    - job: test:yard
+      artifacts: true
+  script:
+    - cp -r yard public
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
+
