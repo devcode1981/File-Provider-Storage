@@ -12,6 +12,7 @@ elasticsearch:
 gdk:
   ask_to_restart_after_update: true
   debug: false
+  experimental: {}
   overwrite_changes: false
   protected_config_files: []
 gdk_root: "/home/git/gdk"

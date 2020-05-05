@@ -31,6 +31,9 @@ module GDK
     settings :gdk do
       bool(:ask_to_restart_after_update) { true }
       bool(:debug) { false }
+      settings :experimental do
+        bool(:ruby_services) { false }
+      end
       bool(:overwrite_changes) { false }
       array(:protected_config_files) { [] }
     end
