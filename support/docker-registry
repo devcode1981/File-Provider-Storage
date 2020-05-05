@@ -9,7 +9,7 @@ registry_image=$(gdk config get registry.image 2>/dev/null)
 run_opts=()
 if [[ "${registry_enabled}" == "true" ]]; then
   if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    run_opts+=("--net host")
+    run_opts+=("--net" "host")
   fi
 
   exec docker run --rm -p "${registry_port:-5000}":5000 "${run_opts[@]}" \
