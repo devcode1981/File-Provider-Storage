@@ -4,7 +4,7 @@ auto_devops_registry_port = <%= config.auto_devops.registry.port %>
 elasticsearch_tar_gz_sha1 = <%= config.elasticsearch.checksum %>
 elasticsearch_version = <%= config.elasticsearch.version %>
 gdk_ask_to_restart_after_update = <%= config.gdk.ask_to_restart_after_update %>
-gdk_debug = <%= config.gdk.debug %>
+gdk_debug = <%= config.gdk.debug || ENV['GDK_DEBUG'] == 'true' %>
 geo_enabled = <%= config.geo? %>
 gitaly_repo = <%= config.repositories.gitaly %>
 gitlab_development_root = <%= config.gdk_root %>

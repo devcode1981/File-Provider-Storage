@@ -787,7 +787,7 @@ jaeger/jaeger-${jaeger_version}/jaeger-all-in-one: jaeger-artifacts/jaeger-${jae
 # tests
 ##############################################################
 
-.PHONY:
+.PHONY: static-analysis
 static-analysis: static-analysis-editorconfig
 
 .PHONY: static-analysis-editorconfig
@@ -806,6 +806,31 @@ install-eclint:
 	$(Q)(command -v eclint > /dev/null) || \
 	((command -v npm > /dev/null) && npm install -g eclint) || \
 	((command -v yarn > /dev/null) && yarn global add eclint)
+
+.PHONY: lint
+lint: lint-vale lint-markdown
+
+.PHONY: install-vale
+install-vale:
+	$(Q)(command -v vale > /dev/null) || go get github.com/errata-ai/vale
+
+.PHONY: lint-vale
+lint-vale: install-vale
+	$(Q)vale --minAlertLevel error *.md doc
+
+.PHONY: install-markdownlint
+install-markdownlint:
+	$(Q)(command -v markdownlint > /dev/null) || \
+	((command -v npm > /dev/null) && npm install -g markdownlint-cli) || \
+	((command -v yarn > /dev/null) && yarn global add markdownlint-cli)
+
+.PHONY: lint-markdown
+lint-markdown: install-markdownlint
+	$(Q)markdownlint --config .markdownlint.json *.md doc/**/*.md
+
+##############################################################
+# Misc
+##############################################################
 
 .PHONY: ask-to-restart
 ask-to-restart:

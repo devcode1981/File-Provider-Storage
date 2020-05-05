@@ -1,4 +1,4 @@
-## Developer Certificate of Origin + License
+# Developer Certificate of Origin + License
 
 By contributing to GitLab B.V., You accept and agree to the following terms and
 conditions for Your present and future Contributions submitted to GitLab B.V.
@@ -20,4 +20,3 @@ _This notice should stay as the first item in the CONTRIBUTING.md file._
 The source of GitLab Development Kit is [hosted on
 GitLab.com](https://gitlab.com/gitlab-org/gitlab-development-kit/) and
 contributions are welcome!
-
