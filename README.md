@@ -11,7 +11,7 @@ Read on for installation instructions or skip to
 GitLab Development Kit (GDK) provides a collection of scripts and
 other resources to install and manage a GitLab installation for
 development purposes. The source code of GitLab is spread over
-multiple repositories and it requires Ruby, Go, Postgres, Redis
+multiple repositories and it requires Ruby, Go, PostgreSQL, Redis
 and more to run. GDK helps you install and configure all these
 different components, and start/stop them when you work on GitLab.
 
@@ -30,13 +30,13 @@ virtualized installation will be much slower running the app and the tests.
 To do a native install:
 
 1. [Prepare your computer](doc/prepare.md)
-2. [Set-up GDK](doc/set-up-gdk.md)
+1. [Set-up GDK](doc/set-up-gdk.md)
 
 Or if you want to use a slower virtualized installation with [Vagrant](https://www.vagrantup.com/),
 please see the [instructions for using Vagrant with VirtualBox or Docker](doc/vagrant.md).
 
 You can also install GDK on [Minikube](https://github.com/kubernetes/minikube),
-see [kubernetes docs](doc/kubernetes.md).
+see [Kubernetes docs](doc/kubernetes.md).
 
 After installation, [learn how to use GDK](doc/howto/README.md).
 
@@ -56,17 +56,17 @@ is available on the [architecture components list](https://docs.gitlab.com/ee/de
 
 ## Differences with production
 
-- gitlab-workhorse does not serve static files
+- `gitlab-workhorse` does not serve static files
 - C compiler needed to run `bundle install` (not needed with Omnibus)
 - GitLab can rewrite its program code and configuration data (read-only with
   Omnibus)
-- 'Assets' (Javascript/CSS files) are generated on the fly (pre-compiled at
+- 'Assets' (JavaScript/CSS files) are generated on the fly (pre-compiled at
   build time with Omnibus)
 - Gems (libraries) for development and functional testing get installed and
   loaded
-- No unified configuration management for GitLab and gitlab-shell
+- No unified configuration management for GitLab and `gitlab-shell`
   (handled by Omnibus)
-- No privilege separation between Ruby, Postgres, and Redis
+- No privilege separation between Ruby, PostgreSQL, and Redis
 - No easy upgrades
 - Need to download and compile new gems (`bundle install`) on each upgrade
 
