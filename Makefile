@@ -42,9 +42,9 @@ all: preflight-checks gitlab-setup gitlab-shell-setup gitlab-workhorse-setup git
 
 self-update: unlock-dependency-installers
 	@echo
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
 	@echo "Running self-update on GDK"
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
 	$(Q)cd ${gitlab_development_root} && \
 		git stash ${QQ} && \
 		git checkout master ${QQ} && \
@@ -129,9 +129,9 @@ gitlab-update: ensure-databases-running postgresql gitlab/.git/pull gitlab-setup
 
 gitlab/.git/pull:
 	@echo
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
 	@echo "Updating gitlab-org/gitlab to current master"
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
 	$(Q)cd ${gitlab_development_root}/gitlab && \
 		git checkout -- Gemfile.lock $$(git ls-tree HEAD --name-only db/structure.sql db/schema.rb) ${QQ} && \
 		git stash ${QQ} && \
@@ -140,9 +140,9 @@ gitlab/.git/pull:
 
 gitlab-db-migrate:
 	@echo
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
 	@echo "Processing gitlab-org/gitlab Rails DB migrations"
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
 	$(Q)cd ${gitlab_development_root}/gitlab && \
 		bundle exec rake db:migrate db:test:prepare
 
@@ -198,25 +198,25 @@ gitlab/public/uploads:
 
 .gitlab-bundle:
 	@echo
-	@echo "-------------------------------------------------------"
-	@echo "Installing Ruby gems"
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
+	@echo "Installing gitlab-org/gitlab Ruby gems"
+	@echo "------------------------------------------------------------"
 	$(Q)cd ${gitlab_development_root}/gitlab && $(rails_bundle_install_cmd)
 	$(Q)touch $@
 
 .gitlab-yarn:
 	@echo
-	@echo "-------------------------------------------------------"
-	@echo "Installing Node packages"
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
+	@echo "Installing gitlab-org/gitlab Node.js packages"
+	@echo "------------------------------------------------------------"
 	$(Q)cd ${gitlab_development_root}/gitlab && yarn install --pure-lockfile ${QQ}
 	$(Q)touch $@
 
 .gettext:
 	@echo
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
 	@echo "Generating gitlab-org/gitlab Rails translations"
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
 	$(Q)cd ${gitlab_development_root}/gitlab && bundle exec rake gettext:compile > ${gitlab_development_root}/gitlab/log/gettext.log
 	$(Q)git -C ${gitlab_development_root}/gitlab checkout locale/*/gitlab.po
 	$(Q)touch $@
@@ -232,9 +232,9 @@ gitlab-shell-update: gitlab-shell/.git/pull gitlab-shell-setup
 
 gitlab-shell/.git/pull:
 	@echo
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
 	@echo "Updating gitlab-org/gitlab-shell to ${gitlab_shell_version}"
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
 	$(Q)support/component-git-update gitlab_shell "${gitlab_development_root}/gitlab-shell" "${gitlab_shell_version}"
 
 # This task is phony to allow
@@ -270,9 +270,9 @@ gitaly-update: gitaly/.git/pull gitaly-clean gitaly-setup praefect-migrate
 .PHONY: gitaly/.git/pull
 gitaly/.git/pull: ${gitaly_clone_dir}/.git
 	@echo
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
 	@echo "Updating gitlab-org/gitaly to ${gitaly_version}"
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
 	$(Q)support/component-git-update gitaly "${gitaly_clone_dir}" "${gitaly_version}" ${QQ}
 
 gitaly-clean:
@@ -305,9 +305,9 @@ gitlab-docs/.git:
 
 gitlab-docs/.git/pull:
 	@echo
-	@echo "-------------------------------------------------------"
-	@echo "Updating gitlab-org/gitlab-docs"
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
+	@echo "Updating gitlab-org/gitlab-docs to master"
+	@echo "------------------------------------------------------------"
 	$(Q)cd gitlab-docs && \
 		git stash ${QQ} && \
 		git checkout master ${QQ} &&\
@@ -402,9 +402,9 @@ ${gitlab_workhorse_clone_dir}/.git:
 
 gitlab-workhorse/.git/pull:
 	@echo
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
 	@echo "Updating gitlab-org/gitlab-workhorse to ${workhorse_version}"
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
 	$(Q)support/component-git-update workhorse "${gitlab_workhorse_clone_dir}" "${workhorse_version}"
 
 ##############################################################
@@ -428,9 +428,9 @@ gitlab-elasticsearch-indexer/bin/gitlab-elasticsearch-indexer: gitlab-elasticsea
 .PHONY: gitlab-elasticsearch-indexer/.git/pull
 gitlab-elasticsearch-indexer/.git/pull: gitlab-elasticsearch-indexer/.git
 	@echo
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
 	@echo "Updating gitlab-org/gitlab-elasticsearch-indexer to ${gitlab_elasticsearch_indexer_version}"
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
 	$(Q)support/component-git-update gitlab_elasticsearch_indexer gitlab-elasticsearch-indexer "${gitlab_elasticsearch_indexer_version}"
 
 ##############################################################
@@ -455,9 +455,9 @@ ${gitlab_pages_clone_dir}/.git:
 
 gitlab-pages/.git/pull:
 	@echo
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
 	@echo "Updating gitlab-org/gitlab-pages to ${pages_version}"
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
 	$(Q)support/component-git-update gitlab_pages "${gitlab_pages_clone_dir}" "${pages_version}"
 
 ##############################################################
@@ -472,20 +472,20 @@ performance-metrics-setup: Procfile influxdb-setup grafana-setup
 
 support-setup: Procfile redis gitaly-setup jaeger-setup postgresql openssh-setup nginx-setup registry-setup elasticsearch-setup runner-setup
 	@echo
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
 	@echo "Setup finished!"
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
 	@echo
 	$(Q)gdk help
 
 ifeq ($(auto_devops_enabled),true)
 	@echo
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
 	@echo "Tunnel URLs"
 	@echo
 	@echo "GitLab: https://${hostname}"
 	@echo "Registry: https://${registry_host}"
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
 endif
 
 ##############################################################
@@ -776,9 +776,9 @@ jaeger-artifacts/jaeger-${jaeger_version}.tar.gz:
 
 jaeger/jaeger-${jaeger_version}/jaeger-all-in-one: jaeger-artifacts/jaeger-${jaeger_version}.tar.gz
 	@echo
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
 	@echo "Installing jaeger ${jaeger_version}"
-	@echo "-------------------------------------------------------"
+	@echo "------------------------------------------------------------"
 
 	$(Q)mkdir -p "jaeger/jaeger-${jaeger_version}"
 	$(Q)tar -xf "$<" -C "jaeger/jaeger-${jaeger_version}" --strip-components 1
@@ -840,4 +840,5 @@ ask-to-restart:
 
 .PHONY: show-date
 show-date:
+	@echo
 	@echo "> Updated as of $$(date +"%Y-%m-%d %T")"
