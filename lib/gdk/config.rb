@@ -132,6 +132,20 @@ module GDK
         config.hostname
       end
 
+      string :api_host do
+        next "#{config.auto_devops.registry.port}.qa-tunnel.gitlab.info" if config.auto_devops.enabled
+
+        config.hostname
+      end
+
+      string :tunnel_host do
+        next "#{config.auto_devops.registry.port}.qa-tunnel.gitlab.info" if config.auto_devops.enabled
+
+        config.hostname
+      end
+
+      integer(:tunnel_port) { 5000 }
+
       integer :port do
         read!('registry_port') || 5000
       end

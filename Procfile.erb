@@ -57,7 +57,7 @@ rails-actioncable: exec /usr/bin/env RAILS_ENV=development RAILS_RELATIVE_URL_RO
 # Tunneling
 #
 <%= '#' unless config.auto_devops? %>tunnel_gitlab: exec ssh -N -o ControlPath=none -o ControlMaster=no -R <%= config.auto_devops.gitlab.port %>:localhost:<%= config.workhorse.__active_port %> qa-tunnel.gitlab.info
-<%= '#' unless config.auto_devops? %>tunnel_registry: exec ssh -N -o ControlPath=none -o ControlMaster=no -R <%= config.auto_devops.registry.port %>:localhost:5000 qa-tunnel.gitlab.info
+<%= '#' unless config.auto_devops? %>tunnel_registry: exec ssh -N -o ControlPath=none -o ControlMaster=no -R <%= config.auto_devops.registry.port %>:<%= config.registry.tunnel_host %>:<%= config.registry.tunnel_port %> qa-tunnel.gitlab.info
 <%= '#' unless config.auto_devops? && config.mattermost? %>tunnel_mattermost: exec ssh -N -o ControlPath=none -o ControlMaster=no -R <%= config.mattermost.port %>:localhost:<%= config.mattermost.local_port %> qa-tunnel.gitlab.info
 
 # Gitlab Runner
