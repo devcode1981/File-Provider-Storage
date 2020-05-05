@@ -25,6 +25,7 @@ module GDK
   autoload :Command, 'gdk/command'
   autoload :Dependencies, 'gdk/dependencies'
   autoload :Diagnostic, 'gdk/diagnostic'
+  autoload :Services, 'gdk/services'
   autoload :ErbRenderer, 'gdk/erb_renderer'
   autoload :Logo, 'gdk/logo'
 
