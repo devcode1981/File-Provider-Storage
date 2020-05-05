@@ -1,0 +1,12 @@
+pages:
+  stage: deploy
+  needs:
+    - job: yard
+      artifacts: true
+  script:
+    - cp -r yard public
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
