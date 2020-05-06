@@ -302,6 +302,7 @@ module GDK
     settings :runner do
       path(:config_file) { config.gdk_root.join('gitlab-runner-config.toml') }
       bool(:enabled) { !!read!(config.runner.config_file) }
+      array(:extra_hosts) { [] }
       string(:token) { 'DEFAULT TOKEN: Register your runner to get a valid token' }
     end
 

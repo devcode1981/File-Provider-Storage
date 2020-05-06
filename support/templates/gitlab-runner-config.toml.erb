@@ -20,6 +20,7 @@ check_interval = 0
     volumes = ["<%= ENV['HOME'] %>/.docker/certs.d:/etc/docker/certs.d", "/certs/client", "/cache"]
     shm_size = 0
     pull_policy = "if-not-present"
+    extra_hosts = <%= config.runner.extra_hosts %>
   [runners.cache]
     [runners.cache.s3]
     [runners.cache.gcs]

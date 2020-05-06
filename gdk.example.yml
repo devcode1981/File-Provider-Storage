@@ -135,6 +135,7 @@ repositories_root: "/home/git/gdk/repositories"
 runner:
   config_file: "/home/git/gdk/gitlab-runner-config.toml"
   enabled: false
+  extra_hosts: []
   token: 'Register your runner to get a token'
 sshd:
   additional_config: ''
