@@ -826,7 +826,7 @@ install-markdownlint:
 
 .PHONY: lint-markdown
 lint-markdown: install-markdownlint
-	$(Q)markdownlint --config .markdownlint.json *.md doc/**/*.md
+	$(Q)markdownlint --config .markdownlint.json 'doc/**/*.md'
 
 ##############################################################
 # Misc
