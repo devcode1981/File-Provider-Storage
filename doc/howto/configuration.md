@@ -85,27 +85,27 @@ when this option is removed.
 
 Below is a table of all the settings that can be set this way:
 
-| Filename                     | Type         | Default                          |
-|------------------------------|--------------|----------------------------------|
-| `host` / `hostname`          | string or IP | `127.0.0.1`                      |
-| `port`                       | number       | `3000`                           |
-| `https_enabled`              | boolean      | `false`                          |
-| `relative_url_root`          | string       | `/`                              |
-| `webpack_host`               | string or IP | `127.0.0.1`                      |
-| `webpack_port`               | number       | `3808`                           |
-| `registry_enabled`           | boolean      | `false`                          |
-| `registry_port`              | number       | `5000`                           |
-| `registry_image`             | string       | `registry:2`                     |
-| `object_store_enabled`       | boolean      | `false`                          |
-| `object_store_port`          | number       | `9000`                           |
-| `postgresql_port`            | number       | `5432`                           |
-| `postgresql_geo_port`        | number       | `5432`                           |
-| `gitlab_pages_port`          | number       | `3010`                           |
-| `auto_devops_enabled`        | boolean      | `false`                          |
-| `auto_devops_gitlab_port`    | number       | `rand(20000..24999)`             |
-| `auto_devops_registry_port`  | number       | `auto_devops_gitlab_port + 5000` |
-| `google_oauth_client_secret` | ?            | ?                                |
-| `google_oauth_client_id`     | ?            | ?                                |
+| Filename                     | Type         | Default                                                                              |
+|------------------------------|--------------|--------------------------------------------------------------------------------------|
+| `host` / `hostname`          | string or IP | `127.0.0.1`                                                                          |
+| `port`                       | number       | `3000`                                                                               |
+| `https_enabled`              | boolean      | `false`                                                                              |
+| `relative_url_root`          | string       | `/`                                                                                  |
+| `webpack_host`               | string or IP | `127.0.0.1`                                                                          |
+| `webpack_port`               | number       | `3808`                                                                               |
+| `registry_enabled`           | boolean      | `false`                                                                              |
+| `registry_port`              | number       | `5000`                                                                               |
+| `registry_image`             | string       | `registry.gitlab.com/gitlab-org/build/cng/gitlab-container-registry:v2.9.0-gitlab`   |
+| `object_store_enabled`       | boolean      | `false`                                                                              |
+| `object_store_port`          | number       | `9000`                                                                               |
+| `postgresql_port`            | number       | `5432`                                                                               |
+| `postgresql_geo_port`        | number       | `5432`                                                                               |
+| `gitlab_pages_port`          | number       | `3010`                                                                               |
+| `auto_devops_enabled`        | boolean      | `false`                                                                              |
+| `auto_devops_gitlab_port`    | number       | `rand(20000..24999)`                                                                 |
+| `auto_devops_registry_port`  | number       | `auto_devops_gitlab_port + 5000`                                                     |
+| `google_oauth_client_secret` | ?            | ?                                                                                    |
+| `google_oauth_client_id`     | ?            | ?                                                                                    |
 
 ### Configuration precedence
 
