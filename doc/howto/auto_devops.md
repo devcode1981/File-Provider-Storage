@@ -310,7 +310,7 @@ SSL termination.
 
 You will need to replace `<gitlab-hostname>` and `<registry-hostname>` below
 with the appropriate values from your reverse proxy settings and run the
-following commmands:
+following commands:
 
 ```shell
 echo <gitlab-hostname> > hostname

@@ -46,7 +46,7 @@ gem pristine re2
 
 Check if you have `gawk` installed >= 5.0.0 and uninstall it.
 
-Re-run the `gdk install` again and follow any on-screen instructions related to instaling `gpgme`.
+Re-run the `gdk install` again and follow any on-screen instructions related to installing `gpgme`.
 
 ## `charlock_holmes` `0.7.x` cannot be installed on macOS Sierra
 
