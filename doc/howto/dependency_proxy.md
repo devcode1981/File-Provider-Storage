@@ -48,7 +48,7 @@ The file should contain the intended host, such as `127.0.0.1` or `0.0.0.0`:
 host: 0.0.0.0
 ```
 
-Run `gdk reconfigure` and `gdk restart` to envoke the changes and visit the IP
+Run `gdk reconfigure` and `gdk restart` to invoke the changes and visit the IP
 (`0.0.0.0:3000`) to check if GitLab is accessible through the new IP.
 
 #### Add this IP address and port to the list of insecure registries and restart Docker

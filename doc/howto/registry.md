@@ -195,7 +195,7 @@ docker push gitlab.local:5000/custom-docker-image
 
 #### Using HTTP
 
-- If you have a self-signed certificate, you can add `--cacert registry_host.crt` or `-k` to the `curl` comands.
+- If you have a self-signed certificate, you can add `--cacert registry_host.crt` or `-k` to the `curl` commands.
 - If you have authentication enabled, you need to obtain a bearer token for your requests:
 
   ```bash
