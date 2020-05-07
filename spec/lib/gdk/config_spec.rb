@@ -269,4 +269,12 @@ describe GDK::Config do
       end
     end
   end
+
+  describe 'object_store' do
+    describe '#host' do
+      it 'returns the default hostname' do
+        expect(config.object_store.host).to eq('127.0.0.1')
+      end
+    end
+  end
 end

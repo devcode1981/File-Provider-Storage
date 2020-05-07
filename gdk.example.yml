@@ -69,6 +69,7 @@ nginx:
     key: localhost.key
 object_store:
   enabled: false
+  host: 127.0.0.1
   port: 9000
 omniauth:
   google_oauth2:

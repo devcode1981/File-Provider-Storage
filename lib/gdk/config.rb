@@ -170,6 +170,7 @@ module GDK
 
     settings :object_store do
       bool(:enabled) { read!('object_store_enabled') || false }
+      string(:host) { config.local_hostname }
       integer(:port) { read!('object_store_port') || 9000 }
     end
 
