@@ -58,39 +58,39 @@ module GDK
       diff = Shellout.new(%W[git --no-pager diff --no-index #{colors_arg} -u #{target} #{temp_file}]).run
 
       GDK::Output.warn "Your '#{target}' contains changes. Here is the diff:"
-      puts <<~EOF
+      puts <<~DIFF
         -------------------------------------------------------------------------------------------------------------
         #{diff}
         -------------------------------------------------------------------------------------------------------------
-      EOF
+      DIFF
     end
 
     def warn_not_applied!
       GDK::Output.warn 'The changes have not been applied.'
-      puts <<~EOF
+      puts <<~NOT_APPLIED
         - To apply these changes, run:
           rm #{target} && make #{target}
         - To silence this warning (at your own peril):
           touch #{target}
         -------------------------------------------------------------------------------------------------------------
-      EOF
+      NOT_APPLIED
     end
 
     def warn_overwritten!
       GDK::Output.warn "'#{target}' has been overwritten. To recover the previous version, run:"
-      puts <<~EOF
+      puts <<~OVERWRITTEN
         cp -f '#{backup_file}' '#{target}'
 
         If you want to protect this file from being overwritten, see:
         https://gitlab.com/gitlab-org/gitlab-development-kit/blob/master/doc/howto/configuration.md#overwriting-config-files
         -------------------------------------------------------------------------------------------------------------
-      EOF
+      OVERWRITTEN
     end
 
     def wait!
-      puts <<~EOF
+      puts <<~WAIT
         ... Waiting 5 seconds for previous warning to be noticed.
-      EOF
+      WAIT
 
       sleep 5
     end

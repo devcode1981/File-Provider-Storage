@@ -12,9 +12,7 @@ def main
 
   exit if postgresql.db_exists?(dbname)
 
-  unless postgresql.createdb(%W[--encoding=UTF8 --locale=C --echo #{dbname}])
-    abort 'createdb failed'
-  end
+  abort 'createdb failed' unless postgresql.createdb(%W[--encoding=UTF8 --locale=C --echo #{dbname}])
 
   abort 'migrate failed' unless system('support/migrate-praefect')
 end

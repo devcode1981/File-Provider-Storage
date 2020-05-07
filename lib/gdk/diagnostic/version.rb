@@ -24,7 +24,7 @@ module GDK
       end
 
       def behind_origin_master?
-        run(%w[git rev-list --left-only --count origin/master...@]).to_i > 0
+        run(%w[git rev-list --left-only --count origin/master...@]).to_i.positive?
       end
 
       def run(cmd)

@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe GDK::Diagnostic::RubyGems do
   before do
-    stub_const('GDK::Diagnostic::RubyGems::GEMS_TO_CHECK', %w{bad_gem})
+    stub_const('GDK::Diagnostic::RubyGems::GEMS_TO_CHECK', %w[bad_gem])
   end
 
   describe '#diagnose' do
@@ -18,7 +18,7 @@ describe GDK::Diagnostic::RubyGems do
       it 'returns false' do
         allow_any_instance_of(described_class).to receive(:require).with('bad_gem').and_raise(LoadError, 'failed to load')
 
-        expect(subject.success?).to be_falsy
+        expect(subject).not_to be_success
       end
     end
 
@@ -26,7 +26,7 @@ describe GDK::Diagnostic::RubyGems do
       it 'returns true' do
         allow_any_instance_of(described_class).to receive(:require).with('bad_gem').and_return(true)
 
-        expect(subject.success?).to be_truthy
+        expect(subject).to be_success
       end
     end
   end

@@ -12,9 +12,7 @@ module Git
         input = STDIN.gets.chomp
         input = rec.default if input.empty?
 
-        unless rec.valid_input_value?(input)
-          abort("Invalid input: #{input}, possible values: #{rec.possible_values}")
-        end
+        abort("Invalid input: #{input}, possible values: #{rec.possible_values}") unless rec.valid_input_value?(input)
 
         set_config(rec.key, input)
 
@@ -46,14 +44,14 @@ module Git
           'tag.sort',
           '-v:refname',
           'Reverse sort the tags by name, meaning that v1.1 is listed before v1.0',
-          %w{-v:refname v:refname}
+          %w[-v:refname v:refname]
         )
       ]
     end
 
     def set_config(key, value)
       if @global
-        run_git(%W[config --global key value])
+        run_git(%w[config --global key value])
       else
         gdk_repositories.each do |repo|
           run_git(%W[config #{key} #{value}], repo_path: repo)

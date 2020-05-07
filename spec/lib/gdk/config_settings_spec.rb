@@ -13,7 +13,7 @@ describe GDK::ConfigSettings do
     end
 
     it 'fails on non-array value' do
-      described_class.array(:foo) { %q[a b] }
+      described_class.array(:foo) { %q(a b) }
 
       expect { config.foo }.to raise_error(GDK::ConfigType::TypeError)
     end
@@ -24,14 +24,14 @@ describe GDK::ConfigSettings do
       described_class.bool(:foo) { 'false' }
 
       expect { config.foo }.not_to raise_error
-      expect(config.foo).to be_falsy
+      expect(config.foo).to eq(false)
     end
 
     it 'accepts a bool?' do
       described_class.bool(:foo) { 'false' }
 
       expect { config.foo? }.not_to raise_error
-      expect(config.foo?).to be_falsy
+      expect(config.foo?).to eq(false)
     end
 
     it 'fails on non-bool value' do
@@ -88,11 +88,13 @@ describe GDK::ConfigSettings do
   end
 
   describe 'dynamic setting' do
+    # rubocop:disable RSpec/LeakyConstantDeclaration
     class TestConfigSettings < described_class
       FILE = 'tmp/foo.yml'
 
       string(:bar) { 'hello' }
     end
+    # rubocop:enable RSpec/LeakyConstantDeclaration
 
     subject(:config) { TestConfigSettings.new }
 

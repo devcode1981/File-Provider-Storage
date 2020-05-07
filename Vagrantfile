@@ -9,9 +9,9 @@ VAGRANTFILE_API_VERSION = "2".freeze
 
 def enable_shares(config, nfs)
   # paths must be listed as shortest to longest per bug: https://github.com/GM-Alex/vagrant-winnfsd/issues/12#issuecomment-78195957
-  config.vm.synced_folder ".", "/vagrant", type: "rsync",
-                                          rsync__exclude: ['gitlab', 'postgresql', 'gitlab-shell', 'gitlab-runner', 'gitlab-workhorse'],
-                                          rsync__auto: false
+  config.vm.synced_folder ".", "/vagrant",  type: "rsync",
+                                            rsync__exclude: %w[gitlab postgresql gitlab-shell gitlab-runner gitlab-workhorse],
+                                            rsync__auto: false
   config.vm.synced_folder "gitlab/", "/vagrant/gitlab", create: true, nfs: nfs
   config.vm.synced_folder "go-gitlab-shell/", "/vagrant/go-gitlab-shell", create: true, nfs: nfs
   config.vm.synced_folder "gitlab-runner/", "/vagrant/gitlab-runner", create: true, nfs: nfs
@@ -24,9 +24,7 @@ def running_in_admin_mode?
   (`reg query HKU\\S-1-5-19 2>&1` =~ /ERROR/).nil?
 end
 
-if Vagrant::Util::Platform.windows? && !running_in_admin_mode?
-  raise Vagrant::Errors::VagrantError.new, "You must run the GitLab Vagrant from an elevated command prompt"
-end
+raise Vagrant::Errors::VagrantError.new, "You must run the GitLab Vagrant from an elevated command prompt" if Vagrant::Util::Platform.windows? && !running_in_admin_mode?
 
 required_plugins = %w[vagrant-share vagrant-disksize]
 required_plugins_non_windows = %w[facter]
@@ -42,13 +40,13 @@ end
 required_plugins.each do |plugin|
   need_restart = false
   unless Vagrant.has_plugin? plugin
-    system "vagrant plugin install #{plugin}"
+    system('vagrant', 'plugin', 'install', plugin)
     need_restart = true
   end
   exec "vagrant #{ARGV.join(' ')}" if need_restart
 end
 
-$apt_reqs = <<EOT
+$apt_reqs = <<COMMANDS # rubocop:disable Style/GlobalVars
   apt-add-repository -y ppa:rael-gc/rvm
   apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
   add-apt-repository -y ppa:longsleep/golang-backports
@@ -64,10 +62,10 @@ $apt_reqs = <<EOT
   apt-get -y install git graphicsmagick postgresql postgresql-contrib libpq-dev libimage-exiftool-perl redis-server libicu-dev cmake g++ nodejs libkrb5-dev curl ruby ed nginx libgmp-dev rvm yarn libre2-dev docker.io runit
   curl https://dl.min.io/server/minio/release/linux-amd64/minio --output /usr/local/bin/minio && chmod +x /usr/local/bin/minio
   apt-get -y upgrade
-EOT
+COMMANDS
 
 # Set up swap when using a full VM
-$swap_setup = <<EOT
+$swap_setup = <<COMMANDS # rubocop:disable Style/GlobalVars
   # create a swapfile
   sudo fallocate -l 4G /swapfile
   sudo chmod 600 /swapfile
@@ -76,9 +74,9 @@ $swap_setup = <<EOT
   sudo swapon /swapfile
   # and on reboot
   echo '/swapfile   none    swap    sw    0   0' | sudo tee --append /etc/fstab
-EOT
+COMMANDS
 
-$user_setup = <<EOT
+$user_setup = <<COMMANDS # rubocop:disable Style/GlobalVars
   DEV_USER=$(stat -c %U /vagrant)
   echo "$DEV_USER ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/$DEV_USER
   sudo addgroup $DEV_USER rvm
@@ -99,11 +97,13 @@ $user_setup = <<EOT
   echo '/vagrant' > /vagrant/.gdk-install-root
   sudo -u $DEV_USER -i bash -c "gem install gitlab-development-kit"
   sudo -u $DEV_USER -i bash -c "gdk trust /vagrant"
-EOT
+COMMANDS
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # rubocop:disable Style/GlobalVars
   config.vm.provision "shell", inline: $apt_reqs
   config.vm.provision "shell", inline: $user_setup
+  # rubocop:enable Style/GlobalVars
   unless Vagrant::Util::Platform.windows?
     # NFS setup
     config.vm.network "private_network", type: "dhcp"
@@ -148,7 +148,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
 
       # disables NFS on macOS to prevent UID / GID issues with mounted shares
-      enable_nfs = Vagrant::Util::Platform.platform =~ /darwin/ ? false : true
+      enable_nfs = !Vagrant::Util::Platform.platform.match?(/darwin/)
       enable_shares(override, enable_nfs)
     end
 
@@ -156,7 +156,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     mem = [mem / 4, 6144].max
 
     # Set up swap
-    override.vm.provision "shell", inline: $swap_setup
+    override.vm.provision "shell", inline: $swap_setup # rubocop:disable Style/GlobalVars
 
     # performance tweaks
     # per https://www.virtualbox.org/manual/ch03.html#settings-processor set cpus to real cores, not hyperthreads

@@ -19,7 +19,7 @@ describe Shellout do
     end
 
     it 'does not raise error' do
-      expect{ subject.try_run }.not_to raise_error
+      expect { subject.try_run }.not_to raise_error
     end
   end
 
@@ -46,13 +46,13 @@ describe Shellout do
   end
 
   describe '#success?' do
-    context '#run has not yet been executed' do
+    describe '#run has not yet been executed' do
       it 'returns false' do
         expect(subject.success?).to be false
       end
     end
 
-    context '#run has been executed' do
+    describe '#run has been executed' do
       before do
         subject.run
       end

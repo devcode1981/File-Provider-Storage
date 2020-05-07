@@ -787,6 +787,10 @@ jaeger/jaeger-${jaeger_version}/jaeger-all-in-one: jaeger-artifacts/jaeger-${jae
 # tests
 ##############################################################
 
+.PHONY: rubocop
+rubocop:
+	$(Q)bundle exec rubocop --config .rubocop-gdk.yml --parallel
+
 .PHONY: static-analysis
 static-analysis: static-analysis-editorconfig
 

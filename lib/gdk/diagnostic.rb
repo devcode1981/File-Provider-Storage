@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 require_relative 'diagnostic/base'
 require_relative 'diagnostic/dependencies'
 require_relative 'diagnostic/version'

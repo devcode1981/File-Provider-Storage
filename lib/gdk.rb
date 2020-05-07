@@ -12,8 +12,8 @@ require_relative 'runit'
 autoload :Shellout, 'shellout'
 
 module GDK
-  PROGNAME = 'gdk'.freeze
-  MAKE = RUBY_PLATFORM =~ /bsd/ ? 'gmake' : 'make'
+  PROGNAME = 'gdk'
+  MAKE = RUBY_PLATFORM.match?(/bsd/) ? 'gmake' : 'make'
 
   # dependencies are always declared via autoload
   # this allows for any dependent project require only `lib/gdk`
@@ -31,36 +31,37 @@ module GDK
 
   # This function is called from bin/gdk. It must return true/false or
   # an exit code.
-  def self.main
+  # rubocop:disable Metrics/AbcSize
+  def self.main # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     if !install_root_ok? && ARGV.first != 'reconfigure'
-      puts <<-EOS.gsub(/^\s+\|/, '')
-        |According to #{ROOT_CHECK_FILE} this gitlab-development-kit
-        |installation was moved. Run 'gdk reconfigure' to update hard-coded
-        |paths.
-      EOS
+      puts <<~GDK_MOVED
+        According to #{ROOT_CHECK_FILE} this gitlab-development-kit
+        installation was moved. Run 'gdk reconfigure' to update hard-coded
+        paths.
+      GDK_MOVED
       return false
     end
 
     case subcommand = ARGV.shift
     when 'run'
-      abort <<~MSG
+      abort <<~GDK_RUN_NO_MORE
         'gdk run' is no longer available; see doc/runit.md.
 
         Use 'gdk start', 'gdk stop', and 'gdk tail' instead.
-      MSG
+      GDK_RUN_NO_MORE
     when 'install'
       exec(MAKE, *ARGV, chdir: GDK.root)
     when 'update'
       # Otherwise we would miss it and end up in a weird state.
       puts_separator
-      puts "Running `make self-update`.."
+      puts 'Running `make self-update`..'
       puts_separator
       puts "Running separately in case the Makefile is updated.\n"
       system(MAKE, 'self-update', chdir: GDK.root)
 
       puts
       puts_separator
-      puts "Running `make self-update update`.."
+      puts 'Running `make self-update update`..'
       success = system(MAKE, 'self-update', 'update', chdir: GDK.root)
       puts_separator
 
@@ -148,16 +149,17 @@ module GDK
       false
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   def self.puts_separator
-    puts "-------------------------------------------------------"
+    puts '-------------------------------------------------------'
   end
 
   def self.install_root_ok?
     expected_root = GDK.root.join(ROOT_CHECK_FILE).read.chomp
     Pathname.new(expected_root).realpath == GDK.root
-  rescue => ex
-    warn ex
+  rescue StandardError => e
+    warn e
     false
   end
 
@@ -165,6 +167,6 @@ module GDK
   #
   # @return [Pathname] path to GDK base directory
   def self.root
-    Pathname.new($gdk_root || Pathname.new(__dir__).parent)
+    Pathname.new($gdk_root || Pathname.new(__dir__).parent) # rubocop:disable Style/GlobalVars
   end
 end

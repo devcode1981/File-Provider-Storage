@@ -4,8 +4,12 @@ require 'tempfile'
 describe Runit::Config do
   let(:tmp_root) { File.expand_path('../../../tmp', __dir__) }
   let(:gdk_root) { Dir.mktmpdir(nil, tmp_root) }
+
   subject { described_class.new(gdk_root) }
-  after { FileUtils.rm_rf(gdk_root) }
+
+  after do
+    FileUtils.rm_rf(gdk_root)
+  end
 
   describe '#stale_service_links' do
     let(:services) { [described_class::Service.new('svc1', nil), described_class::Service.new('svc2', nil)] }

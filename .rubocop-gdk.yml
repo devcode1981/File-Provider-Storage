@@ -5,7 +5,6 @@ inherit_gem:
 AllCops:
   TargetRubyVersion: 2.6.5
   Exclude:
-    - 'bin/**/*'
     - 'gitlab-elasticsearch-indexer/**/*'
     - 'go-gitlab-shell/**/*'
     - 'gitaly/**/*'
@@ -17,3 +16,9 @@ AllCops:
     - 'grafana/**/*'
     - 'influxdb/**/*'
     - 'tmp/**/*'
+
+Rails:
+  Enabled: false
+
+RSpec/ContextWording:
+  Enabled: false

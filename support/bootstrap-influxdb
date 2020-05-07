@@ -6,12 +6,10 @@ DATABASE = 'gitlab'.freeze
 
 def wait_for_socket(host, port)
   30.times do
-    begin
-      TCPSocket.new(host, port)
-      return true
-    rescue Errno::ECONNREFUSED
-      sleep 1
-    end
+    TCPSocket.new(host, port)
+    return true
+  rescue Errno::ECONNREFUSED
+    sleep 1
   end
   false
 end
@@ -25,7 +23,7 @@ def main(host, port)
     influx.puts "CREATE DATABASE #{DATABASE} WITH duration 1d REPLICATION 1;"
   end
 
-  abort "#{$PROGRAM_NAME}: failed to create InfluxDB database #{DATABASE}" unless $?.success?
+  abort "#{$PROGRAM_NAME}: failed to create InfluxDB database #{DATABASE}" unless $CHILD_STATUS.success?
 
   env = {
     'INFLUX_HOST' => host.to_s,
@@ -34,9 +32,7 @@ def main(host, port)
     'INFLUX_PASSWORD' => "",
     'INFLUX_DATABASE' => DATABASE.to_s
   }
-  unless system(env, *%w[bundle exec rake], chdir: 'influxdb/influxdb-management')
-    abort "#{$PROGRAM_NAME}: failed to run influxdb-managemant Rake script"
-  end
+  abort "#{$PROGRAM_NAME}: failed to run influxdb-managemant Rake script" unless system(env, *%w[bundle exec rake], chdir: 'influxdb/influxdb-management')
 end
 
 abort "Usage: #{$PROGRAM_NAME} INFLUXDB_HTTP_PORT" if ARGV.count != 1

@@ -38,8 +38,6 @@ module GDK
         end
       end
 
-      private
-
       class ConfigDiff
         attr_reader :file, :output, :make_output
 

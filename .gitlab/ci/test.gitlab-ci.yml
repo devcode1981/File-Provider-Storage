@@ -10,6 +10,13 @@ static-analysis:
   script:
     - make static-analysis
 
+rubocop:
+  extends: .rules:code-changes
+  stage: test
+  script:
+    - bundle install --jobs 4
+    - make rubocop
+
 rspec:
   extends: .rules:code-changes
   stage: test

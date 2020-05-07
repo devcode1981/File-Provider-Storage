@@ -8,9 +8,7 @@ module GDK
       def diagnose
         @success = true
 
-        if database_geo_yml_exists? && !geo_enabled?
-          @success = false
-        end
+        @success = false if database_geo_yml_exists? && !geo_enabled?
       end
 
       def success?

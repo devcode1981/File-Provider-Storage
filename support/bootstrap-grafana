@@ -32,12 +32,10 @@ end
 
 def wait_socket(host, port)
   30.times do
-    begin
-      TCPSocket.new(host, port)
-      return true
-    rescue Errno::ECONNREFUSED
-      sleep 1
-    end
+    TCPSocket.new(host, port)
+    return true
+  rescue Errno::ECONNREFUSED
+    sleep 1
   end
   false
 end

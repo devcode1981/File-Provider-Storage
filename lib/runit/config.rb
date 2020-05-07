@@ -58,6 +58,7 @@ module Runit
       stale_entries.map do |entry|
         path = File.join(services_dir, entry)
         next unless File.symlink?(path)
+
         path
       end.compact
     end
@@ -80,9 +81,7 @@ module Runit
 
     def delete_exec_prefix!(service, command)
       exec_prefix = 'exec '
-      unless command.start_with?(exec_prefix)
-        abort "fatal: Procfile command for service #{service} does not start with 'exec'"
-      end
+      abort "fatal: Procfile command for service #{service} does not start with 'exec'" unless command.start_with?(exec_prefix)
 
       command.delete_prefix!(exec_prefix)
     end
@@ -146,7 +145,7 @@ module Runit
       write_file(log_run_path, ERB.new(log_run_template).result(binding), 0o755)
 
       log_prefix = GDK::Output.ansi(GDK::Output.color(index))
-      log_label = sprintf("%-#{max_service_length}s : ", service.name)
+      log_label = format("%-#{max_service_length}s : ", service.name)
       reset_color = GDK::Output.reset_color
 
       # See http://smarden.org/runit/svlogd.8.html#sect6 for documentation of the svlogd config file

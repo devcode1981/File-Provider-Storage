@@ -70,9 +70,7 @@ module GDK
 
       def check_binary(binary)
         find_executable(binary).tap do |result|
-          unless result
-            @error_messages << "#{binary} does not exist. You may need to check your PATH or install a missing package."
-          end
+          @error_messages << "#{binary} does not exist. You may need to check your PATH or install a missing package." unless result
         end
       end
 
@@ -82,9 +80,7 @@ module GDK
         actual = Gem::Version.new(RUBY_VERSION)
         expected = Gem::Version.new(GitLabVersions.new.ruby_version)
 
-        if actual < expected
-          @error_messages << require_minimum_version('Ruby', actual, expected)
-        end
+        @error_messages << require_minimum_version('Ruby', actual, expected) if actual < expected
       end
 
       def check_bundler_version
@@ -97,7 +93,9 @@ module GDK
       end
 
       def bundler_version_ok?
-        return system("bundle _#{expected_bundler_version}_ --version >/dev/null 2>&1")
+        cmd = Shellout.new("bundle _#{expected_bundler_version}_ --version >/dev/null 2>&1")
+        cmd.try_run
+        cmd.success?
       end
 
       def alt_bundler_version_ok?
@@ -118,9 +116,7 @@ module GDK
 
         actual = Gem::Version.new(current_version)
         expected = Gem::Version.new(EXPECTED_GO_VERSION)
-        if actual < expected
-          @error_messages << require_minimum_version('Go', actual, expected)
-        end
+        @error_messages << require_minimum_version('Go', actual, expected) if actual < expected
 
       rescue Errno::ENOENT
         @error_messages << missing_dependency('Go', minimum_version: EXPECTED_GO_VERSION)
@@ -134,9 +130,7 @@ module GDK
         actual = Gem::Version.new(current_version)
         expected = Gem::Version.new(EXPECTED_NODEJS_VERSION)
 
-        if actual < expected
-          @error_messages << require_minimum_version('Node.js', actual, expected)
-        end
+        @error_messages << require_minimum_version('Node.js', actual, expected) if actual < expected
 
       rescue Errno::ENOENT
         @error_messages << missing_dependency('Node.js', minimum_version: EXPECTED_NODEJS_VERSION)
@@ -150,9 +144,7 @@ module GDK
         actual = Gem::Version.new(current_version)
         expected = Gem::Version.new(EXPECTED_YARN_VERSION)
 
-        if actual < expected
-          @error_messages << require_minimum_version('Yarn', actual, expected)
-        end
+        @error_messages << require_minimum_version('Yarn', actual, expected) if actual < expected
 
       rescue Errno::ENOENT
         @error_messages << missing_dependency('Yarn', minimum_version: expected)
@@ -166,33 +158,23 @@ module GDK
         actual = Gem::Version.new(current_postgresql_version)
         expected = Gem::Version.new(EXPECTED_POSTGRESQL_VERSION)
 
-        if actual.segments[0] < expected.segments[0]
-          @error_messages << require_minimum_version('PostgreSQL', actual, expected)
-        end
+        @error_messages << require_minimum_version('PostgreSQL', actual, expected) if actual.segments[0] < expected.segments[0]
       end
 
       def check_graphicsmagick_installed
-        unless system("gm version >/dev/null 2>&1")
-          @error_messages << missing_dependency('GraphicsMagick')
-        end
+        @error_messages << missing_dependency('GraphicsMagick') unless system("gm version >/dev/null 2>&1")
       end
 
       def check_exiftool_installed
-        unless system("exiftool -ver >/dev/null 2>&1")
-          @error_messages << missing_dependency('Exiftool')
-        end
+        @error_messages << missing_dependency('Exiftool') unless system("exiftool -ver >/dev/null 2>&1")
       end
 
       def check_minio_installed
-        unless system("minio --help >/dev/null 2>&1")
-          @error_messages << missing_dependency('MinIO')
-        end
+        @error_messages << missing_dependency('MinIO') unless system("minio --help >/dev/null 2>&1")
       end
 
       def check_runit_installed
-        unless system("which runsvdir >/dev/null 2>&1")
-          @error_messages << missing_dependency('Runit')
-        end
+        @error_messages << missing_dependency('Runit') unless system("which runsvdir >/dev/null 2>&1")
       end
 
       def require_minimum_version(dependency, actual, expected)

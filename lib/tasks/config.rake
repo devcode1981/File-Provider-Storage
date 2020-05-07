@@ -1,5 +1,5 @@
 CONFIGS = FileList['Procfile', 'nginx/conf/nginx.conf', 'gitlab/config/gitlab.yml']
-CLOBBER.include *CONFIGS, 'gdk.example.yml'
+CLOBBER.include(*CONFIGS, 'gdk.example.yml')
 
 def config
   @config ||= GDK::Config.new
