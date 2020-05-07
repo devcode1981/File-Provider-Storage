@@ -136,6 +136,38 @@ production: &base
     # The IDLE command timeout.
     idle_timeout: 60
 
+  ## Service desk email
+  # Allow users to create new service desk issues by sending an email to
+  # service desk address.
+  # https://docs.gitlab.com/ee/user/project/service_desk.html#using-custom-email-address
+  service_desk_email:
+    enabled: false
+
+    # The email address including the `%{key}` placeholder that will be replaced to reference the item being replied to.
+    # The placeholder can be omitted but if present, it must appear in the "user" part of the address (before the `@`).
+    address: "contact_project+%{key}@gmail.com"
+
+    # Email account username
+    # With third party providers, this is usually the full email address.
+    # With self-hosted email servers, this is usually the user part of the email address.
+    user: "contact_project@gmail.com"
+    # Email account password
+    password: "[REDACTED]"
+
+    # IMAP server host
+    host: "imap.gmail.com"
+    # IMAP server port
+    port: 993
+    # Whether the IMAP server uses SSL
+    ssl: true
+    # Whether the IMAP server uses StartTLS
+    start_tls: false
+
+    # The mailbox where incoming mail will end up. Usually "inbox".
+    mailbox: "inbox"
+    # The IDLE command timeout.
+    idle_timeout: 60
+
   ## Build Artifacts
   artifacts:
     enabled: true
