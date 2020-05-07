@@ -20,8 +20,8 @@ http:
     X-Content-Type-Options: [nosniff]
   <%- if config.registry.self_signed -%>
   tls:
-    certificate: /root/certs/registry_host.crt
-    key: /root/certs/registry_host.key
+    certificate: /etc/docker/registry/registry_host.crt
+    key: /etc/docker/registry/registry_host.key
   <%- end -%>
 health:
   storagedriver:
