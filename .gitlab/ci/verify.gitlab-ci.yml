@@ -1,0 +1,21 @@
+.verify_job:
+  stage: verify
+  extends: .rules:code-changes
+  image: ${VERIFY_IMAGE}
+  artifacts:
+    paths:
+      - ./gitlab-development-kit/gitlab/log/*.log
+      - ./gitlab-development-kit/log
+    expire_in: 2 days
+    when: always
+  retry: 1
+
+install:
+  extends: .verify_job
+  script:
+    - support/ci/verify_install
+
+update:
+  extends: .verify_job
+  script:
+    - support/ci/verify_update

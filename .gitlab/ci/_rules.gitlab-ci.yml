@@ -1,0 +1,56 @@
+.docs-changes: &docs-changes
+  - "**/*.{md}"
+  - "{doc}/**/*"
+
+.code-changes: &code-changes
+  - "**/*.{rb,erb,sh,yml,example,types}"
+  - "{lib,gem,bin}/**/*"
+  - "{spec,support}/**/*"
+  - ".gitlab-ci.yml"
+  - ".gitlab/ci/*"
+  - "Gemfile{,.lock}"
+  - "Makefile"
+  - "Rakefile"
+  - "Dockerfile"
+  - "**/*/Dockerfile"
+  - "packages.txt"
+  - "**/*/Makefile"
+  - "Vagrantfile"
+  - "gitlab-openldap/**/*"
+  - "vagrant/assets/**/*"
+
+.docs-code-changes: &docs-code-changes
+  - "**/*.{md}"
+  - "{doc}/**/*"
+  - "**/*.{rb,erb,sh,yml,example,types}"
+  - "{lib,gem,bin}/**/*"
+  - "{spec,support}/**/*"
+  - ".gitlab-ci.yml"
+  - ".gitlab/ci/*"
+  - "Gemfile{,.lock}"
+  - "Rakefile"
+  - "Dockerfile"
+  - "**/*/Dockerfile"
+  - "packages.txt"
+  - "**/*/Makefile"
+  - "Vagrantfile"
+  - "gitlab-openldap/**/*"
+  - "vagrant/assets/**/*"
+
+.rules:docs-changes:
+  rules:
+    - changes: *docs-changes
+
+.rules:code-changes:
+  rules:
+    - changes: *code-changes
+
+.rules:docs-code-changes:
+  rules:
+    - changes: *docs-code-changes
+
+.rules:docs-code-changes-manual:
+  rules:
+    - changes: *docs-code-changes
+      when: manual
+      allow_failure: true
