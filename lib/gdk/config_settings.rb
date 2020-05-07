@@ -67,7 +67,7 @@ module GDK
       yaml = (methods - base_methods).sort.each_with_object({}) do |method, hash|
         # If a config starts with a double underscore,
         # it's an internal config so don't dump it out
-        next hash if method.to_s.start_with?('__')
+        next if method.to_s.start_with?('__')
 
         value = fetch(method)
         hash[method.to_s] = if value.is_a?(ConfigSettings)
@@ -126,7 +126,7 @@ module GDK
     #
     # @param count [Integer] the number of settings in the array
     def settings_array!(count, &blk)
-      count.times.map do |i| # rubocop:disable Performance/TimesMap
+      Array.new(count) do |i|
         subconfig!(i) do
           instance_exec(i, &blk)
         end
@@ -136,9 +136,7 @@ module GDK
     def fetch(slug, *args)
       raise ::ArgumentError, %[Wrong number of arguments (#{args.count + 1} for 1..2)] if args.count > 1
 
-      # rubocop:disable GitlabSecurity/PublicSend
-      return public_send(slug) if respond_to?(slug)
-      # rubocop:enable GitlabSecurity/PublicSend
+      return public_send(slug) if respond_to?(slug) # rubocop:disable GitlabSecurity/PublicSend
 
       raise SettingUndefined, %(Could not fetch the setting '#{slug}' in '#{self.slug || '<root>'}') if args.empty?
 

@@ -148,7 +148,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
 
       # disables NFS on macOS to prevent UID / GID issues with mounted shares
-      enable_nfs = /darwin/.match?(Vagrant::Util::Platform.platform) ? false : true
+      enable_nfs = !Vagrant::Util::Platform.platform.match?(/darwin/)
       enable_shares(override, enable_nfs)
     end
 

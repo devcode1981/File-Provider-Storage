@@ -17,7 +17,7 @@ describe GDK::Services::Base do
 
   describe '#enabled?' do
     it 'is disabled by default' do
-      expect(subject.enabled?).to be_falsy
+      expect(subject.enabled?).to be(false)
     end
   end
 end

@@ -34,10 +34,10 @@ module GDK
   # rubocop:disable Metrics/AbcSize
   def self.main # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     if !install_root_ok? && ARGV.first != 'reconfigure'
-      puts <<-GDK_MOVED.gsub(/^\s+\|/, '')
-        |According to #{ROOT_CHECK_FILE} this gitlab-development-kit
-        |installation was moved. Run 'gdk reconfigure' to update hard-coded
-        |paths.
+      puts <<~GDK_MOVED
+        According to #{ROOT_CHECK_FILE} this gitlab-development-kit
+        installation was moved. Run 'gdk reconfigure' to update hard-coded
+        paths.
       GDK_MOVED
       return false
     end
@@ -54,14 +54,14 @@ module GDK
     when 'update'
       # Otherwise we would miss it and end up in a weird state.
       puts_separator
-      puts "Running `make self-update`.."
+      puts 'Running `make self-update`..'
       puts_separator
       puts "Running separately in case the Makefile is updated.\n"
       system(MAKE, 'self-update', chdir: GDK.root)
 
       puts
       puts_separator
-      puts "Running `make self-update update`.."
+      puts 'Running `make self-update update`..'
       success = system(MAKE, 'self-update', 'update', chdir: GDK.root)
       puts_separator
 
@@ -152,7 +152,7 @@ module GDK
   # rubocop:enable Metrics/AbcSize
 
   def self.puts_separator
-    puts "-------------------------------------------------------"
+    puts '-------------------------------------------------------'
   end
 
   def self.install_root_ok?
