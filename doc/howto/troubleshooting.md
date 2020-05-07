@@ -1,5 +1,17 @@
 # Troubleshooting
 
+Before attempting the specific troubleshooting steps documented below, many problems can
+be resolved with the following commands run from the GDK project's root directory:
+
+```shell
+cd gitlab
+yarn install && bundle install
+bundle exec rails db:migrate RAILS_ENV=development
+```
+
+This installs required Node.js modules and Ruby gems, and performs database migrations,
+which can fix errors caused by switching branches.
+
 ## Rebuilding gems with native extensions
 
 There may be times when your local libraries that are used to build some gems'
