@@ -40,7 +40,7 @@ Reference documentation:
 
 1. Get a Grafana instance. _Note: The Grafana instance must be network-accessible from the GDK, and your Prometheus must be network-accessible from the Grafana instance._
    1. Create a local instance. Run `docker run -d -p 3000:3000 grafana/grafana` to spin up a local Grafana instance (default username/password: `admin`/`admin`).
-   1. Create a cloud instance, ensuring that visibility is set to 'public'. Note that this may have usage costs.
+   1. Create a cloud instance, ensuring that visibility is set to 'public'. See [instructions](#configuring-a-hosted-grafana-instance).
 1. Add a DataSource of type **Prometheus**.
 1. In the URL field, add `http://<ip>:<port>` as detailed in
    [Exposing the Prometheus endpoint for a GitLab-managed cluster](#exposing-the-promtheus-endpoint-for-a-gitlab-manged-cluster).
@@ -53,3 +53,12 @@ Reference documentation:
 
 Refer to the documentation on [Embedding Grafana charts](https://docs.gitlab.com/ee/user/project/integrations/prometheus.html#embedding-grafana-charts)
 for details on configuring GitLab to integrate with Grafana.
+
+## Configuring a hosted Grafana instance
+
+1. Navigate to the [Grafana landing page](https://grafana.com/).
+1. Click **Login** in the upper right hand corner.
+1. Click **Sign Up Now** to sign up for a new account or enter your credentials if you already have an account.
+1. Click **My Grafana** in the upper right.
+1. Under **Hosted Grafana**, follow the flow to create a new instance.
+1. When returning to this page again, click **Log In** under **Hosted Grafana** to access the Grafana instance.
