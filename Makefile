@@ -791,11 +791,8 @@ jaeger/jaeger-${jaeger_version}/jaeger-all-in-one: jaeger-artifacts/jaeger-${jae
 rubocop:
 	$(Q)bundle exec rubocop --config .rubocop-gdk.yml --parallel
 
-.PHONY: static-analysis
-static-analysis: static-analysis-editorconfig
-
-.PHONY: static-analysis-editorconfig
-static-analysis-editorconfig: install-eclint
+.PHONY: eclint
+eclint: install-eclint
 	$(Q)eclint check $$(git ls-files) || (echo "editorconfig check failed. Please run \`make correct\`" && exit 1)
 
 .PHONY: correct
