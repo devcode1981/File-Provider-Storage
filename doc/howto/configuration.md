@@ -95,7 +95,7 @@ Below is a table of all the settings that can be set this way:
 | `webpack_port`               | number       | `3808`                                                                               |
 | `registry_enabled`           | boolean      | `false`                                                                              |
 | `registry_port`              | number       | `5000`                                                                               |
-| `registry_image`             | string       | `registry.gitlab.com/gitlab-org/build/cng/gitlab-container-registry:v2.9.0-gitlab`   |
+| `registry_image`             | string       | `registry.gitlab.com/gitlab-org/build/cng/gitlab-container-registry:v2.9.1-gitlab`   |
 | `object_store_enabled`       | boolean      | `false`                                                                              |
 | `object_store_port`          | number       | `9000`                                                                               |
 | `postgresql_port`            | number       | `5432`                                                                               |
