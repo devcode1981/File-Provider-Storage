@@ -5,16 +5,23 @@ inherit_gem:
 AllCops:
   TargetRubyVersion: 2.6.5
   Exclude:
-    - 'gitlab-elasticsearch-indexer/**/*'
-    - 'go-gitlab-shell/**/*'
+    - 'elasticsearch/**/*'
     - 'gitaly/**/*'
-    - 'gitlab/**/*'
     - 'gitlab-docs/**/*'
+    - 'gitlab-elasticsearch-indexer/**/*'
+    - 'gitlab-pages/**/*'
     - 'gitlab-runner/**/*'
     - 'gitlab-shell/**/*'
     - 'gitlab-workhorse/**/*'
+    - 'gitlab/**/*'
+    - 'go-gitlab-shell/**/*'
     - 'grafana/**/*'
     - 'influxdb/**/*'
+    - 'jaeger/**/*'
+    - 'log/**/*'
+    - 'postgresql/**/*'
+    - 'services/**/*'
+    - 'sv/**/*'
     - 'tmp/**/*'
 
 Rails:
