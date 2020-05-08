@@ -846,6 +846,26 @@ To fix this, install yarn using npm instead:
 npm install --global yarn
 ```
 
+## `brew` troubleshooting
+
+Most `brew` problems can be sniffed out by running
+
+```bash
+brew doctor
+```
+
+However, older installations may have significant cruft leftover from previous
+installations and updates. To manually remove outdated downloads for all
+formulae, casks, and stale lockfiles, run:
+
+```bash
+brew cleanup
+```
+
+More info on [Brew's FAQ](https://docs.brew.sh/FAQ#how-do-i-uninstall-old-versions-of-a-formula),
+or check out their [Common Issues](https://docs.brew.sh/Common-Issues) page for
+additional troubleshooting information.
+
 ## Other problems
 
 Please open an issue on the [GDK issue tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues).
