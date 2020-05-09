@@ -64,6 +64,11 @@ Then run the following command:
 gdk install gitlab_repo=../gdk/gitlab
 ```
 
+Note the `gitlab_repo` parameter is an optimization, but it is not
+strictly required. It saves you time by performing a local `git clone`
+instead of pulling from GitLab.com. In addition, a `git pull` in the
+`gitlab` directory will update from the primary Git repository.
+
 When seeding begins, cancel it (Ctrl-C) since we will delete the data anyway.
 
 Then run the following commands:
