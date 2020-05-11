@@ -784,12 +784,19 @@ jaeger/jaeger-${jaeger_version}/jaeger-all-in-one: jaeger-artifacts/jaeger-${jae
 	$(Q)tar -xf "$<" -C "jaeger/jaeger-${jaeger_version}" --strip-components 1
 
 ##############################################################
-# tests
+# Tests
 ##############################################################
+
+.PHONY: test
+test: lint rubocop rspec
 
 .PHONY: rubocop
 rubocop:
 	$(Q)bundle exec rubocop --config .rubocop-gdk.yml --parallel
+
+.PHONY: rspec
+rspec:
+	$(Q)bundle exec rspec
 
 .PHONY: eclint
 eclint: install-eclint
@@ -809,7 +816,7 @@ install-eclint:
 	((command -v yarn > /dev/null) && yarn global add eclint)
 
 .PHONY: lint
-lint: lint-vale lint-markdown
+lint: eclint lint-vale lint-markdown
 
 .PHONY: install-vale
 install-vale:
