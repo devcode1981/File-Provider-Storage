@@ -729,7 +729,7 @@ a `gdk reconfigure`:
 For more information about Jaeger, visit the [distributed tracing GitLab developer
 documentation](https://docs.gitlab.com/ee/development/distributed_tracing.html).
 
-## Gitaly config.toml: no such file or directory
+## Gitaly `config.toml: no such file or directory`
 
 If you see errors such as:
 

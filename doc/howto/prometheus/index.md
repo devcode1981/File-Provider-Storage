@@ -144,7 +144,7 @@ CI/CD pipeline with no requirements, based on AutoDevOps. It contains just the `
 
 ### Allow requests to the local network
 
-We have CSRF protection in place on the cluster url, so if we try to connect Minikube now, we'll get
+We have CSRF protection in place on the cluster URL, so if we try to connect Minikube now, we'll get
 a `Requests to the local network are not allowed` error. The below steps will disable this protection
 for use with Minikube.
 
