@@ -142,7 +142,7 @@ module GDK
       end
 
       string :tunnel_host do
-        next "#{config.auto_devops.registry.port}.qa-tunnel.gitlab.info" if config.auto_devops.enabled
+        next 'localhost' if config.auto_devops.enabled
 
         config.hostname
       end
