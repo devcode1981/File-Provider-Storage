@@ -851,7 +851,7 @@ npm install --global yarn
 If you previously compiled production assets with `bundle exec rake gitlab:assets:compile`, the GDK
 serves the assets from the `public/assets/` directory, which means that changing SCSS files won't
 have any effect in development until you re-compile the assets manually. To re-enable live-reloading
-of CSS in development, remove the `publis/assets/` directory and restart the GDK.
+of CSS in development, remove the `public/assets/` directory and restart the GDK.
 
 ## Other problems
 
