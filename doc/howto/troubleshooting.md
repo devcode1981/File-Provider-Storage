@@ -846,6 +846,13 @@ To fix this, install yarn using npm instead:
 npm install --global yarn
 ```
 
+## CSS isn't live reloading
+
+If you previously compiled production assets with `bundle exec rake gitlab:assets:compile`, the GDK
+serves the assets from the `public/assets/` directory, which means that changing SCSS files won't
+have any effect in development until you re-compile the assets manually. To re-enable live-reloading
+of CSS in development, remove the `public/assets/` directory and restart the GDK.
+
 ## Other problems
 
 Please open an issue on the [GDK issue tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues).
