@@ -64,7 +64,7 @@ or lack of internet access, then you can use a local registry:
    on [using an insecure registry](#using-an-insecure-registry-from-gitlab-ci) using
    Docker-in-Docker, see the documentation.
 
-**Note:** When changing the hostname for a self-signed registry, you must run `gdk reconfigure` and [update the trusted certificates in Docker](trusting-the-registry-self-signed-certificate).
+**Note:** When changing the hostname for a self-signed registry, you must run `gdk reconfigure` and [update the trusted certificates in Docker](#trusting-the-registrys-self-signed-certificate).
 
 After completing these instructions, you should be ready to work with the registry locally. See the
 [Interacting with the local container registry](#interacting-with-the-local-container-registry)
