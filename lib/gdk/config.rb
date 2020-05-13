@@ -40,10 +40,12 @@ module GDK
 
     path(:repositories_root) { config.gdk_root.join('repositories') }
 
+    string(:local_hostname) { '127.0.0.1' }
+
     string :hostname do
       next "#{config.auto_devops.gitlab.port}.qa-tunnel.gitlab.info" if config.auto_devops.enabled
 
-      read!('hostname') || read!('host') || '127.0.0.1'
+      read!('hostname') || read!('host') || config.local_hostname
     end
 
     integer :port do
