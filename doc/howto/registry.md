@@ -48,7 +48,7 @@ or lack of internet access, then you can use a local registry:
       auth_enabled: true # or false, see below for details (default is true)
     ```
 
-    where `gdk.local` points to your computer's local, non-loopback address. For more
+    where `gitlab.local` points to your computer's local, non-loopback address. For more
     information, see [Obtaining a usable hostname](#obtaining-a-usable-hostname).
 
 1. Run `gdk reconfigure` to update the configuration and generate certificate files
