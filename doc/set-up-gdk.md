@@ -18,7 +18,7 @@ gem install gitlab-development-kit
 
 ## Initialize a new GDK directory
 
-1. Change into the directory where you store your source code. The path used for
+1. Change into the directory where you want to store your source code for GitLab projects (e.g. `~/workspace`). The path used for
    GDK must contain only alphanumeric characters.
 
 1. To initialize GDK into:
