@@ -153,7 +153,7 @@ module GDK
       string :image do
         read!('registry_image') ||
           'registry.gitlab.com/gitlab-org/build/cng/gitlab-container-registry:'\
-        'v2.9.0-gitlab'
+        'v2.9.1-gitlab'
       end
 
       integer :external_port do

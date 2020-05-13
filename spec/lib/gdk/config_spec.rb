@@ -51,7 +51,7 @@ describe GDK::Config do
     describe 'image' do
       context 'when no image is specified' do
         it 'returns the default image' do
-          expect(config.registry.image).to eq('registry.gitlab.com/gitlab-org/build/cng/gitlab-container-registry:v2.9.0-gitlab')
+          expect(config.registry.image).to eq('registry.gitlab.com/gitlab-org/build/cng/gitlab-container-registry:v2.9.1-gitlab')
         end
       end
     end
