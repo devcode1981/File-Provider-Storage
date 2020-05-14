@@ -1,4 +1,5 @@
 stages:
+  - pre
   - build
   - test
   - verify
@@ -20,6 +21,7 @@ workflow:
 
 default:
   image: ${DEFAULT_IMAGE}
+  interruptible: true
   tags:
     - gitlab-org
 
