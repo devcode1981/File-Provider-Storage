@@ -50,6 +50,7 @@ https:
   enabled: false
 influxdb:
   enabled: false
+local_hostname: 127.0.0.1
 mattermost:
   enabled: false
   image: mattermost/mattermost-preview
