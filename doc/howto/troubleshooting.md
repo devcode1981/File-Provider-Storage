@@ -130,7 +130,7 @@ gem install charlock_holmes -v '0.7.5' -- --with-cppflags=-DU_USING_ICU_NAMESPAC
 
 0.7.6 fixes this issue. See [this issue](https://github.com/brianmario/charlock_holmes/issues/126) for more details.
 
-## Unable to build and install pg gem on gdk install
+## Unable to build and install pg gem on GDK install
 
 After installing PostgreSQL with brew you will have to set the proper path to PostgreSQL.
 You may run into the following errors on running `gdk install`
@@ -729,7 +729,7 @@ a `gdk reconfigure`:
 For more information about Jaeger, visit the [distributed tracing GitLab developer
 documentation](https://docs.gitlab.com/ee/development/distributed_tracing.html).
 
-## Gitaly config.toml: no such file or directory
+## Gitaly `config.toml: no such file or directory`
 
 If you see errors such as:
 
@@ -738,7 +738,7 @@ If you see errors such as:
 ```
 
 Somehow, `gitaly/gitaly.config.toml` is missing. You can re-create this file by running
-the following in your gdk directory:
+the following in your GDK directory:
 
 ```sh
 make gitaly-setup
