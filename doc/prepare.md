@@ -1,7 +1,7 @@
 # Preparing your computing environment for GDK
 
 Before [setting up GDK](set-up-gdk.md), your local environment must have
-prerequsite software installed and configured.
+prerequisite software installed and configured.
 
 ## Prerequisites for all platforms
 
