@@ -28,6 +28,7 @@ default:
 include:
   - local: .gitlab/ci/_rules.gitlab-ci.yml
   - local: .gitlab/ci/_docker.gitlab-ci.yml
+  - local: .gitlab/ci/pre.gitlab-ci.yml
   - local: .gitlab/ci/build.gitlab-ci.yml
   - local: .gitlab/ci/test.gitlab-ci.yml
   - local: .gitlab/ci/verify.gitlab-ci.yml
