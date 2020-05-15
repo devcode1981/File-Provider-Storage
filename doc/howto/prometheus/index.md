@@ -23,11 +23,11 @@ network access to your local GDK instance.
 
 ### Instructions for Minikube
 
-The following steps will help you set up Mnikube locally.
+The following steps will help you set up Minikube locally.
 
-#### Install kubectl if you do not have it
+#### Install `kubectl` if you do not have it
 
-Kubectl is required for Minikube to function. You can also use `homebrew` to install it using `brew install kubernetes-cli`.
+`kubectl` is required for Minikube to function. You can also use `homebrew` to install it using `brew install kubernetes-cli`.
 
 1. First, download it:
 
@@ -189,7 +189,7 @@ Back in the GDK on the cluster screen, you should now be able to deploy Helm Til
 
 If you get an error about an API token not yet being created, wait a minute or two and try again.
 
-If installing Helm Tiller fails with 'Kubernetes error', you may have an existing config. To remove it:
+If installing Helm Tiller fails with 'Kubernetes error', you may have an existing configuration. To remove it:
 
 ```shell
 kubectl delete configmap values-content-configuration-helm -n gitlab-managed-apps
