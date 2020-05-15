@@ -87,6 +87,16 @@ describe GDK::Config do
         expect(config.dump!).to be_a_kind_of(Hash)
       end.not_to raise_error
     end
+
+    it 'does not dump options intended for internal use only' do
+      expect(config).to respond_to(:__uri)
+      expect(config.dump!).not_to include('__uri')
+    end
+
+    it 'does not dump options based on question mark convenience methods' do
+      expect(config.gdk).to respond_to(:debug?)
+      expect(config.gdk.dump!).not_to include('debug?')
+    end
   end
 
   describe '#username' do
