@@ -109,7 +109,7 @@ minikube dashboard
 
 ### Configure GDK to listen to more than localhost
 
-Follow [the instructions](local_network.md) to make your GDK
+Follow [the instructions](../local_network.md) to make your GDK
 accessible to other devices in the local network.
 
 ### Edit GitLab's `gitlab.yml`
