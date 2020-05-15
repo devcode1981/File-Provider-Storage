@@ -82,7 +82,7 @@ module GDK
         cp -f '#{backup_file}' '#{target}'
 
         If you want to protect this file from being overwritten, see:
-        https://gitlab.com/gitlab-org/gitlab-development-kit/blob/master/doc/howto/configuration.md#overwriting-config-files
+        https://gitlab.com/gitlab-org/gitlab-development-kit/blob/master/doc/howto/configuration.md#overwriting-configuration-files
         -------------------------------------------------------------------------------------------------------------
       OVERWRITTEN
     end
