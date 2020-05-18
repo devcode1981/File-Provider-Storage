@@ -6,8 +6,8 @@ require 'gitlab_development_kit'
 Gem::Specification.new do |spec|
   spec.name          = 'gitlab-development-kit'
   spec.version       = GDK::GEM_VERSION
-  spec.authors       = ['Jacob Vosmaer']
-  spec.email         = ['jacob@gitlab.com']
+  spec.authors       = ['Jacob Vosmaer', 'GitLab']
+  spec.email         = ['gitlab_rubygems@gitlab.com']
 
   spec.summary       = 'CLI for GitLab Development Kit'
   spec.description   = 'CLI for GitLab Development Kit.'
