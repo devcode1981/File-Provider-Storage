@@ -60,8 +60,6 @@ module GDK
         return false
       end
 
-      warn "(in #{$gdk_root})"
-
       unless trusted?($gdk_root)
         warn <<~NOT_A_TRUSTED_GDK_DIR
 
