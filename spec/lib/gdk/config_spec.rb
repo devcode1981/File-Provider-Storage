@@ -15,6 +15,7 @@ describe GDK::Config do
       'hostname' => 'gdk.example.com'
     }
   end
+  let(:default_config) { described_class.new }
 
   subject(:config) { described_class.new(yaml: yaml) }
 
@@ -169,6 +170,55 @@ describe GDK::Config do
 
     it 'returns the short login name of the current process uid' do
       expect(config.username).to eq('iamfoo')
+    end
+  end
+
+  describe '#postgresql' do
+    let(:yaml) do
+      {
+        'postgresql' => {
+          'address' => 'localhost',
+          'port' => 1234,
+          'geo' => {
+            'address' => 'geo',
+            'port' => 5678
+          }
+        }
+      }
+    end
+
+    describe '#address' do
+      it { expect(default_config.postgresql.address).to eq(default_config.postgresql.dir.to_s) }
+
+      it 'returns configured value' do
+        expect(config.postgresql.address).to eq('localhost')
+      end
+    end
+
+    describe '#port' do
+      it { expect(default_config.postgresql.port).to eq(5432) }
+
+      it 'returns configured value' do
+        expect(config.postgresql.port).to eq(1234)
+      end
+    end
+
+    describe '#geo' do
+      describe '#address' do
+        it { expect(default_config.postgresql.address).to eq(default_config.postgresql.dir.to_s) }
+
+        it 'returns configured value' do
+          expect(config.postgresql.geo.address).to eq('geo')
+        end
+      end
+
+      describe '#port' do
+        it { expect(default_config.postgresql.geo.port).to eq(5431) }
+
+        it 'returns configured value' do
+          expect(config.postgresql.geo.port).to eq(5678)
+        end
+      end
     end
   end
 
