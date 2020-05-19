@@ -16,7 +16,7 @@ gitaly_clone_dir = gitaly
 gitlab_pages_clone_dir = gitlab-pages/src/gitlab.com/gitlab-org/gitlab-pages
 gitlab_from_container = $(shell [ "$(shell uname)" = "Linux" ] && echo 'localhost' || echo 'docker.for.mac.localhost')
 postgres_dev_db = gitlabhq_development
-rails_bundle_install_cmd = bundle install --jobs 4 --without production
+bundle_install_cmd = bundle install --jobs 4 --without production
 workhorse_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_WORKHORSE_VERSION")
 gitlab_shell_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_SHELL_VERSION")
 gitaly_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITALY_SERVER_VERSION")
@@ -201,7 +201,7 @@ gitlab/public/uploads:
 	@echo "------------------------------------------------------------"
 	@echo "Installing gitlab-org/gitlab Ruby gems"
 	@echo "------------------------------------------------------------"
-	$(Q)cd ${gitlab_development_root}/gitlab && $(rails_bundle_install_cmd)
+	$(Q)cd ${gitlab_development_root}/gitlab && $(bundle_install_cmd)
 	$(Q)touch $@
 
 .gitlab-yarn:
@@ -249,7 +249,7 @@ gitlab-shell/config.yml: ${gitlab_shell_clone_dir}/.git
 	$(Q)rake $@
 
 .gitlab-shell-bundle:
-	$(Q)cd ${gitlab_development_root}/gitlab-shell && $(rails_bundle_install_cmd)
+	$(Q)cd ${gitlab_development_root}/gitlab-shell && $(bundle_install_cmd)
 	$(Q)touch $@
 
 gitlab-shell/.gitlab_shell_secret:
@@ -322,7 +322,7 @@ gitlab-docs/nanoc.yaml: gitlab-docs/rm-nanoc.yaml
 	$(Q)cp nanoc.yaml.example $@
 
 gitlab-docs-bundle:
-	$(Q)cd ${gitlab_development_root}/gitlab-docs && bundle install --jobs 4
+	$(Q)cd ${gitlab_development_root}/gitlab-docs && $(bundle_install_cmd)
 
 symlink-gitlab-docs:
 	$(Q)support/symlink ${gitlab_development_root}/gitlab-docs/content/ee ${gitlab_development_root}/gitlab/doc
@@ -355,7 +355,7 @@ gitlab/config/database_geo.yml: database_geo.yml.example
 .PHONY: geo-primary-migrate
 geo-primary-migrate: ensure-databases-running
 	$(Q)cd ${gitlab_development_root}/gitlab && \
-		bundle install && \
+		$(bundle_install_cmd) && \
 		bundle exec rake db:migrate db:test:prepare geo:db:migrate geo:db:test:prepare && \
 		git checkout -- $$(git ls-tree HEAD --name-only db/structure.sql db/schema.rb) ee/db/geo/schema.rb
 	$(Q)$(MAKE) postgresql/geo-fdw/test/rebuild ${QQ}
@@ -367,7 +367,7 @@ geo-primary-update: update geo-primary-migrate
 .PHONY: geo-secondary-migrate
 geo-secondary-migrate: ensure-databases-running
 	$(Q)cd ${gitlab_development_root}/gitlab && \
-		${rails_bundle_install_cmd} && \
+		${bundle_install_cmd} && \
 		bundle exec rake geo:db:migrate && \
 		git checkout -- ee/db/geo/schema.rb
 	$(Q)$(MAKE) postgresql/geo-fdw/development/rebuild ${QQ}
