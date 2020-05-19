@@ -52,40 +52,7 @@ module GDK
     when 'install'
       exec(MAKE, *ARGV, chdir: GDK.root)
     when 'update'
-      # Otherwise we would miss it and end up in a weird state.
-      puts_separator
-      puts 'Running `make self-update`..'
-      puts_separator
-      puts "Running separately in case the Makefile is updated.\n"
-      system(MAKE, 'self-update', chdir: GDK.root)
-
-      puts
-      puts_separator
-      puts 'Running `make self-update update`..'
-      success = system(MAKE, 'self-update', 'update', chdir: GDK.root)
-      puts_separator
-
-      puts
-      if success
-        GDK::Output.success("Successfully updated!")
-
-        true
-      else
-        GDK::Output.error("Failed to update.")
-
-        puts
-        puts_separator
-        puts <<~UPDATE_FAILED_HELP
-          You can try the following that may be of assistance:
-
-          - Run 'gdk doctor'
-          - Visit https://gitlab.com/gitlab-org/gitlab-development-kit/-/issues
-            to see if there are known issues
-        UPDATE_FAILED_HELP
-        puts_separator
-
-        false
-      end
+      update
     when 'diff-config'
       GDK::Command::DiffConfig.new.run
 
@@ -192,5 +159,20 @@ module GDK
     sh = Shellout.new(MAKE, targets, chdir: GDK.root)
     sh.stream
     sh.success?
+  end
+
+  # Updates GDK
+  #
+  def self.update
+    make('self-update')
+
+    result = make('self-update', 'update')
+
+    unless result
+      GDK::Output.error('Failed to update.')
+      display_help_message
+    end
+
+    result
   end
 end
