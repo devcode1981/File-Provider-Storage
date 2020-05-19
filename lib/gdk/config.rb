@@ -35,6 +35,7 @@ module GDK
       settings :experimental do
         bool(:ruby_services) { false }
         bool(:quiet) { false }
+        bool(:auto_reconfigure) { false }
       end
       bool(:overwrite_changes) { false }
       array(:protected_config_files) { [] }

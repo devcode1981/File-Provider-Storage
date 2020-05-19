@@ -52,7 +52,14 @@ module GDK
     when 'install'
       exec(MAKE, *ARGV, chdir: GDK.root)
     when 'update'
-      update
+      update_result = update
+      return false unless update_result
+
+      if config.gdk.experimental.auto_reconfigure?
+        reconfigure
+      else
+        update_result
+      end
     when 'diff-config'
       GDK::Command::DiffConfig.new.run
 
