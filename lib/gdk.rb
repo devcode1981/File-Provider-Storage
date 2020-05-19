@@ -155,8 +155,22 @@ module GDK
     @config ||= GDK::Config.new
   end
 
-  def self.puts_separator
+  def self.puts_separator(msg = nil)
     puts '-------------------------------------------------------'
+    return unless msg
+
+    puts msg
+    puts_separator
+  end
+
+  def self.display_help_message
+    puts_separator <<~HELP_MESSAGE
+      You can try the following that may be of assistance:
+
+      - Run 'gdk doctor'
+      - Visit https://gitlab.com/gitlab-org/gitlab-development-kit/-/issues
+        to see if there are known issues
+    HELP_MESSAGE
   end
 
   def self.install_root_ok?
