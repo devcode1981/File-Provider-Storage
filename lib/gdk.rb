@@ -68,8 +68,7 @@ module GDK
         abort "Cannot get config for #{ARGV.join('.')}"
       end
     when 'reconfigure'
-      remember!(GDK.root)
-      exec(MAKE, 'touch-examples', 'unlock-dependency-installers', 'postgresql-sensible-defaults', 'all', chdir: GDK.root)
+      reconfigure
     when 'psql'
       pg_port = config.postgresql.port
       args = ARGV.empty? ? ['-d', 'gitlabhq_development'] : ARGV
@@ -170,6 +169,21 @@ module GDK
 
     unless result
       GDK::Output.error('Failed to update.')
+      display_help_message
+    end
+
+    result
+  end
+
+  # Reconfigures GDK
+  #
+  def self.reconfigure
+    remember!(GDK.root)
+
+    result = make('touch-examples', 'unlock-dependency-installers', 'postgresql-sensible-defaults', 'all')
+
+    unless result
+      GDK::Output.error('Failed to reconfigure.')
       display_help_message
     end
 
