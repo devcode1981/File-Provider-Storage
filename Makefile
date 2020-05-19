@@ -474,13 +474,6 @@ performance-metrics-setup: Procfile influxdb-setup grafana-setup
 ##############################################################
 
 support-setup: Procfile redis gitaly-setup jaeger-setup postgresql openssh-setup nginx-setup registry-setup elasticsearch-setup runner-setup
-	@echo
-	@echo "------------------------------------------------------------"
-	@echo "Setup finished!"
-	@echo "------------------------------------------------------------"
-	@echo
-	$(Q)gdk help
-
 ifeq ($(auto_devops_enabled),true)
 	@echo
 	@echo "------------------------------------------------------------"
