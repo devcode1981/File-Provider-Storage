@@ -1,5 +1,7 @@
 # GitLab Development Kit
 
+[![build status](https://gitlab.com/gitlab-org/gitlab-development-kit/badges/master/pipeline.svg)](https://gitlab.com/gitlab-org/gitlab-development-kit/pipelines)
+
 Configure and manage a [GitLab](https://about.gitlab.com) development
 environment.
 
@@ -76,4 +78,4 @@ Note that for some changes to some configuration and routes, run
 ## License
 
 The GitLab Development Kit is distributed under the MIT license,
-see the [LICENSE](./LICENSE) file.
+see the [LICENSE](LICENSE) file.

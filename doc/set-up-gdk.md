@@ -1,4 +1,4 @@
-# Set up GDK
+# Set up and update GDK
 
 > 🚨**Note:** Before undertaking these steps, be sure you have [prepared your system](./prepare.md).🚨
 
@@ -123,6 +123,16 @@ to keep up-to-date with the project.
 If you want to push changes from upstream to your fork, run `gdk update` and then
 `git push origin` from the `gitlab` directory.
 
+## Map `gdk.test` host name to localhost
+
+Set up a GDK-specific host name for convenience. For example, add the following to `/etc/hosts`:
+
+```plaintext
+127.0.0.1 gdk.test
+```
+
+The host name `gdk.test` is now available for documentation steps and GDK tools.
+
 ## Common errors during installation and troubleshooting
 
 During `gdk install` process, you may encounter some dependencies related errors. Please refer to the [Troubleshooting page](./howto/troubleshooting.md) or [open an issue on GDK tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues) if you get stuck.
@@ -191,4 +201,14 @@ webpack:
   port: 3809
 gitlab_pages:
   port: 3011
+```
+
+## Update GDK
+
+To update an existing GDK installation, run the following commands:
+
+```shell
+cd <gdk-dir>
+gdk update
+gdk reconfigure
 ```
