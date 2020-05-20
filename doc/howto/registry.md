@@ -401,6 +401,7 @@ build:
   variables:
     DOCKER_TLS_CERTDIR: ""
   script:
+    # login only required if `auth_enabled: true`
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
     - docker pull $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA || true
     - docker build -t $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA .
@@ -419,7 +420,6 @@ To verify that the build stage has successfully pushed an image to your local Gi
 It's possible to use a `build` step to create a custom docker image and then execute a [container scan](https://gitlab.com/gitlab-org/security-products/analyzers/klar) against this newly built docker image. This can be achieved by using the following `.gitlab-ci.yml`:
 
 ```yaml
-# in .gitlab-ci.yml
 include:
   template: Container-Scanning.gitlab-ci.yml
 
@@ -438,18 +438,49 @@ build:
   variables:
     DOCKER_TLS_CERTDIR: ""
   script:
+    # login only required if `auth_enabled: true`
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
     - docker pull $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA || true
     - docker build -t $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA .
     - docker push $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA
 
 container_scanning:
-  stage: test
   variables:
-    REGISTRY_INSECURE: "true"
+    REGISTRY_INSECURE: "true" # see note below for discussion
 ```
 
-**Note:** It's necessary to set `REGISTRY_INSECURE: "true"` in the `container_scanning` job because the [container scanning tool](https://gitlab.com/gitlab-org/security-products/analyzers/klar/) uses [klar](https://github.com/optiopay/klar) under the hood, and `klar` will attempt to fetch the image from our registry using `HTTPS`, meanwhile our registry is running insecurely over `HTTP`. Setting the `REGISTRY_INSECURE` flag of klar, documented in the klar repo [here](https://github.com/optiopay/klar#usage) and also in the GitLab container scanning repo [here](https://gitlab.com/gitlab-org/security-products/analyzers/klar/#environment-variables) will force the `klar` tool to use `HTTP` when fetching the container image from our insecure registry.
+**Note:** The contents of the above `.gitlab-ci.yml` file will differ depending on how the container registry has been configured:
+
+1. When the local container registry is insecure because `registry.self_signed: false` has been [configured](#configuring-a-local-only-registry), the above `.gitlab-ci.yml` file can be used.
+
+   It's necessary to set `REGISTRY_INSECURE: "true"` in the `container_scanning` job because the [container scanning tool](https://gitlab.com/gitlab-org/security-products/analyzers/klar/) uses [klar](https://github.com/optiopay/klar) under the hood, and `klar` will attempt to fetch the image from our registry using `HTTPS`, meanwhile our registry is running insecurely over `HTTP`. Setting the `REGISTRY_INSECURE` flag of klar, documented in the klar repo [here](https://github.com/optiopay/klar#usage) and also in the GitLab container scanning repo [here](https://gitlab.com/gitlab-org/security-products/analyzers/klar/#environment-variables) will force the `klar` tool to
+use `HTTP` when fetching the container image from our insecure registry.
+
+1. When the registry is secure because `registry.self_signed: true` has been [configured](#configuring-a-local-only-registry), but we haven't referenced the self-signed certificate, then the following `services` and `container_scanning` sections of the above `.gitlab-ci.yml` must be used (the rest of the file has been omitted for brevity):
+
+   ```yaml
+   services:
+     - docker:stable-dind
+
+   container_scanning:
+     variables:
+       DOCKER_INSECURE: "true"
+   ```
+
+   Since the local container registry is now running securely over an `HTTPS` connection, we no longer need to use `REGISTRY_INSECURE: "true"`. However, we need to set the `DOCKER_INSECURE: "true"` option to instruct [klar](https://github.com/optiopay/klar) (and [clair](https://github.com/coreos/clair)) to accept a self-signed certificate.
+
+1. When the registry is secure because `registry.self_signed: true` has been [configured](#configuring-a-local-only-registry), **and** we reference the self-signed certificate, then the following `services` and `container_scanning` sections of the above `.gitlab-ci.yml` must be used (the rest of the file has been omitted for brevity):
+
+   ```yaml
+   services:
+     - docker:stable-dind
+
+   container_scanning:
+     variables:
+       ADDITIONAL_CA_CERT_BUNDLE: "-----BEGIN CERTIFICATE----- certificate-goes-here -----END CERTIFICATE-----"
+   ```
+
+   By configuring the `ADDITIONAL_CA_CERT_BUNDLE`, this instructs [klar](https://github.com/optiopay/klar) (and [clair](https://github.com/coreos/clair)) to use the provided certificate when accessing the local container registry. Normally, the `ADDITIONAL_CA_CERT_BUNDLE` would be [configured in the UI](https://docs.gitlab.com/ee/ci/variables/#create-a-custom-variable-in-the-ui), but it's displayed here in the `.gitlab-ci.yml` for demonstration purposes.
 
 ### Switching Between `docker-desktop-on-mac` and `docker-machine`
 
