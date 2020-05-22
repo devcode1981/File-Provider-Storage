@@ -862,7 +862,7 @@ formulae, casks, and stale lockfiles, run:
 brew cleanup
 ```
 
-More info on [Brew's FAQ](https://docs.brew.sh/FAQ#how-do-i-uninstall-old-versions-of-a-formula),
+For more information on uninstalling old versions of a formula, see the [Homebrew FAQ](https://docs.brew.sh/FAQ#how-do-i-uninstall-old-versions-of-a-formula).
 For additional troubleshooting information, see the Homebrew [Common Issues](https://docs.brew.sh/Common-Issues) page.
 
 ## Other problems
