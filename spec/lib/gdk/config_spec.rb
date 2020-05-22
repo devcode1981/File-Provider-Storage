@@ -177,21 +177,21 @@ describe GDK::Config do
     let(:yaml) do
       {
         'postgresql' => {
-          'address' => 'localhost',
+          'host' => 'localhost',
           'port' => 1234,
           'geo' => {
-            'address' => 'geo',
+            'host' => 'geo',
             'port' => 5678
           }
         }
       }
     end
 
-    describe '#address' do
-      it { expect(default_config.postgresql.address).to eq(default_config.postgresql.dir.to_s) }
+    describe '#host' do
+      it { expect(default_config.postgresql.host).to eq(default_config.postgresql.dir.to_s) }
 
       it 'returns configured value' do
-        expect(config.postgresql.address).to eq('localhost')
+        expect(config.postgresql.host).to eq('localhost')
       end
     end
 
@@ -204,11 +204,11 @@ describe GDK::Config do
     end
 
     describe '#geo' do
-      describe '#address' do
-        it { expect(default_config.postgresql.address).to eq(default_config.postgresql.dir.to_s) }
+      describe '#host' do
+        it { expect(default_config.postgresql.host).to eq(default_config.postgresql.dir.to_s) }
 
         it 'returns configured value' do
-          expect(config.postgresql.geo.address).to eq('geo')
+          expect(config.postgresql.geo.host).to eq('geo')
         end
       end
 

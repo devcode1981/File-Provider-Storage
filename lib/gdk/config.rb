@@ -247,7 +247,7 @@ module GDK
       string(:replication_user) { 'gitlab_replication' }
       path(:dir) { config.gdk_root.join('postgresql') }
       path(:data_dir) { config.postgresql.dir.join('data') }
-      string(:address) { config.postgresql.dir.to_s }
+      string(:host) { config.postgresql.dir.to_s }
       path(:replica_dir) { config.gdk_root.join('postgresql-replica') }
       settings :replica do
         bool(:enabled) { false }
@@ -255,7 +255,7 @@ module GDK
       settings :geo do
         integer(:port) { 5431 }
         path(:dir) { config.gdk_root.join('postgresql-geo') }
-        string(:address) { config.postgresql.geo.dir.to_s }
+        string(:host) { config.postgresql.geo.dir.to_s }
       end
     end
 

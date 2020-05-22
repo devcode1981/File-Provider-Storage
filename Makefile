@@ -560,27 +560,27 @@ postgresql-replication/access:
 	$(Q)cat support/pg_hba.conf.add >> ${postgresql_data_dir}/pg_hba.conf
 
 postgresql-replication/role:
-	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_address} -p ${postgresql_port} -d postgres -c "CREATE ROLE ${postgresql_replication_user} WITH REPLICATION LOGIN;"
+	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_host} -p ${postgresql_port} -d postgres -c "CREATE ROLE ${postgresql_replication_user} WITH REPLICATION LOGIN;"
 
 postgresql-replication/backup:
 	$(Q)$(eval postgresql_primary_dir := $(realpath postgresql-primary))
-	$(Q)$(eval postgresql_primary_address := $(shell cd ${postgresql_primary_dir}/../ && gdk config get postgresql.address 2>/dev/null))
+	$(Q)$(eval postgresql_primary_host := $(shell cd ${postgresql_primary_dir}/../ && gdk config get postgresql.host 2>/dev/null))
 	$(Q)$(eval postgresql_primary_port := $(shell cd ${postgresql_primary_dir}/../ && gdk config get postgresql.port 2>/dev/null))
 
-	$(Q)psql -h ${postgresql_primary_address} -p ${postgresql_primary_port} -d postgres -c "select pg_start_backup('base backup for streaming rep')"
+	$(Q)psql -h ${postgresql_primary_host} -p ${postgresql_primary_port} -d postgres -c "select pg_start_backup('base backup for streaming rep')"
 	$(Q)rsync -cva --inplace --exclude="*pg_xlog*" --exclude="*.pid" ${postgresql_primary_dir}/data postgresql
-	$(Q)psql -h ${postgresql_primary_address} -p ${postgresql_primary_port} -d postgres -c "select pg_stop_backup(), current_timestamp"
-	$(Q)./support/recovery.conf ${postgresql_primary_address} ${postgresql_primary_port} > ${postgresql_data_dir}/recovery.conf
+	$(Q)psql -h ${postgresql_primary_host} -p ${postgresql_primary_port} -d postgres -c "select pg_stop_backup(), current_timestamp"
+	$(Q)./support/recovery.conf ${postgresql_primary_host} ${postgresql_primary_port} > ${postgresql_data_dir}/recovery.conf
 	$(Q)$(MAKE) postgresql/port ${QQ}
 
 postgresql-replication/slot:
-	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_address} -p ${postgresql_port} -d postgres -c "SELECT * FROM pg_create_physical_replication_slot('gitlab_gdk_replication_slot');"
+	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_host} -p ${postgresql_port} -d postgres -c "SELECT * FROM pg_create_physical_replication_slot('gitlab_gdk_replication_slot');"
 
 postgresql-replication/list-slots:
-	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_address} -p ${postgresql_port} -d postgres -c "SELECT * FROM pg_replication_slots;"
+	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_host} -p ${postgresql_port} -d postgres -c "SELECT * FROM pg_replication_slots;"
 
 postgresql-replication/drop-slot:
-	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_address} -p ${postgresql_port} -d postgres -c "SELECT * FROM pg_drop_replication_slot('gitlab_gdk_replication_slot');"
+	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_host} -p ${postgresql_port} -d postgres -c "SELECT * FROM pg_drop_replication_slot('gitlab_gdk_replication_slot');"
 
 postgresql-replication/config:
 	$(Q)./support/postgres-replication ${postgresql_dir}
@@ -620,16 +620,16 @@ postgresql/geo-fdw/%: fdw_port = $(call from_db_config,database,$*,port)
 postgresql/geo-fdw/test/%: rake_namespace = test:
 
 postgresql/geo-fdw/%/create:
-	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_geo_address} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE EXTENSION IF NOT EXISTS postgres_fdw;"
-	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_geo_address} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE SERVER gitlab_secondary FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$(fdw_host)', dbname '${fdw_dbname}', port '$(fdw_port)' );"
-	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_geo_address} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE USER MAPPING FOR current_user SERVER gitlab_secondary OPTIONS (user '$(USER)');"
-	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_geo_address} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE SCHEMA IF NOT EXISTS gitlab_secondary;"
-	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_geo_address} -p ${postgresql_geo_port} -d ${dbname} -c "GRANT USAGE ON FOREIGN SERVER gitlab_secondary TO current_user;"
+	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_geo_host} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE EXTENSION IF NOT EXISTS postgres_fdw;"
+	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_geo_host} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE SERVER gitlab_secondary FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$(fdw_host)', dbname '${fdw_dbname}', port '$(fdw_port)' );"
+	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_geo_host} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE USER MAPPING FOR current_user SERVER gitlab_secondary OPTIONS (user '$(USER)');"
+	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_geo_host} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE SCHEMA IF NOT EXISTS gitlab_secondary;"
+	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_geo_host} -p ${postgresql_geo_port} -d ${dbname} -c "GRANT USAGE ON FOREIGN SERVER gitlab_secondary TO current_user;"
 	$(Q)cd ${gitlab_development_root}/gitlab && bundle exec rake geo:db:${rake_namespace}refresh_foreign_tables
 
 postgresql/geo-fdw/%/drop:
-	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_geo_address} -p ${postgresql_geo_port} -d ${dbname} -c "DROP SERVER gitlab_secondary CASCADE;"
-	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_geo_address} -p ${postgresql_geo_port} -d ${dbname} -c "DROP SCHEMA gitlab_secondary;"
+	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_geo_host} -p ${postgresql_geo_port} -d ${dbname} -c "DROP SERVER gitlab_secondary CASCADE;"
+	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_geo_host} -p ${postgresql_geo_port} -d ${dbname} -c "DROP SCHEMA gitlab_secondary;"
 
 postgresql/geo-fdw/%/rebuild:
 	$(Q)$(MAKE) postgresql/geo-fdw/$*/drop || true ${QQ}
