@@ -863,8 +863,7 @@ brew cleanup
 ```
 
 More info on [Brew's FAQ](https://docs.brew.sh/FAQ#how-do-i-uninstall-old-versions-of-a-formula),
-or check out their [Common Issues](https://docs.brew.sh/Common-Issues) page for
-additional troubleshooting information.
+For additional troubleshooting information, see the Homebrew [Common Issues](https://docs.brew.sh/Common-Issues) page.
 
 ## Other problems
 
