@@ -846,7 +846,7 @@ To fix this, install yarn using npm instead:
 npm install --global yarn
 ```
 
-## `brew` troubleshooting
+## Homebrew troubleshooting
 
 Most `brew` problems can be sniffed out by running
 
