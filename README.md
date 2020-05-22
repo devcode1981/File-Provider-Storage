@@ -17,6 +17,11 @@ multiple repositories and it requires Ruby, Go, PostgreSQL, Redis
 and more to run. GDK helps you install and configure all these
 different components, and start/stop them when you work on GitLab.
 
+* What is GDK?
+* Who should use the GDK?
+* Benefits of GDK
+* Where to find more information
+
 ## Contributing to GitLab Development Kit
 
 Contributions are welcome, see [`CONTRIBUTING.md`](CONTRIBUTING.md)
