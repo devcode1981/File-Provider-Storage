@@ -109,7 +109,6 @@ touch-examples:
 	gitlab/config/puma_actioncable.example.development.rb \
 	gitlab/config/unicorn.rb.example.development \
 	grafana/grafana.ini.example \
-	influxdb/influxdb.conf.example \
 	support/templates/*.erb
 
 unlock-dependency-installers:
@@ -485,7 +484,7 @@ gitlab-pages/.git/pull:
 # gitlab performance metrics
 ##############################################################
 
-performance-metrics-setup: Procfile influxdb-setup grafana-setup
+performance-metrics-setup: Procfile grafana-setup
 
 ##############################################################
 # gitlab support setup
@@ -620,19 +619,8 @@ postgresql/geo-fdw/%/rebuild:
 # influxdb
 ##############################################################
 
-influxdb-setup: influxdb/influxdb.conf influxdb/bin/influxd influxdb/meta/meta.db
-
-influxdb/bin/influxd:
-	$(Q)cd influxdb && ${MAKE} ${QQ}
-
-influxdb/meta/meta.db: Procfile
-	$(Q)grep '^influxdb:' Procfile || (printf ',s/^#influxdb/influxdb/\nwq\n' | ed -s Procfile)
-	$(Q)support/bootstrap-influxdb 8086
-
-influxdb/influxdb.conf: influxdb/influxdb.conf.example
-	$(Q)bin/safe-sed "$@" \
-		-e "s|/home/git|${gitlab_development_root}|g" \
-		"$<"
+influxdb-setup:
+	$(Q)echo "INFO: InfluxDB was removed from the GDK by https://gitlab.com/gitlab-org/gitlab-development-kit/-/issues/927"
 
 ##############################################################
 # elasticsearch
@@ -686,7 +674,6 @@ grafana/gdk-pg-created:
 
 grafana/gdk-data-source-created:
 	$(Q)grep '^grafana:' Procfile || (printf ',s/^#grafana/grafana/\nwq\n' | ed -s Procfile)
-	$(Q)support/bootstrap-grafana
 	$(Q)touch $@
 
 ##############################################################
