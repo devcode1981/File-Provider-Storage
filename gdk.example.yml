@@ -50,6 +50,7 @@ https:
   enabled: false
 influxdb:
   enabled: false
+local_hostname: 127.0.0.1
 mattermost:
   enabled: false
   image: mattermost/mattermost-preview
@@ -68,6 +69,7 @@ nginx:
     key: localhost.key
 object_store:
   enabled: false
+  host: 127.0.0.1
   port: 9000
 omniauth:
   google_oauth2:
@@ -118,7 +120,7 @@ registry:
   api_host: 127.0.0.1
   tunnel_host: 127.0.0.1
   tunnel_port: 5000
-  image: registry.gitlab.com/gitlab-org/build/cng/gitlab-container-registry:v2.9.0-gitlab
+  image: registry.gitlab.com/gitlab-org/build/cng/gitlab-container-registry:v2.9.1-gitlab
   port: 5000
   self_signed: false
   auth_enabled: true

@@ -23,11 +23,11 @@ network access to your local GDK instance.
 
 ### Instructions for Minikube
 
-The following steps will help you set up Mnikube locally.
+The following steps will help you set up Minikube locally.
 
-#### Install kubectl if you do not have it
+#### Install `kubectl` if you do not have it
 
-Kubectl is required for Minikube to function. You can also use `homebrew` to install it using `brew install kubernetes-cli`.
+`kubectl` is required for Minikube to function. You can also use `homebrew` to install it using `brew install kubernetes-cli`.
 
 1. First, download it:
 
@@ -109,7 +109,7 @@ minikube dashboard
 
 ### Configure GDK to listen to more than localhost
 
-Follow [the instructions](local_network.md) to make your GDK
+Follow [the instructions](../local_network.md) to make your GDK
 accessible to other devices in the local network.
 
 ### Edit GitLab's `gitlab.yml`
@@ -144,7 +144,7 @@ CI/CD pipeline with no requirements, based on AutoDevOps. It contains just the `
 
 ### Allow requests to the local network
 
-We have CSRF protection in place on the cluster url, so if we try to connect Minikube now, we'll get
+We have CSRF protection in place on the cluster URL, so if we try to connect Minikube now, we'll get
 a `Requests to the local network are not allowed` error. The below steps will disable this protection
 for use with Minikube.
 
@@ -189,7 +189,7 @@ Back in the GDK on the cluster screen, you should now be able to deploy Helm Til
 
 If you get an error about an API token not yet being created, wait a minute or two and try again.
 
-If installing Helm Tiller fails with 'Kubernetes error', you may have an existing config. To remove it:
+If installing Helm Tiller fails with 'Kubernetes error', you may have an existing configuration. To remove it:
 
 ```shell
 kubectl delete configmap values-content-configuration-helm -n gitlab-managed-apps

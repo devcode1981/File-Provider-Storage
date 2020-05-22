@@ -51,7 +51,7 @@ describe GDK::Config do
     describe 'image' do
       context 'when no image is specified' do
         it 'returns the default image' do
-          expect(config.registry.image).to eq('registry.gitlab.com/gitlab-org/build/cng/gitlab-container-registry:v2.9.0-gitlab')
+          expect(config.registry.image).to eq('registry.gitlab.com/gitlab-org/build/cng/gitlab-container-registry:v2.9.1-gitlab')
         end
       end
     end
@@ -86,6 +86,16 @@ describe GDK::Config do
       expect do
         expect(config.dump!).to be_a_kind_of(Hash)
       end.not_to raise_error
+    end
+
+    it 'does not dump options intended for internal use only' do
+      expect(config).to respond_to(:__uri)
+      expect(config.dump!).not_to include('__uri')
+    end
+
+    it 'does not dump options based on question mark convenience methods' do
+      expect(config.gdk).to respond_to(:debug?)
+      expect(config.gdk.dump!).not_to include('debug?')
     end
   end
 
@@ -214,6 +224,14 @@ describe GDK::Config do
     end
   end
 
+  describe 'local_hostname' do
+    describe '#local_hostname' do
+      it 'returns 127.0.0.1 by default' do
+        expect(config.local_hostname).to eq('127.0.0.1')
+      end
+    end
+  end
+
   describe 'gitlab' do
     describe '#dir' do
       it 'returns the GitLab directory' do
@@ -258,6 +276,14 @@ describe GDK::Config do
     describe '#tunnel_port' do
       it 'returns 5000' do
         expect(config.registry.tunnel_port).to eq(5000)
+      end
+    end
+  end
+
+  describe 'object_store' do
+    describe '#host' do
+      it 'returns the default hostname' do
+        expect(config.object_store.host).to eq('127.0.0.1')
       end
     end
   end

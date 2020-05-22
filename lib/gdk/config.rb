@@ -33,6 +33,7 @@ module GDK
       bool(:debug) { false }
       settings :experimental do
         bool(:ruby_services) { false }
+        bool(:quiet) { false }
       end
       bool(:overwrite_changes) { false }
       array(:protected_config_files) { [] }
@@ -40,10 +41,12 @@ module GDK
 
     path(:repositories_root) { config.gdk_root.join('repositories') }
 
+    string(:local_hostname) { '127.0.0.1' }
+
     string :hostname do
       next "#{config.auto_devops.gitlab.port}.qa-tunnel.gitlab.info" if config.auto_devops.enabled
 
-      read!('hostname') || read!('host') || '127.0.0.1'
+      read!('hostname') || read!('host') || config.local_hostname
     end
 
     integer :port do
@@ -153,7 +156,7 @@ module GDK
       string :image do
         read!('registry_image') ||
           'registry.gitlab.com/gitlab-org/build/cng/gitlab-container-registry:'\
-        'v2.9.0-gitlab'
+        'v2.9.1-gitlab'
       end
 
       integer :external_port do
@@ -168,6 +171,7 @@ module GDK
 
     settings :object_store do
       bool(:enabled) { read!('object_store_enabled') || false }
+      string(:host) { config.local_hostname }
       integer(:port) { read!('object_store_port') || 9000 }
     end
 

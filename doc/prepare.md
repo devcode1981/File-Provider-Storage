@@ -1,7 +1,7 @@
 # Preparing your computing environment for GDK
 
 Before [setting up GDK](set-up-gdk.md), your local environment must have
-prerequsite software installed and configured.
+prerequisite software installed and configured.
 
 ## Prerequisites for all platforms
 
@@ -12,8 +12,7 @@ Make sure you follow all the guidelines and resolve all the dependencies listed 
 | Prerequisite      | Description                                                                                                                                                                                                                                                                                                                                                                 |
 | -------------- | -----------                                                                                                                                                                                                                                                                                                                                                                 |
 | User account   | Use a **non-root** Unix user to install GDK. This can be your normal user, but **DO NOT** run the installation as a root user.                                                                                                                                                                                                                                              |
-| Ruby           | <p>Use a Ruby version manager ([RVM](https://rvm.io/), [rbenv](https://github.com/rbenv/rbenv), [chruby](https://github.com/postmodern/chruby), etc.) to install the current [`gitlab` Ruby version](https://gitlab.com/gitlab-org/gitlab/blob/master/.ruby-version).</p><p>To ensure installation of the correct version, **DO NOT** use the system Ruby.</p>                                                       |
-| Terminal       | <p>Make sure to close and reopen the Terminal after installing a Ruby version manager to read new PATH variables added for Ruby executable files.</p><p>You can check the active version with the following command: `ruby --version`.</p>                                                                                                                                                                           |
+| [Ruby](#ruby) | The current [`gitlab` Ruby version](https://gitlab.com/gitlab-org/gitlab/blob/master/.ruby-version).                                                |
 | Bundler        | <p>Install the version of Bundler specified in this [Gemfile.lock](https://gitlab.com/gitlab-org/gitlab/blob/master/Gemfile.lock), as noted with the `BUNDLED WITH` text at the end of the file.</p><p> To install Bundler, use the following command: `gem install bundler -v <version>`. Replace `<version>` with the `BUNDLED WITH` version.</p>                                            |
 | Git            | <p>We recommend using Git version 2.26 or higher (minimal supported version is 2.22).</p><p>Git installation is covered in the instructions in the [Platform-specific setup](#platform-specific-setup).</p><p>For checking out test fixtures, you will also need Git LFS.</p> |
 | Git LFS        | <p>We recommend using Git LFS version 2.10 or higher (minimal supported version is 1.0.1).</p><p>Git LFS installation is covered in the instructions in the [Platform-specific setup](#platform-specific-setup).</p> |
@@ -25,6 +24,20 @@ Make sure you follow all the guidelines and resolve all the dependencies listed 
 | Exiftool       | Exiftool installation is covered in the instructions [below](#platform-specific-setup).                                                                                                                                                                                                                                                                                                           |
 | runit          | runit installation is covered in the instructions [below](#platform-specific-setup).                                                                                                                                                                                                                                                                                                           |
 | MinIO          | MinIO installation is covered in the instructions [below](#platform-specific-setup).                                                                                                                                                                                                                                                                                                           |
+
+## Ruby
+
+Check your active Ruby version with `ruby --version`. It must match the
+the current [`gitlab` Ruby version](https://gitlab.com/gitlab-org/gitlab/blob/master/.ruby-version).
+**DO NOT** use the Ruby version that comes with your OS. For the sake of ease
+of use, we recommend using a Ruby version manager such as:
+
+1. [rbenv](https://github.com/rbenv/rbenv#installation) - _Generally preferred, most lightweight_
+1. [RVM](https://rvm.io/)
+1. [chruby](https://github.com/postmodern/chruby#install)
+
+**Note:** you may have to close and reopen the terminal after installing a Ruby
+version manager to read new `PATH` variables added for Ruby executable files.
 
 ## Platform-specific setup
 
@@ -325,14 +338,6 @@ sudo apt-get install build-essential
 ./configure
 make -j4 # adjust according to your available CPU capacity
 sudo make install
-```
-
-Install the current `gitlab` Ruby version using [RVM](https://rvm.io/):
-
-```shell
-# This example uses Ruby 2.6.5. Substitute with the current version if different.
-rvm install 2.6.5
-rvm use 2.6.5
 ```
 
 Install yarn

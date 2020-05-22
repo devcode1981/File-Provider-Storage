@@ -180,7 +180,7 @@ production: &base
         aws_access_key_id: minio
         aws_secret_access_key: gdk-minio
         region: gdk
-        endpoint: 'http://<%= config.hostname %>:<%= config.object_store.port %>'
+        endpoint: 'http://<%= config.object_store.host %>:<%= config.object_store.port %>'
         path_style: true
 
   ## Merge request external diff storage
@@ -213,7 +213,7 @@ production: &base
         aws_access_key_id: minio
         aws_secret_access_key: gdk-minio
         region: gdk
-        endpoint: 'http://<%= config.hostname %>:<%= config.object_store.port %>'
+        endpoint: 'http://<%= config.object_store.host %>:<%= config.object_store.port %>'
         path_style: true
 
   ## Uploads (attachments, avatars, etc...)
@@ -230,7 +230,7 @@ production: &base
         aws_access_key_id: minio
         aws_secret_access_key: gdk-minio
         region: gdk
-        endpoint: 'http://<%= config.hostname %>:<%= config.object_store.port %>'
+        endpoint: 'http://<%= config.object_store.host %>:<%= config.object_store.port %>'
         path_style: true
 
   ## Packages (maven repository, npm registry, etc...)
@@ -245,7 +245,7 @@ production: &base
         aws_access_key_id: minio
         aws_secret_access_key: gdk-minio
         region: gdk
-        endpoint: 'http://<%= config.hostname %>:<%= config.object_store.port %>'
+        endpoint: 'http://<%= config.object_store.host %>:<%= config.object_store.port %>'
         path_style: true
 
   ## Terraform state
@@ -259,7 +259,7 @@ production: &base
         aws_access_key_id: minio
         aws_secret_access_key: gdk-minio
         region: gdk
-        endpoint: 'http://<%= config.hostname %>:<%= config.object_store.port %>'
+        endpoint: 'http://<%= config.object_store.host %>:<%= config.object_store.port %>'
         path_style: true
 
   ## GitLab Pages
@@ -722,11 +722,10 @@ production: &base
     # real path not the symlink.
     storages: # You must have at least a `default` storage path.
       default:
+        path: <%= config.repositories_root %>
       <% if config.praefect? %>
-        path: /
         gitaly_address: unix:<%= config.praefect.address %>
       <% else %>
-        path: <%= config.repositories_root %>
         gitaly_address: unix:<%= config.gitaly.address %>
       <% end %>
 

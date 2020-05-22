@@ -18,7 +18,7 @@ There are many configuration options for GDK. GDK can be configured using either
 - [`gdk.yml`](#gdkyml) configuration file.
 - [Loose files](#loose-files-deprecated) (deprecated).
 
-### gdk.yml
+### `gdk.yml`
 
 Placing your settings in `gdk.yml` at the root of GDK is the preferred configuration
 method.
@@ -28,18 +28,18 @@ To see available configuration settings, see [`gdk.example.yml`](../../gdk.examp
 This file contains all possible settings with example values. Note
 that these values may not be the default that GDK will use.
 
-If you want to check which settings are in place, you can run `rake
-dump_config`, which will print all applied settings in a YAML structure.
+If you want to check which settings are in place, you can run `rake dump_config`, which will print
+all applied settings in a YAML structure.
 
-#### Overwriting config files
+#### Overwriting configuration files
 
-Any config file managed by GDK will be overwritten
+Any configuration file managed by GDK will be overwritten
 whenever there are changes in its source (a `.example` or `.erb`
-file). When GDK overwrites a config file it moves the original file
+file). When GDK overwrites a configuration file it moves the original file
 into the `.backups` subdirectory of your GDK installation.
 
 If you have local changes that you don't want GDK to touch you can
-protect individual config files. For example:
+protect individual configuration files. For example:
 
 ```yaml
 # in gdk.yml
@@ -72,7 +72,7 @@ There are also a few settings that configure the behavior of GDK itself:
 | `gdk.ask_to_restart_after_update` | `true`  | Set this to `false` if you do not wish to be prompted to restart your GDK after an update. |
 | `gdk.debug`                       | `false` | Set this to `true` to enable increased output. |
 | `gdk.overwrite_changes`           | `false` | When set to `true` `gdk reconfigure` will overwrite files and move the old version to `.backups`.|
-| `gdk.protected_config_files`           | `[]` | Contains file names / globs of config files GDK should not overwrite|
+| `gdk.protected_config_files`           | `[]` | Contains file names / globs of configuration files GDK should not overwrite. |
 
 ### Loose files (deprecated)
 
@@ -95,7 +95,7 @@ Below is a table of all the settings that can be set this way:
 | `webpack_port`               | number       | `3808`                                                                               |
 | `registry_enabled`           | boolean      | `false`                                                                              |
 | `registry_port`              | number       | `5000`                                                                               |
-| `registry_image`             | string       | `registry.gitlab.com/gitlab-org/build/cng/gitlab-container-registry:v2.9.0-gitlab`   |
+| `registry_image`             | string       | `registry.gitlab.com/gitlab-org/build/cng/gitlab-container-registry:v2.9.1-gitlab`   |
 | `object_store_enabled`       | boolean      | `false`                                                                              |
 | `object_store_port`          | number       | `9000`                                                                               |
 | `postgresql_port`            | number       | `5432`                                                                               |
@@ -118,7 +118,7 @@ configuration method to use:
 
 ### Reading the configuration
 
-To print settings from the config you can use `gdk config get <setting>`.
+To print settings from the configuration you can use `gdk config get <setting>`.
 
 More information on the available `gdk` commands is found in
 [GDK commands](gdk_commands.md#configuration).
@@ -156,7 +156,7 @@ end
 - `fuz`: (block with argument) When the block takes a single argument,
   it expects you'll be setting child settings.
 
-If you'd dump this config with `rake dump_config` you'll get something
+If you'd dump this configuration with `rake dump_config` you'll get something
 like:
 
 ```yaml
@@ -171,7 +171,7 @@ based on another setting. So for example, we'd could replace the `bar`
 block with `{ config.fuz.buz + 1000 }` and then the value would be
 `2234`.
 
-#### GDK::Config
+#### `GDK::Config`
 
 `GDK::Config` is the single source of truth when it comes down to
 defaults. In this file, every existing setting is specified and for
@@ -252,6 +252,6 @@ These settings can be configured using [`env.runit`](../runit.md#modifying-envir
 | NO_COMPRESSION        | false | Disables compression of assets |
 | NO_SOURCEMAPS         | false | Disables generation of sourcemaps (reduces size of `main.chunk.js` by ~50%) |
 | WEBPACK_MEMORY_TEST   | false | Output the in-memory heap size upon compilation and exit |
-| WEBPACK_CACHE_PATH    | ./tmp/cache | Path string to temporary dir     |
+| WEBPACK_CACHE_PATH    | `./tmp/cache` | Path string to temporary dir     |
 | WEBPACK_REPORT        | false       | Generates bundle analysis report |
 | WEBPACK_VENDOR_DLL    | false       | Reduce webpack-dev-server memory requirements when vendor bundle has been precompiled with `yarn webpack-vendor` |

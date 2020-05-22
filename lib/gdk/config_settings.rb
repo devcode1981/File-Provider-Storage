@@ -65,12 +65,15 @@ module GDK
       base_methods = ConfigSettings.new.methods
 
       yaml = (methods - base_methods).sort.each_with_object({}) do |method, hash|
-        # If a config starts with a double underscore,
-        # it's an internal config so don't dump it out
-        next if method.to_s.start_with?('__')
+        method_name = method.to_s
+
+        # We don't dump a config if it:
+        #  - starts with a double underscore (intended for internal use)
+        #  - is a ? method (always has a non-? counterpart)
+        next if method_name.start_with?('__') || method_name.end_with?('?')
 
         value = fetch(method)
-        hash[method.to_s] = if value.is_a?(ConfigSettings)
+        hash[method_name] = if value.is_a?(ConfigSettings)
                               value.dump!
                             elsif value.is_a?(Enumerable) && value.first.is_a?(ConfigSettings)
                               value.map(&:dump!)

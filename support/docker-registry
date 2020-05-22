@@ -16,9 +16,9 @@ if [[ "${registry_enabled}" == "true" ]]; then
       -v "$(pwd)/registry/config.yml:/etc/docker/registry/config.yml" \
       -v "$(pwd)/registry/storage:/var/lib/registry" \
       -v "$(pwd)/localhost.crt:/etc/docker/registry/localhost.crt" \
-      -v "$(pwd)/registry_host.crt:/root/certs/registry_host.crt" \
-      -v "$(pwd)/registry_host.key:/root/certs/registry_host.key" \
-      "${registry_image:-registry.gitlab.com/gitlab-org/build/cng/gitlab-container-registry:v2.9.0-gitlab}"
+      -v "$(pwd)/registry_host.crt:/etc/docker/registry/registry_host.crt" \
+      -v "$(pwd)/registry_host.key:/etc/docker/registry/registry_host.key" \
+      "${registry_image:-registry.gitlab.com/gitlab-org/build/cng/gitlab-container-registry:v2.9.1-gitlab}"
 else
   echo "Docker registry disabled."
   # Keep active so the process supervisor (i.e. runit) thinks everything is okay
