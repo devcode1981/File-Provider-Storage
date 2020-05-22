@@ -187,4 +187,10 @@ module GDK
   def self.root
     Pathname.new($gdk_root || Pathname.new(__dir__).parent) # rubocop:disable Style/GlobalVars
   end
+
+  def self.make(*targets)
+    sh = Shellout.new(MAKE, targets, chdir: GDK.root)
+    sh.stream
+    sh.success?
+  end
 end
