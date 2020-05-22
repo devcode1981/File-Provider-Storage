@@ -33,6 +33,16 @@ describe Shellout do
     end
   end
 
+  describe '#stream' do
+    it 'returns output of shell command' do
+      expect(subject.stream).to eq('foo')
+    end
+
+    it 'send output to stdout' do
+      expect { subject.stream }.to output("foo\n").to_stdout
+    end
+  end
+
   describe '#run' do
     it 'returns output of shell command' do
       expect(subject.run).to eq('foo')
