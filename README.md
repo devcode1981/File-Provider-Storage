@@ -42,7 +42,7 @@ see [Kubernetes docs](doc/kubernetes.md).
 
 After installation, [learn how to use GDK](doc/howto/README.md).
 
-If you have an old installation, [update your existing GDK installation](doc/update-gdk.md).
+If you have an old installation, [update your existing GDK installation](doc/set-up-gdk.md#update-gdk).
 
 ## Design goals
 
