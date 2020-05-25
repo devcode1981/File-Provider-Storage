@@ -5,7 +5,7 @@ Even though our preferred web server is Puma, there are times you'd want to use 
 To use Unicorn, set environment variable `USE_WEB_SERVER=unicorn`.
 In the GDK root:
 
-```sh
+```shell
 echo 'export USE_WEB_SERVER=unicorn' >> env.runit
 gdk restart rails-web
 ```

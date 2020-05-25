@@ -66,7 +66,7 @@ depends on our infrastructure. For non-GitLab team members you can see
 From the GDK directory, create [a `gdk.yml` configuration file](configuration.md)
 containing the following settings:
 
-```bash
+```shell
 ---
 auto_devops:
   enabled: true
@@ -78,7 +78,7 @@ This script will create all necessary configuration for one to run Auto DevOps l
 
 After the script finishes, it will inform you of the `GitLab` and `Registry` URLs. For example:
 
-```bash
+```shell
 *********************************************
 Tunnel URLs
 
@@ -89,14 +89,14 @@ Registry: https://[PORT].qa-tunnel.gitlab.info
 
 If the ports generated aren't suitable (they collide with someone else's), you can modify `auto_devops_gitlab_port` and `auto_devops_registry_port` directly, or generate a new random pair:
 
-```bash
+```shell
 rm auto_devops_gitlab_port auto_devops_registry_port # If generating random ports
 gdk reconfigure
 ```
 
 Finally, run the below command to start all the services:
 
-```bash
+```shell
 gdk start
 ```
 
@@ -206,7 +206,7 @@ Make sure to close and reopen your terminal after making these changes.
 You should now be ready to run the test. Execute the following command
 in the `qa/` directory:
 
-```bash
+```shell
 GITLAB_PASSWORD=<root-user-password> GCLOUD_REGION=us-central1 CHROME_HEADLESS=false bundle exec bin/qa Test::Integration::Kubernetes https://<gitlab-number>.qa-tunnel.gitlab.info/
 ```
 
@@ -214,7 +214,7 @@ You can also run single tests with RSpec line number arguments. As the
 `orchestrated` tag is normally excluded, we will also need to include a
 `--tag` argument to override the exclusion:
 
-```bash
+```shell
 GITLAB_PASSWORD=<root-user-password> GCLOUD_REGION=us-central1 CHROME_HEADLESS=false bundle exec bin/qa Test::Instance::All https://<gitlab-number>.qa-tunnel.gitlab.info/ -- qa/specs/features/browser_ui/7_configure/auto_devops/create_project_with_auto_devops_spec.rb:71 --tag orchestrated
 ```
 
@@ -325,7 +325,7 @@ gdk reconfigure
 You will need to replace `<gitlab-hostname>` below with the appropriate values
 from your reverse proxy settings and edit `registry/config.yml` like so:
 
-```yml
+```yaml
   auth:
     token:
       realm: https://<gitlab-hostname>/jwt/auth
@@ -345,13 +345,13 @@ version of Debian GNU/Linux.
 
 1. Install NGINX
 
-   ```bash
+   ```shell
    sudo apt-get install -t unstable nginx
    ```
 
 1. Install `certbot` to manage your certificates easier
 
-   ```bash
+   ```shell
    sudo apt-get install -t unstable certbot python-certbot-nginx
    ```
 
@@ -367,7 +367,7 @@ version of Debian GNU/Linux.
    You will need to obtain certificates for GitLab web application and for
    Container Registry separately. You can do that using following commands:
 
-   ```bash
+   ```shell
    sudo certbot -i nginx -d gdk.example.com -d registry.example.com
    ```
 
@@ -375,14 +375,14 @@ version of Debian GNU/Linux.
    want to do this manually. You can append `--manual` argument in order to
    do that.
 
-   ```bash
+   ```shell
    sudo certbot --manual -i nginx -d gdk.example.com -d registry.example.com
    ```
 
    It is also possible to generate a wildcard certificate if you foresee the
    need of using more subdomains than just for GDK and Container Registry:
 
-   ```bash
+   ```shell
    sudo certbot --manual -i nginx -d "*.gdk.example.com" --server https://acme-v02.api.letsencrypt.org/directory
    ```
 

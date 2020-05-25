@@ -10,7 +10,7 @@ If you want to get a debugging prompt while browsing on your local
 development server (localhost:3000), you need to run your Rails web server via Thin
 because Puma/Unicorn is not compatible with Pry. Start by kicking off the normal GDK processes via `gdk start`. Then open a new terminal session and run:
 
-```sh
+```shell
 gdk thin
 ```
 

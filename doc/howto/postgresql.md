@@ -6,7 +6,7 @@ but keeps the datafiles within the GDK directory structure, under `<path to GDK>
 This means that the databases cannot be seen with `psql -l`, but you can use the `gdk psql` wrapper to
 access the GDK databases:
 
-```bash
+```shell
 # Connect to the default gitlabhq_development database
 gdk psql
 
@@ -22,7 +22,7 @@ gdk psql --help
 
 You can also use the Rails `dbconsole` command, but it's much slower to start up:
 
-```bash
+```shell
 cd <path to GDK>/gitlab
 
 # Use default development environment

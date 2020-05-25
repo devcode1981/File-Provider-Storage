@@ -4,20 +4,20 @@ You can run an OpenLDAP daemon inside GDK if you want to work on GitLab LDAP int
 
 ## Getting it running
 
-```bash
+```shell
 cd <gdk-directory>/gitlab-openldap
 make # compile openldap and bootstrap an LDAP server to run out of slapd.d
 ```
 
 We can also simulate a large instance with many users and groups:
 
-```bash
+```shell
 make large
 ```
 
 Then run the daemon:
 
-```bash
+```shell
 ./run-slapd # stays attached in the current terminal
 ```
 
@@ -82,7 +82,7 @@ For testing of GitLab Enterprise Edition the following groups are created.
 
 ## Repopulate the database
 
-```bash
+```shell
 cd <gdk-directory>/gitlab-openldap
 make clean default
 ```
@@ -94,7 +94,7 @@ If you want to disable anonymous binding and require authentication:
 
 1. Run the following command:
 
-   ```bash
+   ```shell
    make disable_bind_anon
    ```
 

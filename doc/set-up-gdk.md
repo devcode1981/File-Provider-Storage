@@ -12,7 +12,7 @@ To get GDK up and running:
 
 Execute the following with the Ruby version manager of your choice (`rvm`, `rbenv`, `chruby`, etc.) with the current [`gitlab` Ruby version](https://gitlab.com/gitlab-org/gitlab/blob/master/.ruby-version):
 
-```sh
+```shell
 gem install gitlab-development-kit
 ```
 
@@ -25,14 +25,14 @@ gem install gitlab-development-kit
 
    - The default directory (`./gitlab-development-kit`), run:
 
-     ```sh
+     ```shell
      gdk init
      ```
 
    - A custom directory, pass a directory name. For example, to initialize into
      the `my_gitlab_development_kit` directory, run:
 
-     ```sh
+     ```shell
      gdk init my_gitlab_development_kit
      ```
 
@@ -40,7 +40,7 @@ gem install gitlab-development-kit
 
 1. Change into the newly created GDK directory. For example:
 
-   ```sh
+   ```shell
    cd gitlab-development-kit
    ```
 
@@ -62,13 +62,13 @@ gem install gitlab-development-kit
 
 - HTTP, run:
 
-  ```sh
+  ```shell
   gdk install
   ```
 
 - SSH, run:
 
-  ```sh
+  ```shell
   gdk install gitlab_repo=git@gitlab.com:gitlab-org/gitlab.git
   ```
 
@@ -81,13 +81,13 @@ The clone will be done using [`git clone --depth=1`](https://www.git-scm.com/doc
 
 - HTTP, run:
 
-  ```sh
+  ```shell
   gdk install gitlab_repo=https://gitlab.com/gitlab-org/gitlab-foss.git
   ```
 
 - SSH, run:
 
-  ```sh
+  ```shell
   gdk install gitlab_repo=git@gitlab.com:gitlab-org/gitlab-foss.git
   ```
 
@@ -100,7 +100,7 @@ The clone will be done using [`git clone --depth=1`](https://www.git-scm.com/doc
 
 - HTTP, run:
 
-  ```sh
+  ```shell
   # Replace <YOUR-NAMESPACE> with your namespace
   gdk install gitlab_repo=https://gitlab.com/<YOUR-NAMESPACE>/gitlab.git
   support/set-gitlab-upstream
@@ -108,7 +108,7 @@ The clone will be done using [`git clone --depth=1`](https://www.git-scm.com/doc
 
 - SSH, run:
 
-  ```sh
+  ```shell
   # Replace <YOUR-NAMESPACE> with your namespace
   gdk install gitlab_repo=git@gitlab.com:<YOUR-NAMESPACE>/gitlab.git
   support/set-gitlab-upstream
@@ -148,13 +148,13 @@ The license key generator is only available for GitLab team members, who should 
 
 Start GitLab and all required services:
 
-```sh
+```shell
 gdk start
 ```
 
 To stop the Rails app, which saves memory (useful when running tests):
 
-```sh
+```shell
 gdk stop rails
 ```
 
@@ -176,7 +176,7 @@ port: 3001
 
 And run the following command to apply:
 
-```sh
+```shell
 gdk reconfigure
 ```
 

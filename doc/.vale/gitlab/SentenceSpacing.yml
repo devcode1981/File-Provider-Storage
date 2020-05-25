@@ -1,5 +1,7 @@
 ---
-# Check for the following in common content scenarios:
+# Error: gitlab.SentenceSpacing
+#
+# Checks for the following in common content scenarios:
 #
 # - No spaces.
 # - More than one space.

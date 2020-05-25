@@ -7,7 +7,7 @@ well as greater flexibility around HTTP routing.
 
 You'll need to install `NGINX`:
 
-```sh
+```shell
 # on macOS
 brew install nginx
 
@@ -23,7 +23,7 @@ yum install nginx
 To be able to use a hostname instead of IP address, add a line to
 `/etc/hosts`.
 
-```sh
+```shell
 echo '127.0.0.1 gdk.test' | sudo tee -a /etc/hosts
 ```
 
@@ -35,7 +35,7 @@ echo '127.0.0.1 gdk.test' | sudo tee -a /etc/hosts
 If you want an isolated network space for all the services of your
 GDK, you can add a lookback network interface:
 
-```sh
+```shell
 # on macOS
 sudo ifconfig lo0 alias 127.1.1.1
 
@@ -45,7 +45,7 @@ sudo ifconfig lo:1 127.1.1.1
 
 And add that address to `/etc/hosts`:
 
-```sh
+```shell
 echo '127.1.1.1 gdk.test' | sudo tee -a /etc/hosts
 ```
 
@@ -87,7 +87,7 @@ for all the different platforms.
 
 On macOS, install with `brew`:
 
-```sh
+```shell
 brew install mkcert
 mkcert -install
 ```
@@ -95,7 +95,7 @@ mkcert -install
 Using `mkcert` you can generate a self-signed certificate. It also
 ensures your browser and OS trust the certificate.
 
-```sh
+```shell
 mkcert gdk.test
 ```
 
@@ -122,7 +122,7 @@ nginx:
 
 Run the following to apply these changes:
 
-```sh
+```shell
 gdk reconfigure
 gdk restart
 ```

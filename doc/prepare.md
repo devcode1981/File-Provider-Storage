@@ -19,7 +19,7 @@ Make sure you follow all the guidelines and resolve all the dependencies listed 
 | Node.js        | <p>Node.js **12.10** and Yarn 1.12 or newer.</p><p>Node.js and Yarn installation is covered in the instructions below. If your package manager does not have Node.js 12.10 or yarn available, visit the official websites for [Node](https://nodejs.org/en/download/) and [Yarn](https://yarnpkg.com/en/docs/install/) for installation instructions.</p> |
 | Go             | <p>Go 1.14.</p><p>Go installation is covered in the instructions below. If your package manager does not have up-to-date versions of Go available, visit the official [Go](https://golang.org/doc/install) website for installation instructions.</p>                                                                                                              |
 | Google Chrome  | [Google Chrome](https://www.google.com/chrome/) 60 or greater with [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) version 2.33 or greater. Visit the Chrome Driver [Getting started](https://sites.google.com/a/chromium.org/chromedriver/getting-started) page for more details.                                                           |
-| PostgreSQL     | <p>PostgreSQL version 11.x.</p><p>PostgreSQL installation is covered in the instructions [below](#platform-specific-setup). Some instructions still pin the version of PostgreSQL to version 10. Please update the documentation steps to version 11 as you successfully install PG 11 on your platform.</p> |
+| PostgreSQL     | <p>PostgreSQL version 11.x.</p><p>PostgreSQL installation is covered in the instructions [below](#platform-specific-setup). Some instructions still pin the version of PostgreSQL to version 10. Please update the documentation steps to version 11 as you successfully install PostreSQL 11 on your platform.</p> |
 | GraphicsMagick | GraphicsMagick installation is covered in the instructions [below](#platform-specific-setup).                                                                                                                                                                                                                                                                                                           |
 | Exiftool       | Exiftool installation is covered in the instructions [below](#platform-specific-setup).                                                                                                                                                                                                                                                                                                           |
 | runit          | runit installation is covered in the instructions [below](#platform-specific-setup).                                                                                                                                                                                                                                                                                                           |
@@ -106,7 +106,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 1. Install **Yarn** from the [Yarn Debian package repository](https://yarnpkg.com/lang/en/docs/install/#debian-stable).
 1. Install remaining dependencies; modify the `GDK_GO_VERSION` with the major.minor version number (currently 1.12) as needed:
 
-   ```sh
+   ```shell
    # Add apt-add-repository helper script
    sudo apt-get update
    sudo apt-get install software-properties-common
@@ -151,7 +151,7 @@ pikaur -S runit-systemd
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
-```sh
+```shell
 sudo apt-get install postgresql postgresql-contrib libpq-dev redis-server \
   libicu-dev cmake g++ libkrb5-dev libre2-dev ed pkg-config graphicsmagick \
   runit libimage-exiftool-perl rsync libsqlite3-dev
@@ -175,12 +175,12 @@ If you are running Fedora < 27 you'll need to install `go` manually using [go] o
 >**Note:** Fedora 30+ ships PostgreSQL 11.x in default repositories, you can use `postgresql:10` module to install PostgreSQL 10.
 But keep in mind that will replace the PostgreSQL 11.x package, so you cannot use both versions at once.
 
-```sh
+```shell
 sudo dnf install fedora-repos-modular
 sudo dnf module enable postgresql:10
 ```
 
-```sh
+```shell
 sudo dnf install postgresql libpqxx-devel postgresql-libs redis libicu-devel \
   nodejs git git-lfs ed cmake rpm-build gcc-c++ krb5-devel go postgresql-server \
   postgresql-contrib re2 GraphicsMagick re2-devel sqlite-devel perl-Digest-SHA \
@@ -199,7 +199,7 @@ The following instructions worked for runit version 2.1.2 - but please make sure
 
 1. Download and extract the runit source code to a local folder to compile it:
 
-   ```sh
+   ```shell
    wget http://smarden.org/runit/runit-2.1.2.tar.gz
    tar xzf runit-2.1.2.tar.gz
    cd admin/runit-2.1.2
@@ -216,7 +216,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 
 This is tested on CentOS 6.5:
 
-```sh
+```shell
 sudo yum install https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-6-x86_64/pgdg-centos10-10-2.noarch.rpm
 sudo yum install https://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 sudo yum install postgresql10-server postgresql10-devel libicu-devel git git-lfs cmake \
@@ -239,7 +239,7 @@ Install `go` manually using [go] official installation instructions.
 
 Git 1.7.1-3 is the latest Git binary for CentOS 6.5 and GitLab. Spinach tests
 will fail due to a higher version requirement by GitLab. You can follow the
-instructions found [in the GitLab recipes repository][puias] to install a newer
+instructions found [in the GitLab recipes repository](https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/install/centos#add-puias-computational-repository) to install a newer
 binary version of Git.
 
 You may need to install Redis 2.8 or newer manually.
@@ -250,7 +250,7 @@ Please read [the prerequisites for all platforms](#prerequisites-for-all-platfor
 
 This was tested on OpenSUSE LEAP 42.1, and Tumbleweed (20161109)
 
-```sh
+```shell
 sudo zypper dup
 sudo zypper install libxslt-devel  postgresql postgresql-devel libpqxx-devel redis libicu-devel nodejs git git-lfs ed cmake \
         rpm-build gcc-c++ krb5-devel postgresql-server postgresql-contrib \
@@ -290,7 +290,7 @@ sudo ln -s /usr/sbin/redis-server /usr/bin/redis-server
 
 Please read [the prerequisites for all platforms](#prerequisites-for-all-platforms).
 
-```sh
+```shell
 sudo pkg install postgresql10-server postgresql10-contrib postgresql-libpqxx \
 redis go node icu krb5 gmake re2 GraphicsMagick p5-Image-ExifTool git-lfs minio sqlite3
 ```
@@ -325,7 +325,7 @@ Return to the prerequisite installation steps.
 
 Install Node.js from source:
 
-```sh
+```shell
 curl -O https://nodejs.org/dist/v12.10.0/node-v12.10.0.tar.gz
 tar -zxf node-v12.10.0.tar.gz
 cd node-v12.10.0
@@ -386,7 +386,3 @@ For more information and instructions on installing tooling and plugins for edit
 ## Next Steps
 
 After you have completed everything here, [set up GDK](set-up-gdk.md).
-
-[puias]: https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/install/centos#add-puias-computational-repository
-[docker engine]: https://docs.docker.com/engine/installation/
-[vagrant]: https://www.vagrantup.com

@@ -6,7 +6,7 @@ GitLab uses [Gitaly](https://gitlab.com/gitlab-org/gitaly) to abstract all Git c
 
 By default, GDK is set up to talk to praefect as a proxy to Gitaly. To disable praefect, use the `enabled` field under `praefect` in `gdk.yml`:
 
-```yml
+```yaml
 praefect:
   enabled: false
 ```

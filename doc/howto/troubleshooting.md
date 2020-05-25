@@ -37,7 +37,7 @@ LoadError: dlopen(/home/user/.rbenv/versions/2.6.3/lib/ruby/gems/2.5.0/gems/char
 In that case, find the offending gem and use `pristine` to rebuild its native
 extensions:
 
-```sh
+```shell
 gem pristine charlock_holmes
 ```
 
@@ -50,7 +50,7 @@ ruby 2.6.5p114 (2019-10-01 revision 67812) [x86_64-darwin19]
 
 In which case you would run:
 
-```sh
+```shell
 gem pristine re2
 ```
 
@@ -81,7 +81,7 @@ The installation of the `charlock_holmes` gem (`0.7.3` or greater) during
 ```
 
 A working solution is to configure the `--with-cxxflags=-std=c++11` flag
-in the Rubygems global build options for this gem:
+in the Ruby gems global build options for this gem:
 
 ```shell
 bundle config --global build.charlock_holmes "--with-cxxflags=-std=c++11"
@@ -97,8 +97,6 @@ set the `--with-icu-dir=/usr/local/opt/icu4c` option:
 ```shell
 bundle config --global build.charlock_holmes "--with-icu-dir=/usr/local/opt/icu4c --with-cxxflags=-std=c++11"
 ```
-
-[Gitaly]: https://gitlab.com/gitlab-org/gitaly/blob/14fd3b2e3adae00f0a792516e74a4bac29a5b5c1/Makefile#L58
 
 ## `charlock_holmes` `0.7.5` cannot be installed with icu4c 61.1
 
@@ -130,7 +128,7 @@ gem install charlock_holmes -v '0.7.5' -- --with-cppflags=-DU_USING_ICU_NAMESPAC
 
 0.7.6 fixes this issue. See [this issue](https://github.com/brianmario/charlock_holmes/issues/126) for more details.
 
-## Unable to build and install pg gem on GDK install
+## Unable to build and install `pg` gem on GDK install
 
 After installing PostgreSQL with brew you will have to set the proper path to PostgreSQL.
 You may run into the following errors on running `gdk install`
@@ -169,7 +167,7 @@ are installing GDK for the first time this is handled automatically from the
 database schema. In case you are updating your GDK and you experience this
 error, make sure you pull the latest changes from the GDK repository and run:
 
-```sh
+```shell
 ./support/enable-postgres-extensions
 ```
 
@@ -200,7 +198,7 @@ version of PostgreSQL:
 1. (optional) Make a sql-only GitLab backup
 1. Rename/remove the `gdk/postgresql/data` directory: `mv postgresql/data{,.old}`
 1. Run `make`
-1. Build pg gem native extensions: `gem pristine pg`
+1. Build `pg` gem native extensions: `gem pristine pg`
 1. (optional) Restore your GitLab backup
 
 If things are working, you may remove the `postgresql/data.old` directory
@@ -238,7 +236,7 @@ For example, <https://gitlab.com/gitlab-org/gitlab-foss/merge_requests/3186>
 introduced some changes when a few EE migrations were added to CE. If you were
 using the same db for CE and EE you would get hit by the following error:
 
-```sh
+```shell
 undefined method `share_with_group_lock' for #<Group
 ```
 
@@ -253,7 +251,7 @@ which fails if column does not exist or can cause data loss if column exists.
 
 A quick solution is to remove the database data and then recreate it:
 
-```sh
+```shell
 bundle exec rake setup
 ```
 
@@ -262,7 +260,7 @@ bundle exec rake setup
 If you don't want to nuke the database, you can perform the migrations manually.
 Open a terminal and start the rails console:
 
-```sh
+```shell
 rails console
 ```
 
@@ -380,19 +378,19 @@ If building `gpgme` gem fails with an `Undefined symbols for architecture x86_64
 
 1. Ensure necessary dependencies are installed:
 
-   ```sh
+   ```shell
    brew install gpgme
    ```
 
 1. (optional) Try building the `gpgme` gem manually to ensure it compiles. If it fails, debug the failure with the error messages. To compile the `gpgme` gem manually run:
 
-   ```sh
+   ```shell
    gem install gpgme -- --use-system-libraries
    ```
 
 1. Configure Bundler to use system libraries for the `gpgme` gem:
 
-   ```sh
+   ```shell
    bundle config build.gpgme --use-system-libraries
    ```
 
@@ -402,7 +400,7 @@ You can now run `gdk install` or `bundle` again.
 
 If you see the following error installing the `nokogumbo` gem via `gdk install`:
 
-```sh
+```shell
 
 Running 'configure' for libxml2 2.9.9... OK
 Running 'compile' for libxml2 2.9.9... ERROR, review
@@ -435,7 +433,7 @@ A solution is to:
 
 1. Instruct Bundler to use the system libraries when building `nokogumbo`:
 
-   ```sh
+   ```shell
    bundle config build.nokogumbo --use-system-libraries
    ```
 
@@ -445,7 +443,7 @@ A solution is to:
 
 If you see the following error installing the `ffi` gem via `gdk install`:
 
-```sh
+```shell
 Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
 ...
 sed: 1: "s?\@XML_LIBDIR\@?-L/Use ...": bad flag in substitute command: '/'
@@ -475,10 +473,10 @@ A solution on macOS is to:
 
 1. Ensure the `PKG_CONFIG_PATH` and `LDFLAGS` environment variables are correctly set:
 
-    ```sh
-    export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$(brew --prefix)/opt/libffi/lib/pkgconfig"
-    export LDFLAGS="$LDFLAGS:-L$(brew --prefix)/opt/libffi/lib"
-    ```
+   ```shell
+   export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$(brew --prefix)/opt/libffi/lib/pkgconfig"
+   export LDFLAGS="$LDFLAGS:-L$(brew --prefix)/opt/libffi/lib"
+   ```
 
 1. Re-run `gdk install`
 
@@ -715,7 +713,7 @@ When doing so, please create an issue describing what happened.
 
 If you're seeing errors such as:
 
-```sh
+```shell
 ERROR -- : Failure while sending a batch of spans: Failed to open TCP connection to localhost:14268 (Connection refused - connect(2) for "localhost" port 14268)
 ```
 
@@ -733,14 +731,14 @@ documentation](https://docs.gitlab.com/ee/development/distributed_tracing.html).
 
 If you see errors such as:
 
-```sh
+```shell
 07:23:16 gitaly.1                | time="2019-05-17T07:23:16-05:00" level=fatal msg="load config" config_path=<path-to-gdk>/gitaly/gitaly.config.toml error="open <path-to-gdk>/gitaly/gitaly.config.toml: no such file or directory"
 ```
 
 Somehow, `gitaly/gitaly.config.toml` is missing. You can re-create this file by running
 the following in your GDK directory:
 
-```sh
+```shell
 make gitaly-setup
 ```
 
@@ -748,7 +746,7 @@ make gitaly-setup
 
 Running a spec locally may give you something like the following:
 
-```sh
+```shell
 rake aborted!
 Gitlab::TaskFailedError: # pkg-config --cflags  -- icu-i18n icu-i18n
 Package icu-i18n was not found in the pkg-config search path.
@@ -775,7 +773,7 @@ You'll need to add that directory to the `PKG_CONFIG_PATH` environment variable.
 
 To fix this now, run the following on the command line:
 
-```sh
+```shell
 export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
 ```
 
@@ -825,7 +823,7 @@ rspec ./spec/javascripts/fixtures/commit.rb:22 # Projects::CommitController (Jav
 
 To fix this, remove `tmp/tests/` in the `gitlab/` directory and regenerate the fixtures:
 
-```sh
+```shell
 rm -rf tmp/tests/ && bin/rake karma:fixtures
 ```
 

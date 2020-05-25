@@ -22,13 +22,13 @@ the dependency proxy is already enabled and configured.
 
 Test it with
 
-```sh
+```shell
 sudo docker run localhost:3000/gitlab-org/dependency_proxy/containers/hello-world:latest
 ```
 
 Docker should succeed and you should see
 
-```sh
+```shell
 Hello from Docker!
 This message shows that your installation appears to be working correctly.
 ```
@@ -55,7 +55,7 @@ Run `gdk reconfigure` and `gdk restart` to invoke the changes and visit the IP
 
 ##### Old Docker for Mac (< 2.2.0.0)
 
-Open Docker -> Preferences, and navigate to the tab labelled **Daemon**.
+Open Docker -> Preferences, and navigate to the tab labeled **Daemon**.
 Check the box to enable **Experimental features** and you will be able to add
 a new **Insecure registry**. Click **Apply & Restart**.
 
@@ -76,13 +76,13 @@ Open Docker -> Right click on status bar -> Preferences -> Docker Engine, and ty
 
 Once Docker has restarted, you can test the dependency proxy with:
 
-```sh
+```shell
 sudo docker run 0.0.0.0:3000/gitlab-org/dependency_proxy/containers/hello-world:latest
 ```
 
 Docker should succeed and you should see the following:
 
-```sh
+```shell
 Hello from Docker!
 This message shows that your installation appears to be working correctly.
 ```

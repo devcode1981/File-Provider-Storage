@@ -50,7 +50,7 @@ To configure GDK for Web IDE terminals:
 1. Create a [`role.yml`](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#role-and-clusterrole)
    file somewhere and add the following to it:
 
-   ```yml
+   ```yaml
    apiVersion: rbac.authorization.k8s.io/v1
    kind: Role
    metadata:
@@ -65,7 +65,7 @@ To configure GDK for Web IDE terminals:
 1. Create a [`role-binding.yml`](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding)
    file somewhere and add the following to it:
 
-   ```yml
+   ```yaml
    apiVersion: rbac.authorization.k8s.io/v1
    kind: RoleBinding
    metadata:
@@ -135,7 +135,7 @@ The following is required to configure GitLab Runner for Web IDE terminals.
 1. Add the token to the [`[[runners]]`](https://docs.gitlab.com/runner/configuration/advanced-configuration.html#the-runners-section)
    section of `~/.gitlab-runner/config.toml` as follows:
 
-   ```yml
+   ```yaml
    [[runners]]
      [runners.kubernetes]
        host = ""
@@ -145,7 +145,7 @@ The following is required to configure GitLab Runner for Web IDE terminals.
 1. Add your IP address as the `listen_address` to the [`[session_server]`](https://docs.gitlab.com/runner/configuration/advanced-configuration.html#the-session_server-section)
    section using `host:port` format:
 
-   ```yml
+   ```yaml
    [session_server]
      session_timeout = 1800
      listen_address = "<local IP address>:8080"
@@ -162,7 +162,7 @@ The following is required to configure GitLab Runner for Web IDE terminals.
 1. Go to the test project and open the Web IDE.
 1. Add the file `.gitlab/.gitlab-webide.yml` to the repository's root.
 
-   ```yml
+   ```yaml
    terminal:
      image: node:10-alpine
      before_script:
@@ -206,7 +206,7 @@ The following are possible problems using Web IDE terminal with possible solutio
   does for the IDE terminal). In this case, your `.gitlab-ci.yml` file should look like
   this:
 
-  ```yml
+  ```yaml
   job:
     image: alpine:latest
     stage: test

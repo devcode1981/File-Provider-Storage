@@ -47,8 +47,5 @@ features.
 
 ## 2016-08-08
 
-- Added the [`gitlab-development-kit` gem][gdk-gem], commands can now be run using the `gdk` CLI. !174
-- Began using a `GOPATH` for GitLab Workhorse, this change requires manual intervention. [See the update instructions here][workhorse-changes]. !173
-
-[gdk-gem]: https://rubygems.org/gems/gitlab-development-kit
-[workhorse-changes]: https://gitlab.com/gitlab-org/gitlab-development-kit/blob/fd04b7f1a3a72302af71c1a7923daaa5b22dcd28/gitlab-workhorse/README.md#cleaning-up-an-old-gitlab-workhorse-checkout
+- Added the [`gitlab-development-kit` gem](https://rubygems.org/gems/gitlab-development-kit), commands can now be run using the `gdk` CLI. !174
+- Began using a `GOPATH` for GitLab Workhorse, this change requires manual intervention. [See the update instructions here](https://gitlab.com/gitlab-org/gitlab-development-kit/blob/fd04b7f1a3a72302af71c1a7923daaa5b22dcd28/gitlab-workhorse/README.md#cleaning-up-an-old-gitlab-workhorse-checkout). !173

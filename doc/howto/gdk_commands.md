@@ -4,20 +4,20 @@
 
 To start up the GDK with all default enabled services, run:
 
-```sh
+```shell
 gdk start
 ```
 
 To see logs, run:
 
-```sh
+```shell
 gdk tail
 ```
 
 When you are not using GDK you may want to shut it down to free up
 memory on your computer.
 
-```sh
+```shell
 gdk stop
 ```
 
@@ -26,7 +26,7 @@ the service names as arguments. Multiple arguments are supported.
 
 ### Run just PostgreSQL and Redis
 
-```sh
+```shell
 gdk start postgresql redis
 ```
 
@@ -34,7 +34,7 @@ gdk start postgresql redis
 
 To update `gitlab` and all of its dependencies, run the following command.
 
-```sh
+```shell
 gdk update
 ```
 
@@ -56,7 +56,7 @@ remove an individual file (e.g. `rm Procfile`) and rebuild it by
 running `make`. If you want to rebuild _all_ configuration files
 created by GDK, run:
 
-```sh
+```shell
 gdk reconfigure
 ```
 
@@ -66,7 +66,7 @@ With `gdk config` you can interact with the configuration of your
 GDK. So far only `gdk config get` exists and it will print the
 configuration for the `<setting>` you provide.
 
-```sh
+```shell
 gdk config get <setting>
 ```
 
@@ -76,13 +76,13 @@ More information can be found in the [configuration documentation](configuration
 
 To enable tab completion for the `gdk` command in Bash, add the following to your `~/.bash_profile`:
 
-```bash
+```shell
 source ~/path/to/your/gdk/support/completions/gdk.bash
 ```
 
 For Zsh, you can enable Bash completion support in your `~/.zshrc`:
 
-```bash
+```shell
 autoload bashcompinit
 bashcompinit
 
