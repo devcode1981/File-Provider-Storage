@@ -846,6 +846,25 @@ To fix this, install yarn using npm instead:
 npm install --global yarn
 ```
 
+## Homebrew troubleshooting
+
+Most `brew` problems can be sniffed out by running
+
+```bash
+brew doctor
+```
+
+However, older installations may have significant cruft leftover from previous
+installations and updates. To manually remove outdated downloads for all
+formulae, casks, and stale lockfiles, run:
+
+```bash
+brew cleanup
+```
+
+For more information on uninstalling old versions of a formula, see the [Homebrew FAQ](https://docs.brew.sh/FAQ#how-do-i-uninstall-old-versions-of-a-formula).
+For additional troubleshooting information, see the Homebrew [Common Issues](https://docs.brew.sh/Common-Issues) page.
+
 ## CSS isn't live reloading
 
 If you previously compiled production assets with `bundle exec rake gitlab:assets:compile`, the GDK
