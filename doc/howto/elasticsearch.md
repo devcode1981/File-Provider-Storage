@@ -69,13 +69,13 @@ see [this issue](https://gitlab.com/gitlab-org/gitlab-development-kit/-/issues/8
 1. Start Elasticsearch by either running `elasticsearch` in a new terminal, or
    by starting the GDK service:
 
-   ```sh
+   ```shell
    gdk start elasticsearch
    ```
 
 1. Perform a manual update of the Elasticsearch indexes:
 
-   ```sh
+   ```shell
    cd gitlab && bundle exec rake gitlab:elastic:index
    ```
 
@@ -89,7 +89,7 @@ To enable logging for all queries against Elasticsearch you can change the slow
 log settings to log every query. To do this you need to send a request to
 Elasticsearch to change the settings for the `gitlab-development` index:
 
-```sh
+```shell
 curl -H 'Content-Type: application/json' -XPUT 'http://localhost:9200/gitlab-development/_settings' -d '{
 "index.indexing.slowlog.threshold.index.debug" : "0s",
 "index.search.slowlog.threshold.fetch.debug" : "0s",
@@ -99,6 +99,6 @@ curl -H 'Content-Type: application/json' -XPUT 'http://localhost:9200/gitlab-dev
 
 After this you can see every query by tailing the logs from you GDK root:
 
-```sh
+```shell
 tail -f elasticsearch/logs/elasticsearch_index_search_slowlog.log
 ```

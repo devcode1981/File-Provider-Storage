@@ -220,13 +220,13 @@ container. Here's how:
 1. Create an internal interface. On macOS, this will add an alias IP
    172.16.123.1 to the loopback adapter:
 
-   ```sh
+   ```shell
    sudo ifconfig lo0 alias 172.16.123.1
    ```
 
    On Linux, you can create a dummy interface:
 
-   ```sh
+   ```shell
    sudo ip link add dummy0 type dummy
    ifconfig dummy0 172.16.123.1
    ```

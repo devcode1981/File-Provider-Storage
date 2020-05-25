@@ -25,7 +25,7 @@ own OAuth credentials:
 
 From the GDK root directory, run:
 
-```bash
+```shell
 echo "<google-client-id>" > google_oauth_client_id
 echo "<google-client-secret>" > google_oauth_client_secret
 gdk reconfigure

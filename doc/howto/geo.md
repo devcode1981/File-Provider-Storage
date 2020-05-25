@@ -34,7 +34,7 @@ Now we'll create a secondary instance in a `gdk-geo` folder to act as
 a secondary node. We'll configure unique ports for the new instance so
 that it can run alongside the primary.
 
-```bash
+```shell
 gdk init gdk-geo
 cd gdk-geo
 ```
@@ -59,7 +59,7 @@ webpack:
 
 Then run the following command:
 
-```bash
+```shell
 # Assuming your primary GDK instance lives in parallel folders:
 gdk install gitlab_repo=../gdk/gitlab
 ```
@@ -73,7 +73,7 @@ When seeding begins, cancel it (Ctrl-C) since we will delete the data anyway.
 
 Then run the following commands:
 
-```bash
+```shell
 gdk start postgresql
 gdk start postgresql-geo
 make geo-setup
@@ -91,7 +91,7 @@ replication. This requires the PostgreSQL server to be running, so we'll start
 the server, perform the change (via a `make` task), and then kill and restart
 the server to pick up the change:
 
-```bash
+```shell
 # terminal window 1:
 cd gdk
 gdk start postgresql
@@ -106,7 +106,7 @@ gdk restart postgresql
 Because we'll be replicating the primary database to the secondary, we need to
 remove the secondary's PostgreSQL data folder:
 
-```bash
+```shell
 # terminal window 2:
 cd gdk-geo
 rm -r postgresql
@@ -114,14 +114,14 @@ rm -r postgresql
 
 Now we need to add a symbolic link to the primary instance's data folder:
 
-```bash
+```shell
 # From the gdk-geo folder:
 ln -s ../gdk/postgresql postgresql-primary
 ```
 
 Initialize a secondary database and setup replication:
 
-```bash
+```shell
 # terminal window 2:
 make postgresql-replication-secondary
 ```
@@ -136,7 +136,7 @@ tests will fail to run.
 
 You can add the tracking database to the primary node by running:
 
-```bash
+```shell
 # From the gdk folder:
 gdk start
 
@@ -175,7 +175,7 @@ test: &test
 
 Now run the following to ensure the database and FDW schema are setup:
 
-```sh
+```shell
 # Within the <secondary-gdk-root>/gitlab folder:
 bin/rake db:test:prepare
 
@@ -203,7 +203,7 @@ to set up [SSH](ssh.md), including [SSH key lookup from database](ssh.md#ssh-key
 
 There is a Rake task that can add the primary node:
 
-```bash
+```shell
 cd gdk/gitlab
 
 bundle exec rake geo:set_primary_node
@@ -217,13 +217,13 @@ must get the values from the secondary, and then manually add the node.
 
 1. In a terminal, change to the `gitlab` directory of the secondary node:
 
-   ```bash
+   ```shell
    cd gdk-geo/gitlab
    ```
 
 1. Output the secondary node's **Name** and **URL**:
 
-   ```bash
+   ```shell
    bundle exec rails runner 'puts "Name: #{GeoNode.current_node_name}"; puts "URL: #{GeoNode.current_node_url}"'
    ```
 
@@ -259,7 +259,7 @@ make: *** [postgresql/geo] Error 1
 
 Then you may delete or move that data in order to run `make geo-setup` again.
 
-```bash
+```shell
 mv postgresql-geo/data postgresql-geo/data.backup
 ```
 
@@ -269,7 +269,7 @@ You will see the following error after running `gdk update` on your local Geo
 secondary. It is ok to ignore. Your local Geo secondary does not have or need a
 test DB, and this error occurs on the very last step of `gdk update`.
 
-```bash
+```shell
 cd /Users/foo/Developer/gdk-geo/gitlab && \
       bundle exec rake db:migrate db:test:prepare
 rake aborted!
@@ -293,7 +293,7 @@ You need to rebuild FDW tables.
 
 If your local primary is in `~/Developer/gdk`:
 
-```bash
+```shell
 cd ~/Developer/gdk
 gdk start
 make postgresql/geo-fdw/test/rebuild
@@ -301,7 +301,7 @@ make postgresql/geo-fdw/test/rebuild
 
 And if your local secondary is in `~/Developer/gdk-geo`:
 
-```bash
+```shell
 cd ~/Developer/gdk-geo
 gdk start
 make postgresql/geo-fdw/development/rebuild

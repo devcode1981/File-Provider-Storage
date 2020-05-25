@@ -5,43 +5,43 @@ to run the relative links checks locally or preview the changes, do the followin
 
 1. Pull the `gitlab-docs` repo from within your GDK directory:
 
-   ```sh
+   ```shell
    make gitlab-docs-setup
    ```
 
 1. Change directory:
 
-   ```sh
+   ```shell
    cd gitlab-docs/
    ```
 
 1. Install Node dependencies:
 
-   ```sh
+   ```shell
    yarn install
    ```
 
 1. Create the HTML files:
 
-   ```sh
+   ```shell
    bundle exec nanoc
    ```
 
 1. Run the internal links check:
 
-   ```sh
+   ```shell
    bundle exec nanoc check internal_links
    ```
 
 1. Run the internal anchors check:
 
-   ```sh
+   ```shell
    bundle exec nanoc check internal_anchors
    ```
 
 1. (Optionally) Preview the docs site locally:
 
-   ```sh
+   ```shell
    bundle exec nanoc live -p 3005
    ```
 
@@ -49,7 +49,7 @@ to run the relative links checks locally or preview the changes, do the followin
 
    If you see the following message, another process is already listening on port `3005`:
 
-   ```sh
+   ```shell
    Address already in use - bind(2) for 127.0.0.1:3005 (Errno::EADDRINUSE)`
    ```
 

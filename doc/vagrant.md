@@ -14,9 +14,9 @@ container.
 
 ## Vagrant setup
 
-[Vagrant] is a tool for setting up identical development environments including
+[Vagrant](https://www.vagrantup.com) is a tool for setting up identical development environments including
 all dependencies regardless of the host platform you are using. Vagrant will
-default to using [VirtualBox], but it has many plugins for different environments.
+default to using [VirtualBox](https://www.virtualbox.org), but it has many plugins for different environments.
 
 Vagrant allows you to develop GitLab without affecting your host machine (but we
 recommend developing GitLab on metal if you can).
@@ -31,7 +31,7 @@ To avoid usage of slow VirtualBox shared folders we use NFS here.
 
 1. (optional for Windows users) [Disable Hyper-V](https://superuser.com/a/642027/143551)
    then enable virtualization technology via the BIOS.
-1. Install [VirtualBox] and [Vagrant].
+1. Install [VirtualBox](https://www.virtualbox.org) and [Vagrant](https://www.vagrantup.com).
 1. [Configure NFS for Vagrant](https://docs.vagrantup.com/v2/synced-folders/nfs.html)
    if you are on Linux.
 1. Run `vagrant up --provider=virtualbox --provision` in this directory (from an elevated
@@ -50,10 +50,10 @@ containers technology. This Docker setup makes sense only on Linux, as on other
 OSes like Windows/OSX you will have to run the entire Docker hypervisor in a VM
 (which will be almost the same like Vagrant Virtualbox provider).
 
-1. Install [Vagrant].
-1. Install [VirtualBox]. Vagrant requires the `VBoxManage` binary included with
+1. Install [Vagrant](https://www.vagrantup.com).
+1. Install [VirtualBox](https://www.virtualbox.org). Vagrant requires the `VBoxManage` binary included with
    VirtualBox, even for non-VirtualBox providers.
-1. Install [Docker Engine]. Don't forget to [add your user to the docker group](https://docs.docker.com/install/linux/linux-postinstall/)
+1. Install [Docker Engine](https://www.docker.com/products/docker-engine). Don't forget to [add your user to the docker group](https://docs.docker.com/install/linux/linux-postinstall/)
    and re-login.
 1. Run `vagrant up --provider=docker --provision` in this directory. Vagrant will build a
    docker image and start the container.
@@ -88,10 +88,6 @@ OSes like Windows/OSX you will have to run the entire Docker hypervisor in a VM
   file extension), see <https://stackoverflow.com/a/5514351/1233435>.
 - If you have errors with symlinks or Ruby during initialization, make sure you
   ran `vagrant up` from an elevated command prompt (Windows users).
-
-[Vagrant]: https://www.vagrantup.com
-[VirtualBox]: https://www.virtualbox.org
-[Docker Engine]: https://www.docker.com/products/docker-engine
 
 ## Next step
 

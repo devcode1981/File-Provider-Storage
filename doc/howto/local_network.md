@@ -12,7 +12,7 @@ application then:
 
 - Reconfigure and restart
 
-  ```sh
+  ```shell
   gdk reconfigure
   gdk restart
   ```

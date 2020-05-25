@@ -8,25 +8,25 @@ Be sure also to check our [Tips and Troubleshooting](./tips_and_troubleshooting)
 
 View your full `kubectl` config:
 
-```bash
+```shell
 kubectl config view
 ```
 
 or:
 
-```bash
+```shell
 cat ~/.kube/config
 ```
 
 You can also view a specific config, like getting the list of known clusters:
 
-```bash
+```shell
 kubectl config get-cluster
 ```
 
 or, _very important_, know to which context your kubectl is current connected to:
 
-```bash
+```shell
 kubectl config current-context
 ```
 
@@ -36,7 +36,7 @@ This determines if you're communicating to your local development cluster (Minik
 
 If you'd like to change your current-context to point to a different cluster, with `gcloud`, you can:
 
-```bash
+```shell
 gcloud container clusters get-credentials cluster-name-here
 ```
 
@@ -44,25 +44,25 @@ gcloud container clusters get-credentials cluster-name-here
 
 You can get one information at a time:
 
-```bash
+```shell
 kubectl get nodes
 ```
 
 or many at once:
 
-```bash
+```shell
 kubectl get nodes,pods,deployments,jobs,secrets
 ```
 
 `kubectl` looks for objects in the `default` namespace. So to see our GitLab deployed objects, use this flag:
 
-```bash
+```shell
 kubectl get pods -n gitlab-managed-apps
 ```
 
 or:
 
-```bash
+```shell
 kubectl get pods --all-namespaces
 ```
 
@@ -70,25 +70,25 @@ kubectl get pods --all-namespaces
 
 To see the complete log:
 
-```bash
+```shell
 kubectl logs pod-name-here -n gitlab-managed-apps
 ```
 
 or to see the last *n* lines use the `--tail` flag:
 
-```bash
+```shell
 kubectl logs {pod-name-without-braces} --tail=20 -n gitlab-managed-apps
 ```
 
 you can combine it with `watch` to keep reading the file every *n* seconds:
 
-```bash
+```shell
 watch -n3 kubectl logs {pod-name-without-braces} --tail=20 -n gitlab-managed-apps
 ```
 
 if you're on mac you might need to install `watch` first:
 
-```bash
+```shell
 brew install watch
 ```
 
@@ -98,13 +98,13 @@ brew install watch
 
 If you are only interested about running `helm` commands locally, you can use the `--client-only` flag:
 
-```bash
+```shell
 helm version --client-only
 ```
 
 To initialize [Helm](https://docs.helm.sh/) in your machine and create your `~/.helm` configuration directory, run:
 
-```bash
+```shell
 helm init --client-only
 ```
 
@@ -133,7 +133,7 @@ File.open('/tmp/cert.pem', 'w') { |f| f.write(client_cert.cert_string) }; nil
 
 Now we already have proper SSL files: `/tmp/ca_cert.pem`, `/tmp/key.pem` and `/tmp/cert.pem`. So let's finally run Helm commands that will be executed also on our server via Tiller communication:
 
-```bash
+```shell
 helm version --tls \
   --tls-ca-cert /tmp/ca_cert.pem \
   --tls-cert /tmp/cert.pem \

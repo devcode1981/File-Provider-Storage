@@ -13,7 +13,7 @@ on the machine under test.
 
 Execute the following command in the 'qa/' directory:
 
-```bash
+```shell
 GITLAB_ADMIN_ACCESS_TOKEN=<admin-access-token> bundle exec bin/qa Test::Integration::Kubernetes https://localhost:3001 -- qa/specs/features/browser_ui/7_configure/kubernetes/kubernetes_integration_spec.rb
 ```
 

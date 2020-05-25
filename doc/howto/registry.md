@@ -166,7 +166,7 @@ registry is running, the output of `gdk tail` changes.
 
 In this section, we assume you have obtained a [Personal Access Token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html) with all permissions, and exported it as `GITLAB_TOKEN` in your environment:
 
-```bash
+```shell
 export GITLAB_TOKEN=...
 ```
 
@@ -177,19 +177,19 @@ export GITLAB_TOKEN=...
 
 ##### Log in to the registry
 
-```bash
+```shell
 docker login gdk.test:5000 -u gitlab-token -p "$GITLAB_TOKEN"
 ```
 
 ##### Build and tag an image
 
-```bash
+```shell
 docker build -t gdk.test:5000/custom-docker-image .
 ```
 
 ##### Push the image to the local registry
 
-```bash
+```shell
 docker push gdk.test:5000/custom-docker-image
 ```
 
@@ -198,7 +198,7 @@ docker push gdk.test:5000/custom-docker-image
 - If you have a self-signed certificate, you can add `--cacert registry_host.crt` or `-k` to the `curl` commands.
 - If you have authentication enabled, you need to obtain a bearer token for your requests:
 
-  ```bash
+  ```shell
   export GITLAB_REGISTRY_JWT=`curl "http://gitlab-token:$GITLAB_TOKEN@gdk.test:3000/jwt/auth?service=container_registry&scope=$SCOPE" | jq -r .token`
   ```
 
@@ -208,7 +208,7 @@ docker push gdk.test:5000/custom-docker-image
 
   To use the token, append it as a header flag to the `curl` command:
 
-  ```bash
+  ```shell
   -H "Authorization: Bearer $GITLAB_REGISTRY_JWT"
   ```
 
@@ -216,7 +216,7 @@ The commands below assume a self-signed registry with authentication enabled, as
 
 ##### Retrieve a list of images available in the repository
 
-```bash
+```shell
 curl --cacert registry_host.crt -H "Authorization: Bearer $GITLAB_REGISTRY_JWT" \
   gdk.test:5000/v2/_catalog
 ```
@@ -235,7 +235,7 @@ curl --cacert registry_host.crt -H "Authorization: Bearer $GITLAB_REGISTRY_JWT" 
 
 ##### List tags for a specific image
 
-```bash
+```shell
 curl --cacert registry_host.crt -H "Authorization: Bearer $GITLAB_REGISTRY_JWT" \
   gdk.test:5000/v2/secure-group/tests/ruby-bundler/master/tags/list
 ```
@@ -252,7 +252,7 @@ curl --cacert registry_host.crt -H "Authorization: Bearer $GITLAB_REGISTRY_JWT" 
 
 ##### Get image manifest
 
-```bash
+```shell
 curl --cacert registry_host.crt -H "Authorization: Bearer $GITLAB_REGISTRY_JWT" \
   gdk.test:5000/v2/secure-group/tests/ruby-bundler/master/manifests/3bf5c8efcd276bf6133ccb787e54b7020a00b99c
 ```
@@ -272,7 +272,7 @@ curl --cacert registry_host.crt -H "Authorization: Bearer $GITLAB_REGISTRY_JWT" 
 
 ##### Get image layers
 
-```bash
+```shell
 curl --cacert registry_host.crt \
   -H "Authorization: Bearer $GITLAB_REGISTRY_JWT" \
   -H 'Accept: application/vnd.docker.distribution.manifest.v2+json' \
@@ -299,7 +299,7 @@ curl --cacert registry_host.crt \
 
 ##### Get content of image layer
 
-```bash
+```shell
 curl --cacert registry_host.crt -H "Authorization: Bearer $GITLAB_REGISTRY_JWT" \
   gdk.test:5000/v2/secure-group/tests/ruby-bundler/master/blobs/sha256:e79bb959ec00faf01da52437df4fad4537ec669f60455a38ad583ec2b8f00498
 ```
@@ -311,20 +311,20 @@ pipelines.
 
 1. Create a new project called `custom-docker-image` with the following `Dockerfile`:
 
-   ```docker
+   ```dockerfile
    FROM alpine
    RUN apk add --no-cache --update curl
    ```
 
 1. Build and tag an image from within the same directory as the `Dockerfile` for the project.
 
-   ```bash
+   ```shell
    docker build -t gdk.test:5000/custom-docker-image .
    ```
 
 1. Push the image to the registry. (**Note:** See [Configuring the GitLab Docker runner to automatically pull images](#configuring-the-gitlab-docker-runner-to-automatically-pull-images) for the preferred method which doesn't require you to constantly push the image after each change.)
 
-   ```bash
+   ```shell
    docker push gdk.test:5000/custom-docker-image
    ```
 
@@ -486,7 +486,7 @@ use `HTTP` when fetching the container image from our insecure registry.
 
 To determine if you're using `docker-machine`, execute the following command:
 
-```bash
+```shell
 export | grep -i docker
 
 DOCKER_CERT_PATH=~/.docker/machine/machines/default
@@ -499,7 +499,7 @@ If a list of environment variables are returned as above, this means that you're
 
 To switch from `docker-machine` to `docker-desktop-for-mac`, simply unset the above environment variables:
 
-```bash
+```shell
 unset DOCKER_CERT_PATH DOCKER_HOST DOCKER_MACHINE_NAME DOCKER_TLS_VERIFY
 ```
 
@@ -509,26 +509,26 @@ To test development versions of the container registry against GDK:
 
 1. Within the [container registry](https://gitlab.com/gitlab-org/container-registry) project root, build and tag an image that includes your changes:
 
-   ```bash
+   ```shell
    docker build -t registry:dev .
    ```
 
 1. Write the image tag in the `registry_image` file and reconfigure GDK:
 
-   ```bash
+   ```shell
    echo registry:dev > registry_image
    gdk reconfigure
    ```
 
 1. Restart GDK:
 
-   ```bash
+   ```shell
    gdk restart
    ```
 
 1. Inspect docker to confirm that the development image of the registry is running locally:
 
-   ```bash
+   ```shell
    docker ps
    CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
    bc6c0efa5582        registry:dev        "registry serve /etc…"   7 seconds ago       Up 6 seconds                            romantic_nash

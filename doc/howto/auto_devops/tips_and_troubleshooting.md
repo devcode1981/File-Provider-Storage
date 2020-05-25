@@ -80,13 +80,13 @@ GitLab from the virtual machine.
 You can use [`unison`](https://www.cis.upenn.edu/~bcpierce/unison/index.html)
 to synchronize your local and remote files. Use:
 
-```bash
+```shell
 unison -batch ./gdk ssh://my-account@gcp.vm.example.com
 ```
 
 You need to install `unison` locally and on the remote machine with
 
-```bash
+```shell
 apt-get install unison
 ```
 
@@ -137,7 +137,7 @@ If not set up correctly, expect `502 Bad Gateway` responses when navigating to `
 
 After following the steps indicated in the [autodevops guide](../auto_devops.md), the Procfile located in the root of the GDK installation won’t have the tunnel configuration. If the Procfile is correct, you should find these lines:
 
-```bash
+```shell
 # Tunneling
 #
 tunnel_gitlab: ssh -N -R [PORT]:localhost:3333 -o ControlPath=none -o ControlMaster=no qa-tunnel.gitlab.info
