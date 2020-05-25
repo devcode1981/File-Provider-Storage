@@ -22,5 +22,6 @@ wait_for_boot
 
 # test GDK components update
 update
+doctor
 wait_for_boot
 "${parent_path}"/test_url
