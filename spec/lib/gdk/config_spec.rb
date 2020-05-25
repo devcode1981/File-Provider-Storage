@@ -238,6 +238,18 @@ describe GDK::Config do
         expect(config.gitlab.dir).to eq(Pathname.new('/home/git/gdk/gitlab'))
       end
     end
+
+    describe '#__socket_file' do
+      it 'returns the GitLab socket path' do
+        expect(config.gitlab.__socket_file).to eq(Pathname.new('/home/git/gdk/gitlab.socket'))
+      end
+    end
+
+    describe '#__socket_file_escaped' do
+      it 'returns the GitLab socket path CGI escaped' do
+        expect(config.gitlab.__socket_file_escaped.to_s).to eq('%2Fhome%2Fgit%2Fgdk%2Fgitlab.socket')
+      end
+    end
   end
 
   describe 'webpack' do
