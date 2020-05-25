@@ -848,7 +848,7 @@ npm install --global yarn
 
 Most `brew` problems can be sniffed out by running
 
-```bash
+```shell
 brew doctor
 ```
 
@@ -856,7 +856,7 @@ However, older installations may have significant cruft leftover from previous
 installations and updates. To manually remove outdated downloads for all
 formulae, casks, and stale lockfiles, run:
 
-```bash
+```shell
 brew cleanup
 ```
 
