@@ -142,7 +142,7 @@ module GDK
       end
 
       string :tunnel_host do
-        next 'localhost' if config.auto_devops.enabled
+        next config.local_hostname if config.auto_devops.enabled
 
         config.hostname
       end
