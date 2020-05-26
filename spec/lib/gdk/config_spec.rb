@@ -250,6 +250,14 @@ describe GDK::Config do
         expect(config.gitlab.__socket_file_escaped.to_s).to eq('%2Fhome%2Fgit%2Fgdk%2Fgitlab.socket')
       end
     end
+
+    describe 'actioncable' do
+      describe '#__socket_file' do
+        it 'returns the GitLab ActionCable socket path' do
+          expect(config.gitlab.actioncable.__socket_file).to eq(Pathname.new('/home/git/gdk/gitlab.actioncable.socket'))
+        end
+      end
+    end
   end
 
   describe 'webpack' do
