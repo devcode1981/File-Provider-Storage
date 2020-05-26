@@ -63,7 +63,7 @@ class Shellout
   def popen
     # Source: https://nickcharlton.net/posts/ruby-subprocesses-with-stdout-stderr-streams.html
     Open3.popen3(*args) do |_, stdout, stderr, thread|
-      { out: stdout, err: stderr }.each do |key, stream|
+      { out: stdout, err: stderr }.map do |key, stream|
         Thread.new do
           until (line = stream.gets).nil?
             if block_given?
@@ -75,7 +75,7 @@ class Shellout
             end
           end
         end
-      end
+      end.each(&:join)
 
       thread.join
       @status = thread.value
