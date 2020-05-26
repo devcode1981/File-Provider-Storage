@@ -14,8 +14,8 @@ Read on for installation instructions or skip to
 * Who should use GDK?: Anyone (both GitLab team members or wider community members) who is doing development work and contributing to GitLab should use the GDK.
 * Benefits of GDK: GDK allows you to test your changes locally on your workstation and this will isolate and speed up your development work.
 * Where to get help when using the GDK:
-    * GitLab team members: #gdk channel on GitLab Slack. 
-    * Wider community members: [Gitter contributors room](https://gitter.im/gitlab/contributors). 
+    * GitLab team members: #gdk channel on GitLab Slack.
+    * Wider community members: [Gitter contributors room](https://gitter.im/gitlab/contributors).
 
 ## Contributing to GitLab Development Kit
 
