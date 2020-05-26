@@ -7,6 +7,32 @@ describe Shellout do
 
   subject { described_class.new(command) }
 
+  describe '#args' do
+    let(:command_as_array) { %w[echo foo] }
+
+    context 'when command is a String' do
+      it 'parses correctly' do
+        expect(subject.args).to eq([command])
+      end
+    end
+
+    context 'when command is an Array' do
+      let(:command) { command_as_array }
+
+      it 'parses correctly' do
+        expect(subject.args).to eq(command)
+      end
+    end
+
+    context 'when command is a series of arguments' do
+      subject { described_class.new('echo', 'foo') }
+
+      it 'parses correctly' do
+        expect(subject.args).to eq(command_as_array)
+      end
+    end
+  end
+
   describe '#run' do
     it 'returns output of shell command' do
       expect(subject.run).to eq('foo')

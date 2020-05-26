@@ -5,8 +5,8 @@ require 'open3'
 class Shellout
   attr_reader :args, :opts
 
-  def initialize(args, **opts)
-    @args = args
+  def initialize(*args, **opts)
+    @args = args.flatten
     @opts = opts
   end
 
