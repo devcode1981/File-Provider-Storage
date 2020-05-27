@@ -17,7 +17,7 @@ Read on for installation instructions or skip to
     * GitLab team members: #gdk channel on GitLab Slack.
     * Wider community members:
         * [Gitter contributors room](https://gitter.im/gitlab/contributors).
-        * [GitLab Forum](https://forum.gitlab.com/c/community-contributions/15).
+        * [GitLab Forum](https://forum.gitlab.com/c/community-contributions).
 
 ## Contributing to GitLab Development Kit
 
