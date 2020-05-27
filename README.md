@@ -15,9 +15,9 @@ Read on for installation instructions or skip to
 * Benefits of GDK: The GDK allows you to test your changes locally on your workstation in an isolated manner which can speed up the time it takes to make contributions.
 * Where to get help when using the GDK:
     * GitLab team members: #gdk channel on GitLab Slack.
-    * Wider community members: 
+    * Wider community members:
         * [Gitter contributors room](https://gitter.im/gitlab/contributors).
-        * [GitLab Forum](https://forum.gitlab.com/c/community-contributions/15)
+        * [GitLab Forum](https://forum.gitlab.com/c/community-contributions/15).
 
 ## Contributing to GitLab Development Kit
 
