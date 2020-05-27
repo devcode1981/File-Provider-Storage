@@ -45,20 +45,20 @@ module GDK
     string(:local_hostname) { '127.0.0.1' }
 
     string :hostname do
-      next "#{config.auto_devops.gitlab.port}.qa-tunnel.gitlab.info" if config.auto_devops.enabled
+      next "#{config.auto_devops.gitlab.port}.qa-tunnel.gitlab.info" if config.auto_devops?
 
       read!('hostname') || read!('host') || config.local_hostname
     end
 
     integer :port do
-      next 443 if config.auto_devops.enabled
+      next 443 if config.auto_devops?
 
       read!('port') || 3000
     end
 
     settings :https do
       bool :enabled do
-        next true if config.auto_devops.enabled
+        next true if config.auto_devops?
 
         read!('https_enabled') || false
       end
@@ -78,7 +78,7 @@ module GDK
 
     settings :webpack do
       string :host do
-        next '0.0.0.0' if config.auto_devops.enabled
+        next '0.0.0.0' if config.auto_devops?
 
         read!('webpack_host') || config.hostname
       end
@@ -125,25 +125,25 @@ module GDK
 
     settings :registry do
       bool :enabled do
-        next true if config.auto_devops.enabled
+        next true if config.auto_devops?
 
         read!('registry_enabled') || false
       end
 
       string :host do
-        next "#{config.auto_devops.registry.port}.qa-tunnel.gitlab.info" if config.auto_devops.enabled
+        next "#{config.auto_devops.registry.port}.qa-tunnel.gitlab.info" if config.auto_devops?
 
         config.hostname
       end
 
       string :api_host do
-        next config.local_hostname if config.auto_devops.enabled
+        next config.local_hostname if config.auto_devops?
 
         config.hostname
       end
 
       string :tunnel_host do
-        next config.local_hostname if config.auto_devops.enabled
+        next config.local_hostname if config.auto_devops?
 
         config.hostname
       end
@@ -161,7 +161,7 @@ module GDK
       end
 
       integer :external_port do
-        next 443 if config.auto_devops.enabled
+        next 443 if config.auto_devops?
 
         5000
       end
