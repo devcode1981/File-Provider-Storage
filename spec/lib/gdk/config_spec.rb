@@ -262,8 +262,20 @@ describe GDK::Config do
     end
 
     describe '#api_host' do
-      it 'returns the default hostname' do
-        expect(config.registry.api_host).to eq('gdk.example.com')
+      context 'when AutoDevOps is not enabled' do
+        let(:auto_devops_enabled) { false }
+
+        it 'returns the default hostname' do
+          expect(config.registry.api_host).to eq('gdk.example.com')
+        end
+      end
+
+      context 'when AutoDevOps is enabled' do
+        let(:auto_devops_enabled) { true }
+
+        it 'returns the default local hostname' do
+          expect(config.registry.api_host).to eq('127.0.0.1')
+        end
       end
     end
 
