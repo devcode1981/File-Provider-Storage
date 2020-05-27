@@ -78,7 +78,7 @@ module GDK
 
     settings :webpack do
       string :host do
-        next '0.0.0.0' if config.auto_devops?
+        next config.auto_devops.listen_address if config.auto_devops?
 
         read!('webpack_host') || config.hostname
       end
@@ -93,7 +93,7 @@ module GDK
 
       string :__active_host do
         if config.auto_devops? || config.nginx?
-          '0.0.0.0'
+          config.auto_devops.listen_address
         else
           # Workhorse is the user-facing entry point whenever neither nginx nor
           # AutoDevOps is used, so in that situation use the configured GDK hostname.
@@ -184,6 +184,7 @@ module GDK
 
     settings :auto_devops do
       bool(:enabled) { read!('auto_devops_enabled') || false }
+      string(:listen_address) { '0.0.0.0' }
       settings :gitlab do
         integer(:port) { read_or_write!('auto_devops_gitlab_port', rand(20000..24999)) }
       end
