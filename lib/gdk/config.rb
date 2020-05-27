@@ -92,13 +92,9 @@ module GDK
       integer(:configured_port) { 3333 }
 
       string :__active_host do
-        if config.auto_devops? || config.nginx?
-          config.auto_devops.listen_address
-        else
-          # Workhorse is the user-facing entry point whenever neither nginx nor
-          # AutoDevOps is used, so in that situation use the configured GDK hostname.
-          config.hostname
-        end
+        next config.auto_devops.listen_address if config.auto_devops?
+
+        config.hostname
       end
 
       integer :__active_port do
