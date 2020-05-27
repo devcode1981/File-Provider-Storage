@@ -4,7 +4,7 @@ module GDK
   module Diagnostic
     class RubyGems < Base
       TITLE = 'Ruby Gems'
-      GEMS_TO_CHECK = %w[ffi charlock_holmes eventmachine].freeze
+      GEMS_TO_CHECK = %w[charlock_holmes eventmachine ffi pg].freeze
 
       def diagnose
         # no-op
