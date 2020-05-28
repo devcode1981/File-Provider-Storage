@@ -10,7 +10,8 @@ Read on for installation instructions or skip to
 
 ## Overview
 
-* What is the GitLab Development Kit (GDK)?: The GDK helps you install a GitLab instance on your workstation and includes a collection of resources such as Ruby, Node.js, Go, PostgreSQL, Redis, etc. to run GitLab.
+The GitLab Development Kit (GDK) helps you install a GitLab instance on your workstation. It includes a collection of GitLab requirements such as Ruby, Node.js, Go, PostgreSQL, Redis, and more.
+
 * Who should use the GDK?: Anyone (both GitLab team members and wider community members) who is contributing to GitLab should use the GDK.
 * Benefits of GDK: The GDK allows you to test your changes locally on your workstation in an isolated manner which can speed up the time it takes to make contributions.
 For help with GDK:
