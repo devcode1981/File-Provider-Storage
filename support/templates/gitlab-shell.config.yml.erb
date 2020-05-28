@@ -13,7 +13,7 @@ user: git
 # only listen on a Unix domain socket. For Unix domain sockets use
 # "http+unix://<urlquoted-path-to-socket>", e.g.
 # "http+unix://%2Fpath%2Fto%2Fsocket"
-gitlab_url: "http+unix://<%= config.gdk_root.to_s.gsub('/', '%2F') %>%2Fgitlab.socket"
+gitlab_url: "http+unix://<%= config.gitlab.__socket_file_escaped %>"
 
 # See installation.md#using-https for additional HTTPS configuration details.
 http_settings:

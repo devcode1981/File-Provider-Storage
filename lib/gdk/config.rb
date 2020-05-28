@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'etc'
+require 'cgi'
 require_relative 'config_settings'
 
 module GDK
@@ -337,6 +338,12 @@ module GDK
 
     settings :gitlab do
       path(:dir) { config.gdk_root.join('gitlab') }
+      path(:__socket_file) { config.gdk_root.join('gitlab.socket') }
+      string(:__socket_file_escaped) { CGI.escape(config.gitlab.__socket_file.to_s) }
+
+      settings :actioncable do
+        path(:__socket_file) { config.gdk_root.join('gitlab.actioncable.socket') }
+      end
     end
   end
 end
