@@ -1,4 +1,4 @@
-# GitLab Development Kit
+# GitLab Development Kit (GDK)
 
 [![build status](https://gitlab.com/gitlab-org/gitlab-development-kit/badges/master/pipeline.svg)](https://gitlab.com/gitlab-org/gitlab-development-kit/pipelines)
 
@@ -10,12 +10,13 @@ Read on for installation instructions or skip to
 
 ## Overview
 
-GitLab Development Kit (GDK) provides a collection of scripts and
-other resources to install and manage a GitLab installation for
-development purposes. The source code of GitLab is spread over
-multiple repositories and it requires Ruby, Go, PostgreSQL, Redis
-and more to run. GDK helps you install and configure all these
-different components, and start/stop them when you work on GitLab.
+The GitLab Development Kit (GDK) helps you install a GitLab instance on your workstation. It includes a collection of GitLab requirements such as Ruby, Node.js, Go, PostgreSQL, Redis, and more.
+
+The GDK is recommended for anyone contributing to the GitLab codebase, whether a GitLab team member or a member of the wider community. It allows you to test your changes locally on your workstation in an isolated manner which can speed up the time it takes to make successful contributions.
+
+For help with GDK:
+    * GitLab team members can use the #gdk channel on the GitLab Slack workspace.
+    * Wider community members can use the [Gitter contributors room](https://gitter.im/gitlab/contributors) or [GitLab Forum](https://forum.gitlab.com/c/community-contributions).
 
 ## Contributing to GitLab Development Kit
 
