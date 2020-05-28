@@ -21,7 +21,7 @@ To enable Docker Registry on both nodes:
 
 1. Follow the instructions for [Docker Registry](registry.md) on both nodes.
 1. Ensure the registry service port used on the secondary is different to the port used
-   on the primary by [changing one of the port numbers](registry.md#changing-the-port-number-of-the-gitlab-local-container-registry).
+   on the primary by [changing one of the port numbers](registry.md).
 
 ### Enable notification on primary's Registry
 

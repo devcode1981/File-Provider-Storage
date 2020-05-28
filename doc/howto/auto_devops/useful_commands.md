@@ -2,7 +2,7 @@
 
 This is a reference list of some useful commands one might need when contributing to Auto DevOps.
 
-Be sure also to check our [Tips and Troubleshooting](./tips_and_troubleshooting) section.
+Be sure also to check our [Tips and Troubleshooting](tips_and_troubleshooting.md) section.
 
 ## `kubectl` Config
 

@@ -363,7 +363,8 @@ git commit --allow-empty -m 'I can commit'
 
 ## 'gem install nokogiri' fails
 
-Make sure that Xcode Command Line Tools installed on your development machine. For the discussion see this [issue](https://gitlab.com/gitlab-org/gitlab-development-kit/issues/124)
+Make sure that Xcode Command Line Tools installed on your development machine. For the discussion see
+this [issue](https://gitlab.com/gitlab-org/gitlab-development-kit/issues/124).
 
 ```shell
 brew unlink gcc-4.2      # you might not need this step
@@ -526,7 +527,7 @@ deleted from the database.
 ## Webpack
 
 Since webpack has been added as a new background process which GitLab depends on
-in development, the [GDK must be updated and reconfigured](../update-gdk.md) in
+in development, the [GDK must be updated and reconfigured](index.md#update-gdk) in
 order to work properly again.
 
 If you still encounter some errors, see the troubleshooting FAQ below:

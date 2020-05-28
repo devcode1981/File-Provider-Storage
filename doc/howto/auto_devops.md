@@ -50,7 +50,7 @@ depends on our infrastructure. For non-GitLab team members you can see
    ```
 
 1. Set up the GDK for your workstation following [the preparation
-   instructions](../prepare.md) and [setup instructions](../set-up-gdk.md)
+   instructions](../prepare.md) and [setup instructions](../index.md)
 
 NOTE: Running Auto DevOps flow [downloads/uploads gigabytes of data on each
 run](#massive-bandwidth-used-by-auto-devops). For this reason it is not a good
@@ -63,7 +63,7 @@ IMPORTANT: These steps are currently only applicable to GitLab team members as i
 depends on our infrastructure. For non-GitLab team members you can see
 [Alternatives](#alternatives) below.
 
-From the GDK directory, create [a `gdk.yml` configuration file](configuration.md)
+From the GDK directory, create [a `gdk.yml` configuration file](../configuration.md)
 containing the following settings:
 
 ```shell
@@ -136,7 +136,7 @@ the GCP console:
 
 Then copy the Client ID and Client secret from that page and use those
 to reconfigure GDK using the instructions at [Google Oauth2
-howto](/doc/howto/google-oauth2.md#gdk-setup).
+howto](google-oauth2.md#gdk-setup).
 
 ## Conclusion
 
@@ -553,7 +553,7 @@ clean them up yourself while you're on this page.
 
 Be sure to check out:
 
-- [Auto DevOps - Tips and Troubleshooting](doc/howto/auto_devops/tips_and_troubleshooting.md)
-- [Auto DevOps - Useful Commands](doc/howto/auto_devops/useful_commands.md)
+- [Auto DevOps - Tips and Troubleshooting](auto_devops/tips_and_troubleshooting.md)
+- [Auto DevOps - Useful Commands](auto_devops/useful_commands.md)
 
 They might save you a lot of time during work.

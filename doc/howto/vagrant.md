@@ -2,7 +2,7 @@
 
 In this file we explain different methods of setting up a Vagrant
 virtual machine to do GitLab development in. Please see the [main
-README](../README.md#installation) for instructions how to install GDK
+README](../../README.md#installation) for instructions how to install GDK
 after you have set up your Vagrant machine.
 
 ## Clone the GitLab Development Kit
@@ -39,7 +39,7 @@ To avoid usage of slow VirtualBox shared folders we use NFS here.
    up, and install all the prerequisites.
 1. Run `vagrant ssh` to SSH into the box.
 1. Run `cd /vagrant`.
-1. Continue setup at [Installation](https://gitlab.com/gitlab-org/gitlab-development-kit/blob/master/doc/set-up-gdk.md#develop-against-the-gitlab-project-default) below.
+1. Continue setup at [Installation](../index.md#develop-against-the-gitlab-project-default).
 
 ### Vagrant with Docker
 
@@ -58,7 +58,7 @@ OSes like Windows/OSX you will have to run the entire Docker hypervisor in a VM
 1. Run `vagrant up --provider=docker --provision` in this directory. Vagrant will build a
    docker image and start the container.
 1. Run `vagrant ssh` to SSH into the container.
-1. Continue setup at [Installation](https://gitlab.com/gitlab-org/gitlab-development-kit/blob/master/doc/set-up-gdk.md#install-gdk) below.
+1. Continue setup at [Installation](../index.md).
 
 ### Vagrant development details
 
@@ -66,7 +66,7 @@ OSes like Windows/OSX you will have to run the entire Docker hypervisor in a VM
   (from an elevated command prompt if on Windows).
 - When using Docker, vagrant can ask you about password. The default password
   is `tcuser`(You may be asked to type-in the password several times, but for different operations thus you need to key in the same password: `tcuser`).
-- Follow the general [GDK setup documentation](set-up-gdk.md) but running the
+- Follow the general [GDK setup documentation](../index.md) but running the
   commands in the `vagrant ssh` session.
 - Files in the `gitlab`, `go-gitlab-shell` and `gitlab-runner` folders will be synced between the
   host OS & guest OS so can be edited on either the host (under this folder) or
@@ -91,4 +91,4 @@ OSes like Windows/OSX you will have to run the entire Docker hypervisor in a VM
 
 ## Next step
 
-After installation [learn how to use GDK](./howto/README.md).
+After installation [learn how to use GDK](index.md).

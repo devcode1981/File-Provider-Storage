@@ -5,8 +5,7 @@
 Configure and manage a [GitLab](https://about.gitlab.com) development
 environment.
 
-Read on for installation instructions or skip to
-[doc/howto](doc/howto/README.md) for usage documentation.
+Read on for installation instructions or skip to the [usage documentation](doc/howto/index.md).
 
 ## Overview
 
@@ -32,17 +31,17 @@ virtualized installation will be much slower running the app and the tests.
 To do a native install:
 
 1. [Prepare your computer](doc/prepare.md)
-1. [Set-up GDK](doc/set-up-gdk.md)
+1. [Set-up GDK](doc/index.md)
 
 Or if you want to use a slower virtualized installation with [Vagrant](https://www.vagrantup.com/),
-please see the [instructions for using Vagrant with VirtualBox or Docker](doc/vagrant.md).
+please see the [instructions for using Vagrant with VirtualBox or Docker](doc/howto/vagrant.md).
 
 You can also install GDK on [Minikube](https://github.com/kubernetes/minikube),
 see [Kubernetes docs](doc/kubernetes.md).
 
-After installation, [learn how to use GDK](doc/howto/README.md).
+After installation, [learn how to use GDK](doc/howto/index.md).
 
-If you have an old installation, [update your existing GDK installation](doc/set-up-gdk.md#update-gdk).
+If you have an old installation, [update your existing GDK installation](doc/index.md#update-gdk).
 
 ## Design goals
 

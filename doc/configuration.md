@@ -23,7 +23,7 @@ There are many configuration options for GDK. GDK can be configured using either
 Placing your settings in `gdk.yml` at the root of GDK is the preferred configuration
 method.
 
-To see available configuration settings, see [`gdk.example.yml`](../../gdk.example.yml).
+To see available configuration settings, see [`gdk.example.yml`](../gdk.example.yml).
 
 This file contains all possible settings with example values. Note
 that these values may not be the default that GDK will use.
@@ -59,7 +59,7 @@ Here are a few settings worth mentioning:
 |------------------------|---------|--------------------------------------------------------------------------------------------|
 | `port`                 | `3000`  | Select the port to run GDK on, useful when running multiple GDKs in parallel.              |
 | `webpack.port`         | `3808`  | Also useful to configure when running GDKs in parallel. [See below for more webpack options](#webpack-settings) |
-| `gitlab_pages.port`    | `3010`  | Specify on which port GitLab Pages should run. See also the [Pages guide](pages.md).       |
+| `gitlab_pages.port`    | `3010`  | Specify on which port GitLab Pages should run. See also the [Pages guide](howto/pages.md). |
 | `relative_url_root`    | `/`     | When you want to test GitLab being available on a different path than `/`, e.g. `/gitlab`. |
 | `object_store.enabled` | `false` | Set this to `true` to enable Object Storage with MinIO.                                    |
 | `registry.enabled`     | `false` | Set this to `true` to enable container registry.                                           |
@@ -244,7 +244,7 @@ If you experience any problems with one of the modes, you can quickly change the
 The GitLab application exposes various configuration options for webpack via
 ENV variables. These can be modified to improve performance or enable debugging.
 
-These settings can be configured using [`env.runit`](../runit.md#modifying-environment-configuration-for-services).
+These settings can be configured using [`env.runit`](runit.md#modifying-environment-configuration-for-services).
 
 | Variable | Default | Description |
 | ------------- | ------- | ----------- |

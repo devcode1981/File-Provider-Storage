@@ -39,7 +39,7 @@ in the output.
 
 #### Use an IP address with your GDK installation, `localhost` will not work
 
-This can be accomplished by [updating the GDK configuration](configuration.md) by
+This can be accomplished by [updating the GDK configuration](../configuration.md) by
 creating or updating the `gdk.yml` file in the root of your GDK directory.
 
 The file should contain the intended host, such as `127.0.0.1` or `0.0.0.0`:

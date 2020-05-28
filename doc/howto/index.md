@@ -4,15 +4,15 @@ See the [top level README](../../README.md#getting-started) for GDK
 installation instructions.
 
 Main purpose of GitLab Development Kit is to make GitLab development easier.
-Please see [https://docs.gitlab.com/ce/development/README.html](https://docs.gitlab.com/ce/development/README.html)
-to learn how to develop GitLab CE.
+Please see [GitLab Contributor documentation](https://docs.gitlab.com/ee/development/README.html)
+to learn how to contribute to GitLab.
 
 ## Basic
 
 - [Browse your development GitLab server](browse.md)
-- [GitLab developer documentation](https://docs.gitlab.com/ce/development/README.html)
-- [GDK commands](gdk_commands.md)
-- [Installation, configuration and development troubleshooting](troubleshooting.md)
+- [GitLab developer documentation](https://docs.gitlab.com/ee/development/README.html)
+- [GDK commands](../gdk_commands.md)
+- [Installation, configuration and development troubleshooting](../troubleshooting.md)
 - [Cheat sheet](../../HELP): `cat HELP`
 
 ## Tips and tricks
@@ -20,7 +20,7 @@ to learn how to develop GitLab CE.
 - [GitLab performance metrics](performance_metrics.md)
 - [Local network binding](local_network.md)
 - [Load testing](load_testing.md)
-- [Configuration](configuration.md)
+- [Configuration](../configuration.md)
 
 ## Special topics
 
@@ -30,7 +30,7 @@ to learn how to develop GitLab CE.
 - [LDAP](ldap.md)
 - [Elasticsearch](elasticsearch.md)
 - [NFS](nfs.md)
-- [HTTPS](https.md)
+- [HTTPS](nginx.md)
 - [SSH](ssh.md)
 - [Gitaly and Praefect](gitaly.md)
 - [Git push options](git_push_options.md)

@@ -43,7 +43,7 @@ Reference documentation:
    1. Create a cloud instance, ensuring that visibility is set to 'public'. See [instructions](#configuring-a-hosted-grafana-instance).
 1. Add a DataSource of type **Prometheus**.
 1. In the URL field, add `http://<ip>:<port>` as detailed in
-   [Exposing the Prometheus endpoint for a GitLab-managed cluster](#exposing-the-promtheus-endpoint-for-a-gitlab-manged-cluster).
+   [Exposing the Prometheus endpoint for a GitLab-managed cluster](#exposing-the-prometheus-endpoint-for-a-gitlab-managed-cluster).
 1. Click **Save**.
 1. Create a dashboard using Prometheus metrics. Refer to the following screenshot:
 
