@@ -216,11 +216,9 @@ describe GDK::Config do
     end
   end
 
-  describe 'local_hostname' do
-    describe '#local_hostname' do
-      it 'returns 127.0.0.1 by default' do
-        expect(config.local_hostname).to eq('127.0.0.1')
-      end
+  describe '#listen_address' do
+    it 'returns 127.0.0.1 by default' do
+      expect(config.listen_address).to eq('127.0.0.1')
     end
   end
 

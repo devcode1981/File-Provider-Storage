@@ -42,12 +42,12 @@ module GDK
 
     path(:repositories_root) { config.gdk_root.join('repositories') }
 
-    string(:local_hostname) { '127.0.0.1' }
+    string(:listen_address) { '127.0.0.1' }
 
     string :hostname do
       next "#{config.auto_devops.gitlab.port}.qa-tunnel.gitlab.info" if config.auto_devops?
 
-      read!('hostname') || read!('host') || config.local_hostname
+      read!('hostname') || read!('host') || config.listen_address
     end
 
     integer :port do
@@ -133,13 +133,13 @@ module GDK
       end
 
       string :api_host do
-        next config.local_hostname if config.auto_devops?
+        next config.listen_address if config.auto_devops?
 
         config.hostname
       end
 
       string :tunnel_host do
-        next config.local_hostname if config.auto_devops?
+        next config.listen_address if config.auto_devops?
 
         config.hostname
       end
@@ -168,7 +168,7 @@ module GDK
 
     settings :object_store do
       bool(:enabled) { read!('object_store_enabled') || false }
-      string(:host) { config.local_hostname }
+      string(:host) { config.listen_address }
       integer(:port) { read!('object_store_port') || 9000 }
     end
 
