@@ -39,6 +39,7 @@ ifeq ($(shallow_clone),true)
 git_depth_param = --depth=1
 endif
 
+# This is used by `gdk install`
 all: preflight-checks \
 gitlab-setup \
 gitlab-shell-setup \
@@ -50,8 +51,11 @@ prom-setup \
 object-storage-setup \
 gitlab-elasticsearch-indexer-setup
 
+# This is used by `gdk update`
+# 
 # Pull gitlab directory first since dependencies are linked from there.
-update: ensure-databases-running unlock-dependency-installers \
+update: ensure-databases-running \
+unlock-dependency-installers \
 gitlab/.git/pull \
 gitlab-shell-update \
 gitlab-workhorse-update \
