@@ -28,11 +28,14 @@
 /builds
 /elasticsearch*
 /env.runit
+/gdk-ce/**
 /gdk-config.mk
+/gdk-ee/**
 /gdk.yml
 /gem/*.gem
 /gettext.log
 /gitaly/
+/gitlab-development-kit/**
 /gitlab-docs
 /gitlab-elasticsearch-indexer
 /gitlab-pages/bin
@@ -93,6 +96,3 @@
 /services/
 /sv/
 /webpack_port
-gdk-ce/**
-gdk-ee/**
-gitlab-development-kit/**
