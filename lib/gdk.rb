@@ -95,7 +95,7 @@ module GDK
       abort 'Usage: gdk config get slug.of.the.conf.value' if config_command != 'get' || ARGV.empty?
 
       begin
-        puts Config.new.dig(*ARGV)
+        puts config.dig(*ARGV)
         true
       rescue GDK::ConfigSettings::SettingUndefined
         abort "Cannot get config for #{ARGV.join('.')}"
@@ -104,12 +104,12 @@ module GDK
       remember!(GDK.root)
       exec(MAKE, 'touch-examples', 'unlock-dependency-installers', 'postgresql-sensible-defaults', 'all', chdir: GDK.root)
     when 'psql'
-      pg_port = Config.new.postgresql.port
+      pg_port = config.postgresql.port
       args = ARGV.empty? ? ['-d', 'gitlabhq_development'] : ARGV
 
       exec('psql', '-h', GDK.root.join('postgresql').to_s, '-p', pg_port.to_s, *args, chdir: GDK.root)
     when 'redis-cli'
-      exec('redis-cli', '-s', GDK::Config.new.redis_socket.to_s, *ARGV, chdir: GDK.root)
+      exec('redis-cli', '-s', config.redis_socket.to_s, *ARGV, chdir: GDK.root)
     when 'env'
       GDK::Env.exec(ARGV)
     when 'start', 'status'
@@ -134,7 +134,7 @@ module GDK
       system('gdk', 'stop', 'rails-web')
       exec(
         { 'RAILS_ENV' => 'development' },
-        *%W[bundle exec thin --socket=#{GDK::Config.new.gitlab.__socket_file} start],
+        *%W[bundle exec thin --socket=#{config.gitlab.__socket_file} start],
         chdir: GDK.root.join('gitlab')
       )
     when 'doctor'
@@ -150,6 +150,10 @@ module GDK
     end
   end
   # rubocop:enable Metrics/AbcSize
+
+  def self.config
+    @config ||= GDK::Config.new
+  end
 
   def self.puts_separator
     puts '-------------------------------------------------------'
