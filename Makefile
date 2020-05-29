@@ -39,7 +39,27 @@ ifeq ($(shallow_clone),true)
 git_depth_param = --depth=1
 endif
 
-all: preflight-checks gitlab-setup gitlab-shell-setup gitlab-workhorse-setup gitlab-pages-setup support-setup gitaly-setup prom-setup object-storage-setup gitlab-elasticsearch-indexer-setup
+all: preflight-checks \
+gitlab-setup \
+gitlab-shell-setup \
+gitlab-workhorse-setup \
+gitlab-pages-setup \
+support-setup \
+gitaly-setup \
+prom-setup \
+object-storage-setup \
+gitlab-elasticsearch-indexer-setup
+
+# Pull gitlab directory first since dependencies are linked from there.
+update: ensure-databases-running unlock-dependency-installers \
+gitlab/.git/pull \
+gitlab-shell-update \
+gitlab-workhorse-update \
+gitlab-pages-update \
+gitaly-update \
+gitlab-update \
+gitlab-elasticsearch-indexer-update \
+show-date
 
 self-update: unlock-dependency-installers
 	@echo
@@ -51,10 +71,6 @@ self-update: unlock-dependency-installers
 		git checkout master ${QQ} && \
 		git fetch ${QQ} && \
 		support/self-update-git-worktree ${QQ}
-
-# Update gitlab, gitlab-shell, gitlab-workhorse, gitlab-pages and gitaly
-# Pull gitlab directory first since dependencies are linked from there.
-update: ensure-databases-running unlock-dependency-installers gitlab/.git/pull gitlab-shell-update gitlab-workhorse-update gitlab-pages-update gitaly-update gitlab-update gitlab-elasticsearch-indexer-update show-date
 
 clean-config:
 	$(Q)rm -rf \
