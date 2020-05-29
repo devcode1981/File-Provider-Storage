@@ -1,6 +1,6 @@
-# Set up and update GDK
+# Install, set up, and update GDK
 
-> 🚨**Note:** Before undertaking these steps, be sure you have [prepared your system](./prepare.md).🚨
+> 🚨**Note:** Before undertaking these steps, be sure you have [prepared your system](prepare.md).🚨
 
 To get GDK up and running:
 
@@ -10,7 +10,8 @@ To get GDK up and running:
 
 ## Install the `gitlab-development-kit` gem
 
-Execute the following with the Ruby version manager of your choice (`rvm`, `rbenv`, `chruby`, etc.) with the current [`gitlab` Ruby version](https://gitlab.com/gitlab-org/gitlab/blob/master/.ruby-version):
+Execute the following with the Ruby version manager of your choice (`rvm`, `rbenv`, `chruby`, etc.)
+with the current [`gitlab` Ruby version](https://gitlab.com/gitlab-org/gitlab/blob/master/.ruby-version):
 
 ```shell
 gem install gitlab-development-kit
@@ -30,10 +31,10 @@ gem install gitlab-development-kit
      ```
 
    - A custom directory, pass a directory name. For example, to initialize into
-     the `my_gitlab_development_kit` directory, run:
+     the `gdk` directory, run:
 
      ```shell
-     gdk init my_gitlab_development_kit
+     gdk init gdk
      ```
 
 ## Install GDK components
@@ -41,11 +42,8 @@ gem install gitlab-development-kit
 1. Change into the newly created GDK directory. For example:
 
    ```shell
-   cd gitlab-development-kit
+   cd gdk
    ```
-
-   If you specified a custom directory like `my_gitlab_development_kit` above, be
-   sure to use that instead.
 
 1. Install the necessary components (repositories, Ruby gem bundles, and
    configuration) using `gdk install`.
@@ -77,7 +75,8 @@ The clone will be done using [`git clone --depth=1`](https://www.git-scm.com/doc
 
 ### Develop against the GitLab FOSS project
 
-> Learn [how to create a fork](https://docs.gitlab.com/ee/user/project/repository/forking_workflow.html#creating-a-fork) of [GitLab FOSS](https://gitlab.com/gitlab-org/gitlab-foss).
+> Learn [how to create a fork](https://docs.gitlab.com/ee/user/project/repository/forking_workflow.html#creating-a-fork)
+> of [GitLab FOSS](https://gitlab.com/gitlab-org/gitlab-foss).
 
 - HTTP, run:
 
@@ -96,7 +95,8 @@ The clone will be done using [`git clone --depth=1`](https://www.git-scm.com/doc
 
 ### Develop in your own GitLab fork
 
-> Learn [how to create a fork](https://docs.gitlab.com/ee/user/project/repository/forking_workflow.html#creating-a-fork) of [GitLab](https://gitlab.com/gitlab-org/gitlab).
+> Learn [how to create a fork](https://docs.gitlab.com/ee/user/project/repository/forking_workflow.html#creating-a-fork)
+> of [GitLab](https://gitlab.com/gitlab-org/gitlab).
 
 - HTTP, run:
 
@@ -116,7 +116,7 @@ The clone will be done using [`git clone --depth=1`](https://www.git-scm.com/doc
 
 The `set-gitlab-upstream` script creates a remote named `upstream` for
 [the canonical GitLab repository](https://gitlab.com/gitlab-org/gitlab). It also
-modifies `gdk update` (See [Update `gitlab` and `gitlab-shell` repositories](howto/gdk_commands.md#update-gitlab-and-gitlab-shell-repositories))
+modifies `gdk update` (See [Update GitLab](gdk_commands.md#update-gitlab))
 to pull down from the upstream repository instead of your fork, making it easier
 to keep up-to-date with the project.
 
@@ -135,14 +135,17 @@ The host name `gdk.test` is now available for documentation steps and GDK tools.
 
 ## Common errors during installation and troubleshooting
 
-During `gdk install` process, you may encounter some dependencies related errors. Please refer to the [Troubleshooting page](./howto/troubleshooting.md) or [open an issue on GDK tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues) if you get stuck.
+During `gdk install` process, you may encounter some dependencies related errors. Please refer to
+the [Troubleshooting page](troubleshooting.md) or [open an issue on GDK tracker](https://gitlab.com/gitlab-org/gitlab-development-kit/issues)
+if you get stuck.
 
 ## GitLab Enterprise Features
 
 Instructions to generate a developer license can be found in the
-onboarding document: <https://about.gitlab.com/handbook/developer-onboarding/#working-on-gitlab-ee>.
+[onboarding documentation](https://about.gitlab.com/handbook/developer-onboarding/#working-on-gitlab-ee).
 
-The license key generator is only available for GitLab team members, who should use the "Sign in with GitLab" link using their `dev.gitlab.org` account.
+The license key generator is only available for GitLab team members, who should use the "Sign in with GitLab"
+link using their `dev.gitlab.org` account.
 
 ## Post-installation
 
@@ -182,9 +185,9 @@ gdk reconfigure
 
 You can find a bunch of other settings that are configurable in `gdk.example.yml`.
 
-Read the [configuration document](howto/configuration.md) for more details.
+Read the [configuration document](configuration.md) for more details.
 
-After installation [learn how to use GDK](howto/README.md) enable other features.
+After installation [learn how to use GDK](howto/index.md) enable other features.
 
 ### Running GitLab and GitLab FOSS concurrently
 

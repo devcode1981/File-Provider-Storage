@@ -22,7 +22,7 @@ The default version of Elasticsearch is automatically downloaded into your GDK r
 
 To enable the service and make it run as part of `gdk start`:
 
-1. Add these lines to your [`gdk.yml`](configuration.md):
+1. Add these lines to your [`gdk.yml`](../configuration.md):
 
    ```yaml
    elasticsearch:
@@ -38,7 +38,7 @@ The default Elasticsearch version is defined in [`lib/gdk/config.rb`](../../lib/
 
 To use a different version:
 
-1. Add the `version` and `checksum` keys to your [`gdk.yml`](configuration.md):
+1. Add the `version` and `checksum` keys to your [`gdk.yml`](../configuration.md):
 
    ```yaml
    elasticsearch:

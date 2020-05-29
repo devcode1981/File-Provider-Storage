@@ -8,7 +8,7 @@ won't be needed once [this feature is moved to Core](https://gitlab.com/gitlab-o
 
 To run Web IDE terminals on GDK, the following are required:
 
-- [GDK up and running](doc/set-up-gdk.md).
+- [GDK up and running](../index.md).
 - An [Ultimate license](https://about.gitlab.com/handbook/developer-onboarding/#working-on-gitlab-ee).
   Note that the license key generator is only available for GitLab team members.
 - CI/CD enabled on a local project. To check this:

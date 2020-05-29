@@ -1,14 +1,14 @@
 # Using GitLab Runner with GDK
 
-Most features of [GitLab CI](http://docs.gitlab.com/ce/ci/) need a
-[Runner](http://docs.gitlab.com/ce/ci/runners/README.html) to be registered with
+Most features of [GitLab CI/CD](http://docs.gitlab.com/ee/ci/) need a
+[Runner](http://docs.gitlab.com/ee/ci/runners/README.html) to be registered with
 the GitLab installation. This HOWTO will take you through the necessary steps to
 do so when GitLab is running under GDK.
 
 ## Set up GitLab
 
 Start by [preparing your computer](../prepare.md) and
-[setting up GDK](../set-up-gdk.md).
+[setting up GDK](../index.md).
 
 In some configurations, GitLab Runner needs access to GitLab from inside a
 Docker container, or even another machine, which isn't supported in the default
@@ -162,7 +162,7 @@ builds, so run it in its own terminal session.
 
 The Runners pane in the administration panel will now list the Runners. Create a
 project in the GitLab web interface and add a
-[`.gitlab-ci.yml`](https://docs.gitlab.com/ce/ci/examples/) file,
+[`.gitlab-ci.yml`](https://docs.gitlab.com/ee/ci/examples/) file,
 or clone an [example project](https://gitlab.com/groups/gitlab-examples), and
 watch as the Runner processes the builds just as it would on a "real" install!
 

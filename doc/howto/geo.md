@@ -11,7 +11,7 @@ instances. For more, see
 ## Prerequisites
 
 Development on GitLab Geo requires two GDK instances running side-by-side.
-You can use an existing `gdk` instance based on the [Set up GDK](../set-up-gdk.md#develop-against-the-gitlab-project-default) documentation as the primary node.
+You can use an existing `gdk` instance based on the [Set up GDK](../index.md#develop-against-the-gitlab-project-default) documentation as the primary node.
 
 ### Primary
 
@@ -306,8 +306,6 @@ cd ~/Developer/gdk-geo
 gdk start
 make postgresql/geo-fdw/development/rebuild
 ```
-
-Also see [Useful aliases](#useful-aliases) above.
 
 ## Enabling Docker Registry replication
 

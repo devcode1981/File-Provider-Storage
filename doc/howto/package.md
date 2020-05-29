@@ -13,8 +13,8 @@ These steps will allow you to enable your GDK install with HTTPS and also
 allow it to respond to requests on port 443.
 
 1. Follow the [NGINX guide](nginx.md) to enable HTTPS. You must include the steps:
-   - [Configuring a loopback device](#configuring-a-loopback-device-optional).
-   - [Update `gdk.yml` for HTTPS](#update-gdkyml-for-https-optional).
+   - [Configuring a loopback device](nginx.md#configuring-a-loopback-device-optional).
+   - [Update `gdk.yml` for HTTPS](nginx.md#update-gdkyml-for-https-optional).
 
   Your local GitLab should now be available at <https://gdk.test:3443> and <https://127.1.1.1:3443>
 
