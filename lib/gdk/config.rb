@@ -45,20 +45,20 @@ module GDK
     string(:local_hostname) { '127.0.0.1' }
 
     string :hostname do
-      next "#{config.auto_devops.gitlab.port}.qa-tunnel.gitlab.info" if config.auto_devops.enabled
+      next "#{config.auto_devops.gitlab.port}.qa-tunnel.gitlab.info" if config.auto_devops?
 
       read!('hostname') || read!('host') || config.local_hostname
     end
 
     integer :port do
-      next 443 if config.auto_devops.enabled
+      next 443 if config.auto_devops?
 
       read!('port') || 3000
     end
 
     settings :https do
       bool :enabled do
-        next true if config.auto_devops.enabled
+        next true if config.auto_devops?
 
         read!('https_enabled') || false
       end
@@ -78,7 +78,7 @@ module GDK
 
     settings :webpack do
       string :host do
-        next '0.0.0.0' if config.auto_devops.enabled
+        next config.auto_devops.listen_address if config.auto_devops?
 
         read!('webpack_host') || config.hostname
       end
@@ -92,13 +92,9 @@ module GDK
       integer(:configured_port) { 3333 }
 
       string :__active_host do
-        if config.auto_devops? || config.nginx?
-          '0.0.0.0'
-        else
-          # Workhorse is the user-facing entry point whenever neither nginx nor
-          # AutoDevOps is used, so in that situation use the configured GDK hostname.
-          config.hostname
-        end
+        next config.auto_devops.listen_address if config.auto_devops?
+
+        config.hostname
       end
 
       integer :__active_port do
@@ -125,25 +121,25 @@ module GDK
 
     settings :registry do
       bool :enabled do
-        next true if config.auto_devops.enabled
+        next true if config.auto_devops?
 
         read!('registry_enabled') || false
       end
 
       string :host do
-        next "#{config.auto_devops.registry.port}.qa-tunnel.gitlab.info" if config.auto_devops.enabled
+        next "#{config.auto_devops.registry.port}.qa-tunnel.gitlab.info" if config.auto_devops?
 
         config.hostname
       end
 
       string :api_host do
-        next config.local_hostname if config.auto_devops.enabled
+        next config.local_hostname if config.auto_devops?
 
         config.hostname
       end
 
       string :tunnel_host do
-        next config.local_hostname if config.auto_devops.enabled
+        next config.local_hostname if config.auto_devops?
 
         config.hostname
       end
@@ -161,7 +157,7 @@ module GDK
       end
 
       integer :external_port do
-        next 443 if config.auto_devops.enabled
+        next 443 if config.auto_devops?
 
         5000
       end
@@ -184,6 +180,7 @@ module GDK
 
     settings :auto_devops do
       bool(:enabled) { read!('auto_devops_enabled') || false }
+      string(:listen_address) { '0.0.0.0' }
       settings :gitlab do
         integer(:port) { read_or_write!('auto_devops_gitlab_port', rand(20000..24999)) }
       end

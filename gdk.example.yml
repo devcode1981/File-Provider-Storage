@@ -3,6 +3,7 @@ auto_devops:
   enabled: false
   gitlab:
     port: 21838
+  listen_address: 0.0.0.0
   registry:
     port: 26838
 elasticsearch:
