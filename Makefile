@@ -11,11 +11,8 @@ include $(shell rake gdk-config.mk)
 gitlab_clone_dir = gitlab
 gitlab_shell_clone_dir = gitlab-shell
 gitlab_workhorse_clone_dir = gitlab-workhorse
-gitaly_gopath = $(abspath ./gitaly)
 gitaly_clone_dir = gitaly
 gitlab_pages_clone_dir = gitlab-pages/src/gitlab.com/gitlab-org/gitlab-pages
-gitlab_from_container = $(shell [ "$(shell uname)" = "Linux" ] && echo 'localhost' || echo 'docker.for.mac.localhost')
-postgres_dev_db = gitlabhq_development
 quiet_bundle_flag = $(shell ${gdk_quiet} && echo " | egrep -v '^Using '")
 bundle_install_cmd = bundle install --jobs 4 --without production ${quiet_bundle_flag}
 workhorse_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_WORKHORSE_VERSION")
