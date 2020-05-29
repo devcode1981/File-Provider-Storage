@@ -211,6 +211,7 @@ webpack:
 | `port` | `3808` | The port your webpack dev server is running on. You should change this if you are running multiple GDKs |
 | `static` | `false` | Setting this to `true` will replace the webpack dev server with a lightweight Ruby server. See below for more information |
 | `vendor_dll` | `false` | Setting this to `true` will move certain dependencies to a webpack DLL. See below for more information |
+| `sourcemaps` | `true` | Setting this to `false` will disable sourcemaps. This will reduce memory consumption for those who do not need to debug frontend code. |
 
 #### Saving memory on the webpack dev server
 
