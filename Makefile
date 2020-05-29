@@ -23,7 +23,6 @@ gitlab_shell_version = $(shell bin/resolve-dependency-commitish "${gitlab_develo
 gitaly_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITALY_SERVER_VERSION")
 pages_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_PAGES_VERSION")
 gitlab_elasticsearch_indexer_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_ELASTICSEARCH_INDEXER_VERSION")
-tracer_build_tags = tracer_static tracer_static_jaeger
 
 # Borrowed from https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Makefile#n87
 #
@@ -52,7 +51,7 @@ object-storage-setup \
 gitlab-elasticsearch-indexer-setup
 
 # This is used by `gdk update`
-# 
+#
 # Pull gitlab directory first since dependencies are linked from there.
 update: ensure-databases-running \
 unlock-dependency-installers \
@@ -302,7 +301,7 @@ gitaly-clean:
 
 .PHONY: gitaly/bin/gitaly
 gitaly/bin/gitaly: ${gitaly_clone_dir}/.git
-	$(Q)$(MAKE) -C ${gitaly_clone_dir} BUNDLE_FLAGS=--no-deployment BUILD_TAGS="${tracer_build_tags}"
+	$(Q)$(MAKE) -C ${gitaly_clone_dir} BUNDLE_FLAGS=--no-deployment BUILD_TAGS="tracer_static tracer_static_jaeger"
 	$(Q)cd ${gitlab_development_root}/gitaly && $(bundle_install_cmd)
 
 .PHONY: gitaly/gitaly.config.toml
