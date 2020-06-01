@@ -119,6 +119,7 @@ module GDK
 
     settings :gitlab_elasticsearch_indexer do
       bool(:auto_update) { true }
+      path(:__dir) { config.gdk_root.join('gitlab-elasticsearch-indexer') }
     end
 
     settings :registry do

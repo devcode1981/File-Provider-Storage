@@ -321,6 +321,14 @@ describe GDK::Config do
     end
   end
 
+  describe 'gitlab_elasticsearch_indexer' do
+    describe '#__dir' do
+      it 'returns the GitLab directory' do
+        expect(config.gitlab_elasticsearch_indexer.__dir).to eq(Pathname.new('/home/git/gdk/gitlab-elasticsearch-indexer'))
+      end
+    end
+  end
+
   describe 'webpack' do
     describe '#vendor_dll' do
       it 'is false by default' do
