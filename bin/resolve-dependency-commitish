@@ -5,6 +5,12 @@ IFS=$'\n\t'
 
 version_file="${1}"
 version="$(cat "${version_file}")"
+version_size=${#version}
+
+if [[ ${version_size} == 40 ]]; then
+  echo "${version}"
+  exit
+fi
 
 case "$version" in
   =*)
