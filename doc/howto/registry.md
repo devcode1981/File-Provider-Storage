@@ -22,7 +22,7 @@ the `gdk restart rails` command.
 
 ### With the Auto DevOps QA tunnel
 
-If you've previously followed the [Auto DevOps configuration steps](auto_devops.md),
+If you've previously followed the [Auto DevOps configuration steps](auto_devops/index.md),
 you will have a secure registry *accessible from the internet* after you run the
 `gdk restart tunnel` command.
 

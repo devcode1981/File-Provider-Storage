@@ -36,7 +36,7 @@ Please refer to the [Auto DevOps Base Domain](https://docs.gitlab.com/ee/topics/
 
 Consider not using the internet-facing URL for non Auto DevOps flows,
 but accessing your local GitLab instance via localhost. If you have
-followed the [Auto DevOps setup](../auto_devops.md), edit the
+followed the [Auto DevOps setup](index.md), edit the
 `config/gitlab.yml` file to the following:
 
 ```yaml
@@ -106,7 +106,7 @@ needed.
 
 ### The Ingress is never assigned an IP address
 
-If your Ingress is never assigned an IP address and you've waited for the IP address to appear on the cluster page for several minutes, it's quite possible that your GCP project has hit a limit of static IP addresses. See [how to clean up unused load balancers above](../auto_devops.md#unused-load-balancers).
+If your Ingress is never assigned an IP address and you've waited for the IP address to appear on the cluster page for several minutes, it's quite possible that your GCP project has hit a limit of static IP addresses. See [how to clean up unused load balancers above](index.md#unused-load-balancers).
 
 ### Error due to `Insufficient regional quota` for `DISKS_TOTAL_GB`
 
@@ -118,7 +118,7 @@ ResponseError: code=403, message=Insufficient regional quota to satisfy request:
 ```
 
 this would indicate you have reached your limit of persistent disks. See [how
-to clean up unused persistent disks above](../auto_devops.md#unused-persistent-disks).
+to clean up unused persistent disks above](index.md#unused-persistent-disks).
 
 ### 502 Bad Gateway
 
@@ -135,7 +135,7 @@ If not set up correctly, expect `502 Bad Gateway` responses when navigating to `
 
 #### Procfile was not updated properly
 
-After following the steps indicated in the [autodevops guide](../auto_devops.md), the Procfile located in the root of the GDK installation won’t have the tunnel configuration. If the Procfile is correct, you should find these lines:
+After following the steps indicated in the [Auto DevOps guide](index.md), the Procfile located in the root of the GDK installation won’t have the tunnel configuration. If the Procfile is correct, you should find these lines:
 
 ```shell
 # Tunneling

@@ -50,7 +50,7 @@ depends on our infrastructure. For non-GitLab team members you can see
    ```
 
 1. Set up the GDK for your workstation following [the preparation
-   instructions](../prepare.md) and [setup instructions](../index.md)
+   instructions](../../prepare.md) and [setup instructions](../../index.md)
 
 NOTE: Running Auto DevOps flow [downloads/uploads gigabytes of data on each
 run](#massive-bandwidth-used-by-auto-devops). For this reason it is not a good
@@ -63,7 +63,7 @@ IMPORTANT: These steps are currently only applicable to GitLab team members as i
 depends on our infrastructure. For non-GitLab team members you can see
 [Alternatives](#alternatives) below.
 
-From the GDK directory, create [a `gdk.yml` configuration file](../configuration.md)
+From the GDK directory, create [a `gdk.yml` configuration file](../../configuration.md)
 containing the following settings:
 
 ```shell
@@ -74,7 +74,9 @@ auto_devops:
 
 Once created, run `gdk reconfigure` to apply the configuration.
 
-This script will create all necessary configuration for one to run Auto DevOps locally. Including assigning two random ports for GitLab instance and GitLab Registry. It's important that this ports are randomized so we avoid colliding two developers with the same ports.
+This script will create all necessary configuration for one to run Auto DevOps locally. Including
+assigning two random ports for GitLab instance and GitLab Registry. It's important that these
+ports are randomized so we avoid colliding two developers with the same ports.
 
 After the script finishes, it will inform you of the `GitLab` and `Registry` URLs. For example:
 
@@ -102,7 +104,7 @@ gdk start
 
 Now login as root using the GitLab tunnel URL (`https://[PORT].qa-tunnel.gitlab.info`) and the default password. Once you are logged in, change the default password.
 
-Check [the troubleshooting guide](auto_devops/tips_and_troubleshooting.md) if you're still facing some problems.
+Check [the troubleshooting guide](tips_and_troubleshooting.md) if you're still facing some problems.
 
 ### Secure your GitLab instance
 
@@ -110,7 +112,7 @@ Since your GitLab instance is now internet accessible, you should secure it by c
 
 - Change the root user's password
 
-- Disable new user registration (Admin Area > Settings > General > Sign-up restrictions > Sign-up enabled)
+- Disable new user registration (**Admin Area > Settings > General > Sign-up restrictions > Sign-up enabled**)
 
 - Change the password of all seeded users (run the following code in a Rails console):
 
@@ -136,7 +138,7 @@ the GCP console:
 
 Then copy the Client ID and Client secret from that page and use those
 to reconfigure GDK using the instructions at [Google Oauth2
-howto](google-oauth2.md#gdk-setup).
+howto](../google-oauth2.md#gdk-setup).
 
 ## Conclusion
 
@@ -553,7 +555,7 @@ clean them up yourself while you're on this page.
 
 Be sure to check out:
 
-- [Auto DevOps - Tips and Troubleshooting](auto_devops/tips_and_troubleshooting.md)
-- [Auto DevOps - Useful Commands](auto_devops/useful_commands.md)
+- [Auto DevOps - Tips and Troubleshooting](tips_and_troubleshooting.md)
+- [Auto DevOps - Useful Commands](useful_commands.md)
 
 They might save you a lot of time during work.
