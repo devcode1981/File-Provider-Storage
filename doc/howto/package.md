@@ -18,14 +18,14 @@ allow it to respond to requests on port 443.
 
   Your local GitLab should now be available at <https://gdk.test:3443> and <https://127.1.1.1:3443>
 
-1. Clone the [NetRC Proxy](https://gitlab.com/firelizzard/netrc-proxy) project
-(authored by the same community contributor that contributed the GoProxy MVC!)
+1. Clone the [Super Simple Proxy](https://gitlab.com/firelizzard/super-simple-proxy)
+project (authored by the same community contributor that contributed the GoProxy MVC!)
 
 1. Run the proxy with the following command. The `pem` files will be wherever you created
 them the previous step.
 
   ```shell
-  go run main.go -secure gdk.test:443 -forward gdk.test,gdk.test:3443 -key /path/to/gdk.test-key.pem -cert /path/to/gdk.test.pem -insecure gdk.test:80
+  go run . -netrc -secure gdk.test:443 -key /path/to/gdk.test-key.pem -cert /path/to/gdk.test.pem -insecure gdk.test:80 -forward gdk.test,gdk.test:3443
   ```
 
 You should now be able to access GitLab at <https://gdk.test> (port 443 is default for HTTPS).
