@@ -262,6 +262,12 @@ describe GDK::Config do
         expect(config.webpack.static).to be false
       end
     end
+
+    describe '#sourcemaps' do
+      it 'is true by default' do
+        expect(config.webpack.sourcemaps).to be true
+      end
+    end
   end
 
   describe 'registry' do
