@@ -1,7 +1,7 @@
 #!/bin/sh
 
-if [ -z "${TEST_IMAGE}" ]; then
-    echo "TEST_IMAGE variable must not be empty and must contain an image name"
+if [ -z "${VERIFY_IMAGE}" ]; then
+    echo "VERIFY_IMAGE variable must not be empty and must contain an image name"
     exit 1
 fi
 
@@ -20,14 +20,14 @@ case "$1" in
     store)
         echo "Caching layers"
         # shellcheck disable=SC2046,SC2086
-        docker save "${TEST_IMAGE}" $(docker history -q ${TEST_IMAGE} | grep -v '<missing>') > "${build_cache_archive}"
+        docker save "${VERIFY_IMAGE}" $(docker history -q ${VERIFY_IMAGE} | grep -v '<missing>') > "${build_cache_archive}"
         ;;
     build)
-        docker build -t "${TEST_IMAGE}" .
+        docker build -t "${VERIFY_IMAGE}" .
         ;;
     publish)
         docker login --username gitlab-ci-token --password "${CI_BUILD_TOKEN}" registry.gitlab.com
-        docker push "${TEST_IMAGE}"
+        docker push "${VERIFY_IMAGE}"
         docker logout registry.gitlab.com
         ;;
     *)
