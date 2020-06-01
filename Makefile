@@ -46,6 +46,7 @@ gitlab-workhorse-setup \
 gitlab-pages-setup \
 support-setup \
 gitaly-setup \
+geo-config \
 prom-setup \
 object-storage-setup \
 gitlab-elasticsearch-indexer-setup
@@ -362,7 +363,7 @@ gitlab-docs-update: gitlab-docs/.git/pull gitlab-docs-bundle gitlab-docs/nanoc.y
 ##############################################################
 
 .PHONY: geo-setup geo-cursor
-geo-setup: geo-setup-check Procfile geo-cursor gitlab/config/database_geo.yml postgresql/geo
+geo-setup: geo-setup-check Procfile geo-cursor geo-config postgresql/geo
 
 geo-setup-check:
 ifneq ($(geo_enabled),true)
@@ -372,12 +373,18 @@ else
 	@true
 endif
 
+geo-config: gitlab/config/database_geo.yml
+
 geo-cursor:
 	$(Q)grep '^geo-cursor:' Procfile || (printf ',s/^#geo-cursor/geo-cursor/\nwq\n' | ed -s Procfile)
 
 .PHONY: gitlab/config/database_geo.yml
 gitlab/config/database_geo.yml:
+ifeq ($(geo_enabled),true)
 	$(Q)rake $@
+else
+	@true
+endif
 
 .PHONY: geo-primary-migrate
 geo-primary-migrate: ensure-databases-running
