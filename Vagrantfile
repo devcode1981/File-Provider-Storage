@@ -81,7 +81,7 @@ $user_setup = <<COMMANDS # rubocop:disable Style/GlobalVars
   echo "$DEV_USER ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/$DEV_USER
   sudo addgroup $DEV_USER rvm
   sudo addgroup $DEV_USER docker
-  sudo -u $DEV_USER -i bash -l -c "rvm install 2.6.5 && rvm use 2.6.5 --default && gem install bundler -v 1.17.3"
+  sudo -u $DEV_USER -i bash -l -c "rvm install 2.6.6 && rvm use 2.6.6 --default && gem install bundler -v 1.17.3"
   sudo chown -R $DEV_USER:$DEV_USER /home/$DEV_USER
   sudo ln -s /vagrant /home/$DEV_USER/gitlab-development-kit
 
