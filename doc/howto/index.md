@@ -39,7 +39,7 @@ to learn how to contribute to GitLab.
 - [Using Prometheus with GDK](prometheus/index.md)
 - [Using Container Registry with GDK](registry.md)
 - [Preview and test the docs site locally](gitlab_docs.md)
-- [Auto DevOps](auto_devops.md)
+- [Auto DevOps](auto_devops/index.md)
 - [Google OAuth2](google-oauth2.md)
 - [Unicorn](unicorn.md)
 - [Debugging with Pry](pry.md)

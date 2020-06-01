@@ -7,7 +7,7 @@ via GitLab CI.
 ## Prerequisites
 
 Please follow all the instructions for [setting up Auto
-DevOps](auto_devops.md) before following any steps in here.
+DevOps](auto_devops/index.md) before following any steps in here.
 
 ## Minimal getting started guide
 
