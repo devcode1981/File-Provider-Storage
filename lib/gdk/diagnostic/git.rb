@@ -5,7 +5,7 @@ module GDK
     class Git < Base
       TITLE = 'Git'
 
-      MINIMUM_VERSION = '2.22.0'
+      MINIMUM_VERSION = '2.24.0'
       RECOMMENDED_VERSION = '2.26.0'
 
       def diagnose
