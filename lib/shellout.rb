@@ -8,24 +8,24 @@ class Shellout
   def initialize(*args, **opts)
     @args = args.flatten
     @opts = opts
-    @stdout_str = ''
-    @stderr_str = ''
   end
 
   def stream
-    popen do |stdout, stderr|
-      if stderr
-        @stderr_str += stderr.to_s
-        $stderr.print(stderr)
-      end
+    @stdout_str = ''
+    @stderr_str = ''
 
-      if stdout
-        @stdout_str += stdout.to_s
-        $stdout.print(stdout)
-      end
+    # Inspiration: https://nickcharlton.net/posts/ruby-subprocesses-with-stdout-stderr-streams.html
+    Open3.popen3(*args) do |_stdin, stdout, stderr, thread|
+      threads = Array(thread)
+      threads << thread_read(stdout, method(:print_out))
+      threads << thread_read(stderr, method(:print_err))
+
+      threads.each(&:join)
+
+      @status = thread.value
     end
 
-    @stdout_str
+    read_stdout
   end
 
   def run
@@ -60,25 +60,19 @@ class Shellout
     @stdout_str, @stderr_str, @status = Open3.capture3(*args, opts.merge(extra_options))
   end
 
-  def popen
-    # Source: https://nickcharlton.net/posts/ruby-subprocesses-with-stdout-stderr-streams.html
-    Open3.popen3(*args) do |_, stdout, stderr, thread|
-      { out: stdout, err: stderr }.map do |key, stream|
-        Thread.new do
-          until (line = stream.gets).nil?
-            if block_given?
-              if key == :out
-                yield line, nil
-              else
-                yield nil, line
-              end
-            end
-          end
-        end
-      end.each(&:join)
-
-      thread.join
-      @status = thread.value
+  def thread_read(io, meth)
+    Thread.new do
+      io.each_line { |line| meth.call(line) }
     end
+  end
+
+  def print_out(msg)
+    @stdout_str += msg
+    $stdout.print(msg)
+  end
+
+  def print_err(msg)
+    @stderr_str += msg
+    $stderr.print(msg)
   end
 end
