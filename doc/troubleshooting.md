@@ -45,7 +45,7 @@ Or for example `re2` on MacOS:
 
 ```shell
 /Users/user/gitlab-development-kit/gitlab/lib/gitlab/untrusted_regexp.rb:25:  [BUG] Segmentation fault at 0x0000000000000000
-ruby 2.6.5p114 (2019-10-01 revision 67812) [x86_64-darwin19]
+ruby 2.6.6p146 (2020-03-31 revision 67876) [x86_64-darwin19]
 ```
 
 In which case you would run:
@@ -498,8 +498,8 @@ the `readline` library that may have been updated on your system. To fix
 the error, reinstall the Ruby interpreter. For example, for environments
 managed with:
 
-- [rbenv](https://github.com/rbenv/rbenv), run `rbenv install 2.6.5`.
-- [RVM](https://rvm.io), run `rvm reinstall ruby-2.6.5`.
+- [rbenv](https://github.com/rbenv/rbenv), run `rbenv install 2.6.6`.
+- [RVM](https://rvm.io), run `rvm reinstall ruby-2.6.6`.
 
 ## Delete non-existent migrations from the database
 

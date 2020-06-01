@@ -229,9 +229,9 @@ sudo curl https://dl.min.io/server/minio/release/linux-amd64/minio --output /usr
 sudo chmod +x /usr/local/bin/minio
 
 bundle config build.pg --with-pg-config=/usr/pgsql-10/bin/pg_config
-# This example uses Ruby 2.6.5. Substitute with the current version if different.
-sudo rvm install 2.6.5
-sudo rvm use 2.6.5
+# This example uses Ruby 2.6.6. Substitute with the current version if different.
+sudo rvm install 2.6.6
+sudo rvm use 2.6.6
 #Ensure your user is in rvm group
 sudo usermod -a -G rvm <username>
 #add iptables exceptions, or sudo service stop iptables
