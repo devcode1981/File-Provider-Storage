@@ -11,19 +11,17 @@ include $(shell rake gdk-config.mk)
 gitlab_clone_dir = gitlab
 gitlab_shell_clone_dir = gitlab-shell
 gitlab_workhorse_clone_dir = gitlab-workhorse
-gitaly_gopath = $(abspath ./gitaly)
 gitaly_clone_dir = gitaly
 gitlab_pages_clone_dir = gitlab-pages/src/gitlab.com/gitlab-org/gitlab-pages
-gitlab_from_container = $(shell [ "$(shell uname)" = "Linux" ] && echo 'localhost' || echo 'docker.for.mac.localhost')
-postgres_dev_db = gitlabhq_development
-quiet_bundle_flag = $(shell ${gdk_quiet} && echo " | egrep -v '^Using '")
-bundle_install_cmd = bundle install --jobs 4 --without production ${quiet_bundle_flag}
+
 workhorse_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_WORKHORSE_VERSION")
 gitlab_shell_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_SHELL_VERSION")
 gitaly_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITALY_SERVER_VERSION")
 pages_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_PAGES_VERSION")
 gitlab_elasticsearch_indexer_version = $(shell bin/resolve-dependency-commitish "${gitlab_development_root}/gitlab/GITLAB_ELASTICSEARCH_INDEXER_VERSION")
-tracer_build_tags = tracer_static tracer_static_jaeger
+
+quiet_bundle_flag = $(shell ${gdk_quiet} && echo " | egrep -v '^Using '")
+bundle_install_cmd = bundle install --jobs 4 --without production ${quiet_bundle_flag}
 
 # Borrowed from https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Makefile#n87
 #
@@ -39,7 +37,31 @@ ifeq ($(shallow_clone),true)
 git_depth_param = --depth=1
 endif
 
-all: preflight-checks gitlab-setup gitlab-shell-setup gitlab-workhorse-setup gitlab-pages-setup support-setup gitaly-setup prom-setup object-storage-setup gitlab-elasticsearch-indexer-setup
+# This is used by `gdk install`
+all: preflight-checks \
+gitlab-setup \
+gitlab-shell-setup \
+gitlab-workhorse-setup \
+gitlab-pages-setup \
+support-setup \
+gitaly-setup \
+prom-setup \
+object-storage-setup \
+gitlab-elasticsearch-indexer-setup
+
+# This is used by `gdk update`
+#
+# Pull gitlab directory first since dependencies are linked from there.
+update: ensure-databases-running \
+unlock-dependency-installers \
+gitlab/.git/pull \
+gitlab-shell-update \
+gitlab-workhorse-update \
+gitlab-pages-update \
+gitaly-update \
+gitlab-update \
+gitlab-elasticsearch-indexer-update \
+show-date
 
 self-update: unlock-dependency-installers
 	@echo
@@ -51,10 +73,6 @@ self-update: unlock-dependency-installers
 		git checkout master ${QQ} && \
 		git fetch ${QQ} && \
 		support/self-update-git-worktree ${QQ}
-
-# Update gitlab, gitlab-shell, gitlab-workhorse, gitlab-pages and gitaly
-# Pull gitlab directory first since dependencies are linked from there.
-update: ensure-databases-running unlock-dependency-installers gitlab/.git/pull gitlab-shell-update gitlab-workhorse-update gitlab-pages-update gitaly-update gitlab-update gitlab-elasticsearch-indexer-update show-date
 
 clean-config:
 	$(Q)rm -rf \
@@ -282,7 +300,7 @@ gitaly-clean:
 
 .PHONY: gitaly/bin/gitaly
 gitaly/bin/gitaly: ${gitaly_clone_dir}/.git
-	$(Q)$(MAKE) -C ${gitaly_clone_dir} BUNDLE_FLAGS=--no-deployment BUILD_TAGS="${tracer_build_tags}"
+	$(Q)$(MAKE) -C ${gitaly_clone_dir} BUNDLE_FLAGS=--no-deployment BUILD_TAGS="tracer_static tracer_static_jaeger"
 	$(Q)cd ${gitlab_development_root}/gitaly && $(bundle_install_cmd)
 
 .PHONY: gitaly/gitaly.config.toml
