@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+elasticsearch_version="$1"
+download_path="$2"
+elasticsearch_mac_checksum="$3"
+elasticsearch_linux_checksum="$4"
+
+function sha_for_os() {
+  case $OSTYPE in
+    linux-gnu|linux-musl)
+      echo "$elasticsearch_linux_checksum"
+      ;;
+    darwin*)
+      echo "$elasticsearch_mac_checksum"
+      ;;
+    *)
+      >&2 echo "Unable to determine checksum for OS"
+      return 1
+  esac
+}
+
+function url_for_version() {
+  # Add new architectures/operating systems in here as needed
+  case "$OSTYPE" in
+    linux-gnu|linux-musl)
+      platform=linux
+      ;;
+    darwin*)
+      platform=darwin
+      ;;
+    *)
+    >&2 echo "Cannot download elasticsearch binary: unable to determine operation system."
+    return 1
+  esac
+
+  echo "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${elasticsearch_version}-${platform}-x86_64.tar.gz"
+}
+
+url=$(url_for_version "${elasticsearch_version}")
+sha=$(sha_for_os)
+
+curl -C - -L --fail "$url" -o "$download_path"
+if ! (echo "$sha  $download_path" | shasum -a 512 -c -); then
+  rm -f "$download_path"
+  >&2 echo "Cannot verify elasticsearch binary: sha checksum mismatch."
+  exit 1
+fi

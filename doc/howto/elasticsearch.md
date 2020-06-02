@@ -6,16 +6,6 @@ environment.
 
 ## Installation
 
-### Install OpenJDK 8 (Elasticsearch dependency)
-
-- You can get a prebuilt OpenJDK Binary for free from [AdoptOpenJDK](https://adoptopenjdk.net).
-- You can also install OpenJDK using [Homebrew](https://github.com/AdoptOpenJDK/homebrew-openjdk):
-
-  ```shell
-  brew tap AdoptOpenJDK/openjdk
-  brew cask install adoptopenjdk8
-  ```
-
 ### Enable Elasticsearch in the GDK
 
 The default version of Elasticsearch is automatically downloaded into your GDK root under `/elasticsearch`.
@@ -30,27 +20,22 @@ To enable the service and make it run as part of `gdk start`:
    ```
 
 1. Run `gdk reconfigure`.
-1. Uncomment the `elasticsearch:` service in your `Procfile` file.
 
 ### Using other Elasticsearch versions
 
+#### Version 7
+
 The default Elasticsearch version is defined in [`lib/gdk/config.rb`](../../lib/gdk/config.rb).
 
-To use a different version:
+For example, to use 7.5.2:
 
-1. Add the `version` and `checksum` keys to your [`gdk.yml`](../configuration.md):
+1. Add the `version` and `[linux|mac]_checksum` keys to your [`gdk.yml`](../configuration.md):
 
    ```yaml
    elasticsearch:
      enabled: true
-     version: 6.5.1
-     checksum: 5903e1913a7c96aad96a8227517c40490825f672
-   ```
-
-1. Delete your existing Elasticsearch installation (this will also remove all data):
-
-   ```shell
-   rm -r elasticsearch
+     version: 7.5.2
+     mac_checksum: f3142e73e51a9be25c74cb85dcf2cf20ca8acaf6480be616c4dd0404469e5f22a086efbe81dc975d0af19543437e8daf45d41a5952750048b01517857a00c676
    ```
 
 1. Install the selected version:
@@ -59,8 +44,13 @@ To use a different version:
    make elasticsearch-setup
    ```
 
-**Note:** Starting with Elasticsearch 7.x, the download URLs have a different format which is not supported by our `Makefile` yet,
-see [this issue](https://gitlab.com/gitlab-org/gitlab-development-kit/-/issues/824).
+#### Version 6
+
+While GDK does not support installing Elasticsearch version 6.x, it can be easily run with Docker:
+
+```shell
+docker run -p 9200:9200 -d docker.elastic.co/elasticsearch/elasticsearch:6.5.1
+```
 
 ## Setup
 

@@ -1,7 +1,8 @@
 auto_devops_enabled = <%= config.auto_devops.enabled %>
 auto_devops_gitlab_port = <%= config.auto_devops.gitlab.port %>
 auto_devops_registry_port = <%= config.auto_devops.registry.port %>
-elasticsearch_tar_gz_sha1 = <%= config.elasticsearch.checksum %>
+elasticsearch_mac_tar_gz_sha512 = <%= config.elasticsearch.mac_checksum %>
+elasticsearch_linux_tar_gz_sha512 = <%= config.elasticsearch.linux_checksum %>
 elasticsearch_version = <%= config.elasticsearch.version %>
 gdk_ask_to_restart_after_update = <%= config.gdk.ask_to_restart_after_update %>
 gdk_debug = <%= config.gdk.debug || ENV['GDK_DEBUG'] == 'true' %>

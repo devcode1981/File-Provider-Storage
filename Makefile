@@ -653,9 +653,7 @@ elasticsearch/bin/elasticsearch: elasticsearch-${elasticsearch_version}.tar.gz
 	$(Q)touch $@
 
 elasticsearch-${elasticsearch_version}.tar.gz:
-	$(Q)curl -L -o $@.tmp https://artifacts.elastic.co/downloads/elasticsearch/$@
-	$(Q)echo "${elasticsearch_tar_gz_sha1}  $@.tmp" | shasum -a1 -c -
-	$(Q)mv $@.tmp $@
+	$(Q)./bin/download-elasticsearch "${elasticsearch_version}" "$@" "${elasticsearch_mac_tar_gz_sha512}" "${elasticsearch_linux_tar_gz_sha512}"
 
 ##############################################################
 # minio / object storage
