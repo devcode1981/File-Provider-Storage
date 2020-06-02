@@ -301,7 +301,7 @@ gitaly-clean:
 .PHONY: gitaly/bin/gitaly
 gitaly/bin/gitaly: ${gitaly_clone_dir}/.git
 	$(Q)$(MAKE) -C ${gitaly_clone_dir} BUNDLE_FLAGS=--no-deployment BUILD_TAGS="tracer_static tracer_static_jaeger"
-	$(Q)cd ${gitlab_development_root}/gitaly && $(bundle_install_cmd)
+	$(Q)cd ${gitlab_development_root}/gitaly/ruby && $(bundle_install_cmd)
 
 .PHONY: gitaly/gitaly.config.toml
 gitaly/gitaly.config.toml:
