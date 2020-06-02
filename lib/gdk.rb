@@ -52,39 +52,13 @@ module GDK
     when 'install'
       exec(MAKE, *ARGV, chdir: GDK.root)
     when 'update'
-      # Otherwise we would miss it and end up in a weird state.
-      puts_separator
-      puts 'Running `make self-update`..'
-      puts_separator
-      puts "Running separately in case the Makefile is updated.\n"
-      system(MAKE, 'self-update', chdir: GDK.root)
+      update_result = update
+      return false unless update_result
 
-      puts
-      puts_separator
-      puts 'Running `make self-update update`..'
-      success = system(MAKE, 'self-update', 'update', chdir: GDK.root)
-      puts_separator
-
-      puts
-      if success
-        GDK::Output.success("Successfully updated!")
-
-        true
+      if config.gdk.experimental.auto_reconfigure?
+        reconfigure
       else
-        GDK::Output.error("Failed to update.")
-
-        puts
-        puts_separator
-        puts <<~UPDATE_FAILED_HELP
-          You can try the following that may be of assistance:
-
-          - Run 'gdk doctor'
-          - Visit https://gitlab.com/gitlab-org/gitlab-development-kit/-/issues
-            to see if there are known issues
-        UPDATE_FAILED_HELP
-        puts_separator
-
-        false
+        update_result
       end
     when 'diff-config'
       GDK::Command::DiffConfig.new.run
@@ -101,8 +75,7 @@ module GDK
         abort "Cannot get config for #{ARGV.join('.')}"
       end
     when 'reconfigure'
-      remember!(GDK.root)
-      exec(MAKE, 'touch-examples', 'unlock-dependency-installers', 'postgresql-sensible-defaults', 'all', chdir: GDK.root)
+      reconfigure
     when 'psql'
       pg_port = config.postgresql.port
       args = ARGV.empty? ? ['-d', 'gitlabhq_development'] : ARGV
@@ -155,8 +128,22 @@ module GDK
     @config ||= GDK::Config.new
   end
 
-  def self.puts_separator
+  def self.puts_separator(msg = nil)
     puts '-------------------------------------------------------'
+    return unless msg
+
+    puts msg
+    puts_separator
+  end
+
+  def self.display_help_message
+    puts_separator <<~HELP_MESSAGE
+      You can try the following that may be of assistance:
+
+      - Run 'gdk doctor'
+      - Visit https://gitlab.com/gitlab-org/gitlab-development-kit/-/issues
+        to see if there are known issues
+    HELP_MESSAGE
   end
 
   def self.install_root_ok?
@@ -172,5 +159,41 @@ module GDK
   # @return [Pathname] path to GDK base directory
   def self.root
     Pathname.new($gdk_root || Pathname.new(__dir__).parent) # rubocop:disable Style/GlobalVars
+  end
+
+  def self.make(*targets)
+    sh = Shellout.new(MAKE, targets, chdir: GDK.root)
+    sh.stream
+    sh.success?
+  end
+
+  # Updates GDK
+  #
+  def self.update
+    make('self-update')
+
+    result = make('self-update', 'update')
+
+    unless result
+      GDK::Output.error('Failed to update.')
+      display_help_message
+    end
+
+    result
+  end
+
+  # Reconfigures GDK
+  #
+  def self.reconfigure
+    remember!(GDK.root)
+
+    result = make('touch-examples', 'unlock-dependency-installers', 'postgresql-sensible-defaults', 'all')
+
+    unless result
+      GDK::Output.error('Failed to reconfigure.')
+      display_help_message
+    end
+
+    result
   end
 end
