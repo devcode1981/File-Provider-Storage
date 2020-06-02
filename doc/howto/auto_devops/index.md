@@ -225,8 +225,8 @@ More information about running QA tests can be found in
 There are also other ways of running the QA specs that are documented in the
 [`gitlab-qa` project](https://gitlab.com/gitlab-org/gitlab-qa) but using the
 above approach is recommended as it will allow you to debug and iterate on the
-spec without rebuilding any docker images and since the above command runs the
-spec in your environment rather than in docker it requires less configuration
+spec without rebuilding any Docker images and since the above command runs the
+spec in your environment rather than in Docker it requires less configuration
 as it inherits your `gcloud` credentials.
 
 NOTE: This test will run as the default project ID. To set or override
@@ -252,7 +252,7 @@ of the straightforward approaches here.
 
 Auto DevOps will "deploy" your application to a K8s cluster but the way
 this works in K8s is that the cluster actually needs to
-download the image from your docker registry running on your machine. Put
+download the image from your Docker registry running on your machine. Put
 another way the K8s cluster needs access over HTTPS to the registry running
 on your machine. And HTTPS is necessary as K8s won't download insecure images
 by default.
@@ -281,13 +281,13 @@ network.
 
 Running [the Auto DevOps
 pipeline](https://gitlab.com/gitlab-org/gitlab/blob/a0d3691c8660c90a1db1bac3115f8c17a968f148/lib%2Fgitlab%2Fci%2Ftemplates%2FAuto-DevOps.gitlab-ci.yml)
-uses a lot of bandwidth doing the following with docker images:
+uses a lot of bandwidth doing the following with Docker images:
 
-- Runner downloads images from docker hub
+- Runner downloads images from Docker hub
 - Runner pushes images to the registry
 - K8s downloads images from the registry
 
-These docker images tend to be in the order of 400MB-1GB and the pipeline is
+These Docker images tend to be in the order of 400MB-1GB and the pipeline is
 not really well optimized for caching. So you will find that if you have a slow
 network you really won't be able to run these pipelines at all because it will
 take hours to complete. Even if you do have a fast connection you're still
@@ -297,7 +297,7 @@ data is staying inside Google's network and things move a lot faster.
 
 If you don't need a full-fledged application, consider testing with the
 [`minimal-ruby-app`](https://gitlab.com/auto-devops-examples/minimal-ruby-app) project
-which creates smaller docker images on the order of 20-50MB.
+which creates smaller Docker images on the order of 20-50MB.
 
 ### Alternatives
 
@@ -334,7 +334,7 @@ from your reverse proxy settings and edit `registry/config.yml` like so:
 ```
 
 NOTE: You should ensure your NGINX (or other proxy) is configured to allow up
-to 1GB files transferred since the docker images uploaded and downloaded
+to 1GB files transferred since the Docker images uploaded and downloaded
 can be quite large.
 
 Below you can find an example on how to configure reverse proxy using NGINX

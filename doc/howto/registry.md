@@ -98,7 +98,9 @@ your.ip.address gdk.test
 
 ### Trusting the registry's self-signed certificate
 
-Since the registry is self-signed, Docker treats it as *insecure*. The certificate must be in your GDK root, called `registry_host.crt`, and must be copied as `ca.crt` to the [appropriate docker configuration location](https://docs.docker.com/registry/insecure/#use-self-signed-certificates).
+Since the registry is self-signed, Docker treats it as *insecure*. The certificate must be in your
+GDK root, called `registry_host.crt`, and must be copied as `ca.crt` to the
+[appropriate Docker configuration location](https://docs.docker.com/registry/insecure/#use-self-signed-certificates).
 
 If you are using Docker Desktop for Mac, GDK includes the shorthand
 
@@ -415,9 +417,11 @@ To verify that the build stage has successfully pushed an image to your local Gi
 - The variable `DOCKER_TLS_CERTDIR: ""` is required in the `build` stage because of a breaking change introduced by Docker 19.03, described [here](https://about.gitlab.com/2019/07/31/docker-in-docker-with-docker-19-dot-03/)
 - It's only necessary to set `--insecure-registry=gdk.test:5000` for the `docker:stable-dind` if you have not set up a [trusted self-signed registry](#trusting-the-registrys-self-signed-certificate).
 
-### Running container scanning on a local docker image created by a build step in your pipeline
+### Running container scanning on a local Docker image created by a build step in your pipeline
 
-It's possible to use a `build` step to create a custom docker image and then execute a [container scan](https://gitlab.com/gitlab-org/security-products/analyzers/klar) against this newly built docker image. This can be achieved by using the following `.gitlab-ci.yml`:
+It's possible to use a `build` step to create a custom Docker image and then execute a
+[container scan](https://gitlab.com/gitlab-org/security-products/analyzers/klar) against this newly
+built Docker image. This can be achieved by using the following `.gitlab-ci.yml`:
 
 ```yaml
 include:
@@ -526,7 +530,7 @@ To test development versions of the container registry against GDK:
    gdk restart
    ```
 
-1. Inspect docker to confirm that the development image of the registry is running locally:
+1. Inspect Docker to confirm that the development image of the registry is running locally:
 
    ```shell
    docker ps

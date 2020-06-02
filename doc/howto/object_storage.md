@@ -5,7 +5,7 @@ In this document we explain how to set this up in your development
 environment.
 
 In order to take advantage of the GDK integration you must first install
-[MinIO](https://docs.minio.io/docs/minio-quickstart-guide) binary (no docker image).
+[MinIO](https://docs.minio.io/docs/minio-quickstart-guide) binary (no Docker image).
 
 You can enable the object store by adding the following to your `gdk.yml`:
 

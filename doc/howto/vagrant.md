@@ -53,10 +53,11 @@ OSes like Windows/OSX you will have to run the entire Docker hypervisor in a VM
 1. Install [Vagrant](https://www.vagrantup.com).
 1. Install [VirtualBox](https://www.virtualbox.org). Vagrant requires the `VBoxManage` binary included with
    VirtualBox, even for non-VirtualBox providers.
-1. Install [Docker Engine](https://www.docker.com/products/docker-engine). Don't forget to [add your user to the docker group](https://docs.docker.com/install/linux/linux-postinstall/)
+1. Install [Docker Engine](https://www.docker.com/products/docker-engine). Don't forget to
+   [add your user to the Docker group](https://docs.docker.com/install/linux/linux-postinstall/)
    and re-login.
 1. Run `vagrant up --provider=docker --provision` in this directory. Vagrant will build a
-   docker image and start the container.
+   Docker image and start the container.
 1. Run `vagrant ssh` to SSH into the container.
 1. Continue setup at [Installation](../index.md).
 
