@@ -425,6 +425,7 @@ gitlab-workhorse/.git/pull:
 	@echo "------------------------------------------------------------"
 	@echo "Updating gitlab-org/gitlab-workhorse to ${workhorse_version}"
 	@echo "------------------------------------------------------------"
+	$(Q)support/remove-empty-file gitlab-workhorse/config.toml.example
 	$(Q)support/component-git-update workhorse "${gitlab_workhorse_clone_dir}" "${workhorse_version}"
 
 ##############################################################
