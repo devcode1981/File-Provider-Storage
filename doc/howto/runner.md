@@ -99,7 +99,8 @@ All the methods should (eventually) create a `gitlab-runner` binary.
 
 ### Advanced configuration
 
-If you followed the advanced configuration and want to install the runner as a docker service, follow the steps described in <https://docs.gitlab.com/runner/install/docker.html#docker-image-installation>.
+If you followed the advanced configuration and want to install the runner as a Docker service,
+follow the steps described in <https://docs.gitlab.com/runner/install/docker.html#docker-image-installation>.
 
 ## Setting up the Runner
 
@@ -168,7 +169,7 @@ watch as the Runner processes the builds just as it would on a "real" install!
 
 ### Advanced configuration
 
-Register your docker-based runner by following the steps described in <https://docs.gitlab.com/runner/register/index.html#docker>.
+Register your Docker-based runner by following the steps described in <https://docs.gitlab.com/runner/register/index.html#docker>.
 
 ### Docker executor
 

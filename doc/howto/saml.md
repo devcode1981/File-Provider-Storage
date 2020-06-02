@@ -1,7 +1,7 @@
 # SAML
 
 You can run a test SAML identity provider using the [`jamedjo/test-saml-idp`](https://hub.docker.com/r/jamedjo/test-saml-idp/)
-docker image, both to test instance-wide SAML and the multi-tenant Group SAML used on GitLab.com.
+Docker image, both to test instance-wide SAML and the multi-tenant Group SAML used on GitLab.com.
 
 ## Group SAML
 
@@ -33,7 +33,7 @@ Some SAML-related features are behind [feature flags](https://docs.gitlab.com/ee
 
 ### Docker
 
-The docker identity provider needs to be configured using your group's callback URL and entity ID.
+The Docker identity provider needs to be configured using your group's callback URL and entity ID.
 For example, an identity provider for the "zebra" group can be ran using the following:
 
 ```shell
@@ -91,7 +91,7 @@ omniauth:
 
 ## Credentials
 
-The following users are described in the [docker image documentation](https://hub.docker.com/r/jamedjo/test-saml-idp/#usage):
+The following users are described in the [Docker image documentation](https://hub.docker.com/r/jamedjo/test-saml-idp/#usage):
 
 | Username | Password |
 | -------- | -------- |
