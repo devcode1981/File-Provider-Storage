@@ -21,6 +21,75 @@ describe GDK::Config do
     allow_any_instance_of(GDK::ConfigSettings).to receive(:read!).and_return(nil)
   end
 
+  describe 'elasticsearch' do
+    let(:checksum) { 'e7c22b994c59d9cf2b48e549b1e24666636045930d3da7c1acb299d1c3b7f931f94aae41edda2c2b207a36e10f8bcb8d45223e54878f5b316e7ce3b6bc019629' }
+
+    describe '#enabled' do
+      it 'defaults to false' do
+        expect(config.elasticsearch.enabled).to eq(false)
+      end
+
+      context 'when enabled in config file' do
+        let(:yaml) do
+          { 'elasticsearch' => { 'enabled' => true } }
+        end
+
+        it 'returns true' do
+          expect(config.elasticsearch.enabled).to eq(true)
+        end
+      end
+    end
+
+    describe '#version' do
+      it 'has a default value' do
+        expect(config.elasticsearch.version).to match(/\d.\d.\d/)
+      end
+
+      context 'when specified in config file' do
+        let(:version) { '6.5.1' }
+        let(:yaml) do
+          { 'elasticsearch' => { 'version' => version } }
+        end
+
+        it 'returns the version from the config file' do
+          expect(config.elasticsearch.version).to eq(version)
+        end
+      end
+    end
+
+    describe '#mac_checksum' do
+      it 'has a default value' do
+        expect(config.elasticsearch.mac_checksum).to match(/[a-f0-9]{128}/)
+      end
+
+      context 'when specified in config file' do
+        let(:yaml) do
+          { 'elasticsearch' => { 'mac_checksum' => checksum } }
+        end
+
+        it 'returns the version from the config file' do
+          expect(config.elasticsearch.mac_checksum).to eq(checksum)
+        end
+      end
+    end
+
+    describe '#linux_checksum' do
+      it 'has a default value' do
+        expect(config.elasticsearch.linux_checksum).to match(/[a-f0-9]{128}/)
+      end
+
+      context 'when specified in config file' do
+        let(:yaml) do
+          { 'elasticsearch' => { 'linux_checksum' => checksum } }
+        end
+
+        it 'returns the version from the config file' do
+          expect(config.elasticsearch.linux_checksum).to eq(checksum)
+        end
+      end
+    end
+  end
+
   describe 'workhorse' do
     describe '#__active_host' do
       context 'when AutoDevOps is not enabled' do

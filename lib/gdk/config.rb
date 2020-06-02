@@ -209,8 +209,9 @@ module GDK
 
     settings :elasticsearch do
       bool(:enabled) { false }
-      string(:version) { '6.5.1' }
-      string(:checksum) { '5903e1913a7c96aad96a8227517c40490825f672' }
+      string(:version) { '7.7.0' }
+      string(:mac_checksum) { '189e207d7c95f831df2973680fe7a1ebc5ade83705c3af38befc23a9e8c0893636b9d9699a153e69b6abaa3c5cdb1bb8e459596cb4e31115afe5a88f48295b61' }
+      string(:linux_checksum) { 'bc1b0409128288b9eb1e71d2be0de432016d75aec3fc9ec9b6e8b3dc7eb9d4fd0012fe05b0ee81e2ddfa4be005962bae9f64d01dc7f4814eb767943f16ef0dfb' }
     end
 
     settings :tracer do
