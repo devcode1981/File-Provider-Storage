@@ -619,15 +619,49 @@ If you still encounter some errors, see the troubleshooting FAQ below:
   command `ss -pntl 'sport = :3808'`. The left over process can be killed with
   the command `kill PID`.
 
-## Testing environment database problems
+## Problems with running tests
 
-There may be times when running spinach feature tests or RSpec tests
-steps such as `sign-up` or `log-out` will fail for no apparent reason.
+There may be times when running spinach feature tests or Ruby Capybara RSpec
+tests (tests that are located in the `spec/features` directory) will fail.
 
-In that case what you need to do is run the following command inside the `gitlab` directory:
+### ChromeDriver problems
+
+ChromeDriver is the app on your machine that is used to run headless
+browser tests.
+
+If you see this error in your test output (you may need to scroll up):
+`Selenium::WebDriver::Error::SessionNotCreatedError` coupled with the
+error message: `This version of ChromeDriver only supports Chrome
+version [...]` then you need to update your version of ChromeDriver:
+
+If you installed ChromeDriver with Homebrew, then you can update by
+running:
 
 ```shell
-RAILS_ENV=test bundle exec rake db:reset
+brew cask upgrade chromedriver
+```
+
+Otherwise, if you installed the ChromeDriver without Homebrew, you may
+need to
+[download and install the latest ChromeDrive directly](https://sites.google.com/a/chromium.org/chromedriver/downloads).
+
+### Database problems
+
+Another issue can be that your test environment's database schema has
+diverged from what the GitLab app expects. This can happen if you tested
+a branch locally that changed the database in some way, and have now
+switched back to `master` without
+[rolling back](https://edgeguides.rubyonrails.org/active_record_migrations.html#rolling-back)
+the migrations locally first.
+
+In that case, what you need to do is run the following command inside
+the `gitlab` directory to drop all tables on your test database and have
+them recreated from the canonical version in `db/structure.sql`. Note,
+dropping and recreating your test database tables is perfectly safe!
+
+```shell
+cd gitlab
+bundle exec rake db:test:prepare
 ```
 
 ## Windows 10 WSL common issues
