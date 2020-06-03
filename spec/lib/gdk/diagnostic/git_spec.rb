@@ -14,7 +14,7 @@ describe GDK::Diagnostic::Git do
 
     context 'when git is installed' do
       it 'returns the version' do
-        installed_version = '2.26.0'
+        installed_version = '2.27.0'
 
         stub_version(installed_version)
 
@@ -89,7 +89,7 @@ describe GDK::Diagnostic::Git do
     context 'when git is installed' do
       context 'and it is too old' do
         it 'return a too old message' do
-          expected_message = 'Git version 2.21.0 is too old.  You need at least 2.24.0.'
+          expected_message = 'Git version 2.21.0 is too old.  You need at least 2.25.0.'
 
           stub_version('2.21.0')
 
@@ -99,7 +99,7 @@ describe GDK::Diagnostic::Git do
 
       context 'and it is equal to the minimum' do
         it 'returns an OK but not the recommended version message' do
-          expected_message = 'Git version 2.24.0 is OK but at least 2.26.0 is recommended.'
+          expected_message = 'Git version 2.25.0 is OK but at least 2.27.0 is recommended.'
 
           stub_version(described_class::MINIMUM_VERSION)
 
