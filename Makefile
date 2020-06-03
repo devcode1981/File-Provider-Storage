@@ -37,7 +37,8 @@ ifeq ($(shallow_clone),true)
 git_depth_param = --depth=1
 endif
 
-# This is used by `gdk install`
+# This is used by `gdk install` and `gdk reconfigure`
+#
 all: preflight-checks \
 gitlab-setup \
 gitlab-shell-setup \
@@ -62,6 +63,14 @@ gitaly-update \
 gitlab-update \
 gitlab-elasticsearch-indexer-update \
 show-updated-at
+
+# This is used by `gdk reconfigure`
+#
+reconfigure: touch-examples \
+unlock-dependency-installers \
+postgresql-sensible-defaults \
+all \
+show-reconfigured-at
 
 self-update: unlock-dependency-installers
 	@echo
@@ -862,3 +871,8 @@ ask-to-restart:
 show-updated-at:
 	@echo
 	@echo "> Updated as of $$(date +"%Y-%m-%d %T")"
+
+.PHONY: show-reconfigured-at
+show-reconfigured-at:
+	@echo
+	@echo "> Reconfigured as of $$(date +"%Y-%m-%d %T")"
