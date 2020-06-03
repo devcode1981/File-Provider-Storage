@@ -248,6 +248,10 @@ production: &base
         endpoint: 'http://<%= config.object_store.host %>:<%= config.object_store.port %>'
         path_style: true
 
+  ## Dependency Proxy
+  dependency_proxy:
+    enabled: false
+
   ## Terraform state
   terraform_state:
     enabled: true
