@@ -10,12 +10,12 @@ class Shellout
     @opts = opts
   end
 
-  def stream
+  def stream(extra_options = {})
     @stdout_str = ''
     @stderr_str = ''
 
     # Inspiration: https://nickcharlton.net/posts/ruby-subprocesses-with-stdout-stderr-streams.html
-    Open3.popen3(*args) do |_stdin, stdout, stderr, thread|
+    Open3.popen3(*args, opts.merge(extra_options)) do |_stdin, stdout, stderr, thread|
       threads = Array(thread)
       threads << thread_read(stdout, method(:print_out))
       threads << thread_read(stderr, method(:print_err))

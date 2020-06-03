@@ -4,8 +4,10 @@ require 'spec_helper'
 
 describe Shellout do
   let(:command) { 'echo foo' }
+  let(:opts) { {} }
+  let(:tmp_directory) { File.realpath('/tmp') }
 
-  subject { described_class.new(command) }
+  subject { described_class.new(command, opts) }
 
   describe '#args' do
     let(:command_as_array) { %w[echo foo] }
@@ -41,11 +43,29 @@ describe Shellout do
     it 'send output to stdout' do
       expect { subject.stream }.to output("foo\n").to_stdout
     end
+
+    context 'when chdir: is specified' do
+      let(:command) { 'pwd' }
+      let(:opts) { { chdir: tmp_directory } }
+
+      it 'changes into the specified directory before executing' do
+        expect(subject.stream).to eq(tmp_directory)
+      end
+    end
   end
 
   describe '#run' do
     it 'returns output of shell command' do
       expect(subject.run).to eq('foo')
+    end
+
+    context 'when chdir: is specified' do
+      let(:command) { 'pwd' }
+      let(:opts) { { chdir: tmp_directory } }
+
+      it 'changes into the specified directory before executing' do
+        expect(subject.run).to eq(tmp_directory)
+      end
     end
   end
 
@@ -58,6 +78,15 @@ describe Shellout do
 
     it 'does not raise error' do
       expect { subject.try_run }.not_to raise_error
+    end
+
+    context 'when chdir: is specified' do
+      let(:command) { 'pwd' }
+      let(:opts) { { chdir: tmp_directory } }
+
+      it 'changes into the specified directory before executing' do
+        expect(subject.try_run).to eq(tmp_directory)
+      end
     end
   end
 
