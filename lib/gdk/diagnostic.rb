@@ -10,6 +10,7 @@ require_relative 'diagnostic/geo'
 require_relative 'diagnostic/git'
 require_relative 'diagnostic/ruby_gems'
 require_relative 'diagnostic/re2'
+require_relative 'diagnostic/golang'
 
 module GDK
   module Diagnostic
@@ -24,6 +25,7 @@ module GDK
         Geo
         Status
         Re2
+        Golang
       ]
 
       klasses.map do |const|

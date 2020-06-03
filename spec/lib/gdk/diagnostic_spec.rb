@@ -18,7 +18,8 @@ describe GDK::Diagnostic do
         GDK::Diagnostic::PendingMigrations,
         GDK::Diagnostic::Geo,
         GDK::Diagnostic::Status,
-        GDK::Diagnostic::Re2
+        GDK::Diagnostic::Re2,
+        GDK::Diagnostic::Golang
       ]
 
       expect(described_class.all.map(&:class)).to eq(diagnostic_classes)
