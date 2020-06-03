@@ -61,7 +61,7 @@ gitlab-pages-update \
 gitaly-update \
 gitlab-update \
 gitlab-elasticsearch-indexer-update \
-show-date
+show-updated-at
 
 self-update: unlock-dependency-installers
 	@echo
@@ -858,7 +858,7 @@ ask-to-restart:
 	$(Q)support/ask-to-restart
 	@echo
 
-.PHONY: show-date
-show-date:
+.PHONY: show-updated-at
+show-updated-at:
 	@echo
 	@echo "> Updated as of $$(date +"%Y-%m-%d %T")"
