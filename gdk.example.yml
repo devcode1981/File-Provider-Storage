@@ -48,8 +48,6 @@ grafana:
 hostname: 127.0.0.1
 https:
   enabled: false
-influxdb:
-  enabled: false
 listen_address: 127.0.0.1
 mattermost:
   enabled: false

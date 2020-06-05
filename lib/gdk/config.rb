@@ -314,10 +314,6 @@ module GDK
       string(:token) { 'DEFAULT TOKEN: Register your runner to get a valid token' }
     end
 
-    settings :influxdb do
-      bool(:enabled) { false }
-    end
-
     settings :grafana do
       bool(:enabled) { false }
     end
