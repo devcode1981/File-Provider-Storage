@@ -373,7 +373,7 @@ else
 	@true
 endif
 
-geo-config: gitlab/config/database_geo.yml
+geo-config: gitlab/config/database_geo.yml postgresql/geo/port
 
 geo-cursor:
 	$(Q)grep '^geo-cursor:' Procfile || (printf ',s/^#geo-cursor/geo-cursor/\nwq\n' | ed -s Procfile)
@@ -602,7 +602,11 @@ postgresql/geo/data:
 	$(Q)${postgresql_bin_dir}/initdb --locale=C -E utf-8 postgresql-geo/data
 
 postgresql/geo/port:
+ifeq ($(geo_enabled),true)
 	$(Q)support/postgres-port ${postgresql_geo_dir} ${postgresql_geo_port}
+else
+	@true
+endif
 
 postgresql/geo/Procfile:
 	$(Q)grep '^postgresql-geo:' Procfile || (printf ',s/^#postgresql-geo/postgresql-geo/\nwq\n' | ed -s Procfile)
