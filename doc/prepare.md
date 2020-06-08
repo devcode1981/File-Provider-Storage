@@ -33,6 +33,7 @@ the current [`gitlab` Ruby version](https://gitlab.com/gitlab-org/gitlab/blob/ma
 of use, we recommend using a Ruby version manager such as:
 
 1. [rbenv](https://github.com/rbenv/rbenv#installation) - _Generally preferred, most lightweight_
+   - We also recommend the [rbenv-communal-gems](https://github.com/tpope/rbenv-communal-gems) plugin to share installed gems between minor Ruby versions.
 1. [RVM](https://rvm.io/)
 1. [chruby](https://github.com/postmodern/chruby#install)
 
