@@ -187,7 +187,7 @@ module GDK
   def self.reconfigure
     remember!(GDK.root)
 
-    result = make('touch-examples', 'unlock-dependency-installers', 'postgresql-sensible-defaults', 'all')
+    result = make('reconfigure')
 
     unless result
       GDK::Output.error('Failed to reconfigure.')
