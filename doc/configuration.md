@@ -65,6 +65,8 @@ Here are a few settings worth mentioning:
 | `registry.enabled`     | `false` | Set this to `true` to enable container registry.                                           |
 | `geo.enabled`          | `false` | Set this to `true` to enable Geo (for now it just enables `postgresql-geo` and `geo-cursor` services). |
 
+#### GDK settings
+
 There are also a few settings that configure the behavior of GDK itself:
 
 | Setting                           | Default | Description                                                                                      |
@@ -73,6 +75,15 @@ There are also a few settings that configure the behavior of GDK itself:
 | `gdk.debug`                       | `false` | Set this to `true` to enable increased output. |
 | `gdk.overwrite_changes`           | `false` | When set to `true` `gdk reconfigure` will overwrite files and move the old version to `.backups`.|
 | `gdk.protected_config_files`           | `[]` | Contains file names / globs of configuration files GDK should not overwrite. |
+
+##### Experimental GDK settings
+
+Experimental settings may be promoted to stable settings or they may be deprecated.
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| `gdk.experimental.quiet` | `false` | Set this to `true` to reduce the level of output when updating the GDK. |
+| `gdk.experimental.auto_reconfigure` | `false` | Set this to `true` to automatically run a `gdk reconfigure` after a successful `gdk update`. |
 
 ### Loose files (deprecated)
 
