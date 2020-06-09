@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'yaml'
+require 'pry'
 require_relative 'config_type/anything'
 require_relative 'config_type/array'
 require_relative 'config_type/bool'
@@ -20,7 +21,9 @@ module GDK
       end
 
       def array(name, &blk)
-        setting(name, ConfigType::Array, &blk)
+        define_method(name) do
+          ConfigType::Array.new(yaml.fetch(name.to_s), config: root, slug: slug_for(name), &blk).value
+        end
       end
 
       def bool(name, &blk)
@@ -50,7 +53,7 @@ module GDK
 
       def setting(name, config_type, &blk)
         define_method(name) do
-          config_type.new(yaml.fetch(name.to_s, instance_eval(&blk)), slug: slug_for(name)).value
+          config_type.new(yaml.fetch(name.to_s, instance_exec(&blk)), slug: slug_for(name)).value
         end
       end
     end
@@ -211,7 +214,7 @@ module GDK
 
     def subconfig!(name, &blk)
       sub = Class.new(ConfigSettings)
-      sub.class_eval(&blk)
+      sub.class_exec(&blk)
       sub.new(parent: self, yaml: yaml.fetch(name.to_s, {}), slug: slug_for(name))
     end
 
