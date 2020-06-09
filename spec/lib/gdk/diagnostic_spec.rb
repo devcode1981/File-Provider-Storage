@@ -19,7 +19,8 @@ describe GDK::Diagnostic do
         GDK::Diagnostic::Geo,
         GDK::Diagnostic::Status,
         GDK::Diagnostic::Re2,
-        GDK::Diagnostic::Golang
+        GDK::Diagnostic::Golang,
+        GDK::Diagnostic::StaleServices
       ]
 
       expect(described_class.all.map(&:class)).to eq(diagnostic_classes)
