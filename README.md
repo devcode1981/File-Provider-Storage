@@ -38,7 +38,7 @@ Or if you want to use a slower virtualized installation with [Vagrant](https://w
 please see the [instructions for using Vagrant with VirtualBox or Docker](doc/howto/vagrant.md).
 
 You can also install GDK on [Minikube](https://github.com/kubernetes/minikube),
-see [Kubernetes docs](doc/kubernetes.md).
+see [Kubernetes docs](doc/howto/kubernetes.md).
 
 After installation, [learn how to use GDK](doc/howto/index.md).
 
