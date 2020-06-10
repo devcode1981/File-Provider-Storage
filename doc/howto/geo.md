@@ -61,9 +61,7 @@ webpack:
   port: 3809
 ```
 
-When seeding begins, cancel it (Ctrl-C) since we will delete the data anyway.
-
-Then run the following commands:
+Then run the following command:
 
 ```shell
 # Assuming your primary GDK instance lives in parallel folders:
@@ -84,7 +82,7 @@ Then run the following commands:
 gdk start
 
 # Run this on your secondary instance folder: (../gdk-geo)
-gdk start postgresql-geo
+gdk start postgresql postgresql-geo
 make geo-setup
 ```
 
