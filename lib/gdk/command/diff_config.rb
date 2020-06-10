@@ -7,21 +7,21 @@ module GDK
     class DiffConfig
       def run(stdout: $stdout, stderr: $stderr)
         files = %w[
-          gitlab/config/gitlab.yml
-          gitlab/config/database.yml
-          gitlab/config/unicorn.rb
-          gitlab/config/puma.rb
-          gitlab/config/cable.yml
-          gitlab/config/resque.yml
-          gitlab-shell/config.yml
-          gitlab-shell/.gitlab_shell_secret
-          redis/redis.conf
           .ruby-version
           Procfile
-          gitlab-workhorse/config.toml
           gitaly/gitaly.config.toml
           gitaly/praefect.config.toml
+          gitlab-shell/.gitlab_shell_secret
+          gitlab-shell/config.yml
+          gitlab-workhorse/config.toml
+          gitlab/config/cable.yml
+          gitlab/config/database.yml
+          gitlab/config/gitlab.yml
+          gitlab/config/puma.rb
+          gitlab/config/resque.yml
+          gitlab/config/unicorn.rb
           nginx/conf/nginx.conf
+          redis/redis.conf
         ]
 
         file_diffs = files.map do |file|
