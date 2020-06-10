@@ -3,23 +3,14 @@
 # Spellcheck rule definitions
 #
 # https://github.com/koalaman/shellcheck/wiki/SC1071 - ShellCheck only supports sh/bash/dash/ksh scripts. Sorry!
-# https://github.com/koalaman/shellcheck/wiki/SC2086 - Double quote to prevent globbing
 
-exit_code="0"
 root="$(realpath "$(dirname "${0}")/../..")"
-excludes="-not -path */support/pg_hba.conf.add -not -path */support/.rubocop.yml -not -path *.swp"
 
-# shellcheck disable=SC2086
-# ${excludes} cannot be wrapped in "'s as it becomes invalid
-#
-files=$(find "${root}/bin" "${root}/support" "${root}/support/ci" "${root}/support/completions" -maxdepth 1 -type f ${excludes})
-
-for f in ${files}
-do
-  shellcheck -e SC1071 -x "${f}"
-  new_exit_code="${?}"
-
-  [ "${new_exit_code}" -ne 0 ] && exit_code="${new_exit_code}"
-done
-
-exit ${exit_code}
+exec find "${root}/bin" "${root}/support" "${root}/support/ci" "${root}/support/completions" \
+      -maxdepth 1
+      -type f \
+      -not -path "*/support/pg_hba.conf.add" \
+      -not -path "*/support/.rubocop.yml" \
+      -not -path "*.swp" \
+      -print0 \
+| xargs -0 shellcheck --exclude=SC1071 --external-sources --
