@@ -31,6 +31,9 @@ module GDK
           ConfigDiff.new(file)
         end
 
+        # Iterate over each file from files Array and print any output to
+        # stderr that may have come from running `make <file>`.
+        #
         file_diffs.each do |diff|
           output = diff.make_output.to_s.chomp
           next if output.empty?
@@ -38,6 +41,10 @@ module GDK
           stderr.puts(output)
         end
 
+        # Iterate over each file from files Array and print any output to
+        # stdout that may have come from running `git diff <file>.unchanged`
+        # which is how we know what _would_ happen if we ran `gdk reconfigure`
+        #
         file_diffs.each do |diff|
           next if diff.output.to_s.empty?
 
