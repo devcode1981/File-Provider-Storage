@@ -116,6 +116,7 @@ module Runit
     GDK::Output.notice "Shutting down runsvdir (pid #{pid})"
     Process.kill('HUP', pid)
 
+    GDK::Output.puts
     GDK::Output.success "All services are shutdown!"
   end
 
