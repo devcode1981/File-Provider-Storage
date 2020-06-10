@@ -31,7 +31,7 @@ health:
 <%- if config.registry.auth_enabled -%>
 auth:
   token:
-    realm: <%= "#{(config.https? ? 'https' : 'http')}://#{config.hostname}:#{config.port}/jwt/auth" %>
+    realm: <%= "#{config.__uri}/jwt/auth" %>
     service: container_registry
     issuer: gitlab-issuer
     rootcertbundle: /etc/docker/registry/localhost.crt
