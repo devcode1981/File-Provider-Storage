@@ -11,17 +11,20 @@ module GDK
           Procfile
           gitaly/gitaly.config.toml
           gitaly/praefect.config.toml
+          gitlab-runner-config.toml
           gitlab-shell/.gitlab_shell_secret
           gitlab-shell/config.yml
           gitlab-workhorse/config.toml
           gitlab/config/cable.yml
           gitlab/config/database.yml
+          gitlab/config/database_geo.yml
           gitlab/config/gitlab.yml
           gitlab/config/puma.rb
           gitlab/config/resque.yml
           gitlab/config/unicorn.rb
           nginx/conf/nginx.conf
           redis/redis.conf
+          registry/config.yml
         ]
 
         file_diffs = files.map do |file|
@@ -34,7 +37,7 @@ module GDK
         end
 
         file_diffs.each do |diff|
-          stdout.puts diff.output unless diff.output == ""
+          stdout.puts diff.output unless diff.output == ''
         end
       end
 
