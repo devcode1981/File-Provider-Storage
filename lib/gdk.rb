@@ -85,10 +85,15 @@ module GDK
       exec('redis-cli', '-s', config.redis_socket.to_s, *ARGV, chdir: GDK.root)
     when 'env'
       GDK::Env.exec(ARGV)
-    when 'start', 'status'
+    when 'status'
       exit(Runit.sv(subcommand, ARGV))
+    when 'start'
+      exit(start(subcommand, ARGV))
     when 'restart'
-      exit(Runit.sv('force-restart', ARGV))
+      result = Runit.sv('force-restart', ARGV)
+      print_url_ready_message
+
+      exit(result)
     when 'stop'
       if ARGV.empty?
         # Runit.stop will stop all services and stop Runit (runsvdir) itself.
@@ -167,6 +172,16 @@ module GDK
     sh.success?
   end
 
+  # Called when running `gdk start`
+  #
+  def self.start(subcommand, argv)
+    result = Runit.sv(subcommand, argv)
+    # Only print if run like `gdk start`, not e.g. `gdk start rails-web`
+    print_url_ready_message if argv.empty?
+
+    result
+  end
+
   # Updates GDK
   #
   def self.update
@@ -195,5 +210,10 @@ module GDK
     end
 
     result
+  end
+
+  def self.print_url_ready_message
+    GDK::Output.puts
+    GDK::Output.notice("#{config.__uri} should be ready shortly.")
   end
 end
