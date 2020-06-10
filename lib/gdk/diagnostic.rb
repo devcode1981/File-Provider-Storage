@@ -11,6 +11,7 @@ require_relative 'diagnostic/git'
 require_relative 'diagnostic/ruby_gems'
 require_relative 'diagnostic/re2'
 require_relative 'diagnostic/golang'
+require_relative 'diagnostic/stale_services'
 
 module GDK
   module Diagnostic
@@ -26,6 +27,7 @@ module GDK
         Status
         Re2
         Golang
+        StaleServices
       ]
 
       klasses.map do |const|
