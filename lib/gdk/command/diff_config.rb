@@ -32,12 +32,16 @@ module GDK
         end
 
         file_diffs.each do |diff|
-          output = diff.make_output.chomp
-          stderr.puts(output) unless output.empty?
+          output = diff.make_output.to_s.chomp
+          next if output.empty?
+
+          stderr.puts(output)
         end
 
         file_diffs.each do |diff|
-          stdout.puts diff.output unless diff.output == ''
+          next if diff.output.to_s.empty?
+
+          stdout.puts(diff.output)
         end
       end
 
@@ -57,13 +61,22 @@ module GDK
         private
 
         def execute
-          FileUtils.mv(file_path, "#{file_path}.unchanged")
+          # It's entirely possible file_path doesn't exist because it may be
+          # a config file that user does not need and therefore has not been
+          # generated.
+          return nil unless file_path.exist?
+
+          File.rename(file_path, file_path_unchanged)
 
           @make_output = update_config_file
 
           @output = diff_with_unchanged
         ensure
-          File.rename("#{file_path}.unchanged", file_path)
+          File.rename(file_path_unchanged, file_path) if File.exist?(file_path_unchanged)
+        end
+
+        def file_path_unchanged
+          @file_path_unchanged ||= "#{file_path}.unchanged"
         end
 
         def update_config_file
