@@ -24,6 +24,40 @@ describe GDK::Config do
     allow_any_instance_of(GDK::ConfigSettings).to receive(:read!).and_return(nil)
   end
 
+  describe '__uri' do
+    context 'for defaults' do
+      it 'returns http://gdk.example.com:3000' do
+        expect(config.__uri.to_s).to eq('http://gdk.example.com:3000')
+      end
+    end
+
+    context 'when port is set to 1234' do
+      it 'returns http://gdk.example.com:1234' do
+        yaml['port'] = '1234'
+
+        expect(config.__uri.to_s).to eq('http://gdk.example.com:1234')
+      end
+    end
+
+    context 'when a relative_url_root is set' do
+      it 'returns http://gdk.example.com:3000/gitlab' do
+        yaml['relative_url_root'] = '/gitlab/'
+
+        expect(config.__uri.to_s).to eq('http://gdk.example.com:3000/gitlab')
+      end
+    end
+
+    context 'when https is enabled' do
+      before do
+        yaml['https'] = { 'enabled' => true }
+      end
+
+      it 'returns https://gdk.example.com:3000' do
+        expect(config.__uri.to_s).to eq('https://gdk.example.com:3000')
+      end
+    end
+  end
+
   describe 'elasticsearch' do
     let(:checksum) { 'e7c22b994c59d9cf2b48e549b1e24666636045930d3da7c1acb299d1c3b7f931f94aae41edda2c2b207a36e10f8bcb8d45223e54878f5b316e7ce3b6bc019629' }
 
