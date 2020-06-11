@@ -3,6 +3,12 @@
 require 'spec_helper'
 
 describe GDK::Output do
+  describe '.puts' do
+    it 'puts to stdout' do
+      expect { described_class.puts('test') }.to output("test\n").to_stdout
+    end
+  end
+
   describe '.color' do
     it 'returns a color for index' do
       expect(described_class.color(0)).to eq("31")

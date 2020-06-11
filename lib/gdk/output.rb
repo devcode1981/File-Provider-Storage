@@ -27,6 +27,10 @@ module GDK
       ansi(0)
     end
 
+    def self.puts(message = nil)
+      $stdout.puts message
+    end
+
     def self.notice(message)
       puts "=> #{message}"
     end
