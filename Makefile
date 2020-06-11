@@ -46,6 +46,7 @@ gitlab-workhorse-setup \
 gitlab-pages-setup \
 support-setup \
 gitaly-setup \
+geo-config \
 prom-setup \
 object-storage-setup \
 gitlab-elasticsearch-indexer-setup
@@ -87,6 +88,7 @@ clean-config:
 	$(Q)rm -rf \
 	gitlab/config/gitlab.yml \
 	gitlab/config/database.yml \
+	gitlab/config/database_geo.yml \
 	gitlab/config/unicorn.rb \
 	gitlab/config/puma.rb \
 	gitlab/config/puma_actioncable.rb \
@@ -111,7 +113,6 @@ clean-config:
 touch-examples:
 	$(Q)touch \
 	Procfile.erb \
-	database_geo.yml.example \
 	gitlab-shell/config.yml.example \
 	gitlab-workhorse/config.toml.example \
 	gitlab/config/puma.example.development.rb \
@@ -362,7 +363,7 @@ gitlab-docs-update: gitlab-docs/.git/pull gitlab-docs-bundle gitlab-docs/nanoc.y
 ##############################################################
 
 .PHONY: geo-setup geo-cursor
-geo-setup: geo-setup-check Procfile geo-cursor gitlab/config/database_geo.yml postgresql/geo
+geo-setup: geo-setup-check Procfile geo-cursor geo-config postgresql/geo
 
 geo-setup-check:
 ifneq ($(geo_enabled),true)
@@ -372,13 +373,18 @@ else
 	@true
 endif
 
+geo-config: gitlab/config/database_geo.yml postgresql/geo/port
+
 geo-cursor:
 	$(Q)grep '^geo-cursor:' Procfile || (printf ',s/^#geo-cursor/geo-cursor/\nwq\n' | ed -s Procfile)
 
-gitlab/config/database_geo.yml: database_geo.yml.example
-	$(Q)bin/safe-sed "$@" \
-		-e "s|/home/git|${gitlab_development_root}|g" \
-		"$<"
+.PHONY: gitlab/config/database_geo.yml
+gitlab/config/database_geo.yml:
+ifeq ($(geo_enabled),true)
+	$(Q)rake $@
+else
+	@true
+endif
 
 .PHONY: geo-primary-migrate
 geo-primary-migrate: ensure-databases-running
@@ -527,7 +533,7 @@ redis/redis.conf:
 postgresql: postgresql/data postgresql/port postgresql-seed-rails postgresql-seed-praefect
 
 postgresql/data:
-	$(Q)${postgres_bin_dir}/initdb --locale=C -E utf-8 ${postgres_data_dir}
+	$(Q)${postgresql_bin_dir}/initdb --locale=C -E utf-8 ${postgresql_data_dir}
 
 .PHONY: postgresql-seed-rails
 postgresql-seed-rails: ensure-databases-running postgresql-seed-praefect
@@ -539,10 +545,10 @@ postgresql-seed-praefect: Procfile postgresql/data
 	$(Q)support/bootstrap-praefect
 
 postgresql/port:
-	$(Q)support/postgres-port ${postgres_dir} ${postgresql_port}
+	$(Q)support/postgres-port ${postgresql_dir} ${postgresql_port}
 
 postgresql-sensible-defaults:
-	$(Q)support/postgresql-sensible-defaults ${postgres_dir}
+	$(Q)support/postgresql-sensible-defaults ${postgresql_dir}
 
 ##############################################################
 # postgresql replication
@@ -555,46 +561,62 @@ postgresql-replication-secondary: postgresql-replication/data postgresql-replica
 postgresql-replication-primary-create-slot: postgresql-replication/slot
 
 postgresql-replication/data:
-	${postgres_bin_dir}/initdb --locale=C -E utf-8 ${postgres_data_dir}
+	${postgresql_bin_dir}/initdb --locale=C -E utf-8 ${postgresql_data_dir}
 
 postgresql-replication/access:
-	$(Q)cat support/pg_hba.conf.add >> ${postgres_data_dir}/pg_hba.conf
+	$(Q)cat support/pg_hba.conf.add >> ${postgresql_data_dir}/pg_hba.conf
 
 postgresql-replication/role:
-	$(Q)${postgres_bin_dir}/psql -h ${postgres_dir} -p ${postgresql_port} -d postgres -c "CREATE ROLE ${postgres_replication_user} WITH REPLICATION LOGIN;"
+	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_host} -p ${postgresql_port} -d postgres -c "CREATE ROLE ${postgresql_replication_user} WITH REPLICATION LOGIN;"
 
 postgresql-replication/backup:
-	$(Q)$(eval postgres_primary_dir := $(realpath postgresql-primary))
-	$(Q)$(eval postgres_primary_port := $(shell cat ${postgres_primary_dir}/../postgresql_port 2>/dev/null || echo '5432'))
+	$(Q)$(eval postgresql_primary_dir := $(realpath postgresql-primary))
+	$(Q)$(eval postgresql_primary_host := $(shell cd ${postgresql_primary_dir}/../ && gdk config get postgresql.host 2>/dev/null))
+	$(Q)$(eval postgresql_primary_port := $(shell cd ${postgresql_primary_dir}/../ && gdk config get postgresql.port 2>/dev/null))
 
-	$(Q)psql -h ${postgres_primary_dir} -p ${postgres_primary_port} -d postgres -c "select pg_start_backup('base backup for streaming rep')"
-	$(Q)rsync -cva --inplace --exclude="*pg_xlog*" --exclude="*.pid" ${postgres_primary_dir}/data postgresql
-	$(Q)psql -h ${postgres_primary_dir} -p ${postgres_primary_port} -d postgres -c "select pg_stop_backup(), current_timestamp"
-	$(Q)./support/recovery.conf ${postgres_primary_dir} ${postgres_primary_port} > ${postgres_data_dir}/recovery.conf
+	$(Q)psql -h ${postgresql_primary_host} -p ${postgresql_primary_port} -d postgres -c "select pg_start_backup('base backup for streaming rep')"
+	$(Q)rsync -cva --inplace --exclude="*pg_xlog*" --exclude="*.pid" ${postgresql_primary_dir}/data postgresql
+	$(Q)psql -h ${postgresql_primary_host} -p ${postgresql_primary_port} -d postgres -c "select pg_stop_backup(), current_timestamp"
+	$(Q)./support/recovery.conf ${postgresql_primary_host} ${postgresql_primary_port} > ${postgresql_data_dir}/recovery.conf
 	$(Q)$(MAKE) postgresql/port ${QQ}
 
 postgresql-replication/slot:
-	$(Q)${postgres_bin_dir}/psql -h ${postgres_dir} -p ${postgresql_port} -d postgres -c "SELECT * FROM pg_create_physical_replication_slot('gitlab_gdk_replication_slot');"
+	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_host} -p ${postgresql_port} -d postgres -c "SELECT * FROM pg_create_physical_replication_slot('gitlab_gdk_replication_slot');"
 
 postgresql-replication/list-slots:
-	$(Q)${postgres_bin_dir}/psql -h ${postgres_dir} -p ${postgresql_port} -d postgres -c "SELECT * FROM pg_replication_slots;"
+	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_host} -p ${postgresql_port} -d postgres -c "SELECT * FROM pg_replication_slots;"
 
 postgresql-replication/drop-slot:
-	$(Q)${postgres_bin_dir}/psql -h ${postgres_dir} -p ${postgresql_port} -d postgres -c "SELECT * FROM pg_drop_replication_slot('gitlab_gdk_replication_slot');"
+	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_host} -p ${postgresql_port} -d postgres -c "SELECT * FROM pg_drop_replication_slot('gitlab_gdk_replication_slot');"
 
 postgresql-replication/config:
-	$(Q)./support/postgres-replication ${postgres_dir}
+	$(Q)./support/postgres-replication ${postgresql_dir}
 
 ##############################################################
 # postgresql geo
 ##############################################################
 
-postgresql/geo:
-	$(Q)${postgres_bin_dir}/initdb --locale=C -E utf-8 postgresql-geo/data
+postgresql/geo: postgresql/geo/data postgresql/geo/port postgresql/geo/seed-data
+
+postgresql/geo/data:
+	$(Q)${postgresql_bin_dir}/initdb --locale=C -E utf-8 postgresql-geo/data
+
+postgresql/geo/port:
+ifeq ($(geo_enabled),true)
+	$(Q)support/postgres-port ${postgresql_geo_dir} ${postgresql_geo_port}
+else
+	@true
+endif
+
+postgresql/geo/Procfile:
 	$(Q)grep '^postgresql-geo:' Procfile || (printf ',s/^#postgresql-geo/postgresql-geo/\nwq\n' | ed -s Procfile)
+
+postgresql/geo/seed-data:
 	$(Q)support/bootstrap-geo
 
 postgresql/geo-fdw: postgresql/geo-fdw/development/create postgresql/geo-fdw/test/create
+
+postgresql/geo-fdw/rebuild: postgresql/geo-fdw/development/rebuild postgresql/geo-fdw/test/rebuild
 
 # Function to read values from database.yml, parameters:
 #   - file: e.g. database, database_geo
@@ -609,16 +631,16 @@ postgresql/geo-fdw/%: fdw_port = $(call from_db_config,database,$*,port)
 postgresql/geo-fdw/test/%: rake_namespace = test:
 
 postgresql/geo-fdw/%/create:
-	$(Q)${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE EXTENSION IF NOT EXISTS postgres_fdw;"
-	$(Q)${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE SERVER gitlab_secondary FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$(fdw_host)', dbname '${fdw_dbname}', port '$(fdw_port)' );"
-	$(Q)${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE USER MAPPING FOR current_user SERVER gitlab_secondary OPTIONS (user '$(USER)');"
-	$(Q)${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE SCHEMA IF NOT EXISTS gitlab_secondary;"
-	$(Q)${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "GRANT USAGE ON FOREIGN SERVER gitlab_secondary TO current_user;"
+	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_geo_host} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE EXTENSION IF NOT EXISTS postgres_fdw;"
+	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_geo_host} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE SERVER gitlab_secondary FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '$(fdw_host)', dbname '${fdw_dbname}', port '$(fdw_port)' );"
+	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_geo_host} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE USER MAPPING FOR current_user SERVER gitlab_secondary OPTIONS (user '$(USER)');"
+	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_geo_host} -p ${postgresql_geo_port} -d ${dbname} -c "CREATE SCHEMA IF NOT EXISTS gitlab_secondary;"
+	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_geo_host} -p ${postgresql_geo_port} -d ${dbname} -c "GRANT USAGE ON FOREIGN SERVER gitlab_secondary TO current_user;"
 	$(Q)cd ${gitlab_development_root}/gitlab && bundle exec rake geo:db:${rake_namespace}refresh_foreign_tables
 
 postgresql/geo-fdw/%/drop:
-	$(Q)${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "DROP SERVER gitlab_secondary CASCADE;"
-	$(Q)${postgres_bin_dir}/psql -h ${postgres_geo_dir} -p ${postgresql_geo_port} -d ${dbname} -c "DROP SCHEMA gitlab_secondary;"
+	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_geo_host} -p ${postgresql_geo_port} -d ${dbname} -c "DROP SERVER gitlab_secondary CASCADE;"
+	$(Q)${postgresql_bin_dir}/psql -h ${postgresql_geo_host} -p ${postgresql_geo_port} -d ${dbname} -c "DROP SCHEMA gitlab_secondary;"
 
 postgresql/geo-fdw/%/rebuild:
 	$(Q)$(MAKE) postgresql/geo-fdw/$*/drop || true ${QQ}

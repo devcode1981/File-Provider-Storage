@@ -77,6 +77,11 @@ file 'gitlab/config/resque.yml' => ['support/templates/resque.yml.erb', GDK::Con
   GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
 end
 
+desc 'Generate the database_geo.yml config file'
+file 'gitlab/config/database_geo.yml' => ['support/templates/database_geo.yml.erb', GDK::Config::FILE] do |t|
+  GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!
+end
+
 desc 'Generate the gitlab.yml config file'
 file 'gitlab/config/gitlab.yml' => ['support/templates/gitlab.yml.erb'] do |t|
   GDK::ErbRenderer.new(t.source, t.name, config: config).safe_render!

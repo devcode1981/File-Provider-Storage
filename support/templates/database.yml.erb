@@ -2,19 +2,19 @@ development:
   adapter: postgresql
   encoding: unicode
   database: gitlabhq_development
-  host: <%= config.postgresql.dir %>
+  host: <%= config.postgresql.host %>
   port: <%= config.postgresql.port %>
   pool: 10
 <%- unless config.geo? -%>
   load_balancing:
     hosts:
-      - <%= config.postgresql.dir %>
+      - <%= config.postgresql.host %>
 <%- end -%>
 
 test: &test
   adapter: postgresql
   encoding: unicode
   database: gitlabhq_test
-  host: <%= config.postgresql.dir %>
+  host: <%= config.postgresql.host %>
   port: <%= config.postgresql.port %>
   pool: 10
