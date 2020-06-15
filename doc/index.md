@@ -123,15 +123,28 @@ to keep up-to-date with the project.
 If you want to push changes from upstream to your fork, run `gdk update` and then
 `git push origin` from the `gitlab` directory.
 
-## Map `gdk.test` host name to localhost
+## Set up `gdk.test` hostname
 
-Set up a GDK-specific host name for convenience. For example, add the following to `/etc/hosts`:
+`gdk.test` is the standard for referring to the local GDK instance in documentation steps and GDK
+tools. To set up `gdk.test` as a hostname:
 
-```plaintext
-127.0.0.1 gdk.test
-```
+1. Make `gdk.test` resolveable. For example, add the following to `/etc/hosts`:
 
-The host name `gdk.test` is now available for documentation steps and GDK tools.
+   ```plaintext
+   127.0.0.1 gdk.test
+   ```
+
+1. Add the following to `gdk.yml`:
+
+   ```yaml
+   hostname: gdk.test
+   ```
+
+1. Reconfigure GDK:
+
+   ```shell
+   gdk reconfigure
+   ```
 
 ## Common errors during installation and troubleshooting
 
