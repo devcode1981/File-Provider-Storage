@@ -300,14 +300,16 @@ redis go node icu krb5 gmake re2 GraphicsMagick p5-Image-ExifTool git-lfs minio 
 
 ### Windows 10
 
-> 🚨 Support for Windows 10 is **experimental**, via the Windows Subsystem for Linux (WSL).
+> 🚨 Support for Windows 10 became stable with the introduction of the Windows Subsystem for Linux 2 (WSL2) in version 2004.
 
 **Setting up the Windows Subsystem for Linux:**
 
 Open PowerShell as Administrator and run:
 
 ```shell
+Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform
 Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+wsl --set-default-version 2
 ```
 
 Restart your computer when prompted.
@@ -323,58 +325,6 @@ Install your Linux Distribution of Choice via the Windows Store. Currently the d
 Launch the distro of choice.
 
 Return to the prerequisite installation steps.
-
-**Installing the remaining GDK Tools & resources**
-
-Install Node.js from source:
-
-```shell
-curl -O https://nodejs.org/dist/v12.10.0/node-v12.10.0.tar.gz
-tar -zxf node-v12.10.0.tar.gz
-cd node-v12.10.0
-```
-
-Build the Node.js library. The following instructions are copied from the Node.js BUILDING.md document:
-
-```shell
-sudo apt-get install build-essential
-./configure
-make -j4 # adjust according to your available CPU capacity
-sudo make install
-```
-
-Install yarn
-
-```shell
-curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-sudo apt-get update && sudo apt-get install yarn
-```
-
-Install the remainder of the prerequisites
-
-```shell
-# Add apt-add-repository helper script
-sudo apt-get install software-properties-common python-software-properties
-sudo apt-get update
-sudo apt-get install git git-lfs postgresql postgresql-contrib libpq-dev redis-server \
-  libicu-dev cmake g++ libkrb5-dev libre2-dev golang ed pkg-config runit
-```
-
-Start the PostgreSQL database (SystemV)
-
-```shell
-sudo service postgresql start
-```
-
-Start the PostgreSQL database (SystemD)
-
-```shell
-sudo systemctl enable postgresql
-sudo systemctl start postgresql
-```
-
-For some common troubleshooting steps for Windows 10 GDK installs please refer to [Troubleshooting](troubleshooting.md)
 
 ## Documentation tools
 
