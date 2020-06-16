@@ -664,14 +664,6 @@ cd gitlab
 bundle exec rake db:test:prepare
 ```
 
-## Windows 10 WSL common issues
-
-- `gdk run db` fails with exit code X
-
-  If you have restarted your computer recently, don't forget to start PostgreSQL server manually; init.d scripts don't work currently as of build 15063.138:
-
-  `sudo service postgresql start`
-
 ## Homebrew: PostgreSQL 10.0: "database files are incompatible with server"
 
 ```plaintext
