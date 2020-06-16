@@ -19,16 +19,22 @@ unless File.file?(config_file)
 end
 
 args = nil
+suffix = %(".#{timestamp}.bak")
 
 case host_os
 when /darwin/i
-  args = '-E'
+  # BSD sed needs a space between `-i` and the suffix
+  args = "-E -i #{suffix}"
 when /linux/i
-  args = '-r'
+  # GNU sed doesn't like a space between `-i` and the suffix
+  args = "-r -i#{suffix}"
 else
   puts "Unsupported platform: #{host_os.inspect}"
   exit 1
 end
 
-cmd = %(sed #{args} -i ".#{timestamp}.bak" "s/([# \\t]*)(port[ \\t]=[ \\t])([0-9]{4,6})/\\2#{postgres_port}/g" #{config_file})
-Shellout.new(cmd).run
+cmd = %(sed #{args} "s/([# \\t]*)(port[ \\t]=[ \\t])([0-9]{4,6})/\\2#{postgres_port}/g" #{config_file})
+sh = Shellout.new(cmd)
+sh.run
+
+abort sh.read_stderr unless sh.success?
