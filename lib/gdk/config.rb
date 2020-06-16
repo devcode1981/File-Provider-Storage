@@ -71,7 +71,8 @@ module GDK
     anything :__uri do
       scheme = config.https? ? 'https' : 'http'
 
-      URI::Generic.build(scheme: scheme, host: config.hostname, port: config.port, path: config.relative_url_root)
+      relative_url_root = config.relative_url_root.gsub(%r{\/+$}, '')
+      URI::Generic.build(scheme: scheme, host: config.hostname, port: config.port, path: relative_url_root)
     end
 
     string(:username) { Etc.getpwuid.name }

@@ -6,7 +6,7 @@ check_interval = 0
 
 [[runners]]
   name = "GDK local runner"
-  url = "<%= "#{config.https? ? 'https' : 'http'}://#{config.hostname}:#{config.port}" %>"
+  url = "<%= "#{config.__uri}" %>"
   token = "<%= config.runner.token %>"
   executor = "docker"
   [runners.custom_build_dir]
