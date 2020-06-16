@@ -1,24 +1,35 @@
 global:
-  scrape_interval: 15s # By default, scrape targets every 15 seconds.
+  # By default, scrape targets every 15 seconds.
+  scrape_interval: 15s
 
   # Attach these labels to any time series or alerts when communicating with
-  #   # external systems (federation, remote storage, Alertmanager).
+  # external systems (federation, remote storage, Alertmanager).
   external_labels:
     monitor: 'gdk-monitor'
 
-  # A scrape configuration containing exactly one endpoint to scrape:
-  # Here it's Prometheus itself.
+# A scrape configuration containing four endpoints to scrape. Requires that
+# `gdk.test` is configured. See doc/index.md#set-up-gdktest-hostname for more
+# information.
 scrape_configs:
-  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped
+  # from this configuration.
   - job_name: 'prometheus'
     static_configs:
-      - targets: ['localhost:9090']
+      - targets: ['gdk.test:9090']
   - job_name: 'gitlab'
     scrape_interval: 30s
     metrics_path: '/-/metrics'
     static_configs:
-      - targets: ['docker.for.mac.localhost:3000']
+      - targets: ['gdk.test:3000']
+  # Requires that `prometheus_listen_addr` in `gitaly/gitaly-0.praefect.toml` is
+  # uncommented.
   - job_name: 'gitaly'
     scrape_interval: 5s
     static_configs:
-      - targets: ['docker.for.mac.localhost:9236']
+      - targets: ['gdk.test:9236']
+  # Requires that `prometheus_listen_addr` in `gitaly/praefect.config.toml` is
+  # uncommented.
+  - job_name: 'praefect'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['gdk.test:10101']
