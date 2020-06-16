@@ -17,6 +17,12 @@ with the current [`gitlab` Ruby version](https://gitlab.com/gitlab-org/gitlab/bl
 gem install gitlab-development-kit
 ```
 
+When using `rbenv`, you'll need the following to make the `gdk` command accessible:
+
+```shell
+rbenv rehash
+```
+
 ## Initialize a new GDK directory
 
 1. Change into the directory where you want to store your source code for GitLab projects (e.g. `~/workspace`). The path used for
