@@ -85,6 +85,19 @@ Experimental settings may be promoted to stable settings or they may be deprecat
 | `gdk.experimental.quiet` | `false` | Set this to `true` to reduce the level of output when updating the GDK. |
 | `gdk.experimental.auto_reconfigure` | `false` | Set this to `true` to automatically run a `gdk reconfigure` after a successful `gdk update`. |
 
+### NGINX settings
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| `nginx.enabled` | `false` | Set this to `true` to enable the `nginx` service. |
+| `nginx.listen` | `127.0.0.1` | Set this to be the IP that NGINX will listen on. |
+| `nginx.bin` | `/usr/sbin/nginx` | Set this to the path to your `nginx` binary. |
+| `nginx.ssl.certificate` | `localhost.crt` | This maps to [NGINX's `ssl_certificate`](https://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_certificate). |
+| `nginx.ssl.key` | `localhost.key` | This maps to [NGINX's `ssl_certificate_key`](https://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_certificate_key). |
+| `nginx.http2.enabled` | `false` | Set this to `true` to enable HTTP/2 support. |
+
+See [configuring NGINX](howto/nginx.md) for a comprehensive guide.
+
 ### Loose files (deprecated)
 
 Before `gdk.yml` was introduced, GDK could be configured through a

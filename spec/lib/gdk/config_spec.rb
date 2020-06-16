@@ -55,6 +55,14 @@ describe GDK::Config do
       it 'returns https://gdk.example.com:3000' do
         expect(config.__uri.to_s).to eq('https://gdk.example.com:3000')
       end
+
+      context 'and port is set to 443' do
+        it 'returns https://gdk.example.com/' do
+          yaml['port'] = '443'
+
+          expect(config.__uri.to_s).to eq('https://gdk.example.com')
+        end
+      end
     end
   end
 
