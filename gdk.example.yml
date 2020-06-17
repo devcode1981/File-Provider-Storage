@@ -2,10 +2,10 @@
 auto_devops:
   enabled: false
   gitlab:
-    port: 20389
+    port: 20000
   listen_address: 0.0.0.0
   registry:
-    port: 25389
+    port: 25000
 elasticsearch:
   enabled: false
   linux_checksum: bc1b0409128288b9eb1e71d2be0de432016d75aec3fc9ec9b6e8b3dc7eb9d4fd0012fe05b0ee81e2ddfa4be005962bae9f64d01dc7f4814eb767943f16ef0dfb
@@ -58,7 +58,7 @@ mattermost:
   enabled: false
   image: mattermost/mattermost-preview
   local_port: 8065
-  port: 27389
+  port: 27000
 nginx:
   bin: "/usr/local/bin/nginx"
   enabled: false

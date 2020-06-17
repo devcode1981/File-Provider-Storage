@@ -27,7 +27,7 @@ module GDK
         .select { |d| Dir.exist?(d) }
     end
 
-    path(:gdk_root) { GDK_ROOT }
+    path(:gdk_root) { self.class::GDK_ROOT }
 
     settings :gdk do
       bool(:ask_to_restart_after_update) { true }
@@ -186,7 +186,7 @@ module GDK
       bool(:enabled) { read!('auto_devops_enabled') || false }
       string(:listen_address) { '0.0.0.0' }
       settings :gitlab do
-        integer(:port) { read_or_write!('auto_devops_gitlab_port', rand(20000..24999)) }
+        integer(:port) { read_or_write!('auto_devops_gitlab_port', rand(20_000..24_999)) }
       end
       settings :registry do
         integer(:port) { read!('auto_devops_registry_port') || (config.auto_devops.gitlab.port + 5000) }
@@ -228,7 +228,7 @@ module GDK
     settings :nginx do
       bool(:enabled) { false }
       string(:listen) { config.hostname }
-      string(:bin) { find_executable!('nginx') || '/usr/sbin/nginx' }
+      string(:bin) { find_executable!('nginx') || '/usr/local/bin/nginx' }
       settings :ssl do
         string(:certificate) { 'localhost.crt' }
         string(:key) { 'localhost.key' }
@@ -244,7 +244,7 @@ module GDK
 
     settings :postgresql do
       integer(:port) { read!('postgresql_port') || 5432 }
-      path(:bin_dir) { cmd!(%w[support/pg_bindir]) }
+      path(:bin_dir) { cmd!(%w[support/pg_bindir]) || '/usr/local/bin' }
       path(:bin) { config.postgresql.bin_dir.join('postgres') }
       string(:replication_user) { 'gitlab_replication' }
       path(:dir) { config.gdk_root.join('postgresql') }
@@ -297,7 +297,7 @@ module GDK
 
     settings :sshd do
       bool(:enabled) { false }
-      path(:bin) { find_executable!('sshd') || '/usr/sbin/sshd' }
+      path(:bin) { find_executable!('sshd') || '/usr/local/sbin/sshd' }
       string(:listen_address) { config.hostname }
       integer(:listen_port) { 2222 }
       string(:user) { config.username }
@@ -307,7 +307,7 @@ module GDK
     end
 
     settings :git do
-      path(:bin) { find_executable!('git') }
+      path(:bin) { find_executable!('git') || '/usr/local/bin/git' }
     end
 
     settings :runner do
