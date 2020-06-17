@@ -2,30 +2,33 @@
 auto_devops:
   enabled: false
   gitlab:
-    port: 21838
+    port: 20389
   listen_address: 0.0.0.0
   registry:
-    port: 26838
+    port: 25389
 elasticsearch:
   enabled: false
+  linux_checksum: bc1b0409128288b9eb1e71d2be0de432016d75aec3fc9ec9b6e8b3dc7eb9d4fd0012fe05b0ee81e2ddfa4be005962bae9f64d01dc7f4814eb767943f16ef0dfb
+  mac_checksum: 189e207d7c95f831df2973680fe7a1ebc5ade83705c3af38befc23a9e8c0893636b9d9699a153e69b6abaa3c5cdb1bb8e459596cb4e31115afe5a88f48295b61
   version: 7.7.0
 gdk:
   ask_to_restart_after_update: true
   debug: false
-  experimental: {}
+  experimental:
+    auto_reconfigure: false
+    quiet: false
   overwrite_changes: false
   protected_config_files: []
 gdk_root: "/home/git/gdk"
 geo:
   enabled: false
-  node_name: gitlab-development-kit
+  node_name: gdk
   registry_replication:
     enabled: false
     primary_api_url: http://localhost:5000
 git:
-  bin: "/home/toon/bin/git"
-git_repositories:
-  - "/home/git/gdk/"
+  bin: "/usr/local/bin/git"
+git_repositories: []
 gitaly:
   address: "/home/git/gdk/gitaly.socket"
   assembly_dir: "/home/git/gdk/gitaly/assembly"
@@ -34,6 +37,7 @@ gitaly:
   internal_socket_dir: "/home/git/gdk/tmp/gitaly"
   log_dir: "/home/git/gdk/log/gitaly"
 gitlab:
+  actioncable: {}
   dir: "/home/git/gdk/gitlab"
 gitlab_elasticsearch_indexer:
   auto_update: true
@@ -43,6 +47,7 @@ gitlab_pages:
   port: 3010
 gitlab_shell:
   auto_update: true
+  dir: "/home/git/gdk/gitlab-shell"
 grafana:
   enabled: false
 hostname: 127.0.0.1
@@ -53,8 +58,9 @@ mattermost:
   enabled: false
   image: mattermost/mattermost-preview
   local_port: 8065
+  port: 27389
 nginx:
-  bin: "/usr/sbin/nginx"
+  bin: "/usr/local/bin/nginx"
   enabled: false
   http:
     enabled: false
@@ -78,15 +84,15 @@ openldap:
   enabled: false
 port: 3000
 postgresql:
-  address: "/home/git/gdk/postgresql"
-  bin: "/usr/lib/postgresql/11/bin/postgres"
-  bin_dir: "/usr/lib/postgresql/11/bin"
+  bin: "/usr/local/bin/postgres"
+  bin_dir: "/usr/local/bin"
   data_dir: "/home/git/gdk/postgresql/data"
   dir: "/home/git/gdk/postgresql"
   geo:
-    address: "/home/git/gdk/postgresql-geo"
     dir: "/home/git/gdk/postgresql-geo"
+    host: "/home/git/gdk/postgresql-geo"
     port: 5431
+  host: "/home/git/gdk/postgresql"
   port: 5432
   replica:
     enabled: false
@@ -103,27 +109,27 @@ praefect:
   internal_socket_dir: "/home/git/gdk/tmp/praefect"
   node_count: 1
   nodes:
-    - address: "/home/git/gdk/gitaly-praefect-0.socket"
-      config_file: gitaly/gitaly-0.praefect.toml
-      internal_socket_dir: "/home/git/gdk/tmp/praefect/gitaly-0"
-      log_dir: "/home/git/gdk/log/praefect-gitaly-0"
-      primary: true
-      service_name: praefect-gitaly-0
-      storage: praefect-internal-0
-      storage_dir: "/home/git/gdk/repositories"
+  - address: "/home/git/gdk/gitaly-praefect-0.socket"
+    config_file: gitaly/gitaly-0.praefect.toml
+    internal_socket_dir: "/home/git/gdk/tmp/praefect/gitaly-0"
+    log_dir: "/home/git/gdk/log/praefect-gitaly-0"
+    primary: true
+    service_name: praefect-gitaly-0
+    storage: praefect-internal-0
+    storage_dir: "/home/git/gdk/repositories"
 prometheus:
   enabled: false
 registry:
+  api_host: 127.0.0.1
+  auth_enabled: true
   enabled: false
   external_port: 5000
   host: 127.0.0.1
-  api_host: 127.0.0.1
-  tunnel_host: 127.0.0.1
-  tunnel_port: 5000
   image: registry.gitlab.com/gitlab-org/build/cng/gitlab-container-registry:v2.9.1-gitlab
   port: 5000
   self_signed: false
-  auth_enabled: true
+  tunnel_host: 127.0.0.1
+  tunnel_port: 5000
 relative_url_root: "/"
 repositories:
   gitaly: https://gitlab.com/gitlab-org/gitaly.git
@@ -138,11 +144,11 @@ runner:
   config_file: "/home/git/gdk/gitlab-runner-config.toml"
   enabled: false
   extra_hosts: []
-  token: 'Register your runner to get a token'
+  token: 'DEFAULT TOKEN: Register your runner to get a valid token'
 sshd:
   additional_config: ''
   authorized_keys_file: "/home/git/gdk/.ssh/authorized_keys"
-  bin: "/usr/sbin/sshd"
+  bin: "/usr/local/sbin/sshd"
   enabled: false
   host_key: "/home/git/gdk/openssh/ssh_host_rsa_key"
   listen_address: 127.0.0.1
@@ -157,9 +163,9 @@ username: git
 webpack:
   host: 127.0.0.1
   port: 3808
-  vendor_dll: false
-  static: false
   sourcemaps: true
+  static: false
+  vendor_dll: false
 workhorse:
   auto_update: true
   configured_port: 3333
