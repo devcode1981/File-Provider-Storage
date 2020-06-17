@@ -133,10 +133,11 @@ products:
     slug: 'ee'
     index_file: 'README.*'
     img: '/assets/images/docs-gitlab.svg'
-    description: 'Usage and administration of GitLab self-managed and GitLab.com.'
+    description: 'Install, use, and administer GitLab self-managed and GitLab.com.'
     repo: 'https://gitlab.com/gitlab-org/gitlab.git'
     dirs:
       temp_dir: 'tmp/ee/'
       dest_dir: 'content/ee'
       doc_dir:  'doc'
     expose: true
+    icon: 'tanuki'
