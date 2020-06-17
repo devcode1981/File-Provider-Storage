@@ -7,7 +7,7 @@
 root="$(realpath "$(dirname "${0}")/../..")"
 
 exec find "${root}/bin" "${root}/support" "${root}/support/ci" "${root}/support/completions" \
-      -maxdepth 1
+      -maxdepth 1 \
       -type f \
       -not -path "*/support/pg_hba.conf.add" \
       -not -path "*/support/.rubocop.yml" \
