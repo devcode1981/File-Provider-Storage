@@ -41,7 +41,7 @@ to learn how to contribute to GitLab.
 - [Preview and test the docs site locally](gitlab_docs.md)
 - [Auto DevOps](auto_devops/index.md)
 - [Google OAuth2](google-oauth2.md)
-- [GitLab.com OAuth2](gitlab-oauth2)
+- [GitLab.com OAuth2](gitlab-oauth2.md)
 - [Unicorn](unicorn.md)
 - [Debugging with Pry](pry.md)
 - [Asset Proxy / Camo Server](asset_proxy.md)

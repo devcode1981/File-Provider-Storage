@@ -2,7 +2,7 @@
 
 Import projects from GitLab.com and login to your GitLab instance with your GitLab.com account.
 
-## GitLab.com Setup
+## Set up GitLab.com
 
 To enable the GitLab.com OmniAuth provider, you must register your GDK instance with
 your GitLab.com account.
@@ -28,7 +28,7 @@ GitLab.com will generate an application ID and secret key for you to use.
 1. You should now see an **Application ID** and **Secret**. Keep this page open as you continue
    configuration.
 
-## GDK Setup
+## Set up GDK
 
 1. Within GDK, open `gitlab/config/gitlab.yml`.
 1. Look for the following:
