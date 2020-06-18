@@ -62,7 +62,7 @@ module GDK
     end
 
     def dump!(file = nil)
-      base_methods = ConfigSettings.new.methods
+      base_methods = settings_klass.new.methods
 
       yaml = (methods - base_methods).sort.each_with_object({}) do |method, hash|
         method_name = method.to_s
@@ -210,7 +210,7 @@ module GDK
     end
 
     def subconfig!(name, &blk)
-      sub = Class.new(ConfigSettings)
+      sub = Class.new(settings_klass)
       sub.class_eval(&blk)
       sub.new(parent: self, yaml: yaml.fetch(name.to_s, {}), slug: slug_for(name))
     end
@@ -227,6 +227,10 @@ module GDK
 
     def sanitized_read!(filename)
       File.read(GDK.root.join(filename)).chomp
+    end
+
+    def settings_klass
+      ::GDK::ConfigSettings
     end
   end
 end
